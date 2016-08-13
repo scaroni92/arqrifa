@@ -28,3 +28,5 @@ CREATE TABLE asistencias (
 INSERT INTO estudiantes VALUES (5555555, 'Juan', 'García', '1234');
 INSERT INTO estudiantes VALUES (7777777, 'Ana', 'Peréz', '1234');
 INSERT INTO reuniones (Fecha) VALUES ('2016-06-20 15:00:00');
+
+SELECT * FROM asistencias

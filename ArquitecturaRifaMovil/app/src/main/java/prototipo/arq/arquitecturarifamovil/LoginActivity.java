@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v) {
 
 
-        String url = "http://10.0.2.2:8080/ProyectoArquitecturaRIfa/app/servicio/autenticar?";
+        String url = "http://192.168.1.36:8080/ProyectoArquitecturaRIfa/app/servicio/autenticar?";
         url += "user=" + txtUser.getText();
         url += "&&pass=" + txtPass.getText() ;
         new GetDataTask(this).execute(url);
