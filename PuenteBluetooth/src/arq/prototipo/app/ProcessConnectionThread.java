@@ -70,7 +70,7 @@ public class ProcessConnectionThread implements Runnable {
         try {
             String strCommand = new String(command);
             System.out.println("Marcar asistencia para el estudiante: "+strCommand);
-            String resultado = new ClienteRest().marcarAsistencia("strCommand", "1");
+            String resultado = new ClienteRest().marcarAsistencia(strCommand, "1");
             if (resultado.contains("true")) {
                 System.out.println("Asistencia marcada");
             } else {
