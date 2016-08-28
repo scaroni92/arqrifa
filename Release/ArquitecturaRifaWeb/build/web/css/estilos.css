@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;
+} 
+form {
+    width: 300px;
+    margin: auto;
+}
+p {
+    color: red;
+    text-align: center;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
