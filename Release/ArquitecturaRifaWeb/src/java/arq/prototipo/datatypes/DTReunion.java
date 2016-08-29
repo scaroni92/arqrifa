@@ -1,12 +1,15 @@
 package arq.prototipo.datatypes;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class DTReunion implements java.io.Serializable {
+@XmlRootElement
+public class DTReunion {
 
     private int id;
     private Date fecha;
     private boolean obligatoria;
+    private int generacion;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getId() {
@@ -32,16 +35,27 @@ public class DTReunion implements java.io.Serializable {
     public void setObligatoria(boolean obligatoria) {
         this.obligatoria = obligatoria;
     }
-    //</editor-fold>
+    
 
-    public DTReunion(int id, Date fecha, boolean obligatoria) {
+    public int getGeneracion() {
+        return generacion;
+    }
+
+    public void setGeneracion(int generacion) {
+        this.generacion = generacion;
+    }
+//</editor-fold>
+    
+    public DTReunion(int id, Date fecha,int generacion, boolean obligatoria) {
         setId(id);
         setFecha(fecha);
         setObligatoria(obligatoria);
+        setGeneracion(generacion);
     }
 
     public DTReunion() {
-        this(0, new Date(), false);
+        this(0, new Date(),0, false);
     }
 
 }
+

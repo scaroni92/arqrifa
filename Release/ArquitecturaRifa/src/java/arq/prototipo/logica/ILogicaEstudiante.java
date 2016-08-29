@@ -2,9 +2,8 @@ package arq.prototipo.logica;
 
 import arq.prototipo.datatypes.*;
 
-public interface ISistema {
+public interface ILogicaEstudiante {
 
     DTEstudiante Autenticar(int ci, String contrasena);
 
-    void MarcarAsistencia(int ci);
 }

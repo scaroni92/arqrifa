@@ -1,7 +1,12 @@
 package arq.prototipo.logica;
 
 public class FabricaLogica {
-    public static  ISistema getSistema() {
-        return Sistema.getInstancia();
+    
+    public static  ILogicaEstudiante getLogicaEstudiante() {
+        return LogicaEstudiante.getInstancia();
+    }
+    
+    public static  ILogicaReunion getLogicaReunion() {
+        return LogicaReunion.getInstancia();
     }
 }
