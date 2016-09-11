@@ -20,7 +20,7 @@ public class WaitThread implements Runnable {
     public void run() {
         waitForConnection();
     }
-
+    
     /** Permite que el server sea detectado por otros equipos 
         y se queda a la espera de una conexion*/
     private void waitForConnection() {
@@ -49,7 +49,6 @@ public class WaitThread implements Runnable {
                 System.out.println("esperando conexion");
                 //Conexion encontrada y aceptada
                 connection = notifier.acceptAndOpen();
-                
                 //Crea el hilo de procesamiento de la conexion
                 Thread processThread = new Thread(new ProcessConnectionThread(connection));
                 processThread.start();

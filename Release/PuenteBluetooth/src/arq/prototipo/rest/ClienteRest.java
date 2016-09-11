@@ -40,7 +40,7 @@ public class ClienteRest {
         }
     }
     
-    public List<DTReunion> loadList() throws Exception{
+    public List<DTReunion> getReunionesIniciadas() throws Exception{
         WebTarget resource = webTarget;
         resource = resource.path("reuniones");
         resource = resource.path("getActivas");
