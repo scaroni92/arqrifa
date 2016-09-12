@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Repository {
     
-    public static List<DTReunion> reunionesActivas = Arrays.asList(new DTReunion(0,null,0,false));
+    public static List<DTReunion> reunionesActivas = Arrays.asList(new DTReunion(0, "", "", "", null, false, 0, ""));
    //  public static List<DTReunion> reunionesActivas = Arrays.asList(new DTReunion());
     
 }

@@ -1,10 +1,12 @@
-package org.arqrifa.datatypes;
+package org.arqrifa.logica;
 
+import java.util.ArrayList;
 import java.util.Date;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
+import org.arqrifa.datatypes.DTReunion;
+import org.arqrifa.datatypes.DTUsuario;
 
-@XmlRootElement
-public class DTReunion {
+public class Reunion {
 
     private int id;
     private String titulo;
@@ -14,6 +16,7 @@ public class DTReunion {
     private boolean obligatoria;
     private int generacion;
     private String estado;
+    private List<Usuario> lista;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getId() {
@@ -81,8 +84,11 @@ public class DTReunion {
     }
 
     //</editor-fold>
-    
-    public DTReunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado) {
+    public Reunion() {
+        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d");
+    }
+
+    public Reunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -91,10 +97,18 @@ public class DTReunion {
         this.obligatoria = obligatoria;
         this.generacion = generacion;
         this.estado = estado;
+        lista = new ArrayList();
     }
 
-    public DTReunion() {
-        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d");
+    public Reunion(DTReunion dt) {
+        this(dt.getId(), dt.getTitulo(), dt.getDescripcion(), dt.getResoluciones(), dt.getFecha(), dt.isObligatoria(), dt.getGeneracion(), dt.getEstado());
     }
 
+    public DTReunion getDataType() {
+        return new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado);
+    }
+
+    public void marcarAsistencia(DTUsuario usuario) {
+        lista.add(new Usuario(usuario));
+    }
 }

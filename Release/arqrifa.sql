@@ -22,9 +22,13 @@ CREATE TABLE usuarios (
 
 CREATE TABLE reuniones (
     Id INT PRIMARY KEY AUTO_INCREMENT,
+    Titulo VARCHAR(30) NOT NULL,
+    Descripcion VARCHAR(100) NOT NULL,
     Fecha DATETIME NOT NULL,
     Generacion INT NOT NULL,
     Obligatoria BIT NOT NULL DEFAULT 0,
+    Lugar VARCHAR(50) NOT NULL,
+    Resoluciones VARCHAR(100),
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
 
@@ -40,6 +44,6 @@ CREATE TABLE asistencias (
 INSERT INTO generaciones VALUES(2010),(2011),(2012),(2013);
 INSERT INTO usuarios VALUES (5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'estudiante');
 INSERT INTO usuarios VALUES (7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado');
-INSERT INTO reuniones (Fecha,Generacion) VALUES ('2016-06-20 15:00:00',2010);
+INSERT INTO reuniones (Titulo,Descripcion,Fecha,Generacion,Lugar) VALUES ('titulo', 'desc', '2016-06-20 15:00:00',2010, 'lugar');
 
 SELECT * FROM asistencias

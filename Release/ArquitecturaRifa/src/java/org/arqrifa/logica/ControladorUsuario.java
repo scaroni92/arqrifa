@@ -4,18 +4,18 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
 
-class LogicaUsuario implements ILogicaUsuario {
+class ControladorUsuario implements IControladorUsuario {
 
-    private static LogicaUsuario instancia = null;
+    private static ControladorUsuario instancia = null;
 
-    public static ILogicaUsuario getInstancia() {
+    public static IControladorUsuario getInstancia() {
         if (instancia == null) {
-            instancia = new LogicaUsuario();
+            instancia = new ControladorUsuario();
         }
         return instancia;
     }
 
-    private LogicaUsuario() {
+    private ControladorUsuario() {
     }
 
     @Override

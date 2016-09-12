@@ -2,11 +2,11 @@ package org.arqrifa.logica;
 
 public class FabricaLogica {
     
-    public static  ILogicaUsuario getLogicaUsuario() {
-        return LogicaUsuario.getInstancia();
+    public static  IControladorUsuario getLogicaUsuario() {
+        return ControladorUsuario.getInstancia();
     }
     
-    public static  ILogicaReunion getLogicaReunion() {
-        return LogicaReunion.getInstancia();
+    public static  IControladorReuniones getControladorReuniones() {
+        return ControladorReuniones.getInstancia();
     }
 }

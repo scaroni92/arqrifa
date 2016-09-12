@@ -4,7 +4,6 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import static org.arqrifa.persistencia.Persistencia.getConexion;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.util.Date;
 
 class PersistenciaReunion implements IPersistenciaReunion {
 
-    
     private static PersistenciaReunion instancia = null;
 
     public static IPersistenciaReunion getInstancia() {
@@ -39,10 +37,13 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
             DTReunion reunion = null;
             if (res.next()) {
+                String titulo = res.getString("titulo");
+                String descripcion = res.getString("descripcion");
+                String resoluciones = res.getString("resoluciones");
                 Date fecha = res.getDate("fecha");
                 boolean obligatoria = res.getBoolean("obligatoria");
                 int generacion = res.getInt("generacion");
-                reunion = new DTReunion(id, fecha,generacion, obligatoria);
+                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, "");
             }
             return reunion;
         } catch (SQLException e) {
@@ -61,7 +62,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         }
     }
-    
+
     @Override
     public void MarcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
         Connection con = null;

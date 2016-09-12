@@ -24,13 +24,16 @@ public class Servicio {
     @Path("/asistencia")
     @GET
     public void marcarAsistencia(@QueryParam("ci") int ci){
-        FabricaLogica.getLogicaReunion().MarcarAsistencia(ci);
+        DTUsuario usuario = null;
+        DTReunion reunion = null;
+        FabricaLogica.getControladorReuniones().MarcarAsistencia(usuario, reunion);
     }
     
     @Path("/reuniones/getActivas")
     @GET
     public List<DTReunion> getReunionesActias(){
-        return Repository.reunionesActivas;
+        //return Repository.reunionesActivas;
+        return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
     
 }
