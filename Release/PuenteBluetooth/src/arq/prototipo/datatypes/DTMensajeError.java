@@ -3,22 +3,22 @@ package arq.prototipo.datatypes;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class MensajeError {
+public class DTMensajeError {
 
     private String mensaje;
     private int codigo;
     private String otraInfo;
 
-    public MensajeError() {
+    public DTMensajeError() {
     }
 
-    public MensajeError(String mensaje, int codigo, String otraInfo) {
+    public DTMensajeError(String mensaje, int codigo, String otraInfo) {
         this.mensaje = mensaje;
         this.codigo = codigo;
         this.otraInfo = otraInfo;
     }
 
-    public MensajeError(String mensaje) {
+    public DTMensajeError(String mensaje) {
         this.mensaje = mensaje;
         this.codigo = 500;
         this.otraInfo = "";

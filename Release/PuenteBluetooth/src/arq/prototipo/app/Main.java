@@ -2,11 +2,12 @@ package arq.prototipo.app;
 
 import arq.prototipo.datatypes.DTReunion;
 import arq.prototipo.rest.ClienteRest;
-import arq.prototipo.rest.ExcepcionRest;
 import com.google.gson.Gson;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
@@ -203,18 +204,18 @@ public class Main extends javax.swing.JFrame {
                     jPanelContent.removeAll();
                     jPanelContent.repaint();
                     jPanelContent.revalidate();
-                    
+
                     jLabelId.setText(String.valueOf(selectedReuinion.getId()));
                     jLabelFecha.setText(selectedReuinion.getFecha().toString());
                     jLabelGen.setText(String.valueOf(selectedReuinion.getGeneracion()));
-                    
+
                     jPanelContent.add(JPanelReunion);
                     jPanelContent.repaint();
                     jPanelContent.revalidate();
                 }
 
             } else {
-                DesktopController.cerrarPuenteBluetooth();                
+                DesktopController.cerrarPuenteBluetooth();
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
