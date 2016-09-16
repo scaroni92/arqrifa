@@ -11,7 +11,7 @@ public class ArquitecturaRifaMapper implements ExceptionMapper<ArquitecturaRifaE
     @Override
     public Response toResponse(ArquitecturaRifaExcepcion exception) {
         DTMensajeError mensaje = new DTMensajeError(exception.getMessage());
-        return Response.status(Response.Status.OK).entity(mensaje).build();
+        return Response.status(Response.Status.CONFLICT).entity(mensaje).build();
     }
 
 }

@@ -20,6 +20,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -36,15 +37,6 @@ public class ClienteRest {
     }
 
     public void marcarAsistencia(String ci) throws Exception {
-        /*WebTarget resource = webTarget;
-        resource = resource.queryParam("ci", ci);
-        resource = resource.path("asistencia");
-        String resultado = resource.request(APPLICATION_JSON).get(String.class);
-        if (resultado.contains("mensaje")) {
-            DTMensajeError me = new Gson().fromJson(resultado, DTMensajeError.class);
-            throw new Exception(me.getMensaje());
-        }*/
-
         Client cliente = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
         WebTarget target = cliente.target("http://localhost:8080/ArquitecturaRifa/api/servicio").path("asistencias/marcar");
 
@@ -54,7 +46,15 @@ public class ClienteRest {
                 .field("usuario", u, MediaType.APPLICATION_JSON_TYPE)
                 .field("reunion", r, MediaType.APPLICATION_JSON_TYPE);
 
-        target.request(MediaType.APPLICATION_JSON).post(Entity.entity(multipart, multipart.getMediaType()));
+        Response respuesta = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(multipart, multipart.getMediaType()));
+        // Código provisional
+        if (respuesta.getStatus() == 409) {
+            System.out.println(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        else {
+            System.out.println("Asistencia marcada");
+        }
+        
     }
 
     public List<DTReunion> getReunionesIniciadas() throws Exception {

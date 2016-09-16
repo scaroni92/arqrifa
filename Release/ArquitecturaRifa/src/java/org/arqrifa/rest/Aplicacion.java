@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
+import org.arqrifa.excepciones.ArquitecturaRifaMapper;
 import org.arqrifa.rest.recursos.Servicio;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
@@ -16,7 +18,8 @@ public class Aplicacion extends Application {
 
         classes.add(Servicio.class);
         classes.add(MultiPartFeature.class);
-
+        classes.add(ArquitecturaRifaExcepcion.class);
+        classes.add(ArquitecturaRifaMapper.class);
         return classes;
     }
 }

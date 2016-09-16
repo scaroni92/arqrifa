@@ -12,14 +12,14 @@ class ControladorReuniones implements IControladorReuniones {
 
     private List<Reunion> reunionesActivas = new ArrayList();
     private static ControladorReuniones instancia = null;
-    
+
     public static IControladorReuniones getInstancia() {
         if (instancia == null) {
             instancia = new ControladorReuniones();
         }
         return instancia;
     }
-    
+
     private ControladorReuniones() {
         Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, "listado");
         r.setEstado("listado");
@@ -27,21 +27,24 @@ class ControladorReuniones implements IControladorReuniones {
         r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, "pendiente");
         reunionesActivas.add(r);
     }
-    
+
     @Override
     public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
-        
         try {
             if (!usuario.getRol().equals("estudiante")) {
                 throw new Exception("El usuario que desea marcar asistencia no es estudiante.");
             }
             for (Reunion reunionActiva : reunionesActivas) {
                 if (reunionActiva.getId() == reunion.getId()) {
-                    if (reunionActiva.getEstado().equals("listado")) {
-                        reunionActiva.marcarAsistencia(usuario);
-                    }else {
+                    if (!reunionActiva.getEstado().equals("listado")) {
                         throw new Exception("La lista no ha sido habilitada aún.");
                     }
+                    for (Usuario u : reunionActiva.getLista()) {
+                        if (u.getCi() == usuario.getCi()) {
+                            throw new Exception("El estudiante " + u.getNombre() + " " + u.getApellido() + " marcó su asistencia previamente.");
+                        }
+                    }
+                    reunionActiva.marcarAsistencia(usuario);
                 }
             }
         } catch (Exception e) {
@@ -57,5 +60,5 @@ class ControladorReuniones implements IControladorReuniones {
         }
         return resp;
     }
-    
+
 }

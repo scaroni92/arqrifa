@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 @Path("/servicio")
@@ -27,14 +28,12 @@ public class Servicio {
     @POST
     @Path("/asistencias/marcar")
     @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-    public void marcarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
-        if (usuario != null) {
-            System.out.println(usuario.getNombre());
-        }
-        if (reunion != null) {
-            System.out.println(reunion.getId());
+    public Response marcarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
+        if (usuario != null && reunion != null) {
+            System.out.println("servidor rest: " + usuario.getNombre() + " " + reunion.getId());
         }
         FabricaLogica.getControladorReuniones().MarcarAsistencia(usuario, reunion);
+        return Response.status(Response.Status.OK).build();
     }
 
     @Path("/reuniones/getActivas")

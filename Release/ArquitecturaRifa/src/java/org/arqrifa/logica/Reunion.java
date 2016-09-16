@@ -39,6 +39,10 @@ public class Reunion {
         return fecha;
     }
 
+    public List<Usuario> getLista() {
+        return lista;
+    }
+
     public boolean isObligatoria() {
         return obligatoria;
     }
