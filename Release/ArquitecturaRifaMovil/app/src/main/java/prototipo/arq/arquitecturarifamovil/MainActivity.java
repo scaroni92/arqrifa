@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import prototipo.arq.datatypes.BluetoothCommandService;
-import prototipo.arq.datatypes.DTEstudiante;
+import prototipo.arq.datatypes.DTUsuario;
 
 
 
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     // Member object for Bluetooth Command Service
     private BluetoothCommandService mCommandService = null;
 
-    private DTEstudiante estudiante;
+    private DTUsuario estudiante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
 
         if (extras != null){
-            estudiante = (DTEstudiante) extras.get("Estudiante");
+            estudiante = (DTUsuario) extras.get("Estudiante");
             txtNombre.setText(estudiante.getNombre());
             txtApellido.setText(estudiante.getApellido());
         }

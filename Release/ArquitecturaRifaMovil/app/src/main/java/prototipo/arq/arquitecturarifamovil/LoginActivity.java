@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -37,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         String url = "http://192.168.1.36:8080/ArquitecturaRifa/api/servicio/login?";
+        //String url = "http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/login?";
         url += "ci=" + txtUser.getText();
         url += "&pass=" + txtPass.getText();
         new GetDataTask(this).execute(url);
@@ -73,12 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (resultado == null) {
                     Toast.makeText(mainActivity, "Usuario/Contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 } else if (resultado.contains("mensaje")) {
-                    MensajeError me = new Gson().fromJson(resultado, MensajeError.class);
+                    DTMensajeError me = new Gson().fromJson(resultado, DTMensajeError.class);
                     Toast.makeText(mainActivity, me.getMensaje(), Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    DTEstudiante estudiante = new Gson().fromJson(resultado, DTEstudiante.class);
-                    /*Toast.makeText(mainActivity, estudiante.getApellido(), Toast.LENGTH_SHORT).show();*/
+                    DTUsuario estudiante = new Gson().fromJson(resultado, DTUsuario.class);
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("Estudiante", estudiante);
