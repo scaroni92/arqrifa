@@ -1,9 +1,9 @@
 package org.arqrifa.rest.recursos;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.logica.FabricaLogica;
-import org.arqrifa.repository.Repository;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,9 +14,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+//</editor-fold>
 
 @Path("/servicio")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class Servicio {
 
     @Path("/login")
@@ -39,7 +40,6 @@ public class Servicio {
     @Path("/reuniones/getActivas")
     @GET
     public List<DTReunion> getReunionesActivas() {
-        //return Repository.reunionesActivas;
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
 

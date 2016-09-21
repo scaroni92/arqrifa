@@ -88,6 +88,7 @@ public class Reunion {
     }
 
     //</editor-fold>
+    
     public Reunion() {
         this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d");
     }
@@ -112,7 +113,12 @@ public class Reunion {
         return new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado);
     }
 
-    public void marcarAsistencia(DTUsuario usuario) {
+    public void marcarAsistencia(DTUsuario usuario) throws Exception {
+        for (Usuario u : this.getLista()) {
+            if (u.getCi() == usuario.getCi()) {
+                throw new Exception("El estudiante con CI: " + usuario.getCi() + " marcó su asistencia previamente.");
+            }
+        }
         lista.add(new Usuario(usuario));
     }
 }

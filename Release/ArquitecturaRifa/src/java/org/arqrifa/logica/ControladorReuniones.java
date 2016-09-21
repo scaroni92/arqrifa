@@ -32,21 +32,21 @@ class ControladorReuniones implements IControladorReuniones {
     public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
             if (!usuario.getRol().equals("estudiante")) {
-                throw new Exception("El usuario que desea marcar asistencia no es estudiante.");
+                throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-            for (Reunion reunionActiva : reunionesActivas) {
-                if (reunionActiva.getId() == reunion.getId()) {
-                    if (!reunionActiva.getEstado().equals("listado")) {
-                        throw new Exception("La lista no ha sido habilitada aún.");
-                    }
-                    for (Usuario u : reunionActiva.getLista()) {
-                        if (u.getCi() == usuario.getCi()) {
-                            throw new Exception("El estudiante " + u.getNombre() + " " + u.getApellido() + " marcó su asistencia previamente.");
-                        }
-                    }
-                    reunionActiva.marcarAsistencia(usuario);
+            Reunion reunionActiva = null;
+            for (Reunion reunionActual : reunionesActivas) {
+                if (reunionActual.getId() == reunion.getId()) {
+                    reunionActiva = reunionActual;
                 }
             }
+            if (reunionActiva == null) {
+                throw new Exception("La reunión a la que se desea marcar asistencia no está en curso.");
+            }
+            if (!reunionActiva.getEstado().equals("listado")) {
+                throw new Exception("La lista no ha sido habilitada aún.");
+            }
+            reunionActiva.marcarAsistencia(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
