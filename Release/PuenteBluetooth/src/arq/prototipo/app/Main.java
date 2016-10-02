@@ -61,10 +61,8 @@ public class Main extends javax.swing.JFrame {
         jLabelGen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(500, 500));
         setMinimumSize(new java.awt.Dimension(500, 500));
         setName("Puente Bluetooth"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -109,7 +107,7 @@ public class Main extends javax.swing.JFrame {
         jPanelContent.setMaximumSize(new java.awt.Dimension(0, 0));
         jPanelContent.setLayout(new java.awt.CardLayout());
 
-        jListReuniones.setModel(getReunionesIniciadas());
+        jListReuniones.setModel(getReunionesActivas());
         jListReuniones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jListReuniones);
 
@@ -254,10 +252,10 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
-    private ListModel<String> getReunionesIniciadas() {
+    private ListModel<String> getReunionesActivas() {
         DefaultListModel<String> model = new DefaultListModel<String>();
         try {
-            reunionesActivas = DesktopController.getReunionesIniciadas();
+            reunionesActivas = DesktopController.getReunionesActivas();
             model = new DefaultListModel<String>();
             DateFormat df = new SimpleDateFormat("HH:mm:ss");
             for (DTReunion val : reunionesActivas) {

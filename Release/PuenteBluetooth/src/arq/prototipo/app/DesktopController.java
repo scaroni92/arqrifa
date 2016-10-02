@@ -16,22 +16,22 @@ import java.util.List;
  */
 public class DesktopController {
         
-    private static Thread Thread;
+    private static Thread thread;
     private static WaitThread waitThread;
     private static DTReunion reunion;
     
     public static void initiateController(){      
         waitThread = new WaitThread();
-        Thread = new Thread(waitThread);
+        thread = new Thread(waitThread);
     }
     
-    public static List<DTReunion> getReunionesIniciadas() throws Exception{
-        return new ClienteRest().getReunionesIniciadas();
+    public static List<DTReunion> getReunionesActivas() throws Exception{
+        return new ClienteRest().getReunionesActivas();
     }
     
     public static void iniciarPuenteBluetooth(DTReunion parReunion){
         reunion = parReunion;
-        Thread.start();
+        thread.start();
     }
     
     public static void cerrarPuenteBluetooth() throws IOException, InterruptedException{

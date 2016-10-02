@@ -1,6 +1,7 @@
 package arq.prototipo.rest;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
+import arq.prototipo.datatypes.DTEstado;
 import arq.prototipo.datatypes.DTReunion;
 import arq.prototipo.datatypes.DTMensajeError;
 import arq.prototipo.datatypes.DTUsuario;
@@ -34,7 +35,7 @@ public class ClienteRest {
 
         // Código de prueba
         DTUsuario u = new DTUsuario(Integer.parseInt(ci), "juan", "garcia", "1234", "asd@asd.com", "estudiante", 2010);
-        DTReunion r = new DTReunion(1, "asd", "asd", "asd", new Date(), true, 2010, "listado");
+        DTReunion r = new DTReunion(1, "asd", "asd", "asd", new Date(), true, 2010, DTEstado.LISTADO);
 
         MultiPart multipart = new FormDataMultiPart()
                 .field("usuario", u, MediaType.APPLICATION_JSON_TYPE)
@@ -49,7 +50,7 @@ public class ClienteRest {
 
     }
 
-    public List<DTReunion> getReunionesIniciadas() throws Exception {
+    public List<DTReunion> getReunionesActivas() throws Exception {
         webTarget = webTarget.path("reuniones/getActivas");
         Response resultado = webTarget.request(MediaType.APPLICATION_JSON).get();
 
