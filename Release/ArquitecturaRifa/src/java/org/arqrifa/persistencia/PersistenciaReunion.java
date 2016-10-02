@@ -1,12 +1,13 @@
 package org.arqrifa.persistencia;
 
+import java.sql.CallableStatement;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import static org.arqrifa.persistencia.Persistencia.getConexion;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Date;
 
 class PersistenciaReunion implements IPersistenciaReunion {
@@ -26,12 +27,12 @@ class PersistenciaReunion implements IPersistenciaReunion {
     @Override
     public DTReunion BuscarReunion(int id) throws Exception {
         Connection con = null;
-        PreparedStatement stmt = null;
+        CallableStatement stmt = null;
         ResultSet res = null;
 
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareStatement("SELECT * FROM reuniones WHERE id = ?");
+            stmt = con.prepareCall("CALL BuscarReunion(?)");
             stmt.setInt(1, id);
             res = stmt.executeQuery();
 
@@ -66,24 +67,28 @@ class PersistenciaReunion implements IPersistenciaReunion {
     @Override
     public void MarcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
         Connection con = null;
-        PreparedStatement stmt = null;
+        CallableStatement stmt = null;
 
         try {
             con = getConexion();
-            stmt = con.prepareStatement("INSERT INTO asistencias VALUES (?, ?)");
+            stmt = con.prepareCall("INSERT INTO asistencias VALUES (?, ?)");
             stmt.setInt(1, reunion.getId());
             stmt.setInt(2, estudiante.getCi());
+            stmt.registerOutParameter(9, Types.INTEGER);
             stmt.execute();
-        } catch (SQLException e) {
-            switch (e.getErrorCode()) {
-                case 1452:
-                    throw new Exception("La reunión o el estudiante ingresado no existe.");
-                case 1062:
+            
+            switch (stmt.getInt(3)) {
+                case -1:
                     throw new Exception("El estudiante ya marcó su asistencia.");
+                case -2:
+                    throw new Exception("La reunión ingresada no existe.");
+                case -3:
+                    throw new Exception("El estudiante ingresado no existe.");
                 default:
-                    throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
+                    break;
             }
-
+        } catch (SQLException e) {            
+            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
         } catch (Exception e) {
             throw e;
         } finally {

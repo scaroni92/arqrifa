@@ -1,9 +1,9 @@
 package org.arqrifa.persistencia;
 
+import java.sql.CallableStatement;
 import org.arqrifa.datatypes.DTUsuario;
 import static org.arqrifa.persistencia.Persistencia.getConexion;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -24,12 +24,12 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     @Override
     public DTUsuario Autenticar(int ci, String contrasena) throws Exception {
         Connection con = null;
-        PreparedStatement stmt = null;
+        CallableStatement stmt = null;
         ResultSet res = null;
 
         try {
             con = getConexion();
-            stmt = con.prepareStatement("SELECT * FROM usuarios WHERE ci = ? AND contrasena = ?");
+            stmt = con.prepareCall("CALL Autenticar(?,?)");
             stmt.setInt(1, ci);
             stmt.setString(2, contrasena);
             res = stmt.executeQuery();
@@ -64,12 +64,12 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     @Override
     public DTUsuario BuscarEstudiante(int ci) throws Exception {
         Connection con = null;
-        PreparedStatement stmt = null;
+        CallableStatement stmt = null;
         ResultSet res = null;
 
         try {
             con = getConexion();
-            stmt = con.prepareStatement("SELECT * FROM usuarios WHERE ci = ? AND rol = 'estudiante'");
+            stmt = con.prepareCall("CALL BuscarEstudiante(?)");
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
 
