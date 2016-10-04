@@ -3,6 +3,7 @@ package org.arqrifa.logica;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.arqrifa.datatypes.DTEstado;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.persistencia.FabricaPersistencia;
@@ -22,7 +23,7 @@ class ControladorReuniones implements IControladorReuniones {
 
     private ControladorReuniones() {
         Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, "listado");
-        r.setEstado("listado");
+        r.setEstado(DTEstado.LISTADO);
         reunionesActivas.add(r);
         r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, "pendiente");
         reunionesActivas.add(r);
@@ -43,10 +44,10 @@ class ControladorReuniones implements IControladorReuniones {
             if (reunionActiva == null) {
                 throw new Exception("La reunión a la que se desea marcar asistencia no está en curso.");
             }
-            if (!reunionActiva.getEstado().equals("listado")) {
+            if (!reunionActiva.getEstado().equals(DTEstado.LISTADO)) {
                 throw new Exception("La lista no ha sido habilitada aún.");
             }
-            reunionActiva.marcarAsistencia(usuario);
+            FabricaPersistencia.getPersistenciaReunion().MarcarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

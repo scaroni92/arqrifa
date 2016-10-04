@@ -112,13 +112,13 @@ $$
 -- ASISTENCIAS
 -- MarcarAsistencia - Marca la asistencia de un estudiante a una reunion
 -- Retorno : -1 si ya tiene asistencia, -2 si la reunion no existe , -3 si el estudiante no existe
-CREATE PROCEDURE MarcarAsisntencia(pId int, pCi int,out retorno int)
+CREATE PROCEDURE MarcarAsistencia(pId int, pCi int,out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM asistencias WHERE Id = pId and Ci = pCi) THEN
 		SET retorno = -1;
-	ELSEIF EXISTS (SELECT * FROM reuniones WHERE Id = pId) THEN
+	ELSEIF NOT EXISTS (SELECT * FROM reuniones WHERE Id = pId) THEN
 		SET retorno = -2;
-	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Ci = pCi) THEN
+	ELSEIF NOT EXISTS (SELECT * FROM usuarios WHERE Ci = pCi) THEN
 		SET retorno = -3;
 	ELSE
 		INSERT INTO asistencias VALUES (pId,pCi);
@@ -137,5 +137,6 @@ CALL AltaGeneracion(2013,@retorno);
 CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'estudiante',@retorno);
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
-
+-- CALL MarcarAsistencia(1,5555555,@retorno);
 SELECT * FROM asistencias
+

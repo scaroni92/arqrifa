@@ -71,10 +71,10 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
         try {
             con = getConexion();
-            stmt = con.prepareCall("INSERT INTO asistencias VALUES (?, ?)");
+            stmt = con.prepareCall("CALL MarcarAsistencia(?, ?, ?);");
             stmt.setInt(1, reunion.getId());
             stmt.setInt(2, estudiante.getCi());
-            stmt.registerOutParameter(9, Types.INTEGER);
+            stmt.registerOutParameter(3, Types.INTEGER);
             stmt.execute();
             
             switch (stmt.getInt(3)) {
@@ -87,8 +87,9 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 default:
                     break;
             }
-        } catch (SQLException e) {            
-            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
+        } catch (SQLException e) {        
+            throw new Exception(e.getMessage());          
+            //throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
         } catch (Exception e) {
             throw e;
         } finally {

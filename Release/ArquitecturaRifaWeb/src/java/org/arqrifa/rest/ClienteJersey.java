@@ -27,6 +27,9 @@ public class ClienteJersey {
         webTarget = webTarget.queryParam("pass", pass);
         webTarget = webTarget.path("login");
         Response respuesta = webTarget.request(responseType).get();
+        if (respuesta.getStatus() == 204) {
+            return null;
+        }
         if (respuesta.getStatus() != 200) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }

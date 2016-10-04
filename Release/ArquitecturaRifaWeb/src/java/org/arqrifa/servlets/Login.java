@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.rest.ClienteJersey;
+import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "login", urlPatterns = {"/login"})
 public class Login extends HttpServlet {
@@ -28,14 +29,20 @@ public class Login extends HttpServlet {
             DTUsuario usuario = new ClienteJersey().login(ci, pass);
             if (usuario == null) {
                 throw new Exception("Usuario o contraseña incorrectos.");
-            } else {
-                sesion.setAttribute("mensaje", usuario.getRol());
-                response.sendRedirect("mensaje.jsp");
             }
+            sesion.setAttribute("usuario", usuario);
+            if (usuario.getRol().equals("estudiante")) {
+                response.sendRedirect("Vistas/Estudiante/index.jsp");
+            }
+            if (usuario.getRol().equals("encargado")) {
+                response.sendRedirect("Vistas/Encargado/index.jsp");
+            }
+
         } catch (Exception ex) {
-            sesion.setAttribute("mensaje", ex.getMessage());
+            sesion.setAttribute("modelo", new ViewModel(ex.getMessage()));
             response.sendRedirect("index.jsp");
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

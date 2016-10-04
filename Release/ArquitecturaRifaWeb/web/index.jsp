@@ -22,7 +22,7 @@
                     <td colspan="2" align="right"><input type="submit" value="Autenticar" name="autenticar" /></td>
                 </tr>
             </table>
-            <p>${mensaje}</p>
+            <p>${modelo.mensaje}</p>
         </form>
     </body>
 </html>

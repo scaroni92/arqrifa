@@ -3,11 +3,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-        <link rel="stylesheet" href="css/estilos.css"/>
+        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Logueo exitoso!</h1>
-        <p>${mensaje}</p>
+        <h1>Inicio Estudiante</h1>
+        <h2>Nombre : ${usuario.nombre} ${usuario.apellido}</h2>
+        <h3>Generación: ${usuario.generacion}</h3>
     </body>
 </html>
