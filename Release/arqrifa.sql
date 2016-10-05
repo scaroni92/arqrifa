@@ -40,6 +40,17 @@ CREATE TABLE asistencias (
     PRIMARY KEY (Id , Ci)
 );
 
+CREATE TABLE solicitudes (
+    Ci INT PRIMARY KEY,
+    Generacion INT NOT NULL,
+    Fecha DATETIME NOT NULL,
+    Nombre VARCHAR(20) NOT NULL,
+    Apellido VARCHAR(20) NOT NULL,
+    Contrasena VARCHAR(20) NOT NULL,
+    Email VARCHAR(30) NOT NULL,
+    FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
+);
+
 DELIMITER $$
 -- GENERACIONES
 -- AltaGeneracion  - Da de alta una generacion
@@ -118,7 +129,7 @@ BEGIN
 		SET retorno = -1;
 	ELSEIF NOT EXISTS (SELECT * FROM reuniones WHERE Id = pId) THEN
 		SET retorno = -2;
-	ELSEIF NOT EXISTS (SELECT * FROM usuarios WHERE Ci = pCi) THEN
+	ELSEIF NOT EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'estudiante') THEN
 		SET retorno = -3;
 	ELSE
 		INSERT INTO asistencias VALUES (pId,pCi);
@@ -126,6 +137,32 @@ BEGIN
 END
 $$
 
+-- SOLICITUDES
+-- AltaSolicitud  - Da de alta una solicitud
+-- Retorno : -1 si la ci ya existe en la tabla solicitudes, -2 el email ya existe en la tabla solicitudes, -3 la ci ya existe en la tabla usuarios, -4 el email ya existe en la tabla usuarios
+CREATE PROCEDURE AltaSolicitud(pCi int, pGeneracion int, pFecha DATETIME, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), out retorno int)
+BEGIN
+	IF EXISTS(SELECT * FROM solicitudes WHERE Ci = pCi) THEN
+		SET retorno = -1;
+	ELSEIF EXISTS(SELECT * FROM solicitudes WHERE Email = pEmail) THEN
+		SET retorno = -2;
+	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'estudiante') THEN
+		SET retorno = -3;
+	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Email = pEmail) THEN
+		SET retorno = -4;
+
+	ELSE
+		INSERT INTO solicitudes VALUES (pCi,pGeneracion, pFecha, pNombre, pApellido, pContrasena, pEmail);
+	END IF;
+END
+$$
+
+-- ListarSolicitudesDeGeneracion  - Devuelve la lista de solicitudes de una generación
+CREATE PROCEDURE ListarSolicitudesDeGeneracion(pGen int)
+BEGIN
+	SELECT * FROM solicitudes WHERE solicitudes.Generacion = pGen;
+END
+$$
 DELIMITER ;
 
 
@@ -137,6 +174,9 @@ CALL AltaGeneracion(2013,@retorno);
 CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'estudiante',@retorno);
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
--- CALL MarcarAsistencia(1,5555555,@retorno);
-SELECT * FROM asistencias
+
+CALL AltaSolicitud(4444444, 2010, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', @retorno);
+CALL AltaSolicitud(3333333, 2010, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
+
+SELECT * FROM asistencias;
 
