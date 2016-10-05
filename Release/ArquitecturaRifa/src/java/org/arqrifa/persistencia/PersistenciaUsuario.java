@@ -6,6 +6,8 @@ import static org.arqrifa.persistencia.Persistencia.getConexion;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import org.arqrifa.datatypes.DTSolicitud;
 
 class PersistenciaUsuario implements IPersistenciaUsuario {
 
@@ -97,6 +99,43 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             }
             if (con != null) {
                 con.close();
+            }
+        }
+    }
+
+    @Override
+    public void AltaSolicitud(DTSolicitud solicitud) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL AltaSolicitud(?, ?, ?, ?, ?, ?, ?, ?);");
+            stmt.setInt(1, solicitud.getCi());
+            stmt.setInt(2, solicitud.getGeneracion());
+            stmt.setDate(3, new java.sql.Date(solicitud.getFecha().getTime()));
+            stmt.setString(4, solicitud.getNombre());
+            stmt.setString(5, solicitud.getApellido());
+            stmt.setString(6, solicitud.getContrasena());
+            stmt.setString(7, solicitud.getEmail());
+            stmt.registerOutParameter(8, Types.INTEGER);
+            stmt.executeQuery();
+            int retorno = stmt.getInt(8);
+            if (retorno == -1 || retorno == -3) {
+                throw new Exception("La cédula ingresada está en uso.");
+            }
+            if (retorno == -2 || retorno == -4) {
+                throw new Exception("El correo ingresado está en uso.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo dar de alta la solicitud - Error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                stmt.close();
             }
         }
     }

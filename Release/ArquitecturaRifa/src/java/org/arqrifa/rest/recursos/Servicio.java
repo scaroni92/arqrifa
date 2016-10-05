@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTSolicitud;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 //</editor-fold>
 
@@ -41,6 +42,12 @@ public class Servicio {
     @GET
     public List<DTReunion> getReunionesActivas() {
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
+    }
+
+    @Path("/generacion/solicitudes")
+    @POST
+    public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
+        return FabricaLogica.getControladorGeneracion().ListarSolicitudes(usuario);
     }
 
 }
