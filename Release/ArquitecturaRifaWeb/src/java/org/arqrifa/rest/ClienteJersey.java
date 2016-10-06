@@ -1,13 +1,18 @@
 package org.arqrifa.rest;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTMensajeError;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTSolicitud;
 
 public class ClienteJersey {
 
@@ -34,6 +39,16 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
         return respuesta.readEntity(DTUsuario.class);
+    }
+    
+    public List<DTSolicitud> listarSolicitudes(DTUsuario usuario) throws Exception {
+       webTarget = webTarget.path("generacion/solicitudes");
+        Response respuesta = webTarget.request(responseType).post(Entity.entity(usuario, responseType));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        List<DTSolicitud> solicitudes = Arrays.asList(respuesta.readEntity(DTSolicitud[].class));
+        return solicitudes;
     }
 
     public void close() {

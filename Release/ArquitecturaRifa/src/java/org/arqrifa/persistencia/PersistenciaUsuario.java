@@ -135,7 +135,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 stmt.close();
             }
             if (con != null) {
-                stmt.close();
+                con.close();
             }
         }
     }

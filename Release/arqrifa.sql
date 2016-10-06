@@ -81,7 +81,7 @@ $$
 -- Autenticar - Busca el usuario con las credenciales dadas
 CREATE PROCEDURE Autenticar(pCi int, pContrasena varchar(20))
 BEGIN
-	SELECT * FROM usuarios WHERE Ci = pCi AND contraseña = pContraseña;
+	SELECT * FROM usuarios WHERE Ci = pCi AND contrasena = pContraseña;
 END
 $$
 
@@ -175,8 +175,8 @@ CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'est
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
 
-CALL AltaSolicitud(4444444, 2010, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', @retorno);
-CALL AltaSolicitud(3333333, 2010, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
+CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', @retorno);
+CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
 
 SELECT * FROM asistencias;
-
+select * from solicitudes

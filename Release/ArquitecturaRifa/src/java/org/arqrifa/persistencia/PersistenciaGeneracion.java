@@ -35,9 +35,9 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
             stmt.setInt(1, generacion);
             res = stmt.executeQuery();
             while (res.next()) {
-                int ci = stmt.getInt("ci");
-                int gen = stmt.getInt("generacion");
-                Date fecha = stmt.getDate("fecha");
+                int ci = res.getInt("ci");
+                int gen = res.getInt("generacion");
+                Date fecha = res.getDate("fecha");
                 String nombre = res.getString("nombre");
                 String apellido = res.getString("apellido");
                 String contrasena = res.getString("contrasena");
@@ -45,7 +45,9 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
                 solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email));
             }
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new Exception("No se pudieron listar las solicitudes. Error de base de datos.");
+            
         } catch (Exception e) {
             throw e;
         } finally {

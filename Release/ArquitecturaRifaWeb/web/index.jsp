@@ -12,7 +12,7 @@
                 <h1>Iniciar sesión</h1>
                 <tr>
                     <td>Usuario:</td>
-                    <td><input type="number" name="user" value="5555555" autofocus="true" required /></td>
+                    <td><input type="number" name="user" value="7777777" autofocus="true" required /></td>
                 </tr>
                 <tr>
                     <td>Contraseña:</td>
