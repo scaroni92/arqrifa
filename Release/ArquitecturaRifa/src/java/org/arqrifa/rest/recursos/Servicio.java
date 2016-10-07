@@ -44,6 +44,13 @@ public class Servicio {
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
 
+    @Path("/usuario/solicitud")
+    @POST
+    public Response addSolicitud(DTSolicitud solicitud) {
+        FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("/generacion/solicitudes")
     @POST
     public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {

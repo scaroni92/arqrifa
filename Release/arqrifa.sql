@@ -179,4 +179,4 @@ CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1
 CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
 
 SELECT * FROM asistencias;
-select * from solicitudes
+
