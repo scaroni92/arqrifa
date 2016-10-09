@@ -24,5 +24,6 @@
             </table>
             <p>${modelo.mensaje}</p>
         </form>
+        <a href="registro.jsp">Registrarse</a>
     </body>
 </html>

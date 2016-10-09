@@ -1,5 +1,7 @@
 package org.arqrifa.logica;
 
+import java.util.Random;
+import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
@@ -36,7 +38,14 @@ class ControladorUsuario implements IControladorUsuario {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
             }
+            if (solicitud.getCi() < 4000000) {
+                throw new Exception("Cédula inválida.");
+            }
             FabricaPersistencia.getPersistenciaUsuario().AltaSolicitud(solicitud);
+            new Mensajeria(solicitud).enviar();
+            System.out.println("mail de confirmación enviado.");
+        } catch (MessagingException me) {
+            System.out.println(me.getMessage());
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

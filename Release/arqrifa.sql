@@ -48,6 +48,7 @@ CREATE TABLE solicitudes (
     Apellido VARCHAR(20) NOT NULL,
     Contrasena VARCHAR(20) NOT NULL,
     Email VARCHAR(30) NOT NULL,
+    Verificada BIT NOT NULL,
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
 
@@ -152,7 +153,7 @@ BEGIN
 		SET retorno = -4;
 
 	ELSE
-		INSERT INTO solicitudes VALUES (pCi,pGeneracion, pFecha, pNombre, pApellido, pContrasena, pEmail);
+		INSERT INTO solicitudes VALUES (pCi,pGeneracion, pFecha, pNombre, pApellido, pContrasena, pEmail, FALSE);
 	END IF;
 END
 $$
@@ -175,8 +176,8 @@ CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'est
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
 
-CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', @retorno);
+INSERT INTO solicitudes VALUES(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', true);
 CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
 
 SELECT * FROM asistencias;
-
+SELECT * FROM solicitudes;

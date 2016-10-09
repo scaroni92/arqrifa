@@ -40,9 +40,17 @@ public class ClienteJersey {
         }
         return respuesta.readEntity(DTUsuario.class);
     }
-    
+
+    public void enviarSolicitud(DTSolicitud solicitud) throws Exception {
+        webTarget = webTarget.path("usuario/solicitud");
+        Response respuesta = webTarget.request(responseType).post(Entity.entity(solicitud, responseType));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
     public List<DTSolicitud> listarSolicitudes(DTUsuario usuario) throws Exception {
-       webTarget = webTarget.path("generacion/solicitudes");
+        webTarget = webTarget.path("generacion/solicitudes");
         Response respuesta = webTarget.request(responseType).post(Entity.entity(usuario, responseType));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());

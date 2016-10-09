@@ -42,7 +42,8 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
                 String apellido = res.getString("apellido");
                 String contrasena = res.getString("contrasena");
                 String email = res.getString("email");
-                solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email));
+                boolean verificada = res.getBoolean("verificada");
+                solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, verificada));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

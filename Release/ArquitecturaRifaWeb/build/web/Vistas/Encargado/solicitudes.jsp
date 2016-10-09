@@ -1,8 +1,3 @@
-<%-- 
-    Document   : solicitudes
-    Created on : 05-oct-2016, 19:46:34
-    Author     : Ale
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -25,7 +20,14 @@
                     <td style="text-align: center;">${solicitud.ci}</td>
                     <td>${solicitud.nombre}</td>
                     <td>${solicitud.apellido}</td>
-
+                    <c:choose>
+                        <c:when test="${solicitud.verificada}">
+                            <td><a href="#">Confirmar</a></td>
+                            </c:when>
+                            <c:otherwise>
+                            <td><span>Correo no verificado</span></td>
+                        </c:otherwise>
+                    </c:choose>
                 </tr>
             </c:forEach>
         </table>

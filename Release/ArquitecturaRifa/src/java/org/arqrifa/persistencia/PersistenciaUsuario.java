@@ -127,6 +127,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 throw new Exception("El correo ingresado está en uso.");
             }
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new Exception("No se pudo dar de alta la solicitud - Error de base de datos.");
         } catch (Exception e) {
             throw e;
