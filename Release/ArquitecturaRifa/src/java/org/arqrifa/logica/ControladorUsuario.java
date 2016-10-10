@@ -25,7 +25,7 @@ class ControladorUsuario implements IControladorUsuario {
     public DTUsuario Autenticar(int ci, String contrasena) {
         DTUsuario resp = null;
         try {
-            resp = FabricaPersistencia.getPersistenciaUsuario().Autenticar(ci, contrasena);
+            resp = FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
@@ -41,11 +41,25 @@ class ControladorUsuario implements IControladorUsuario {
             if (solicitud.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-            FabricaPersistencia.getPersistenciaUsuario().AltaSolicitud(solicitud);
+
+            int codigo = (int) (new Random().nextDouble() * 99999999);
+            solicitud.setCodigo(codigo);
+            System.out.println(solicitud.getCodigo());
+            System.out.println(codigo);
+            FabricaPersistencia.getPersistenciaSolicitud().altaSolicitud(solicitud);
             new Mensajeria(solicitud).enviar();
             System.out.println("mail de confirmación enviado.");
         } catch (MessagingException me) {
             System.out.println(me.getMessage());
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
+    @Override
+    public void verificarSolicitud(int codigo) {
+        try {
+            FabricaPersistencia.getPersistenciaSolicitud().verificarSolicitud(codigo);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

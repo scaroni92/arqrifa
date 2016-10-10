@@ -1,6 +1,7 @@
 package org.arqrifa.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,14 +14,13 @@ import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.ClienteJersey;
 import org.arqrifa.viewmodels.VMSolicitudes;
-import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorEncargado", urlPatterns = {"/ControladorEncargado"})
 public class ControladorEncargado extends HttpServlet {
-
+    
     HttpServletRequest request;
     HttpServletResponse response;
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
@@ -30,18 +30,19 @@ public class ControladorEncargado extends HttpServlet {
             solicitudes_get();
         }
     }
-
+    
     protected void solicitudes_get() throws IOException {
         HttpSession sesion = request.getSession();
+        List<DTSolicitud> lista = new ArrayList();
         try {
-            List<DTSolicitud> lista = new ClienteJersey().listarSolicitudes((DTUsuario) sesion.getAttribute("usuario"));
+            lista = new ClienteJersey().listarSolicitudes((DTUsuario) sesion.getAttribute("usuario"));
             sesion.setAttribute("modelo", new VMSolicitudes(lista, ""));
             RequestDispatcher despachador = request.getRequestDispatcher("Vistas/Encargado/solicitudes.jsp");
             if (despachador != null) {
                 despachador.forward(request, response);
             }
         } catch (Exception e) {
-            sesion.setAttribute("modelo", new ViewModel(e.getMessage()));
+            sesion.setAttribute("modelo", new VMSolicitudes(lista, e.getMessage()));
             response.sendRedirect("Vistas/Encargado/solicitudes.jsp");
         }
     }

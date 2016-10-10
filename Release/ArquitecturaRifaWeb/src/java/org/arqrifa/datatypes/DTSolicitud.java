@@ -11,6 +11,7 @@ public class DTSolicitud {
     private String apellido;
     private String contrasena;
     private String email;
+    private int codigo;
     private boolean verificada;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
@@ -40,6 +41,10 @@ public class DTSolicitud {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getCodigo() {
+        return codigo;
     }
 
     public boolean isVerificada() {
@@ -74,12 +79,16 @@ public class DTSolicitud {
         this.email = email;
     }
 
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
     public void setVerificada(boolean verificada) {
         this.verificada = verificada;
     }
 
     //</editor-fold>
-    public DTSolicitud(int ci, int generacion, Date fecha, String nombre, String apellido, String contrasena, String email, boolean verificada) {
+    public DTSolicitud(int ci, int generacion, Date fecha, String nombre, String apellido, String contrasena, String email,  int codigo, boolean verificada) {
         this.ci = ci;
         this.generacion = generacion;
         this.fecha = fecha;
@@ -91,7 +100,7 @@ public class DTSolicitud {
     }
 
     public DTSolicitud() {
-        this(0, 0, new Date(), "n/d", "n/d", "n/d", "n/d", false);
+        this(0, 0, new Date(), "n/d", "n/d", "n/d", "n/d", 0, false);
     }
 
 }

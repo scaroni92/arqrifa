@@ -42,15 +42,25 @@ public class ClienteJersey {
     }
 
     public void enviarSolicitud(DTSolicitud solicitud) throws Exception {
-        webTarget = webTarget.path("usuario/solicitud");
+        webTarget = webTarget.path("solicitud/enviar");
         Response respuesta = webTarget.request(responseType).post(Entity.entity(solicitud, responseType));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
 
+    public void verificarSolicitud(int codigo) throws ClientErrorException, Exception {
+        webTarget = webTarget.queryParam("codigo", codigo);
+        webTarget = webTarget.path("solicitud/verificar");
+        Response respuesta = webTarget.request(responseType).get();
+
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
     public List<DTSolicitud> listarSolicitudes(DTUsuario usuario) throws Exception {
-        webTarget = webTarget.path("generacion/solicitudes");
+        webTarget = webTarget.path("solicitud/listar");
         Response respuesta = webTarget.request(responseType).post(Entity.entity(usuario, responseType));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());

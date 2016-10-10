@@ -47,7 +47,8 @@ CREATE TABLE solicitudes (
     Nombre VARCHAR(20) NOT NULL,
     Apellido VARCHAR(20) NOT NULL,
     Contrasena VARCHAR(20) NOT NULL,
-    Email VARCHAR(30) NOT NULL,
+    Email VARCHAR(30) UNIQUE NOT NULL,
+    Codigo INT UNIQUE NOT NULL,
     Verificada BIT NOT NULL,
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
@@ -141,7 +142,7 @@ $$
 -- SOLICITUDES
 -- AltaSolicitud  - Da de alta una solicitud
 -- Retorno : -1 si la ci ya existe en la tabla solicitudes, -2 el email ya existe en la tabla solicitudes, -3 la ci ya existe en la tabla usuarios, -4 el email ya existe en la tabla usuarios
-CREATE PROCEDURE AltaSolicitud(pCi int, pGeneracion int, pFecha DATETIME, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), out retorno int)
+CREATE PROCEDURE AltaSolicitud(pCi int, pGeneracion int, pFecha DATETIME, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), pCodigo int, out retorno int)
 BEGIN
 	IF EXISTS(SELECT * FROM solicitudes WHERE Ci = pCi) THEN
 		SET retorno = -1;
@@ -153,7 +154,7 @@ BEGIN
 		SET retorno = -4;
 
 	ELSE
-		INSERT INTO solicitudes VALUES (pCi,pGeneracion, pFecha, pNombre, pApellido, pContrasena, pEmail, FALSE);
+		INSERT INTO solicitudes VALUES (pCi,pGeneracion, pFecha, pNombre, pApellido, pContrasena, pEmail, pCodigo, FALSE);
 	END IF;
 END
 $$
@@ -164,7 +165,17 @@ BEGIN
 	SELECT * FROM solicitudes WHERE solicitudes.Generacion = pGen;
 END
 $$
+
+-- VerificarSolicitud - Marca la solicitud como verificada
+-- Retorno : cantidad de filas afectadas
+CREATE PROCEDURE VerificarSolicitud(pCodigo int)
+BEGIN 
+	UPDATE solicitudes SET verificada = true WHERE codigo = pCodigo;
+END
+$$
 DELIMITER ;
+
+
 
 
 CALL AltaGeneracion(2010,@retorno);
@@ -176,8 +187,11 @@ CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'est
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
 
-INSERT INTO solicitudes VALUES(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', true);
-CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', @retorno);
+CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
+CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, @retorno);
+
+
+CALL VerificarSolicitud(22222222);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;

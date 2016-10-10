@@ -2,6 +2,7 @@ package org.arqrifa.servlets;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class Registro extends HttpServlet {
             String apellido = request.getParameter("apellido");
             String pass = request.getParameter("pass");
             String email = request.getParameter("email");
-            solicitud = new DTSolicitud(ci, generacion, new Date(), nombre, apellido, pass, email, false);
+            solicitud = new DTSolicitud(ci, generacion, new Date(), nombre, apellido, pass, email, 0, false);
             new ClienteJersey().enviarSolicitud(solicitud);
             response.sendRedirect("index.jsp");
         } catch (Exception ex) {

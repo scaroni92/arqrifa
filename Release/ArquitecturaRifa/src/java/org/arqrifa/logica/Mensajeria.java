@@ -27,7 +27,7 @@ public class Mensajeria {
         this.DESTINATARIO = solicitud.getEmail();
         this.MENSAJE = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
                 + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                + RUTA + "ci=" + solicitud.getCi();
+                + RUTA + "codigo=" + solicitud.getCodigo();
         
         this.autenticar();
     }

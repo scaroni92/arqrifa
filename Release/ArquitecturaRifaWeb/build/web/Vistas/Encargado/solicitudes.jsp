@@ -23,8 +23,8 @@
                     <c:choose>
                         <c:when test="${solicitud.verificada}">
                             <td><a href="#">Confirmar</a></td>
-                            </c:when>
-                            <c:otherwise>
+                        </c:when>
+                        <c:otherwise>
                             <td><span>Correo no verificado</span></td>
                         </c:otherwise>
                     </c:choose>

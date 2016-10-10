@@ -13,4 +13,8 @@ public class FabricaPersistencia {
     public static IPersistenciaGeneracion getPersistenciaGeneracion() {
         return PersistenciaGeneracion.getInstancia();
     }
+
+    public static IPersistenciaSolicitud getPersistenciaSolicitud() {
+        return PersistenciaSolicitud.getInstancia();
+    }
 }

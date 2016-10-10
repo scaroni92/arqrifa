@@ -1,13 +1,10 @@
 package org.arqrifa.persistencia;
 
-import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 
 public interface IPersistenciaUsuario {
 
-    DTUsuario Autenticar(int ci, String contrasena) throws Exception;
+    DTUsuario autenticar(int ci, String contrasena) throws Exception;
     
-    DTUsuario BuscarEstudiante(int ci) throws Exception;
-    
-    void AltaSolicitud(DTSolicitud solicitud) throws Exception;
+    DTUsuario buscarEstudiante(int ci) throws Exception;
 }

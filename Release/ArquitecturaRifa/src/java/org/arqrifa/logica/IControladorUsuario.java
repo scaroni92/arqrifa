@@ -6,6 +6,8 @@ import org.arqrifa.datatypes.DTUsuario;
 public interface IControladorUsuario {
 
     DTUsuario Autenticar(int ci, String contrasena);
-    
+
     void altaSolicitud(DTSolicitud solicitud);
+
+    void verificarSolicitud(int ci);
 }

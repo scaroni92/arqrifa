@@ -44,17 +44,24 @@ public class Servicio {
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
 
-    @Path("/usuario/solicitud")
+    @Path("/solicitud/enviar")
     @POST
-    public Response addSolicitud(DTSolicitud solicitud) {
+    public Response enviarSolicitud(DTSolicitud solicitud) {
         FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
 
-    @Path("/generacion/solicitudes")
+    @Path("/solicitud/listar")
     @POST
     public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
         return FabricaLogica.getControladorGeneracion().ListarSolicitudes(usuario);
+    }
+
+    @Path("/solicitud/verificar")
+    @GET
+    public Response verificarSolicitud(@QueryParam("codigo") int codigo) {
+        FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
+        return Response.status(Response.Status.OK).build();
     }
 
 }
