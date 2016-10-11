@@ -69,10 +69,9 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt.setInt(1, codigo);
             int filasAfectadas = stmt.executeUpdate();
             if (filasAfectadas == 0) {
-                throw new Exception("No se encontró la solicitud.");
+                throw new Exception("Solicitud no encontrada.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new Exception("No se pudo verificar la solicitud, intente más tarde.");
         } catch (Exception e) {
             throw e;

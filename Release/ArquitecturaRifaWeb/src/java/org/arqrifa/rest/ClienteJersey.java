@@ -27,7 +27,7 @@ public class ClienteJersey {
 
     }
 
-    public DTUsuario login(String ci, String pass) throws ClientErrorException, Exception {
+    public DTUsuario login(int ci, String pass) throws ClientErrorException, Exception {
         webTarget = webTarget.queryParam("ci", ci);
         webTarget = webTarget.queryParam("pass", pass);
         webTarget = webTarget.path("login");

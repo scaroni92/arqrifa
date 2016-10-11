@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css/estilos.css"/>
     </head>
     <body>
-        <form action="login" method="POST">
+        <form action="Usuarios" method="post">
             <table>
                 <h1>Iniciar sesión</h1>
                 <tr>
@@ -19,11 +19,11 @@
                     <td><input type="password" name="pass" value="1234" required /></td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right"><input type="submit" value="Autenticar" name="autenticar" /></td>
+                    <td colspan="2" align="right"><input type="submit" name="accion" value="Login" /></td>
                 </tr>
             </table>
             <p>${modelo.mensaje}</p>
         </form>
-        <a href="registro.jsp">Registrarse</a>
+        <a href="Usuarios?accion=registrar">Registrarse</a>
     </body>
 </html>

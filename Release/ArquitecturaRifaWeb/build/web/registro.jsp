@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>Registro</h1>
-        <form action="registro" method="post">
+        <form action="Usuarios" method="post">
             Cédula: <input type="text" name="ci" value="${solicitud.ci}" required autofocus ><br>
             Nombre: <input type="text" name="nombre" value="${solicitud.nombre}" required ><br>
             Apellido: <input type="text" name="apellido" value="${solicitud.apellido}" required ><br>
@@ -19,7 +19,7 @@
                 <option>2012</option>
             </select><br>
 
-            <input type="submit" name="accion" value="Enviar">
+            <input type="submit" name="accion" value="Registrar">
         </form>
         <p>${modelo.mensaje}</p>
     </body>
