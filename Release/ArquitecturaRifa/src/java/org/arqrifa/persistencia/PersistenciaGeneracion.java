@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 
 class PersistenciaGeneracion implements IPersistenciaGeneracion {
@@ -47,9 +48,8 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
                 solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, codigo, verificada));
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new Exception("No se pudieron listar las solicitudes. Error de base de datos.");
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -64,6 +64,39 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
             }
         }
         return solicitudes;
+    }
+
+    @Override
+    public List<DTGeneracion> listarGeneraciones() throws Exception {
+        List<DTGeneracion> generaciones = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarGeneraciones();");
+            res = stmt.executeQuery();
+            while (res.next()) {
+                int generacion = res.getInt("genId");
+                generaciones.add(new DTGeneracion(generacion));
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudieron listar las generaciones. Error de base de datos.");
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return generaciones;
     }
 
 }

@@ -2,6 +2,7 @@ package org.arqrifa.logica;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
@@ -33,6 +34,17 @@ class ControladorGeneracion implements IControladorGeneracion {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
         return solicitudes;
+    }
+
+    @Override
+    public List<DTGeneracion> listarGeneraciones() {
+        List<DTGeneracion> generaciones = new ArrayList();
+        try {
+            generaciones = FabricaPersistencia.getPersistenciaGeneracion().listarGeneraciones();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+        return generaciones;
     }
 
 }

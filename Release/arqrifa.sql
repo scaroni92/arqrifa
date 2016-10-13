@@ -173,6 +173,17 @@ BEGIN
 	UPDATE solicitudes SET verificada = true WHERE codigo = pCodigo;
 END
 $$
+
+
+-- GENERACIONES
+-- ListarGeneraciones - Devuelve la lista de generaciones
+CREATE PROCEDURE ListarGeneraciones()
+BEGIN
+	SELECT * FROM generaciones;
+END
+$$
+
+
 DELIMITER ;
 
 
@@ -195,3 +206,4 @@ CALL VerificarSolicitud(22222222);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
+

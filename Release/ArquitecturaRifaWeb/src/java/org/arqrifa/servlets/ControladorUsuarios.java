@@ -1,6 +1,8 @@
 package org.arqrifa.servlets;
 
 import java.util.Date;
+import java.util.List;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.ClienteJersey;
@@ -9,6 +11,12 @@ import org.arqrifa.viewmodels.ViewModel;
 public class ControladorUsuarios extends Controlador {
 
     public void registrar_get() {
+        try {
+            List<DTGeneracion> generaciones = new ClienteJersey().listarGeneraciones();
+            sesion.setAttribute("generaciones", generaciones);
+        } catch (Exception e) {
+            mostrarVista("registro.jsp", new ViewModel(e.getMessage()));
+        }
         mostrarVista("registro.jsp");
     }
 
@@ -37,6 +45,9 @@ public class ControladorUsuarios extends Controlador {
             int ci = Integer.parseInt(request.getParameter("user"));
             String pass = request.getParameter("pass");
 
+            if (ci < 4000000) {
+                throw new Exception("Ingrese una cédula válida.");
+            }
             if (pass.isEmpty()) {
                 throw new Exception("Debe completar todos los campos");
             }

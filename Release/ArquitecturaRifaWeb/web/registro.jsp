@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,11 +15,10 @@
             Contraseña: <input type="password" name="pass" value="${solicitud.contrasena}" required ><br>
             Email: <input type="email" name="email" value="${solicitud.email}" required ><br>
             Generación: <select name="generacion">
-                <option>2010</option>
-                <option>2011</option>
-                <option>2012</option>
+                <c:forEach items="${generaciones}" var="generacion">
+                    <option>${generacion.id}</option>
+                </c:forEach>
             </select><br>
-
             <input type="submit" name="accion" value="Registrar">
         </form>
         <p>${modelo.mensaje}</p>

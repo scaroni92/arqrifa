@@ -17,13 +17,12 @@ public class Mensajeria {
     private final Properties propiedades = new Properties();
     private final String EMISOR = "arquitectura_rifa@hotmail.com";
     private final String CONTRASENA = "arqrifa123";
-    private final String ASUNTO;
+    private final String ASUNTO = "Confirmar registro";
     private final String MENSAJE;
     private final String DESTINATARIO;
     private final String RUTA = "http://localhost:8080/ArquitecturaRifaWeb/verificar?";
 
     public Mensajeria(DTSolicitud solicitud) throws MessagingException {
-        this.ASUNTO = "Confirmar registro";
         this.DESTINATARIO = solicitud.getEmail();
         this.MENSAJE = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
                 + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "

@@ -12,6 +12,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 
 public class ClienteJersey {
@@ -67,6 +68,18 @@ public class ClienteJersey {
         }
         List<DTSolicitud> solicitudes = Arrays.asList(respuesta.readEntity(DTSolicitud[].class));
         return solicitudes;
+    }
+    
+    public List<DTGeneracion> listarGeneraciones() throws Exception {
+        webTarget = webTarget.path("generacion/listar");
+        Response respuesta = webTarget.request(MediaType.APPLICATION_JSON).get();
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        System.out.println(respuesta.getMediaType());
+        System.out.println(respuesta.getStatus());
+        List<DTGeneracion> generaciones = Arrays.asList(respuesta.readEntity(DTGeneracion[].class));
+        return generaciones;
     }
 
     public void close() {

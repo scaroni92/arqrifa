@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 //</editor-fold>
@@ -62,6 +63,12 @@ public class Servicio {
     public Response verificarSolicitud(@QueryParam("codigo") int codigo) {
         FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
         return Response.status(Response.Status.OK).build();
+    }
+    
+    @Path("/generacion/listar")
+    @GET
+    public List<DTGeneracion> listarGeneraciones() {
+        return FabricaLogica.getControladorGeneracion().listarGeneraciones();
     }
 
 }
