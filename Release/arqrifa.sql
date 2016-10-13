@@ -183,13 +183,15 @@ $$
 -- ListarGeneraciones - Devuelve la lista de generaciones
 CREATE PROCEDURE ListarGeneraciones()
 BEGIN
-	SELECT * FROM generaciones;
+	SELECT * FROM generaciones WHERE genId != 0;
 END
 $$
 
 
 DELIMITER ;
 
+CALL AltaGeneracion(0,@retorno);
+CALL AltaUsuario(4444444, 0, 'Luis', 'Peréz', '1234', 'luis@gmail.com', 'administrador',@retorno);
 
 
 
@@ -198,7 +200,7 @@ CALL AltaGeneracion(2011,@retorno);
 CALL AltaGeneracion(2012,@retorno);
 CALL AltaGeneracion(2013,@retorno);
 
-CALL AltaUsuario(4444444,2012, 'Luis', 'Peréz', '1234', 'luis@gmail.com', 'administrador',@retorno);
+
 CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'estudiante',@retorno);
 CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);

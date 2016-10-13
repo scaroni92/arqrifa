@@ -69,7 +69,7 @@ public class ClienteJersey {
         List<DTSolicitud> solicitudes = Arrays.asList(respuesta.readEntity(DTSolicitud[].class));
         return solicitudes;
     }
-    
+
     public List<DTGeneracion> listarGeneraciones() throws Exception {
         webTarget = webTarget.path("generacion/listar");
         Response respuesta = webTarget.request(MediaType.APPLICATION_JSON).get();
@@ -80,6 +80,14 @@ public class ClienteJersey {
         System.out.println(respuesta.getStatus());
         List<DTGeneracion> generaciones = Arrays.asList(respuesta.readEntity(DTGeneracion[].class));
         return generaciones;
+    }
+
+    public void agregarEncargado(DTUsuario usuario) throws Exception {
+        webTarget = webTarget.path("encargado/agregar");
+        Response respuesta = webTarget.request(responseType).post(Entity.entity(usuario, responseType));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
     }
 
     public void close() {

@@ -49,7 +49,7 @@ public class ControladorUsuarios extends Controlador {
                 throw new Exception("Ingrese una cédula válida.");
             }
             if (pass.isEmpty()) {
-                throw new Exception("Debe completar todos los campos");
+                throw new Exception("Ingrese la contraseña");
             }
 
             DTUsuario usuario = new ClienteJersey().login(ci, pass);
@@ -60,8 +60,11 @@ public class ControladorUsuarios extends Controlador {
             if (usuario.getRol().equals("estudiante")) {
                 mostrarVista("Vistas/Estudiante/index.jsp");
             }
-            if (usuario.getRol().equals("encargado")) {
+            else if (usuario.getRol().equals("encargado")) {
                 mostrarVista("Vistas/Encargado/index.jsp");
+            }
+            else {
+                mostrarVista("Vistas/Admin/index.jsp");
             }
 
         } catch (NumberFormatException ex) {
