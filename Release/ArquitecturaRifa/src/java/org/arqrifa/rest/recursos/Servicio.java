@@ -64,11 +64,17 @@ public class Servicio {
         FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/generacion/listar")
     @GET
     public List<DTGeneracion> listarGeneraciones() {
         return FabricaLogica.getControladorGeneracion().listarGeneraciones();
     }
 
+    @Path("/encargado/agregar")
+    @POST
+    public Response agregarEncargado(DTUsuario usuario) {
+        FabricaLogica.getLogicaUsuario().altaEncargado(usuario);
+        return Response.status(Response.Status.OK).build();
+    }
 }

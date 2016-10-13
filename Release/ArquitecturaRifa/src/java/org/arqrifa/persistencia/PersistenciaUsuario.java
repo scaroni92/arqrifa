@@ -6,6 +6,7 @@ import static org.arqrifa.persistencia.Persistencia.getConexion;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 class PersistenciaUsuario implements IPersistenciaUsuario {
 
@@ -92,6 +93,48 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             if (res != null) {
                 res.close();
             }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void altaUsuario(DTUsuario usuario) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL AltaUsuario(?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt.setInt(1, usuario.getCi());
+            stmt.setInt(2, usuario.getGeneracion());
+            stmt.setString(3, usuario.getNombre());
+            stmt.setString(4, usuario.getApellido());
+            stmt.setString(5, usuario.getContrasena());
+            stmt.setString(6, usuario.getEmail());
+            stmt.setString(7, usuario.getRol());
+            stmt.registerOutParameter(8, Types.INTEGER);
+            stmt.execute();
+            int retorno = stmt.getInt(8);
+            switch (retorno) {
+                case -1:
+                    throw new Exception("La cédula ingresada está en uso.");
+                case -2:
+                    throw new Exception("El correo ingresado está en uso.");
+                case -3:
+                    throw new Exception("La generación ingresada no existe.");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+            throw new Exception("No se pudo dar de alta al usuario. Error de base de datos.");
+        }
+        catch (Exception e) {
+            throw e;
+        } finally {
             if (stmt != null) {
                 stmt.close();
             }

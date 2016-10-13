@@ -64,4 +64,21 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
     }
+
+    @Override
+    public void altaEncargado(DTUsuario usuario) {
+        try {
+            if (usuario == null) {
+                throw new Exception("No se puede dar de alta una solicitud nula.");
+            }
+            if (usuario.getCi() < 4000000) {
+                throw new Exception("Cédula inválida.");
+            }
+            // Aseguro que el rol del usuario sea 'encargado'
+            usuario.setRol("encargado");
+            FabricaPersistencia.getPersistenciaUsuario().altaUsuario(usuario);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
 }

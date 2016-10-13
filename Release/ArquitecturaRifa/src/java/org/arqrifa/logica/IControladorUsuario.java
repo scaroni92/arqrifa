@@ -10,4 +10,6 @@ public interface IControladorUsuario {
     void altaSolicitud(DTSolicitud solicitud);
 
     void verificarSolicitud(int ci);
+    
+    void altaEncargado(DTUsuario usuario);
 }
