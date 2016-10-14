@@ -1,6 +1,8 @@
 package org.arqrifa.logica;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
@@ -45,6 +47,21 @@ class ControladorGeneracion implements IControladorGeneracion {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
         return generaciones;
+    }
+
+    @Override
+    public void altaGeneracion(DTGeneracion generacion) {
+        try {
+            if (generacion.getId() < 2009) {
+                throw new Exception("El año ingresado es inferior al permitido.");
+            }
+            if (generacion.getId() > Calendar.getInstance().get(Calendar.YEAR)) {
+                throw new Exception("No se puede agregar una generación cuyo año supere al actual");
+            }
+            FabricaPersistencia.getPersistenciaGeneracion().altaGeneracion(generacion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
     }
 
 }

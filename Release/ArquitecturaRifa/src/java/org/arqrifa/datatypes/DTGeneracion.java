@@ -15,6 +15,7 @@ public class DTGeneracion {
     }
 
     public DTGeneracion() {
+        this(0);
     }
 
     public DTGeneracion(int id) {

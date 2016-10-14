@@ -16,5 +16,6 @@
         <h2>Nombre : ${usuario.nombre} ${usuario.apellido}</h2>
         <h3>Generación: ${usuario.generacion}</h3>
         <a href="Admin?accion=agregar_encargado">Agregar Encargado</a>
+        <a href="Admin?accion=agregar_generacion">Agregar Generación</a>
     </body>
 </html>

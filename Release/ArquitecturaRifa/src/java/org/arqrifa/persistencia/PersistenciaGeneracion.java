@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +98,36 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
             }
         }
         return generaciones;
+    }
+
+    @Override
+    public void altaGeneracion(DTGeneracion generacion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL AltaGeneracion(?, ?)");
+            stmt.setInt(1, generacion.getId());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.executeQuery();
+            if (stmt.getInt(2) == -1) {
+                throw new Exception("Ya existe una generación para ese año.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new Exception("No se pudo dar de alta la generación, erro de base de datos.");
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
     }
 
 }

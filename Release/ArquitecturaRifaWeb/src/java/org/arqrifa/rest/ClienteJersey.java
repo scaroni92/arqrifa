@@ -76,8 +76,6 @@ public class ClienteJersey {
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
-        System.out.println(respuesta.getMediaType());
-        System.out.println(respuesta.getStatus());
         List<DTGeneracion> generaciones = Arrays.asList(respuesta.readEntity(DTGeneracion[].class));
         return generaciones;
     }
@@ -85,6 +83,14 @@ public class ClienteJersey {
     public void agregarEncargado(DTUsuario usuario) throws Exception {
         webTarget = webTarget.path("encargado/agregar");
         Response respuesta = webTarget.request(responseType).post(Entity.entity(usuario, responseType));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+    
+    public void agregarGeneracion(DTGeneracion generacion) throws Exception {
+        webTarget = webTarget.path("generacion/agregar");
+        Response respuesta = webTarget.request(responseType).post(Entity.entity(generacion, MediaType.APPLICATION_JSON));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }

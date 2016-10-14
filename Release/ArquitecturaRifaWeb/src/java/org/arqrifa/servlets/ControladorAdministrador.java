@@ -9,11 +9,11 @@ import org.arqrifa.viewmodels.ViewModel;
 public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_get() {
-        
-        try {            
+
+        try {
             List<DTGeneracion> generaciones = new ClienteJersey().listarGeneraciones();
             sesion.setAttribute("generaciones", generaciones);
-            
+
         } catch (Exception e) {
             mostrarVista("/Vistas/Admin/agregarEncargado.jsp", new ViewModel(e.getMessage()));
         }
@@ -45,6 +45,27 @@ public class ControladorAdministrador extends Controlador {
         } catch (Exception ex) {
             sesion.setAttribute("encargado", encargado);
             mostrarVista("/Vistas/Admin/agregarEncargado.jsp", new ViewModel(ex.getMessage()));
+        }
+    }
+
+    public void agregar_generacion_get() {
+        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp");
+    }
+
+    public void agregar_generacion_post() {
+        try {
+
+            int anio = Integer.parseInt(request.getParameter("anio"));
+            DTGeneracion generacion = new DTGeneracion(anio);
+
+            new ClienteJersey().agregarGeneracion(generacion);
+
+            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel("Generación agregada exitosamente"));
+
+        } catch (NumberFormatException e) {
+            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel("El año debe ser numérico"));
+        } catch (Exception e) {
+            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel(e.getMessage()));
         }
     }
 }

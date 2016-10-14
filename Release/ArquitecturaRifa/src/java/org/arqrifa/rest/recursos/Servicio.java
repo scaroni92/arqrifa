@@ -70,6 +70,13 @@ public class Servicio {
     public List<DTGeneracion> listarGeneraciones() {
         return FabricaLogica.getControladorGeneracion().listarGeneraciones();
     }
+    
+    @Path("/generacion/agregar")
+    @POST
+    public Response agregarGeneracion(DTGeneracion generacion) {
+        FabricaLogica.getControladorGeneracion().altaGeneracion(generacion);
+        return Response.status(Response.Status.OK).build();
+    }
 
     @Path("/encargado/agregar")
     @POST

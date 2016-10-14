@@ -10,5 +10,7 @@ public interface IControladorGeneracion {
     List<DTGeneracion> listarGeneraciones();
 
     List<DTSolicitud> ListarSolicitudes(DTUsuario usuario);
+    
+    void altaGeneracion(DTGeneracion generacion);
 
 }

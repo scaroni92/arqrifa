@@ -8,4 +8,6 @@ public interface IPersistenciaGeneracion {
     List<DTSolicitud> listarSolicitudes(int generacion) throws Exception;
     
     List<DTGeneracion> listarGeneraciones() throws Exception;
+    
+    void altaGeneracion(DTGeneracion generacion) throws Exception;
 }
