@@ -1,9 +1,4 @@
-<%-- 
-    Document   : agregarGeneracion
-    Created on : 13-oct-2016, 20:37:44
-    Author     : Ale
---%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +12,17 @@
             Año: <input type="text" name="anio">
             <button type="submit" name="accion" value="agregar_generacion">Agregar</button>
         </form>
+        <table>
+            <tr>
+                <th>Año</th>
+            </tr>
+
+            <c:forEach items="${modelo.generaciones}" var="generacion">
+                <tr>
+                    <td style="text-align: center;">${generacion.id}</td>
+                </tr>
+            </c:forEach>
+        </table>
         <p>${modelo.mensaje}</p>
     </body>
 </html>

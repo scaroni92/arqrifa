@@ -4,23 +4,24 @@ import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.ClienteJersey;
+import org.arqrifa.viewmodels.VMGeneraciones;
 import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_get() {
-
+        ViewModel vm = new ViewModel();
         try {
             List<DTGeneracion> generaciones = new ClienteJersey().listarGeneraciones();
             sesion.setAttribute("generaciones", generaciones);
-
         } catch (Exception e) {
-            mostrarVista("/Vistas/Admin/agregarEncargado.jsp", new ViewModel(e.getMessage()));
+            vm.setMensaje(e.getMessage());
         }
-        mostrarVista("/Vistas/Admin/agregarEncargado.jsp");
+        mostrarVista("/Vistas/Admin/agregarEncargado.jsp", vm);
     }
 
     public void agregar_encargado_post() {
+        ViewModel vm = new ViewModel();
         DTUsuario encargado = null;
 
         try {
@@ -40,32 +41,43 @@ public class ControladorAdministrador extends Controlador {
             encargado = new DTUsuario(ci, nombre, apellido, pass, email, "encargado", generacion);
             new ClienteJersey().agregarEncargado(encargado);
 
-            mostrarVista("/Vistas/Admin/agregarEncargado.jsp", new ViewModel("Encargado agregado exitosamente."));
+            vm.setMensaje("Encargado agregado exitosamente.");
 
         } catch (Exception ex) {
             sesion.setAttribute("encargado", encargado);
-            mostrarVista("/Vistas/Admin/agregarEncargado.jsp", new ViewModel(ex.getMessage()));
+            vm.setMensaje(ex.getMessage());
         }
+        mostrarVista("/Vistas/Admin/agregarEncargado.jsp", vm);
+
     }
 
     public void agregar_generacion_get() {
-        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp");
+        VMGeneraciones vm = new VMGeneraciones();
+        try {
+            vm.setGeneraciones(new ClienteJersey().listarGeneraciones());
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", vm);
     }
 
     public void agregar_generacion_post() {
+        VMGeneraciones vm = (VMGeneraciones) request.getAttribute("modelo");
+
         try {
 
             int anio = Integer.parseInt(request.getParameter("anio"));
             DTGeneracion generacion = new DTGeneracion(anio);
 
             new ClienteJersey().agregarGeneracion(generacion);
-
-            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel("Generación agregada exitosamente"));
+            
+            vm.setMensaje("Generación agregada con éxito.");
 
         } catch (NumberFormatException e) {
-            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel("El año debe ser numérico"));
+            vm.setMensaje("Ingrese un año válido.");
         } catch (Exception e) {
-            mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", new ViewModel(e.getMessage()));
+            vm.setMensaje(e.getMessage());
         }
+        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", vm);
     }
 }
