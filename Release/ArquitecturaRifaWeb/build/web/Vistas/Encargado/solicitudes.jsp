@@ -21,7 +21,7 @@
                     <td>${solicitud.apellido}</td>
                     <c:choose>
                         <c:when test="${solicitud.verificada}">
-                            <td><a href="#">Confirmar</a></td>
+                            <td><a href="Encargados?accion=confirmar&ci=${solicitud.ci}">Confirmar</a></td>
                         </c:when>
                         <c:otherwise>
                             <td><span>Correo no verificado</span></td>

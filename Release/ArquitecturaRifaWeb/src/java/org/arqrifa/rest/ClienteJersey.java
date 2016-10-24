@@ -100,6 +100,14 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
+    
+    public void confirmarSolicitud(DTSolicitud solicitud) throws Exception {
+        target = target.path("solicitud/confirmar");
+        Response respuesta = target.request(RESPONSE_TYPE).post(Entity.entity(solicitud, RESPONSE_TYPE));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
 
     public void close() {
         client.close();

@@ -36,7 +36,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt.setString(7, solicitud.getEmail());
             stmt.setInt(8, solicitud.getCodigo());
             stmt.registerOutParameter(9, Types.INTEGER);
-            stmt.executeQuery();
+            stmt.execute();
             int retorno = stmt.getInt(9);
             if (retorno == -1 || retorno == -3) {
                 throw new Exception("La cédula ingresada está en uso.");
@@ -45,7 +45,6 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
                 throw new Exception("El correo ingresado está en uso.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new Exception("No se pudo dar de alta la solicitud - Error de base de datos.");
         } catch (Exception e) {
             throw e;
@@ -73,6 +72,38 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo verificar la solicitud, intente más tarde.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void confirmarSolicitud(DTSolicitud solicitud) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ConfirmarSolicitud(?, ?, ?, ?, ?, ?, ?);");
+            stmt.setInt(1, solicitud.getCi());
+            stmt.setInt(2, solicitud.getGeneracion());
+            stmt.setString(3, solicitud.getNombre());
+            stmt.setString(4, solicitud.getApellido());
+            stmt.setString(5, solicitud.getContrasena());
+            stmt.setString(6, solicitud.getEmail());
+            stmt.registerOutParameter(7, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(7) == -1) {
+                throw new Exception("No se pudo confirmar de alta la solicitud - Error de base de datos");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo confirmar la solicitud - Error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {

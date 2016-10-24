@@ -67,6 +67,7 @@ BEGIN
 END
 $$
 
+
 -- USUARIOS
 -- AltaUsuario  - Da de alta un usuario
 -- Retorno : -1 si ya existe la ci, -2 si ya existe el email y -3 si no existe la generación
@@ -178,7 +179,24 @@ BEGIN
 END
 $$
 
+-- ConfirmarSolicitud - Da de alta al usuario y luego elimina la solicitud
+-- Retorno : -1 si no existe la solicitud
 
+CREATE PROCEDURE ConfirmarSolicitud(pCi int, pGeneracion int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), out retorno int)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+	START TRANSACTION;
+	SET SQL_SAFE_UPDATES = 0;
+	IF EXISTS (SELECT * FROM solicitudes WHERE ci = pCi) THEN
+		INSERT INTO usuarios VALUES(pCi, pGeneracion, pNombre, pApellido, pContrasena, pEmail, 'estudiante');
+		DELETE FROM solicitudes WHERE ci = pCi;
+	ELSE 
+		SET retorno = -1;
+	END IF;
+	SET SQL_SAFE_UPDATES = 1;
+	COMMIT;
+END
+$$
 -- GENERACIONES
 -- ListarGeneraciones - Devuelve la lista de generaciones
 CREATE PROCEDURE ListarGeneraciones()
@@ -210,7 +228,9 @@ CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez'
 
 
 CALL VerificarSolicitud(22222222);
+-- CALL ConfirmarSolicitud(3333333, 2012, 'Mathias', 'Rodriguez', 1234, 'mathi@hotmail.com', @retorno);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
-SELECT * FROM usuarios
+SELECT * FROM usuarios;
+SELECT * FROM generaciones;

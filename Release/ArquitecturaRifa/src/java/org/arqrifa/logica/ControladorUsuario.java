@@ -44,8 +44,6 @@ class ControladorUsuario implements IControladorUsuario {
 
             int codigo = (int) (new Random().nextDouble() * 99999999);
             solicitud.setCodigo(codigo);
-            System.out.println(solicitud.getCodigo());
-            System.out.println(codigo);
             FabricaPersistencia.getPersistenciaSolicitud().altaSolicitud(solicitud);
             new Mensajeria(solicitud).enviar();
             System.out.println("mail de confirmación enviado.");
@@ -74,9 +72,24 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-            // Aseguro que el rol del usuario sea 'encargado'
             usuario.setRol("encargado");
             FabricaPersistencia.getPersistenciaUsuario().altaUsuario(usuario);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
+    @Override
+    public void confirmarSolicitud(DTSolicitud s) {
+        try {
+            if (s == null) {
+                throw new Exception("No se puede confirmar una solicitud nula.");
+            }
+            if (!s.isVerificada()) {
+                throw new Exception("No se puede confirmar una solicitud sin verificar");
+            }
+            DTUsuario usuario = new DTUsuario(s.getCi(), s.getNombre(), s.getApellido(), s.getContrasena(), s.getEmail(), "estudiante", s.getGeneracion());
+            FabricaPersistencia.getPersistenciaSolicitud().confirmarSolicitud(s);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
