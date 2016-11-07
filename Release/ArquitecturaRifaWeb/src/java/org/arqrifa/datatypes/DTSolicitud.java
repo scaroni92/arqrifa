@@ -88,7 +88,8 @@ public class DTSolicitud {
     }
 
     //</editor-fold>
-    public DTSolicitud(int ci, int generacion, Date fecha, String nombre, String apellido, String contrasena, String email,  int codigo, boolean verificada) {
+
+    public DTSolicitud(int ci, int generacion, Date fecha, String nombre, String apellido, String contrasena, String email, int codigo, boolean verificada) {
         this.ci = ci;
         this.generacion = generacion;
         this.fecha = fecha;

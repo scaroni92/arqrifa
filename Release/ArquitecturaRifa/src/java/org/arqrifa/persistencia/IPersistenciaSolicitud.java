@@ -9,4 +9,6 @@ public interface IPersistenciaSolicitud {
     void verificarSolicitud(int ci) throws Exception;
     
     void confirmarSolicitud(DTSolicitud solicitud) throws Exception;
+    
+    void rechazarSolicitud(DTSolicitud solicitud) throws Exception;
 }

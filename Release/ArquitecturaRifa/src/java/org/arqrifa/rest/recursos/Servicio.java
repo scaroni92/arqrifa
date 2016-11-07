@@ -70,7 +70,7 @@ public class Servicio {
     public List<DTGeneracion> listarGeneraciones() {
         return FabricaLogica.getControladorGeneracion().listarGeneraciones();
     }
-    
+
     @Path("/generacion/agregar")
     @POST
     public Response agregarGeneracion(DTGeneracion generacion) {
@@ -84,11 +84,18 @@ public class Servicio {
         FabricaLogica.getLogicaUsuario().altaEncargado(usuario);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/solicitud/confirmar")
     @POST
     public Response confirmarSolicitud(DTSolicitud solicitud) {
         FabricaLogica.getLogicaUsuario().confirmarSolicitud(solicitud);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/solicitud/rechazar")
+    @POST
+    public Response rechazarSolicitud(DTSolicitud solicitud) {
+        FabricaLogica.getLogicaUsuario().rechazarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
 }

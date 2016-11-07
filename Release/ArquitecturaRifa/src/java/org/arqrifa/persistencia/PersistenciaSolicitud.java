@@ -115,5 +115,27 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             }
         }
     }
+    
+    @Override
+    public void rechazarSolicitud(DTSolicitud solicitud) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL EliminarSolicitud (?, ?)");
+            stmt.setInt(1, solicitud.getCi());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(2) == -1) {
+                throw new Exception("La solicitud que desea rechazar no existe.");
+            }
+        }
+        catch(SQLException e){
+            throw new Exception("No se pudo rechazar la solicitud, error en base de datos.");
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
 
 }

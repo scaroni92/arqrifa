@@ -33,7 +33,7 @@ public class ClienteJersey {
                 .queryParam("pass", pass)
                 .request(RESPONSE_TYPE)
                 .get();
-        
+
         if (respuesta.getStatus() == 200) {
             return respuesta.readEntity(DTUsuario.class);
         } else if (respuesta.getStatus() != 204) {
@@ -46,7 +46,7 @@ public class ClienteJersey {
         Response respuesta = target.path("solicitud/enviar")
                 .request(RESPONSE_TYPE)
                 .post(Entity.entity(solicitud, RESPONSE_TYPE));
-        
+
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
@@ -57,7 +57,7 @@ public class ClienteJersey {
                 .path("solicitud/verificar")
                 .request(RESPONSE_TYPE)
                 .get();
-        
+
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
@@ -67,7 +67,7 @@ public class ClienteJersey {
         Response respuesta = target.path("solicitud/listar")
                 .request(RESPONSE_TYPE)
                 .post(Entity.entity(usuario, RESPONSE_TYPE));
-        
+
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
@@ -78,7 +78,7 @@ public class ClienteJersey {
         Response respuesta = target.path("generacion/listar")
                 .request(MediaType.APPLICATION_JSON)
                 .get();
-        
+
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
@@ -100,9 +100,17 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
-    
+
     public void confirmarSolicitud(DTSolicitud solicitud) throws Exception {
         target = target.path("solicitud/confirmar");
+        Response respuesta = target.request(RESPONSE_TYPE).post(Entity.entity(solicitud, RESPONSE_TYPE));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
+    public void rechazarSolicitud(DTSolicitud solicitud) throws Exception {
+        target = target.path("solicitud/rechazar");
         Response respuesta = target.request(RESPONSE_TYPE).post(Entity.entity(solicitud, RESPONSE_TYPE));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());

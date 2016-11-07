@@ -11,7 +11,7 @@
         <h2>Generación ${usuario.generacion}</h2>
         <table>
             <tr>
-                <th>CÉDULA</th><th>NOMBRE</th><th>APELLIDO</th><th></th>
+                <th>CÉDULA</th><th>NOMBRE</th><th>APELLIDO</th><th></th><th></th>
             </tr>
 
             <c:forEach items="${modelo.solicitudes}" var="solicitud">
@@ -27,6 +27,7 @@
                             <td><span>Correo no verificado</span></td>
                         </c:otherwise>
                     </c:choose>
+                    <td><a href="Encargados?accion=rechazar&ci=${solicitud.ci}">Rechazar</a></td>
                 </tr>
             </c:forEach>
         </table>

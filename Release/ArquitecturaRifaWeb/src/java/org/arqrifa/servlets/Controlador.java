@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.arqrifa.rest.ClienteJersey;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
@@ -18,6 +19,7 @@ public class Controlador extends HttpServlet {
     protected HttpSession sesion;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
+    protected ClienteJersey cliente = new ClienteJersey();
 
     protected void despacharMetodoAccion()
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {

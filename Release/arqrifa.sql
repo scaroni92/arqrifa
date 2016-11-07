@@ -197,6 +197,20 @@ BEGIN
 	COMMIT;
 END
 $$
+
+CREATE PROCEDURE EliminarSolicitud(pCi int, out retorno int)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+    START TRANSACTION;
+    SET SQL_SAFE_UPDATES = 0;
+    IF NOT EXISTS (SELECT * FROM solicitudes WHERE ci = pCi) THEN
+		SET retorno = -1;
+	ELSE
+		DELETE FROM solicitudes WHERE ci = pCi;
+	END IF;
+	COMMIT;
+END
+$$
 -- GENERACIONES
 -- ListarGeneraciones - Devuelve la lista de generaciones
 CREATE PROCEDURE ListarGeneraciones()

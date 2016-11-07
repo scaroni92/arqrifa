@@ -94,4 +94,16 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
     }
+
+    @Override
+    public void rechazarSolicitud(DTSolicitud solicitud) {
+        try {
+            if (solicitud == null) {
+                throw new Exception("No se puede rechazar una solicitud nula.");
+            }
+            FabricaPersistencia.getPersistenciaSolicitud().rechazarSolicitud(solicitud);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
 }
