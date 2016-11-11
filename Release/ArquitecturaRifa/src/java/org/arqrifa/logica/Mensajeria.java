@@ -9,39 +9,34 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import org.arqrifa.datatypes.DTSolicitud;
 
 public class Mensajeria {
 
     private Session sesion = null;
-    private final Properties propiedades = new Properties();
+    private final Properties PROPIEDADES = new Properties();
     private final String EMISOR = "arquitectura_rifa@hotmail.com";
     private final String CONTRASENA = "arqrifa123";
-    private final String ASUNTO = "Confirmar registro";
+    private final String ASUNTO;
     private final String MENSAJE;
     private final String DESTINATARIO;
-    private final String RUTA = "http://localhost:8080/ArquitecturaRifaWeb/verificar?";
 
-    public Mensajeria(DTSolicitud solicitud) throws MessagingException {
-        this.DESTINATARIO = solicitud.getEmail();
-        this.MENSAJE = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
-                + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                + RUTA + "codigo=" + solicitud.getCodigo();
-        
+    public Mensajeria(Mensaje mensaje) throws MessagingException {
+        this.DESTINATARIO = mensaje.getDestinatario();
+        this.ASUNTO = mensaje.getAsunto();
+        this.MENSAJE = mensaje.getMensaje();
         this.autenticar();
     }
 
     private void autenticar() throws MessagingException {
-        propiedades.put("mail.transport.protocol", "smtp");
-        propiedades.put("mail.smtp.host", "smtp.live.com");
-        propiedades.put("mail.smtp.socketFactory.port", "587");
-        propiedades.put("mail.smtp.socketFactory.fallback", "false");
-        propiedades.put("mail.smtp.starttls.enable", "true");
-        propiedades.put("mail.smtp.auth", "true");
-        propiedades.put("mail.smtp.port", "587");
+        PROPIEDADES.put("mail.transport.protocol", "smtp");
+        PROPIEDADES.put("mail.smtp.host", "smtp.live.com");
+        PROPIEDADES.put("mail.smtp.socketFactory.port", "587");
+        PROPIEDADES.put("mail.smtp.socketFactory.fallback", "false");
+        PROPIEDADES.put("mail.smtp.starttls.enable", "true");
+        PROPIEDADES.put("mail.smtp.auth", "true");
+        PROPIEDADES.put("mail.smtp.port", "587");
 
-        sesion = Session.getInstance(propiedades,
-                new Authenticator() {
+        sesion = Session.getInstance(PROPIEDADES, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(EMISOR, CONTRASENA);
