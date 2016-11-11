@@ -34,5 +34,9 @@ class Mensaje {
         this.asunto = asunto;
         this.mensaje = mensaje;
     }
+
+    public Mensaje() {
+        this("", "", "");
+    }
         
 }

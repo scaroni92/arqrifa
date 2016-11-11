@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 class PersistenciaUsuario implements IPersistenciaUsuario {
 
@@ -127,12 +129,9 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 case -3:
                     throw new Exception("La generación ingresada no existe.");
             }
-        }
-        catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
             throw new Exception("No se pudo dar de alta al usuario. Error de base de datos.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw e;
         } finally {
             if (stmt != null) {
@@ -142,6 +141,51 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 con.close();
             }
         }
+    }
+
+    @Override
+    public List<DTUsuario> listarEstudiantes(int generacion) throws Exception {
+        List<DTUsuario> estudiantes = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarEstudiantes(?)");
+            stmt.setInt(1, generacion);
+            res = stmt.executeQuery();
+            
+            DTUsuario estudiante;
+            while (res.next()) {
+                estudiante = new DTUsuario(res.getInt("ci"),
+                        res.getString("nombre"),
+                        res.getString("apellido"),
+                        res.getString("contrasena"),
+                        res.getString("email"),
+                        res.getString("rol"),
+                        generacion);
+                estudiantes.add(estudiante);
+            }
+
+        } 
+        catch(SQLException e){
+            throw new Exception("No se pudieron listar los estudiantes, error de base de datos.");
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return estudiantes;
     }
 
 }

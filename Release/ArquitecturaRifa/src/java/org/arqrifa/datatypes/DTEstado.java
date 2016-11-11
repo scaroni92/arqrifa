@@ -2,6 +2,7 @@ package org.arqrifa.datatypes;
 
 public class DTEstado {
 
+    public static String PENDIENTE = "Pendiente";
     public static String ACTIVA = "Activa";
     public static String PROGRESO = "En progreso";
     public static String LISTADO = "Listado";

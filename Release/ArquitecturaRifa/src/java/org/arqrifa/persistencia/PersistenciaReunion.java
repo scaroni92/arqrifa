@@ -44,7 +44,9 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 Date fecha = res.getDate("fecha");
                 boolean obligatoria = res.getBoolean("obligatoria");
                 int generacion = res.getInt("generacion");
-                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, "");
+                String estado = res.getString("estado");
+                String lugar = res.getString("lugar");
+                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar);
             }
             return reunion;
         } catch (SQLException e) {
@@ -87,12 +89,46 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 default:
                     break;
             }
-        } catch (SQLException e) {        
-            throw new Exception(e.getMessage());          
-            //throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
+        } catch (SQLException e) {               
+            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
         } catch (Exception e) {
             throw e;
         } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void altaReunion(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?)");
+            stmt.setString(1, reunion.getTitulo());
+            stmt.setString(2, reunion.getDescripcion());
+            stmt.setDate(3, new java.sql.Date(reunion.getFecha().getTime()));
+            stmt.setInt(4, reunion.getGeneracion());
+            stmt.setBoolean(5, reunion.isObligatoria());
+            stmt.setString(6, reunion.getLugar());
+            stmt.registerOutParameter(7, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(7) == -1) {
+                throw new Exception("Ya hay agendada una reunión para el día " + reunion.getFecha());
+            }
+        }
+        catch (SQLException e) {
+            throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
             if (stmt != null) {
                 stmt.close();
             }

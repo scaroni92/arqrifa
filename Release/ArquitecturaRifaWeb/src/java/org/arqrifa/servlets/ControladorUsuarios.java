@@ -45,9 +45,6 @@ public class ControladorUsuarios extends Controlador {
             int ci = Integer.parseInt(request.getParameter("user"));
             String pass = request.getParameter("pass");
 
-            if (ci < 4000000) {
-                throw new Exception("Ingrese una cédula válida.");
-            }
             if (pass.isEmpty()) {
                 throw new Exception("Ingrese la contraseña");
             }

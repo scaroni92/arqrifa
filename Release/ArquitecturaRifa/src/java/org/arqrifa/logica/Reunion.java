@@ -16,6 +16,7 @@ public class Reunion {
     private boolean obligatoria;
     private int generacion;
     private String estado;
+    private String lugar;
     private List<Usuario> lista;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
@@ -55,6 +56,12 @@ public class Reunion {
         return estado;
     }
 
+    public String getLugar() {
+        return lugar;
+    }
+    
+    
+
     public void setId(int id) {
         this.id = id;
     }
@@ -87,13 +94,17 @@ public class Reunion {
         this.estado = estado;
     }
 
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
+
     //</editor-fold>
     
     public Reunion() {
-        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d");
+        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d", "n/d");
     }
 
-    public Reunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado) {
+    public Reunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado, String lugar) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -102,15 +113,16 @@ public class Reunion {
         this.obligatoria = obligatoria;
         this.generacion = generacion;
         this.estado = estado;
-        lista = new ArrayList();
+        this.lugar = lugar;
+        this.lista = new ArrayList();
     }
 
     public Reunion(DTReunion dt) {
-        this(dt.getId(), dt.getTitulo(), dt.getDescripcion(), dt.getResoluciones(), dt.getFecha(), dt.isObligatoria(), dt.getGeneracion(), dt.getEstado());
+        this(dt.getId(), dt.getTitulo(), dt.getDescripcion(), dt.getResoluciones(), dt.getFecha(), dt.isObligatoria(), dt.getGeneracion(), dt.getEstado(), dt.getLugar());
     }
 
     public DTReunion getDataType() {
-        return new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado);
+        return new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar);
     }
 
     public void marcarAsistencia(DTUsuario usuario) throws Exception {

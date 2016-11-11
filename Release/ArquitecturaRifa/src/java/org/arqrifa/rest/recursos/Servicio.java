@@ -32,9 +32,6 @@ public class Servicio {
     @Path("/asistencias/marcar")
     @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
     public Response marcarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
-        if (usuario != null && reunion != null) {
-            System.out.println("servidor rest: " + usuario.getNombre() + " " + reunion.getId());
-        }
         FabricaLogica.getControladorReuniones().MarcarAsistencia(usuario, reunion);
         return Response.status(Response.Status.OK).build();
     }
@@ -44,24 +41,11 @@ public class Servicio {
     public List<DTReunion> getReunionesActivas() {
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
-
-    @Path("/solicitud/enviar")
-    @POST
-    public Response enviarSolicitud(DTSolicitud solicitud) {
-        FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
-        return Response.status(Response.Status.OK).build();
-    }
-
-    @Path("/solicitud/listar")
-    @POST
-    public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
-        return FabricaLogica.getControladorGeneracion().ListarSolicitudes(usuario);
-    }
-
-    @Path("/solicitud/verificar")
+    
+    @Path("/reunion/agendar")
     @GET
-    public Response verificarSolicitud(@QueryParam("codigo") int codigo) {
-        FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
+    public Response agendarReunion(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().altaReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -85,6 +69,27 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Solicitudes">
+    @Path("/solicitud/enviar")
+    @POST
+    public Response enviarSolicitud(DTSolicitud solicitud) {
+        FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/solicitud/listar")
+    @POST
+    public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
+        return FabricaLogica.getControladorGeneracion().ListarSolicitudes(usuario);
+    }
+
+    @Path("/solicitud/verificar")
+    @GET
+    public Response verificarSolicitud(@QueryParam("codigo") int codigo) {
+        FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("/solicitud/confirmar")
     @POST
     public Response confirmarSolicitud(DTSolicitud solicitud) {
@@ -98,4 +103,5 @@ public class Servicio {
         FabricaLogica.getLogicaUsuario().rechazarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
+    //</editor-fold>
 }

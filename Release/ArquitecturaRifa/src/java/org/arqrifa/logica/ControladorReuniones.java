@@ -22,10 +22,10 @@ class ControladorReuniones implements IControladorReuniones {
     }
 
     private ControladorReuniones() {
-        Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, "listado");
+        Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, "listado", "lugar1");
         r.setEstado(DTEstado.LISTADO);
         reunionesActivas.add(r);
-        r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, "pendiente");
+        r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, "pendiente", "lugar2");
         reunionesActivas.add(r);
     }
 
@@ -53,6 +53,7 @@ class ControladorReuniones implements IControladorReuniones {
         }
     }
 
+    // Filtrar por encargado
     @Override
     public List<DTReunion> getReunionesActivas() {
         List<DTReunion> resp = new ArrayList();
@@ -60,6 +61,29 @@ class ControladorReuniones implements IControladorReuniones {
             resp.add(reunion.getDataType());
         }
         return resp;
+    }
+
+    @Override
+    public void altaReunion(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede agendar una reunión nula.");
+            }
+            FabricaPersistencia.getPersistenciaReunion().altaReunion(reunion);
+            List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
+            
+            String asunto = "¡Nueva reunión agendada!";
+            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " + reunion.getFecha();
+
+            Mensajeria mensajeria = new Mensajeria(new Mensaje("", asunto, mensaje));
+
+            for (DTUsuario usuario : usuarios) {
+                mensajeria.getMensaje().setDestinatario(usuario.getEmail());
+                mensajeria.enviar();
+            }
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
     }
 
 }

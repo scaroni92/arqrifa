@@ -8,4 +8,7 @@ public interface IPersistenciaReunion {
     DTReunion BuscarReunion(int id) throws Exception;
     
     void MarcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
+    
+    void altaReunion(DTReunion reunion) throws Exception;
+            
 }

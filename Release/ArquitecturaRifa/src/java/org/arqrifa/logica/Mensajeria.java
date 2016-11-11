@@ -12,18 +12,22 @@ import javax.mail.internet.MimeMessage;
 
 public class Mensajeria {
 
-    private Session sesion = null;
     private final Properties PROPIEDADES = new Properties();
     private final String EMISOR = "arquitectura_rifa@hotmail.com";
     private final String CONTRASENA = "arqrifa123";
-    private final String ASUNTO;
-    private final String MENSAJE;
-    private final String DESTINATARIO;
+    private Session sesion = null;
+    private Mensaje mensaje;
+
+    public Mensaje getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(Mensaje mensaje) {
+        this.mensaje = mensaje;
+    }
 
     public Mensajeria(Mensaje mensaje) throws MessagingException {
-        this.DESTINATARIO = mensaje.getDestinatario();
-        this.ASUNTO = mensaje.getAsunto();
-        this.MENSAJE = mensaje.getMensaje();
+        this.mensaje = mensaje;
         this.autenticar();
     }
 
@@ -53,9 +57,9 @@ public class Mensajeria {
     public void enviar() throws MessagingException {
         Message msg = new MimeMessage(sesion);
         msg.setFrom(new InternetAddress(EMISOR));
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(DESTINATARIO));
-        msg.setSubject(ASUNTO);
-        msg.setText(MENSAJE);
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mensaje.getDestinatario()));
+        msg.setSubject(mensaje.getAsunto());
+        msg.setText(mensaje.getMensaje());
         Transport.send(msg);
     }
 }

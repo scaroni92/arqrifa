@@ -29,6 +29,7 @@ CREATE TABLE reuniones (
     Obligatoria BIT NOT NULL,
     Lugar VARCHAR(50) NOT NULL,
     Resoluciones VARCHAR(100),
+    Estado VARCHAR(15) DEFAULT 'Pendiente',
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
 
@@ -100,15 +101,21 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ListarEstudiantes(pGeneracion int)
+BEGIN
+	SELECT * FROM usuarios WHERE rol = 'estudiante' AND generacion = pGeneracion;
+END
+$$
+
 -- REUNIONES
 -- AltaReunion  - Da de alta una reunion
 -- Retorno : -1 si existe una reunion para dicha generacion en el mismo dia
-CREATE PROCEDURE AltaReunion(pTitulo varchar(30), pDescription varchar(100), pFecha datetime, pgeneracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
+CREATE PROCEDURE AltaReunion(pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pGeneracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha as date) = CAST(pFecha as date)) THEN
 		SET retorno = -1;
 	ELSE
-		INSERT INTO reuniones (Titulo,Descripcion,Fecha,Generacion,Obligatoria,Lugar) VALUES (pTitulo, pDescription, pFecha,pgeneracion,pObligatoria, pLugar);
+		INSERT INTO reuniones (Titulo,Descripcion,Fecha,Generacion,Obligatoria,Lugar) VALUES (pTitulo, pDescripcion, pFecha,pgeneracion,pObligatoria, pLugar);
 	END IF;
 END
 $$
@@ -233,18 +240,20 @@ CALL AltaGeneracion(2012,@retorno);
 CALL AltaGeneracion(2013,@retorno);
 
 
-CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juan@gmail.com', 'estudiante',@retorno);
-CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'ana@gmail.com', 'encargado',@retorno);
-CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
+CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'estudiante',@retorno);
+CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'anaxxxxxxxxx@gmail.com', 'encargado',@retorno);
+
 
 CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
 CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, @retorno);
 
-
 CALL VerificarSolicitud(22222222);
--- CALL ConfirmarSolicitud(3333333, 2012, 'Mathias', 'Rodriguez', 1234, 'mathi@hotmail.com', @retorno);
+
+CALL AltaReunion('titulo', 'desc', '2016-010-20 15:00:00', 2012, 1, 'lugar', @retorno);
+CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
 SELECT * FROM usuarios;
 SELECT * FROM generaciones;
+SELECT * FROM reuniones;

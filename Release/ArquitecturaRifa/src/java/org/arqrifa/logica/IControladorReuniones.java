@@ -9,4 +9,6 @@ public interface IControladorReuniones {
     void MarcarAsistencia(DTUsuario usuario, DTReunion reunion);
 
     List<DTReunion> getReunionesActivas();
+    
+    void altaReunion(DTReunion reunion);
 }

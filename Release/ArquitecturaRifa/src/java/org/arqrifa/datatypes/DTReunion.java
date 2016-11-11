@@ -14,6 +14,7 @@ public class DTReunion {
     private boolean obligatoria;
     private int generacion;
     private String estado;
+    private String lugar;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getId() {
@@ -48,6 +49,10 @@ public class DTReunion {
         return estado;
     }
 
+    public String getLugar() {
+        return lugar;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -80,9 +85,13 @@ public class DTReunion {
         this.estado = estado;
     }
 
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
+
     //</editor-fold>
-    
-    public DTReunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado) {
+
+    public DTReunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado, String lugar) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -91,10 +100,12 @@ public class DTReunion {
         this.obligatoria = obligatoria;
         this.generacion = generacion;
         this.estado = estado;
+        this.lugar = lugar;
     }
 
+
     public DTReunion() {
-        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d");
+        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d", "n/d");
     }
 
 }
