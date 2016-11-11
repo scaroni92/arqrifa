@@ -34,6 +34,7 @@ class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public void altaSolicitud(DTSolicitud solicitud) {
+        String link = "http://localhost:8080/ArquitecturaRifaWeb/verificar?codigo=";
         try {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
@@ -41,12 +42,16 @@ class ControladorUsuario implements IControladorUsuario {
             if (solicitud.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-
-            int codigo = (int) (new Random().nextDouble() * 99999999);
-            solicitud.setCodigo(codigo);
+            
+            solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
             FabricaPersistencia.getPersistenciaSolicitud().altaSolicitud(solicitud);
-            new Mensajeria(solicitud).enviar();
-            System.out.println("mail de confirmación enviado.");
+
+            String msj = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
+                + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
+              + link + solicitud.getCodigo();
+            
+            new Mensajeria(new Mensaje(solicitud.getEmail(), "Confirmar registro", msj)).enviar();
+            System.out.println("XX-X-X-X-X--XX-X-X--X-X-X-X-X-X- mail de confirmación enviado. X.XX-X-X-X-X--X-X-X-X-X-X--X-");
         } catch (MessagingException me) {
             System.out.println(me.getMessage());
         } catch (Exception e) {
