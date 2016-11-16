@@ -10,20 +10,19 @@ import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMSolicitudes;
-import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorEncargados extends Controlador {
 
     public void solicitudes_get() {
-        List<DTSolicitud> lista = new ArrayList();
+
         try {
 
-            lista = new ArrayList(cliente.listarSolicitudes((DTUsuario) sesion.getAttribute("usuario")));
+            List<DTSolicitud> lista = new ArrayList(cliente.listarSolicitudes((DTUsuario) sesion.getAttribute("usuario")));
 
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(lista, ""));
             sesion.setAttribute("solicitudes", lista);
         } catch (Exception e) {
-            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(lista, e.getMessage()));
+            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(new ArrayList(), "Error al listar las solicitudes"));
         }
     }
 
@@ -74,23 +73,35 @@ public class ControladorEncargados extends Controlador {
     }
 
     public void agendar_post() {
-        VMReunion vm = (VMReunion)cargarModelo(new VMReunion());
-        
+        VMReunion vm = (VMReunion) cargarModelo(new VMReunion());
+
         try {
             DTUsuario u = (DTUsuario) sesion.getAttribute("usuario");
-
-            Date fecha = new SimpleDateFormat("yyyy-mm-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
             
+            if (vm.getTitulo().isEmpty()) {
+                throw new Exception("Ingrese el título de la reunión.");
+            }
+            
+            if (vm.getDescripcion().isEmpty()) {
+                throw new Exception("Ingrese alguna descripción de la reunión.");
+            }
+            
+            if (vm.getLugar().isEmpty()) {
+                throw new Exception("Ingrese el lugar donde se realizará la reunión.");
+            }
+
+            Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
+
             cliente.agendarReunion(new DTReunion(0, vm.getTitulo(), vm.getDescripcion(), "", fecha, vm.isObligatoria(), u.getGeneracion(), "", vm.getLugar()));
             vm = new VMReunion();
             vm.setMensaje("Reuníon agendada exitosamente.");
-            
+
         } catch (ParseException e) {
             vm.setMensaje("ingrese una fecha válida");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        
+
         mostrarVista("Vistas/Encargado/agendar.jsp", vm);
     }
 }

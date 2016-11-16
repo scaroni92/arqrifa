@@ -15,7 +15,7 @@ public class ControladorUsuarios extends Controlador {
             vm.setGeneraciones(cliente.listarGeneraciones());
 
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            vm.setMensaje("Error al listar las generaciones.");
         }
         mostrarVista("registro.jsp", vm);
     }
@@ -34,18 +34,36 @@ public class ControladorUsuarios extends Controlador {
             }
 
             int generacion = Integer.parseInt(vm.getGeneracion());
+            
+            if (vm.getNombre().isEmpty()) {
+                throw new Exception("Ingrese su nombre");
+            }
+            
+            if (vm.getApellido().isEmpty()) {
+                throw new Exception("Ingrese la contraseña");
+            }
+            
+            if (vm.getEmail().isEmpty()) {
+                throw new Exception("Ingrese el mail");
+            }
 
             cliente.enviarSolicitud(new DTSolicitud(ci, generacion, new Date(), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), 0, false));
             mostrarVista("index.jsp");
 
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
+            try {
+                vm.setGeneraciones(cliente.listarGeneraciones());
+            } catch (Exception e) {
+                vm.setMensaje("<br>Error al listar las generaciones.");
+            }
             mostrarVista("registro.jsp", vm);
         }
     }
 
-    public void login_post() {
+    public void login_post() { 
         try {
+            
             int ci = Integer.parseInt(request.getParameter("user"));
             String pass = request.getParameter("pass");
 
@@ -58,13 +76,8 @@ public class ControladorUsuarios extends Controlador {
                 throw new Exception("Usuario o contraseña incorrectos.");
             }
             sesion.setAttribute("usuario", usuario);
-            if (usuario.getRol().equals("estudiante")) {
-                mostrarVista("Vistas/Estudiante/index.jsp");
-            } else if (usuario.getRol().equals("encargado")) {
-                mostrarVista("Vistas/Encargado/index.jsp");
-            } else {
-                mostrarVista("Vistas/Admin/index.jsp");
-            }
+            
+            mostrarVista("Vistas/" + usuario.getRol() + "/index.jsp");
 
         } catch (NumberFormatException ex) {
             mostrarVista("index.jsp", new ViewModel("La cédula debe ser numérica."));

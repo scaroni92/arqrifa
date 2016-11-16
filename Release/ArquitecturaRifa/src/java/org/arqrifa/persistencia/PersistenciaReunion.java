@@ -119,7 +119,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.registerOutParameter(7, Types.INTEGER);
             stmt.execute();
             if (stmt.getInt(7) == -1) {
-                throw new Exception("Ya hay agendada una reunión para el día " + reunion.getFecha());
+                throw new Exception("Ya hay agendada una reunión para el día ingresado.");
             }
         }
         catch (SQLException e) {

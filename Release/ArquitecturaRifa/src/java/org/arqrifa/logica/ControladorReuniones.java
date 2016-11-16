@@ -1,5 +1,6 @@
 package org.arqrifa.logica;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,9 +71,15 @@ class ControladorReuniones implements IControladorReuniones {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
 
-//            if (reunion.getFecha().after(new Date())) {
-//                throw new Exception("Las reuniones deben ser agendadas con almenos un día de anticipación.");
-//            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
+            Date fechaActual = sdf.parse(sdf.format(new Date()));
+                        
+            if (fechaReunion.compareTo(fechaActual) <= 0) {
+                throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
+            }
+            
             FabricaPersistencia.getPersistenciaReunion().altaReunion(reunion);
             List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 

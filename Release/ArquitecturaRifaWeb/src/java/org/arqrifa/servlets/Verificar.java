@@ -45,7 +45,7 @@ public class Verificar extends HttpServlet {
             vm = new VMVerificar(true, "");
 
         } catch (Exception ex) {
-            vm = new VMVerificar(false, ex.getMessage());
+            vm = new VMVerificar(false, "No se pudo verificar la solicitud, quizas haya sido rechazada por el encargado");
 
         }
         mostrarVista("verificar.jsp", vm);

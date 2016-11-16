@@ -78,7 +78,7 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-            usuario.setRol("encargado");
+            usuario.setRol("Encargado");
             FabricaPersistencia.getPersistenciaUsuario().altaUsuario(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
@@ -94,7 +94,7 @@ class ControladorUsuario implements IControladorUsuario {
             if (!s.isVerificada()) {
                 throw new Exception("No se puede confirmar una solicitud sin verificar");
             }
-            DTUsuario usuario = new DTUsuario(s.getCi(), s.getNombre(), s.getApellido(), s.getContrasena(), s.getEmail(), "estudiante", s.getGeneracion());
+            DTUsuario usuario = new DTUsuario(s.getCi(), s.getNombre(), s.getApellido(), s.getContrasena(), s.getEmail(), "Estudiante", s.getGeneracion());
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(s);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());

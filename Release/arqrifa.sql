@@ -230,7 +230,7 @@ $$
 DELIMITER ;
 
 CALL AltaGeneracion(0,@retorno);
-CALL AltaUsuario(4444444, 0, 'Luis', 'Peréz', '1234', 'luis@gmail.com', 'administrador',@retorno);
+CALL AltaUsuario(4444444, 0, 'Luis', 'Peréz', '1234', 'luis@gmail.com', 'Admin',@retorno);
 
 
 
@@ -240,8 +240,8 @@ CALL AltaGeneracion(2012,@retorno);
 CALL AltaGeneracion(2013,@retorno);
 
 
-CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'estudiante',@retorno);
-CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'anaxxxxxxxxx@gmail.com', 'encargado',@retorno);
+CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante',@retorno);
+CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado',@retorno);
 
 
 CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
