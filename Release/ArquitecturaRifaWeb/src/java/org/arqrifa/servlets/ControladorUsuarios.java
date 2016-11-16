@@ -1,42 +1,46 @@
 package org.arqrifa.servlets;
 
 import java.util.Date;
-import java.util.List;
-import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.rest.ClienteJersey;
+import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorUsuarios extends Controlador {
 
     public void registrar_get() {
+        VMUsuario vm = new VMUsuario();
         try {
-            List<DTGeneracion> generaciones = new ClienteJersey().listarGeneraciones();
-            sesion.setAttribute("generaciones", generaciones);
+
+            vm.setGeneraciones(cliente.listarGeneraciones());
+
         } catch (Exception e) {
-            mostrarVista("registro.jsp", new ViewModel(e.getMessage()));
+            vm.setMensaje(e.getMessage());
         }
-        mostrarVista("registro.jsp");
+        mostrarVista("registro.jsp", vm);
     }
 
     public void registrar_post() {
-        DTSolicitud solicitud = null;
+        VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
 
         try {
-            int ci = Integer.parseInt(request.getParameter("ci"));
-            int generacion = Integer.parseInt(request.getParameter("generacion"));
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String pass = request.getParameter("pass");
-            String email = request.getParameter("email");
 
-            solicitud = new DTSolicitud(ci, generacion, new Date(), nombre, apellido, pass, email, 0, false);
-            new ClienteJersey().enviarSolicitud(solicitud);
+            int ci;
+            try {
+                ci = Integer.parseInt(vm.getCi());
+
+            } catch (Exception e) {
+                throw new Exception("Ingrese una cédula válida.");
+            }
+
+            int generacion = Integer.parseInt(vm.getGeneracion());
+
+            cliente.enviarSolicitud(new DTSolicitud(ci, generacion, new Date(), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), 0, false));
             mostrarVista("index.jsp");
+
         } catch (Exception ex) {
-            sesion.setAttribute("solicitud", solicitud);
-            mostrarVista("registro.jsp", new ViewModel(ex.getMessage()));
+            vm.setMensaje(ex.getMessage());
+            mostrarVista("registro.jsp", vm);
         }
     }
 
@@ -49,18 +53,16 @@ public class ControladorUsuarios extends Controlador {
                 throw new Exception("Ingrese la contraseña");
             }
 
-            DTUsuario usuario = new ClienteJersey().login(ci, pass);
+            DTUsuario usuario = cliente.login(ci, pass);
             if (usuario == null) {
                 throw new Exception("Usuario o contraseña incorrectos.");
             }
             sesion.setAttribute("usuario", usuario);
             if (usuario.getRol().equals("estudiante")) {
                 mostrarVista("Vistas/Estudiante/index.jsp");
-            }
-            else if (usuario.getRol().equals("encargado")) {
+            } else if (usuario.getRol().equals("encargado")) {
                 mostrarVista("Vistas/Encargado/index.jsp");
-            }
-            else {
+            } else {
                 mostrarVista("Vistas/Admin/index.jsp");
             }
 

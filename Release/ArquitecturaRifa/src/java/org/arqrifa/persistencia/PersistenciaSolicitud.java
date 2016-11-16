@@ -21,7 +21,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     }
 
     @Override
-    public void altaSolicitud(DTSolicitud solicitud) throws Exception {
+    public void alta(DTSolicitud solicitud) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -59,7 +59,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     }
 
     @Override
-    public void verificarSolicitud(int codigo) throws Exception {
+    public void verificar(int codigo) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -85,7 +85,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     }
 
     @Override
-    public void confirmarSolicitud(DTSolicitud solicitud) throws Exception {
+    public void confirmar(DTSolicitud solicitud) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -117,7 +117,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     }
     
     @Override
-    public void rechazarSolicitud(DTSolicitud solicitud) throws Exception {
+    public void rechazar(DTSolicitud solicitud) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -135,6 +135,14 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         }
         catch (Exception e) {
             throw e;
+        }
+        finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         }
     }
 

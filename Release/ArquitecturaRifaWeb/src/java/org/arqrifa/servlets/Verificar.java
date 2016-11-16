@@ -1,28 +1,54 @@
 package org.arqrifa.servlets;
 
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.rest.ClienteJersey;
+import org.arqrifa.viewmodels.VMVerificar;
 import org.arqrifa.viewmodels.ViewModel;
 
 public class Verificar extends HttpServlet {
 
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+    protected ClienteJersey cliente = new ClienteJersey();
+
+    protected void mostrarVista(String vista, ViewModel modelo) {
+
+        request.setAttribute("modelo", modelo);
+
+        try {
+            RequestDispatcher despachador = request.getRequestDispatcher(vista);
+
+            if (despachador != null) {
+                despachador.forward(request, response);
+            }
+        } catch (Exception ex) {
+            System.out.println("¡ERROR! No se pudo mostrar la vista " + vista + ".");
+        }
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
+        this.request = request;
+        this.response = response;
+        
+        VMVerificar vm = null;
         try {
             int codigo = Integer.parseInt(request.getParameter("codigo"));
-            new ClienteJersey().verificarSolicitud(codigo);
-            sesion.setAttribute("verificada", true);
+            cliente.verificarSolicitud(codigo);
+
+            vm = new VMVerificar(true, "");
+
         } catch (Exception ex) {
-            sesion.setAttribute("modelo", new ViewModel(ex.getMessage()));
-            sesion.setAttribute("verificada", false);
+            vm = new VMVerificar(false, ex.getMessage());
+
         }
-        response.sendRedirect("verificar.jsp");
+        mostrarVista("verificar.jsp", vm);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

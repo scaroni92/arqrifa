@@ -1,60 +1,60 @@
 package org.arqrifa.servlets;
 
-import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.rest.ClienteJersey;
 import org.arqrifa.viewmodels.VMGeneraciones;
-import org.arqrifa.viewmodels.ViewModel;
+import org.arqrifa.viewmodels.VMUsuario;
 
 public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_get() {
-        ViewModel vm = new ViewModel();
+        VMUsuario vm = new VMUsuario();
         try {
-            List<DTGeneracion> generaciones = new ClienteJersey().listarGeneraciones();
-            sesion.setAttribute("generaciones", generaciones);
+
+            vm.setGeneraciones(cliente.listarGeneraciones());
+
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("/Vistas/Admin/agregarEncargado.jsp", vm);
+        mostrarVista("Vistas/Admin/agregarEncargado.jsp", vm);
     }
 
     public void agregar_encargado_post() {
-        ViewModel vm = new ViewModel();
         DTUsuario encargado = null;
 
+        VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
+        
         try {
+            vm.setGeneraciones(cliente.listarGeneraciones());
+            
             int ci;
-            int generacion = Integer.parseInt(request.getParameter("generacion"));
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String pass = request.getParameter("pass");
-            String email = request.getParameter("email");
-
             try {
-                ci = Integer.parseInt(request.getParameter("ci"));
+                ci = Integer.parseInt(vm.getCi());
             } catch (NumberFormatException e) {
-                throw new Exception("La cédula debe ser numérica.");
+                throw new Exception("Ingrese una cédula válida.");
             }
+            
+            int generacion = Integer.parseInt(vm.getGeneracion());
 
-            encargado = new DTUsuario(ci, nombre, apellido, pass, email, "encargado", generacion);
-            new ClienteJersey().agregarEncargado(encargado);
+            
+            
+            cliente.agregarEncargado(new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "encargado", generacion));
 
-            vm.setMensaje("Encargado agregado exitosamente.");
-
+            
+            
+            vm.setMensaje("Encargado agregado exitosamente.");         
+            
+            
         } catch (Exception ex) {
-            sesion.setAttribute("encargado", encargado);
             vm.setMensaje(ex.getMessage());
         }
         mostrarVista("/Vistas/Admin/agregarEncargado.jsp", vm);
-
     }
 
     public void agregar_generacion_get() {
         VMGeneraciones vm = new VMGeneraciones();
         try {
-            vm.setGeneraciones(new ClienteJersey().listarGeneraciones());
+            vm.setGeneraciones(cliente.listarGeneraciones());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -69,8 +69,8 @@ public class ControladorAdministrador extends Controlador {
             int anio = Integer.parseInt(request.getParameter("anio"));
             DTGeneracion generacion = new DTGeneracion(anio);
 
-            new ClienteJersey().agregarGeneracion(generacion);
-            
+            cliente.agregarGeneracion(generacion);
+
             vm.setMensaje("Generación agregada con éxito.");
 
         } catch (NumberFormatException e) {

@@ -9,13 +9,13 @@
     <body>
         <h1>Registro</h1>
         <form action="Usuarios" method="post">
-            Cédula: <input type="text" name="ci" value="${solicitud.ci}" required autofocus ><br>
-            Nombre: <input type="text" name="nombre" value="${solicitud.nombre}" required ><br>
-            Apellido: <input type="text" name="apellido" value="${solicitud.apellido}" required ><br>
-            Contraseña: <input type="password" name="pass" value="${solicitud.contrasena}" required ><br>
-            Email: <input type="email" name="email" value="${solicitud.email}" required ><br>
+            Cédula: <input type="text" name="ci" value="${modelo.ci}" required autofocus ><br>
+            Nombre: <input type="text" name="nombre" value="${modelo.nombre}" required ><br>
+            Apellido: <input type="text" name="apellido" value="${modelo.apellido}" required ><br>
+            Contraseña: <input type="password" name="contrasena" value="${modelo.contrasena}" required ><br>
+            Email: <input type="email" name="email" value="${modelo.email}" required ><br>
             Generación: <select name="generacion">
-                <c:forEach items="${generaciones}" var="generacion">
+                <c:forEach items="${modelo.generaciones}" var="generacion">
                     <option>${generacion.id}</option>
                 </c:forEach>
             </select><br>

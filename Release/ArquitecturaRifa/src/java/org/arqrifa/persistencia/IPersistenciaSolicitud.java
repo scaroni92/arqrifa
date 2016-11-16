@@ -4,11 +4,11 @@ import org.arqrifa.datatypes.DTSolicitud;
 
 
 public interface IPersistenciaSolicitud {
-    void altaSolicitud(DTSolicitud solicitud) throws Exception;
+    void alta(DTSolicitud solicitud) throws Exception;
     
-    void verificarSolicitud(int ci) throws Exception;
+    void verificar(int ci) throws Exception;
     
-    void confirmarSolicitud(DTSolicitud solicitud) throws Exception;
+    void confirmar(DTSolicitud solicitud) throws Exception;
     
-    void rechazarSolicitud(DTSolicitud solicitud) throws Exception;
+    void rechazar(DTSolicitud solicitud) throws Exception;
 }

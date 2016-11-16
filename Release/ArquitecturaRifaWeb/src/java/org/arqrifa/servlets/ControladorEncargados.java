@@ -10,6 +10,7 @@ import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMSolicitudes;
+import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorEncargados extends Controlador {
 
@@ -73,29 +74,23 @@ public class ControladorEncargados extends Controlador {
     }
 
     public void agendar_post() {
-        VMReunion vm = new VMReunion();
-
+        VMReunion vm = (VMReunion)cargarModelo(new VMReunion());
+        
         try {
             DTUsuario u = (DTUsuario) sesion.getAttribute("usuario");
 
-            vm.setTitulo(request.getParameter("titulo"));
-            vm.setDescripcion(request.getParameter("descripcion"));
-            vm.setFecha(request.getParameter("fecha"));
-            vm.setHora(request.getParameter("hora"));
-            vm.setObligatoria(request.getParameter("obligatoria") != null);
-            vm.setLugar(request.getParameter("lugar"));
-
             Date fecha = new SimpleDateFormat("yyyy-mm-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
             
-
             cliente.agendarReunion(new DTReunion(0, vm.getTitulo(), vm.getDescripcion(), "", fecha, vm.isObligatoria(), u.getGeneracion(), "", vm.getLugar()));
-            vm.setMensaje("reunion agendada");
+            vm = new VMReunion();
+            vm.setMensaje("Reuníon agendada exitosamente.");
+            
         } catch (ParseException e) {
             vm.setMensaje("ingrese una fecha válida");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
+        
         mostrarVista("Vistas/Encargado/agendar.jsp", vm);
-
     }
 }

@@ -95,6 +95,7 @@ public class VMReunion extends ViewModel {
     }
 
     //</editor-fold>
+    
     public VMReunion(String id, String titulo, String descripcion, String fecha, String hora, boolean obligatoria, String generacion, String estado, String lugar, String mensaje) {
         super(mensaje);
         this.id = id;

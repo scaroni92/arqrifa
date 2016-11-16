@@ -35,6 +35,7 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void altaSolicitud(DTSolicitud solicitud) {
         String link = "http://localhost:8080/ArquitecturaRifaWeb/verificar?codigo=";
+        
         try {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
@@ -44,7 +45,7 @@ class ControladorUsuario implements IControladorUsuario {
             }
             
             solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
-            FabricaPersistencia.getPersistenciaSolicitud().altaSolicitud(solicitud);
+            FabricaPersistencia.getPersistenciaSolicitud().alta(solicitud);
 
             String msj = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
                 + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
@@ -62,7 +63,7 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void verificarSolicitud(int codigo) {
         try {
-            FabricaPersistencia.getPersistenciaSolicitud().verificarSolicitud(codigo);
+            FabricaPersistencia.getPersistenciaSolicitud().verificar(codigo);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
@@ -94,7 +95,7 @@ class ControladorUsuario implements IControladorUsuario {
                 throw new Exception("No se puede confirmar una solicitud sin verificar");
             }
             DTUsuario usuario = new DTUsuario(s.getCi(), s.getNombre(), s.getApellido(), s.getContrasena(), s.getEmail(), "estudiante", s.getGeneracion());
-            FabricaPersistencia.getPersistenciaSolicitud().confirmarSolicitud(s);
+            FabricaPersistencia.getPersistenciaSolicitud().confirmar(s);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
@@ -106,7 +107,7 @@ class ControladorUsuario implements IControladorUsuario {
             if (solicitud == null) {
                 throw new Exception("No se puede rechazar una solicitud nula.");
             }
-            FabricaPersistencia.getPersistenciaSolicitud().rechazarSolicitud(solicitud);
+            FabricaPersistencia.getPersistenciaSolicitud().rechazar(solicitud);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

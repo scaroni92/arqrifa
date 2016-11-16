@@ -14,7 +14,7 @@
     </head>
     <body>
         <c:choose>
-            <c:when test="${verificada}">
+            <c:when test="${modelo.verificada}">
                 <h1>Éxito!</h1>
                 <h2>Has verificado correctamente tu dirección de correo electrónico.</h2>
                 <a href="index.jsp">INICIA SESIÓN</a>

@@ -75,6 +75,7 @@ public class Servicio {
     @Path("/solicitud/enviar")
     @POST
     public Response enviarSolicitud(DTSolicitud solicitud) {
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + solicitud.getGeneracion());
         FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
