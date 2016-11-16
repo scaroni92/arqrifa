@@ -12,6 +12,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTGeneracion;
+import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 
 public class ClienteJersey {
@@ -117,6 +118,16 @@ public class ClienteJersey {
         }
     }
 
+    public void agendarReunion(DTReunion reunion) throws Exception {
+        target = target.path("reunion/agendar");
+        Response respuesta = target.request(RESPONSE_TYPE).post(Entity.entity(reunion, RESPONSE_TYPE));
+        if (respuesta.getStatus() != 200 && respuesta.getStatus() != 204) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
+    
+    
     public void close() {
         client.close();
     }

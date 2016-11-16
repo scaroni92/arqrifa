@@ -69,9 +69,13 @@ class ControladorReuniones implements IControladorReuniones {
             if (reunion == null) {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
+
+//            if (reunion.getFecha().after(new Date())) {
+//                throw new Exception("Las reuniones deben ser agendadas con almenos un día de anticipación.");
+//            }
             FabricaPersistencia.getPersistenciaReunion().altaReunion(reunion);
             List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
-            
+
             String asunto = "¡Nueva reunión agendada!";
             String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " + reunion.getFecha();
 

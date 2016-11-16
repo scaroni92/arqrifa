@@ -10,6 +10,7 @@
         <h2>Nombre : ${usuario.nombre} ${usuario.apellido}</h2>
         <h3>Generación: ${usuario.generacion}</h3>
         <a href="Encargados?accion=solicitudes">Listar solicitudes</a>
+        <a href="Encargados?accion=agendar">Agendar reunion</a>
         <p>${modelo.mensaje}</p>
     </body>
 </html>

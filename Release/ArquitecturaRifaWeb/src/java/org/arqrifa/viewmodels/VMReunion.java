@@ -1,23 +1,20 @@
-package org.arqrifa.datatypes;
+package org.arqrifa.viewmodels;
 
-import java.util.Date;
-import javax.xml.bind.annotation.XmlRootElement;
+public class VMReunion extends ViewModel {
 
-@XmlRootElement
-public class DTReunion {
-
-    private int id;
+    private String id;
     private String titulo;
     private String descripcion;
     private String resoluciones;
-    private Date fecha;
+    private String fecha;
+    private String hora;
     private boolean obligatoria;
-    private int generacion;
+    private String generacion;
     private String estado;
     private String lugar;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -33,15 +30,19 @@ public class DTReunion {
         return resoluciones;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
+    }
+
+    public String getHora() {
+        return hora;
     }
 
     public boolean isObligatoria() {
         return obligatoria;
     }
 
-    public int getGeneracion() {
+    public String getGeneracion() {
         return generacion;
     }
 
@@ -53,7 +54,7 @@ public class DTReunion {
         return lugar;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,15 +70,19 @@ public class DTReunion {
         this.resoluciones = resoluciones;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public void setObligatoria(boolean obligatoria) {
         this.obligatoria = obligatoria;
     }
 
-    public void setGeneracion(int generacion) {
+    public void setGeneracion(String generacion) {
         this.generacion = generacion;
     }
 
@@ -90,22 +95,21 @@ public class DTReunion {
     }
 
     //</editor-fold>
-
-    public DTReunion(int id, String titulo, String descripcion, String resoluciones, Date fecha, boolean obligatoria, int generacion, String estado, String lugar) {
+    public VMReunion(String id, String titulo, String descripcion, String fecha, String hora, boolean obligatoria, String generacion, String estado, String lugar, String mensaje) {
+        super(mensaje);
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.resoluciones = resoluciones;
         this.fecha = fecha;
+        this.hora = hora;
         this.obligatoria = obligatoria;
         this.generacion = generacion;
         this.estado = estado;
         this.lugar = lugar;
     }
 
-
-    public DTReunion() {
-        this(0, "n/d", "n/d", "n/d", new Date(), false, 0, "n/d", "n/d");
+    public VMReunion() {
+        super();
     }
 
 }

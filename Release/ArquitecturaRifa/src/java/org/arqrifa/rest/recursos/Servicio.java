@@ -43,8 +43,10 @@ public class Servicio {
     }
     
     @Path("/reunion/agendar")
-    @GET
+    @POST
     public Response agendarReunion(DTReunion reunion) {
+        System.out.println("entré al método");
+        System.out.println(reunion.getDescripcion());
         FabricaLogica.getControladorReuniones().altaReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
