@@ -23,10 +23,9 @@ class ControladorReuniones implements IControladorReuniones {
     }
 
     private ControladorReuniones() {
-        Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, "listado", "lugar1");
-        r.setEstado(DTEstado.LISTADO);
+        Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, DTEstado.LISTADO, "lugar1");
         reunionesActivas.add(r);
-        r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, "pendiente", "lugar2");
+        r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, DTEstado.INICIADA, "lugar2");
         reunionesActivas.add(r);
     }
 
@@ -48,13 +47,13 @@ class ControladorReuniones implements IControladorReuniones {
             if (!reunionActiva.getEstado().equals(DTEstado.LISTADO)) {
                 throw new Exception("La lista no ha sido habilitada aún.");
             }
-            FabricaPersistencia.getPersistenciaReunion().MarcarAsistencia(usuario, reunion);
+            FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
     }
 
-    // Filtrar por encargado
+    // Filtrar por GENERACION
     @Override
     public List<DTReunion> getReunionesActivas() {
         List<DTReunion> resp = new ArrayList();
@@ -72,15 +71,15 @@ class ControladorReuniones implements IControladorReuniones {
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            
+
             Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
             Date fechaActual = sdf.parse(sdf.format(new Date()));
-                        
+
             if (fechaReunion.compareTo(fechaActual) <= 0) {
                 throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
             }
-            
-            FabricaPersistencia.getPersistenciaReunion().altaReunion(reunion);
+
+            FabricaPersistencia.getPersistenciaReunion().alta(reunion);
             List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 
             String asunto = "¡Nueva reunión agendada!";
@@ -92,6 +91,43 @@ class ControladorReuniones implements IControladorReuniones {
                 mensajeria.getMensaje().setDestinatario(usuario.getEmail());
                 mensajeria.enviar();
             }
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
+    @Override
+    public DTReunion buscarReunion(int id) {
+        DTReunion reunion = null;
+        try {
+            reunion = FabricaPersistencia.getPersistenciaReunion().buscar(id);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+        return reunion;
+    }
+
+    @Override
+    public void iniciarReunion(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede iniciar una reunión nula.");
+            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
+            Date fechaActual = new Date();
+
+            if (fechaReunion.compareTo(sdf.parse(sdf.format(fechaActual))) != 0) {
+                throw new Exception("No se puede iniciar una reunión fuera de fecha.");
+            }
+
+            if (reunion.getFecha().before(fechaActual)) {
+                throw new Exception("No se puede iniciar la reunión antes de la fecha y hora prevista.");
+            }
+
+            FabricaPersistencia.getPersistenciaReunion().iniciar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

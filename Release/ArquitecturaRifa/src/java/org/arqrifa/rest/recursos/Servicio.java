@@ -41,11 +41,24 @@ public class Servicio {
     public List<DTReunion> getReunionesActivas() {
         return FabricaLogica.getControladorReuniones().getReunionesActivas();
     }
-    
+
     @Path("/reunion/agendar")
     @POST
     public Response agendarReunion(DTReunion reunion) {
         FabricaLogica.getControladorReuniones().altaReunion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/reunion/buscar")
+    @GET
+    public DTReunion buscarReunion(@QueryParam("id") int id) {
+        return FabricaLogica.getControladorReuniones().buscarReunion(id);
+    }
+
+    @Path("/reunion/iniciar")
+    @POST
+    public Response iniciarReunion(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().iniciarReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
 

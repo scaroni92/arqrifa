@@ -9,6 +9,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
@@ -64,7 +65,7 @@ public class ClienteJersey {
     }
 
     public List<DTGeneracion> listarGeneraciones() throws Exception {
-        
+
         Response respuesta = TARGET.path("generacion/listar").request(JSON_TYPE).get();
 
         if (respuesta.getStatus() == 409) {
@@ -104,6 +105,22 @@ public class ClienteJersey {
     public void agendarReunion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/agendar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         if (respuesta.getStatus() != 200 && respuesta.getStatus() != 204) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
+    public DTReunion buscarReunion(int id) throws Exception {
+        Response respuesta = TARGET.path("reunion/buscar").queryParam("id", id).request(JSON_TYPE).get();
+        
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        return respuesta.readEntity(DTReunion.class);
+    }
+    
+    public void iniciarReunion(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/iniciar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }

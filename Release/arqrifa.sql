@@ -101,6 +101,7 @@ BEGIN
 END
 $$
 
+-- ListarEstudiantes - Devuelve los estudiantes de una generación
 CREATE PROCEDURE ListarEstudiantes(pGeneracion int)
 BEGIN
 	SELECT * FROM usuarios WHERE rol = 'estudiante' AND generacion = pGeneracion;
@@ -131,6 +132,13 @@ $$
 CREATE PROCEDURE ListarReunionesDelDia()
 BEGIN
 	SELECT * FROM reuniones WHERE CAST(Fecha as date) >= CAST(CURDATE() as date);
+END
+$$
+
+-- IniciarReunion - Marca una reunión como iniciada
+CREATE PROCEDURE IniciarReunion(pId int)
+BEGIN
+	UPDATE reuniones SET estado = 'Iniciada' WHERE id = pId;
 END
 $$
 
@@ -249,11 +257,14 @@ CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez'
 
 CALL VerificarSolicitud(22222222);
 
-CALL AltaReunion('titulo', 'desc', '2016-010-20 15:00:00', 2012, 1, 'lugar', @retorno);
+CALL AltaReunion('primera reunion', 'desc', '2016-10-20 15:00:00', 2012, 1, 'lugar', @retorno);
 CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
+CALL AltaReunion('otra reunion', 'desc', '2016-12-20 15:00:00', 2012, 1, 'lugar', @retorno);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
 SELECT * FROM usuarios;
 SELECT * FROM generaciones;
 SELECT * FROM reuniones;
+
+use arqrifa;

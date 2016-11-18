@@ -90,8 +90,9 @@ public class ControladorEncargados extends Controlador {
                 throw new Exception("Ingrese el lugar donde se realizará la reunión.");
             }
 
+            
             Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
-
+            System.out.println(fecha +"xxxxxxxxxxxxxxxxxxxxxxxx");
             cliente.agendarReunion(new DTReunion(0, vm.getTitulo(), vm.getDescripcion(), "", fecha, vm.isObligatoria(), u.getGeneracion(), "", vm.getLugar()));
             vm = new VMReunion();
             vm.setMensaje("Reuníon agendada exitosamente.");

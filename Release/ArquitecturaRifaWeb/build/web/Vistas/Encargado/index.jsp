@@ -12,5 +12,8 @@
         <a href="Encargados?accion=solicitudes">Listar solicitudes</a>
         <a href="Encargados?accion=agendar">Agendar reunion</a>
         <p>${modelo.mensaje}</p>
+        <br>
+        <br>
+        <a href="Reuniones?accion=ver&id=1">Ver reunión</a>
     </body>
 </html>

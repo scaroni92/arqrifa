@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class PersistenciaReunion implements IPersistenciaReunion {
@@ -25,7 +26,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public DTReunion BuscarReunion(int id) throws Exception {
+    public DTReunion buscar(int id) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -41,7 +42,8 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 String titulo = res.getString("titulo");
                 String descripcion = res.getString("descripcion");
                 String resoluciones = res.getString("resoluciones");
-                Date fecha = res.getDate("fecha");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date fecha = sdf.parse(sdf.format(res.getTimestamp("fecha")));
                 boolean obligatoria = res.getBoolean("obligatoria");
                 int generacion = res.getInt("generacion");
                 String estado = res.getString("estado");
@@ -67,7 +69,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public void MarcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
+    public void marcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -78,7 +80,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.setInt(2, estudiante.getCi());
             stmt.registerOutParameter(3, Types.INTEGER);
             stmt.execute();
-            
+
             switch (stmt.getInt(3)) {
                 case -1:
                     throw new Exception("El estudiante ya marcó su asistencia.");
@@ -89,8 +91,8 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 default:
                     break;
             }
-        } catch (SQLException e) {               
-            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");          
+        } catch (SQLException e) {
+            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -104,7 +106,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public void altaReunion(DTReunion reunion) throws Exception {
+    public void alta(DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -112,7 +114,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?)");
             stmt.setString(1, reunion.getTitulo());
             stmt.setString(2, reunion.getDescripcion());
-            stmt.setDate(3, new java.sql.Date(reunion.getFecha().getTime()));
+            stmt.setString(3, new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(reunion.getFecha()));
             stmt.setInt(4, reunion.getGeneracion());
             stmt.setBoolean(5, reunion.isObligatoria());
             stmt.setString(6, reunion.getLugar());
@@ -121,9 +123,34 @@ class PersistenciaReunion implements IPersistenciaReunion {
             if (stmt.getInt(7) == -1) {
                 throw new Exception("Ya hay agendada una reunión para el día ingresado.");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void iniciar(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL IniciarReunion(?)");
+            stmt.setInt(1, reunion.getId());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("Reunión no encontrada");
+            }
+        } 
+        catch(SQLException e){
+            throw new Exception("No se pudo iniciar la reunión, error de base datos.");
         }
         catch (Exception e) {
             throw e;

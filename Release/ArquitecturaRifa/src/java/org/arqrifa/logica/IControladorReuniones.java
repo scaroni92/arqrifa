@@ -11,4 +11,8 @@ public interface IControladorReuniones {
     List<DTReunion> getReunionesActivas();
     
     void altaReunion(DTReunion reunion);
+    
+    DTReunion buscarReunion(int id);
+    
+    void iniciarReunion(DTReunion reunion);
 }

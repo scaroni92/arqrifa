@@ -16,8 +16,10 @@
         <servlet-name>ControladorAdministrador</servlet-name>
         <servlet-class>org.arqrifa.servlets.ControladorAdministrador</servlet-class>
     </servlet>
-    
-    
+    <servlet>
+        <servlet-name>ControladorReuniones</servlet-name>
+        <servlet-class>org.arqrifa.servlets.ControladorReuniones</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>verificar</servlet-name>
         <url-pattern>/verificar</url-pattern>
@@ -33,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ControladorAdministrador</servlet-name>
         <url-pattern>/Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorReuniones</servlet-name>
+        <url-pattern>/Reuniones</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

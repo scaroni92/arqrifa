@@ -5,10 +5,11 @@ import org.arqrifa.datatypes.DTReunion;
 
 public interface IPersistenciaReunion {
 
-    DTReunion BuscarReunion(int id) throws Exception;
+    DTReunion buscar(int id) throws Exception;
     
-    void MarcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
+    void marcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
     
-    void altaReunion(DTReunion reunion) throws Exception;
+    void alta(DTReunion reunion) throws Exception;
             
+    void iniciar(DTReunion reunion) throws Exception;
 }
