@@ -22,7 +22,6 @@ public class ControladorUsuarios extends Controlador {
 
     public void registrar_post() {
         VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
-
         try {
 
             int ci;

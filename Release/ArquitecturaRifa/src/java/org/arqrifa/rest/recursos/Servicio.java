@@ -90,12 +90,10 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
-    
-    // modificar para que reciba una gen
     @Path("/solicitud/listar")
-    @POST
-    public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
-        return FabricaLogica.getControladorSolicitud().listarSolicitudes(usuario);
+    @GET
+    public List<DTSolicitud> getSolicitudes(@QueryParam("generacion")int generacion) {
+        return FabricaLogica.getControladorSolicitud().listarSolicitudes(generacion);
     }
 
     @Path("/solicitud/verificar")
@@ -118,11 +116,11 @@ public class Servicio {
         FabricaLogica.getControladorSolicitud().rechazarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/solicitud/buscar")
     @GET
     public DTSolicitud buscarSolicitud(@QueryParam("ci") int ci) {
         return FabricaLogica.getControladorSolicitud().buscarSolicitud(ci);
-    }  
+    }
     //</editor-fold>
 }

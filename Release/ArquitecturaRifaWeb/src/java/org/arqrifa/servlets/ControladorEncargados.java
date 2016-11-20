@@ -14,10 +14,9 @@ import org.arqrifa.viewmodels.VMSolicitudes;
 public class ControladorEncargados extends Controlador {
 
     public void solicitudes_get() {
-
         try {
-
-            List<DTSolicitud> lista = new ArrayList(cliente.listarSolicitudes((DTUsuario) sesion.getAttribute("usuario")));
+            DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
+            List<DTSolicitud> lista = new ArrayList(cliente.listarSolicitudes(usuario.getGeneracion()));
 
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(lista, ""));
         } catch (Exception e) {
@@ -38,7 +37,7 @@ public class ControladorEncargados extends Controlador {
             cliente.confirmarSolicitud(cliente.buscarSolicitud(ci));
 
             DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
-            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario), "Solicitud confirmada exitosamente."));
+            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud confirmada exitosamente."));
         } catch (Exception e) {
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(new ArrayList(), e.getMessage()));
         }
@@ -57,7 +56,7 @@ public class ControladorEncargados extends Controlador {
             cliente.rechazarSolicitud(cliente.buscarSolicitud(ci));
 
             DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
-            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario), "Solicitud rechazada exitosamente."));
+            mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud rechazada exitosamente."));
         } catch (Exception e) {
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(new ArrayList(), e.getMessage()));
         }

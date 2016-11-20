@@ -203,7 +203,7 @@ BEGIN
 	START TRANSACTION;
 	SET SQL_SAFE_UPDATES = 0;
 	IF EXISTS (SELECT * FROM solicitudes WHERE ci = pCi) THEN
-		INSERT INTO usuarios VALUES(pCi, pGeneracion, pNombre, pApellido, pContrasena, pEmail, 'estudiante');
+		INSERT INTO usuarios VALUES(pCi, pGeneracion, pNombre, pApellido, pContrasena, pEmail, 'Estudiante');
 		DELETE FROM solicitudes WHERE ci = pCi;
 	ELSE 
 		SET retorno = -1;

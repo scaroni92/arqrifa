@@ -2,7 +2,6 @@ package org.arqrifa.logica;
 
 import java.util.List;
 import org.arqrifa.datatypes.DTSolicitud;
-import org.arqrifa.datatypes.DTUsuario;
 
 public interface IControladorSolicitud {
 
@@ -16,6 +15,5 @@ public interface IControladorSolicitud {
 
     DTSolicitud buscarSolicitud(int ci);
     
-    //cambiar por param gen
-    List<DTSolicitud> listarSolicitudes(DTUsuario usuario);
+    List<DTSolicitud> listarSolicitudes(int generacion);
 }

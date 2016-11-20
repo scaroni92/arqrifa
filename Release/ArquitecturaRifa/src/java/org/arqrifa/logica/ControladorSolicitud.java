@@ -103,13 +103,12 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public List<DTSolicitud> listarSolicitudes(DTUsuario usuario) {
+    public List<DTSolicitud> listarSolicitudes(int generacion) {
         List<DTSolicitud> solicitudes = new ArrayList();
         try {
-            if (usuario == null) {
-                throw new Exception("El usuario no puede ser nulo.");
-            }
-            solicitudes = FabricaPersistencia.getPersistenciaSolicitud().listar(usuario.getGeneracion());
+            
+            solicitudes = FabricaPersistencia.getPersistenciaSolicitud().listar(generacion);
+            
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

@@ -9,7 +9,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
@@ -55,8 +54,8 @@ public class ClienteJersey {
         }
     }
 
-    public List<DTSolicitud> listarSolicitudes(DTUsuario usuario) throws Exception {
-        Response respuesta = TARGET.path("solicitud/listar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
+    public List<DTSolicitud> listarSolicitudes(int generacion) throws Exception {
+        Response respuesta = TARGET.path("solicitud/listar").queryParam("generacion", generacion).request(JSON_TYPE).get();
 
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
