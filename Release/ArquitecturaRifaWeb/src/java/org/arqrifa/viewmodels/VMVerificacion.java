@@ -1,7 +1,7 @@
 package org.arqrifa.viewmodels;
 
  
-public class VMVerificar extends ViewModel{
+public class VMVerificacion extends ViewModel{
 
     private boolean verificada;
 
@@ -13,12 +13,12 @@ public class VMVerificar extends ViewModel{
         this.verificada = verificada;
     }
 
-    public VMVerificar(boolean verificada, String mensaje) {
+    public VMVerificacion(boolean verificada, String mensaje) {
         super(mensaje);
         this.verificada = verificada;
     }
 
-    public VMVerificar() {
+    public VMVerificacion() {
         this(false, "");
     }
     

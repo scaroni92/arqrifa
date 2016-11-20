@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTSolicitud;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
@@ -27,7 +26,7 @@ class ControladorSolicitud implements IControladorSolicitud {
 
     @Override
     public void agregarSolicitud(DTSolicitud solicitud) {
-        String link = "http://localhost:8080/ArquitecturaRifaWeb/verificar?codigo=";
+        String link = "http://localhost:8080/ArquitecturaRifaWeb/Usuarios?accion=verificar&codigo=";
 
         try {
             if (solicitud == null) {

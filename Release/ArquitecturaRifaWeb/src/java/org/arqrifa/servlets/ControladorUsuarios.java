@@ -4,6 +4,7 @@ import java.util.Date;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMUsuario;
+import org.arqrifa.viewmodels.VMVerificacion;
 import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorUsuarios extends Controlador {
@@ -33,15 +34,15 @@ public class ControladorUsuarios extends Controlador {
             }
 
             int generacion = Integer.parseInt(vm.getGeneracion());
-            
+
             if (vm.getNombre().isEmpty()) {
                 throw new Exception("Ingrese su nombre");
             }
-            
+
             if (vm.getApellido().isEmpty()) {
                 throw new Exception("Ingrese la contraseña");
             }
-            
+
             if (vm.getEmail().isEmpty()) {
                 throw new Exception("Ingrese el mail");
             }
@@ -60,9 +61,9 @@ public class ControladorUsuarios extends Controlador {
         }
     }
 
-    public void login_post() { 
+    public void login_post() {
         try {
-            
+
             int ci = Integer.parseInt(request.getParameter("user"));
             String pass = request.getParameter("pass");
 
@@ -75,7 +76,7 @@ public class ControladorUsuarios extends Controlador {
                 throw new Exception("Usuario o contraseña incorrectos.");
             }
             sesion.setAttribute("usuario", usuario);
-            
+
             mostrarVista("Vistas/" + usuario.getRol() + "/index.jsp");
 
         } catch (NumberFormatException ex) {
@@ -83,5 +84,22 @@ public class ControladorUsuarios extends Controlador {
         } catch (Exception ex) {
             mostrarVista("index.jsp", new ViewModel(ex.getMessage()));
         }
+    }
+
+    public void verificar_get() {
+        VMVerificacion vm = new VMVerificacion();
+        try {
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
+
+            vm.setVerificada(false);
+            cliente.verificarSolicitud(codigo);
+
+            vm.setVerificada(true);
+        } catch (NumberFormatException ex) {
+            vm.setMensaje("El código de verificación no es válido.");
+        } catch (Exception ex) {
+            vm.setMensaje("No se pudo verificar la solicitud, quizas haya sido rechazada por el encargado");
+        }
+        mostrarVista("verificar.jsp", vm);
     }
 }
