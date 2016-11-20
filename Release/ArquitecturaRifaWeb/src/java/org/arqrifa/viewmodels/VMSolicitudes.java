@@ -1,11 +1,14 @@
 package org.arqrifa.viewmodels;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.arqrifa.datatypes.DTSolicitud;
 
 public class VMSolicitudes extends ViewModel {
 
     private List<DTSolicitud> solicitudes;
+
+
 
     public List<DTSolicitud> getSolicitudes() {
         return solicitudes;
@@ -22,5 +25,7 @@ public class VMSolicitudes extends ViewModel {
         super(mensaje);
         this.solicitudes = solicitudes;
     }
-
+    public VMSolicitudes() {
+        this(new ArrayList(), "");
+    }
 }

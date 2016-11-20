@@ -6,13 +6,14 @@ import org.arqrifa.datatypes.DTUsuario;
 
 public interface IControladorReuniones {
 
+    void agregarReunion(DTReunion reunion);
+
+    void iniciarReunion(DTReunion reunion);
+
     void MarcarAsistencia(DTUsuario usuario, DTReunion reunion);
 
-    List<DTReunion> getReunionesActivas();
-    
-    void altaReunion(DTReunion reunion);
-    
     DTReunion buscarReunion(int id);
-    
-    void iniciarReunion(DTReunion reunion);
+
+    List<DTReunion> listarReunionesActivas();
+
 }

@@ -2,16 +2,14 @@ package org.arqrifa.logica;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
-import org.arqrifa.datatypes.DTSolicitud;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorGeneracion implements IControladorGeneracion {
 
+    //<editor-fold defaultstate="collapsed" desc="Singleton">
     private static ControladorGeneracion instancia = null;
 
     public static ControladorGeneracion getInstancia() {
@@ -23,45 +21,38 @@ class ControladorGeneracion implements IControladorGeneracion {
 
     private ControladorGeneracion() {
     }
-
+    //</editor-fold>
+    
     @Override
-    public List<DTSolicitud> ListarSolicitudes(DTUsuario usuario) {
-        List<DTSolicitud> solicitudes = new ArrayList();
+    public void agregarGeneracion(DTGeneracion generacion) {
         try {
-            if (usuario == null) {
-                throw new Exception("El usuario no puede ser nulo.");
-            }
-            solicitudes = FabricaPersistencia.getPersistenciaGeneracion().listarSolicitudes(usuario.getGeneracion());
-        } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
-        }
-        return solicitudes;
-    }
-
-    @Override
-    public List<DTGeneracion> listarGeneraciones() {
-        List<DTGeneracion> generaciones = new ArrayList();
-        try {
-            generaciones = FabricaPersistencia.getPersistenciaGeneracion().listarGeneraciones();
-        } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
-        }
-        return generaciones;
-    }
-
-    @Override
-    public void altaGeneracion(DTGeneracion generacion) {
-        try {
+            
             if (generacion.getId() < 2009) {
                 throw new Exception("El año ingresado es inferior al permitido.");
             }
             if (generacion.getId() > Calendar.getInstance().get(Calendar.YEAR)) {
                 throw new Exception("No se puede agregar una generación cuyo año supere al actual");
             }
-            FabricaPersistencia.getPersistenciaGeneracion().altaGeneracion(generacion);
+            
+            FabricaPersistencia.getPersistenciaGeneracion().agregar(generacion);
+            
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
+    }
+
+    @Override
+    public List<DTGeneracion> listarGeneraciones() {
+        List<DTGeneracion> generaciones = new ArrayList();
+        
+        try {
+            
+            generaciones = FabricaPersistencia.getPersistenciaGeneracion().listar();
+            
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+        return generaciones;
     }
 
 }

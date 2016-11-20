@@ -226,6 +226,13 @@ BEGIN
 	COMMIT;
 END
 $$
+
+CREATE PROCEDURE BuscarSolicitud(pCi int)
+BEGIN
+	SELECT * FROM solicitudes WHERE ci = pCi;
+END
+$$
+
 -- GENERACIONES
 -- ListarGeneraciones - Devuelve la lista de generaciones
 CREATE PROCEDURE ListarGeneraciones()

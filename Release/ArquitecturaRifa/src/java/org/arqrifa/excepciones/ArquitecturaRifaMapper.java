@@ -9,8 +9,8 @@ import javax.ws.rs.ext.Provider;
 public class ArquitecturaRifaMapper implements ExceptionMapper<ArquitecturaRifaExcepcion> {
 
     @Override
-    public Response toResponse(ArquitecturaRifaExcepcion exception) {
-        DTMensajeError mensaje = new DTMensajeError(exception.getMessage());
+    public Response toResponse(ArquitecturaRifaExcepcion ex) {
+        DTMensajeError mensaje = new DTMensajeError(ex.getMessage());
         return Response.status(Response.Status.CONFLICT).entity(mensaje).build();
     }
 

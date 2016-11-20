@@ -13,6 +13,7 @@ import java.util.Date;
 
 class PersistenciaReunion implements IPersistenciaReunion {
 
+    //<editor-fold defaultstate="collapsed" desc="Singleton">
     private static PersistenciaReunion instancia = null;
 
     public static IPersistenciaReunion getInstancia() {
@@ -25,40 +26,56 @@ class PersistenciaReunion implements IPersistenciaReunion {
     private PersistenciaReunion() {
     }
 
+    //</editor-fold>
+    
     @Override
-    public DTReunion buscar(int id) throws Exception {
+    public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
-        ResultSet res = null;
-
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BuscarReunion(?)");
-            stmt.setInt(1, id);
-            res = stmt.executeQuery();
-
-            DTReunion reunion = null;
-            if (res.next()) {
-                String titulo = res.getString("titulo");
-                String descripcion = res.getString("descripcion");
-                String resoluciones = res.getString("resoluciones");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date fecha = sdf.parse(sdf.format(res.getTimestamp("fecha")));
-                boolean obligatoria = res.getBoolean("obligatoria");
-                int generacion = res.getInt("generacion");
-                String estado = res.getString("estado");
-                String lugar = res.getString("lugar");
-                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar);
+            stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?)");
+            stmt.setString(1, reunion.getTitulo());
+            stmt.setString(2, reunion.getDescripcion());
+            stmt.setString(3, new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(reunion.getFecha()));
+            stmt.setInt(4, reunion.getGeneracion());
+            stmt.setBoolean(5, reunion.isObligatoria());
+            stmt.setString(6, reunion.getLugar());
+            stmt.registerOutParameter(7, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(7) == -1) {
+                throw new Exception("Ya hay agendada una reunión para el día ingresado.");
             }
-            return reunion;
         } catch (SQLException e) {
-            throw new Exception("No se pudo encontrar la reunion - Error de base de datos.");
+            throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
+            if (stmt != null) {
+                stmt.close();
             }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void iniciar(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL IniciarReunion(?)");
+            stmt.setInt(1, reunion.getId());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("Reunión no encontrada");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo iniciar la reunión, error de base datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
             if (stmt != null) {
                 stmt.close();
             }
@@ -106,56 +123,39 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public void alta(DTReunion reunion) throws Exception {
+    public DTReunion buscar(int id) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
+        ResultSet res = null;
+
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?)");
-            stmt.setString(1, reunion.getTitulo());
-            stmt.setString(2, reunion.getDescripcion());
-            stmt.setString(3, new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(reunion.getFecha()));
-            stmt.setInt(4, reunion.getGeneracion());
-            stmt.setBoolean(5, reunion.isObligatoria());
-            stmt.setString(6, reunion.getLugar());
-            stmt.registerOutParameter(7, Types.INTEGER);
-            stmt.execute();
-            if (stmt.getInt(7) == -1) {
-                throw new Exception("Ya hay agendada una reunión para el día ingresado.");
+            stmt = con.prepareCall("CALL BuscarReunion(?)");
+            stmt.setInt(1, id);
+            res = stmt.executeQuery();
+
+            DTReunion reunion = null;
+            if (res.next()) {
+                String titulo = res.getString("titulo");
+                String descripcion = res.getString("descripcion");
+                String resoluciones = res.getString("resoluciones");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date fecha = sdf.parse(sdf.format(res.getTimestamp("fecha")));
+                boolean obligatoria = res.getBoolean("obligatoria");
+                int generacion = res.getInt("generacion");
+                String estado = res.getString("estado");
+                String lugar = res.getString("lugar");
+                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar);
             }
+            return reunion;
         } catch (SQLException e) {
-            throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
+            throw new Exception("No se pudo encontrar la reunion - Error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
+            if (res != null) {
+                res.close();
             }
-            if (con != null) {
-                con.close();
-            }
-        }
-    }
-
-    @Override
-    public void iniciar(DTReunion reunion) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL IniciarReunion(?)");
-            stmt.setInt(1, reunion.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("Reunión no encontrada");
-            }
-        } 
-        catch(SQLException e){
-            throw new Exception("No se pudo iniciar la reunión, error de base datos.");
-        }
-        catch (Exception e) {
-            throw e;
-        }
-        finally {
             if (stmt != null) {
                 stmt.close();
             }

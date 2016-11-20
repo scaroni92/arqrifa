@@ -25,7 +25,7 @@ public class Servicio {
     @Path("/login")
     @GET
     public DTUsuario login(@QueryParam("ci") int ci, @QueryParam("pass") String pass) {
-        return FabricaLogica.getLogicaUsuario().Autenticar(ci, pass);
+        return FabricaLogica.getLogicaUsuario().autenticar(ci, pass);
     }
 
     @POST
@@ -39,13 +39,13 @@ public class Servicio {
     @Path("/reuniones/getActivas")
     @GET
     public List<DTReunion> getReunionesActivas() {
-        return FabricaLogica.getControladorReuniones().getReunionesActivas();
+        return FabricaLogica.getControladorReuniones().listarReunionesActivas();
     }
 
     @Path("/reunion/agendar")
     @POST
     public Response agendarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().altaReunion(reunion);
+        FabricaLogica.getControladorReuniones().agregarReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -71,14 +71,14 @@ public class Servicio {
     @Path("/generacion/agregar")
     @POST
     public Response agregarGeneracion(DTGeneracion generacion) {
-        FabricaLogica.getControladorGeneracion().altaGeneracion(generacion);
+        FabricaLogica.getControladorGeneracion().agregarGeneracion(generacion);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/encargado/agregar")
     @POST
     public Response agregarEncargado(DTUsuario usuario) {
-        FabricaLogica.getLogicaUsuario().altaEncargado(usuario);
+        FabricaLogica.getLogicaUsuario().agregarEncargado(usuario);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -86,35 +86,43 @@ public class Servicio {
     @Path("/solicitud/enviar")
     @POST
     public Response enviarSolicitud(DTSolicitud solicitud) {
-        FabricaLogica.getLogicaUsuario().altaSolicitud(solicitud);
+        FabricaLogica.getControladorSolicitud().agregarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
 
+    
+    // modificar para que reciba una gen
     @Path("/solicitud/listar")
     @POST
     public List<DTSolicitud> getSolicitudes(DTUsuario usuario) {
-        return FabricaLogica.getControladorGeneracion().ListarSolicitudes(usuario);
+        return FabricaLogica.getControladorSolicitud().listarSolicitudes(usuario);
     }
 
     @Path("/solicitud/verificar")
     @GET
     public Response verificarSolicitud(@QueryParam("codigo") int codigo) {
-        FabricaLogica.getLogicaUsuario().verificarSolicitud(codigo);
+        FabricaLogica.getControladorSolicitud().verificarSolicitud(codigo);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/solicitud/confirmar")
     @POST
     public Response confirmarSolicitud(DTSolicitud solicitud) {
-        FabricaLogica.getLogicaUsuario().confirmarSolicitud(solicitud);
+        FabricaLogica.getControladorSolicitud().confirmarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/solicitud/rechazar")
     @POST
     public Response rechazarSolicitud(DTSolicitud solicitud) {
-        FabricaLogica.getLogicaUsuario().rechazarSolicitud(solicitud);
+        FabricaLogica.getControladorSolicitud().rechazarSolicitud(solicitud);
         return Response.status(Response.Status.OK).build();
     }
+    
+    @Path("/solicitud/buscar")
+    @GET
+    public DTSolicitud buscarSolicitud(@QueryParam("ci") int ci) {
+        return FabricaLogica.getControladorSolicitud().buscarSolicitud(ci);
+    }  
     //</editor-fold>
 }

@@ -2,6 +2,7 @@ package org.arqrifa.logica;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTEstado;
@@ -55,7 +56,7 @@ class ControladorReuniones implements IControladorReuniones {
 
     // Filtrar por GENERACION
     @Override
-    public List<DTReunion> getReunionesActivas() {
+    public List<DTReunion> listarReunionesActivas() {
         List<DTReunion> resp = new ArrayList();
         for (Reunion reunion : reunionesActivas) {
             resp.add(reunion.getDataType());
@@ -64,7 +65,7 @@ class ControladorReuniones implements IControladorReuniones {
     }
 
     @Override
-    public void altaReunion(DTReunion reunion) {
+    public void agregarReunion(DTReunion reunion) {
         try {
             if (reunion == null) {
                 throw new Exception("No se puede agendar una reunión nula.");
@@ -78,8 +79,8 @@ class ControladorReuniones implements IControladorReuniones {
             if (fechaReunion.compareTo(fechaActual) <= 0) {
                 throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
             }
-
-            FabricaPersistencia.getPersistenciaReunion().alta(reunion);
+            
+            FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
             List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 
             String asunto = "¡Nueva reunión agendada!";

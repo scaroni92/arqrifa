@@ -2,12 +2,17 @@ package org.arqrifa.persistencia;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.arqrifa.datatypes.DTSolicitud;
 
 class PersistenciaSolicitud implements IPersistenciaSolicitud {
 
+    //<editor-fold defaultstate="collapsed" desc="Singleton">
     private static PersistenciaSolicitud instancia = null;
 
     public static PersistenciaSolicitud getInstancia() {
@@ -19,9 +24,10 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
 
     private PersistenciaSolicitud() {
     }
+    //</editor-fold>
 
     @Override
-    public void alta(DTSolicitud solicitud) throws Exception {
+    public void agregar(DTSolicitud solicitud) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -115,7 +121,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             }
         }
     }
-    
+
     @Override
     public void rechazar(DTSolicitud solicitud) throws Exception {
         Connection con = null;
@@ -129,14 +135,11 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             if (stmt.getInt(2) == -1) {
                 throw new Exception("La solicitud que desea rechazar no existe.");
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             throw new Exception("No se pudo rechazar la solicitud, error en base de datos.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw e;
-        }
-        finally {
+        } finally {
             if (stmt != null) {
                 stmt.close();
             }
@@ -144,6 +147,89 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
                 con.close();
             }
         }
+    }
+
+    @Override
+    public DTSolicitud buscar(int ci) throws Exception {
+        DTSolicitud solicitud = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarSolicitud(?)");
+            stmt.setInt(1, ci);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                int generacion = res.getInt("generacion");
+                Date fecha = res.getDate("fecha");
+                String nombre = res.getString("nombre");
+                String apellido = res.getString("apellido");
+                String contrasena = res.getString("contrasena");
+                String email = res.getString("email");
+                int codigo = res.getInt("codigo");
+                boolean verficiada = res.getBoolean("verificada");
+
+                solicitud = new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, codigo, verficiada);
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo buscar la solicitud, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return solicitud;
+    }
+
+    @Override
+    public List<DTSolicitud> listar(int generacion) throws Exception {
+        List<DTSolicitud> solicitudes = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarSolicitudesDeGeneracion(?);");
+            stmt.setInt(1, generacion);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                int ci = res.getInt("ci");
+                int gen = res.getInt("generacion");
+                Date fecha = res.getDate("fecha");
+                String nombre = res.getString("nombre");
+                String apellido = res.getString("apellido");
+                String contrasena = res.getString("contrasena");
+                String email = res.getString("email");
+                int codigo = res.getInt("codigo");
+                boolean verificada = res.getBoolean("verificada");
+                solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, codigo, verificada));
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudieron listar las solicitudes. Error de base de datos.");
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return solicitudes;
     }
 
 }

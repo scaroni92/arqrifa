@@ -94,6 +94,14 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
+    
+    public DTSolicitud buscarSolicitud(int ci) throws Exception {
+        Response respuesta = TARGET.path("solicitud/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        return respuesta.readEntity(DTSolicitud.class);
+    }
 
     public void rechazarSolicitud(DTSolicitud solicitud) throws Exception {
         Response respuesta = TARGET.path("solicitud/rechazar").request(JSON_TYPE).post(Entity.entity(solicitud, JSON_TYPE));

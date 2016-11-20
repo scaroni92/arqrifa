@@ -20,8 +20,6 @@ public class ControladorAdministrador extends Controlador {
     }
 
     public void agregar_encargado_post() {
-        DTUsuario encargado = null;
-
         VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
         
         try {
@@ -36,14 +34,9 @@ public class ControladorAdministrador extends Controlador {
             
             int generacion = Integer.parseInt(vm.getGeneracion());
 
-            
-            
             cliente.agregarEncargado(new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "encargado", generacion));
 
-            
-            
-            vm.setMensaje("Encargado agregado exitosamente.");         
-            
+            vm.setMensaje("Encargado agregado exitosamente.");        
             
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
@@ -66,15 +59,14 @@ public class ControladorAdministrador extends Controlador {
 
         try {
 
-            int anio = Integer.parseInt(request.getParameter("anio"));
-            DTGeneracion generacion = new DTGeneracion(anio);
+            DTGeneracion generacion = new DTGeneracion(Integer.parseInt(request.getParameter("anio")));
 
             cliente.agregarGeneracion(generacion);
 
             vm.setMensaje("Generación agregada con éxito.");
 
         } catch (NumberFormatException e) {
-            vm.setMensaje("Ingrese un año válido.");
+            vm.setMensaje("El año debe ser numérico.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

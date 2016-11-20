@@ -1,19 +1,11 @@
 package org.arqrifa.logica;
 
-import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 
 public interface IControladorUsuario {
 
-    DTUsuario Autenticar(int ci, String contrasena);
+    void agregarEncargado(DTUsuario usuario);
 
-    void altaSolicitud(DTSolicitud solicitud);
+    DTUsuario autenticar(int ci, String contrasena);
 
-    void verificarSolicitud(int ci);
-    
-    void altaEncargado(DTUsuario usuario);
-    
-    void confirmarSolicitud(DTSolicitud solicitud);
-    
-    void rechazarSolicitud(DTSolicitud solicitud);
 }

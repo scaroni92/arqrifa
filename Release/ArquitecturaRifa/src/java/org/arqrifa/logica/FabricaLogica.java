@@ -13,4 +13,8 @@ public class FabricaLogica {
     public static IControladorGeneracion getControladorGeneracion() {
         return ControladorGeneracion.getInstancia();
     }
+    
+    public static IControladorSolicitud getControladorSolicitud() {
+        return ControladorSolicitud.getInstancia();
+    }
 }
