@@ -93,7 +93,7 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
-    
+
     public DTSolicitud buscarSolicitud(int ci) throws Exception {
         Response respuesta = TARGET.path("solicitud/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
         if (respuesta.getStatus() == 409) {
@@ -118,15 +118,22 @@ public class ClienteJersey {
 
     public DTReunion buscarReunion(int id) throws Exception {
         Response respuesta = TARGET.path("reunion/buscar").queryParam("id", id).request(JSON_TYPE).get();
-        
+
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
         return respuesta.readEntity(DTReunion.class);
     }
-    
+
     public void iniciarReunion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/iniciar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
+
+    public void finalizarReunion(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/finalizar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }

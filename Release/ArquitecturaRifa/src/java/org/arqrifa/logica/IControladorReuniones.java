@@ -9,6 +9,8 @@ public interface IControladorReuniones {
     void agregarReunion(DTReunion reunion);
 
     void iniciarReunion(DTReunion reunion);
+    
+    void finalizarReunion(DTReunion reunion);
 
     void MarcarAsistencia(DTUsuario usuario, DTReunion reunion);
 

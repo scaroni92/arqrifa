@@ -62,6 +62,14 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
+    
+    @Path("/reunion/finalizar")
+    @POST
+    public Response finalizarReunion(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().finalizarReunion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("/generacion/listar")
     @GET
     public List<DTGeneracion> listarGeneraciones() {

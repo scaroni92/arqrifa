@@ -27,7 +27,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -73,6 +72,38 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo iniciar la reunión, error de base datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void finalizar(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL finalizarReunion(?, ?, ?)");
+            stmt.setInt(1, reunion.getId());
+            stmt.setString(2, reunion.getResoluciones());
+            stmt.registerOutParameter(3, Types.INTEGER);
+            int filasAfectadas = stmt.executeUpdate();
+            if (stmt.getInt(3) == -1) {
+                throw new Exception("La reunión ingresada no existe.");
+            }
+            if (filasAfectadas == 0) {
+                throw new Exception("No se puede finalizar una reunión que no está iniciada.");
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudo finalizar la reunión, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {

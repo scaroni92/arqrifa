@@ -28,7 +28,7 @@ CREATE TABLE reuniones (
     Generacion INT NOT NULL,
     Obligatoria BIT NOT NULL,
     Lugar VARCHAR(50) NOT NULL,
-    Resoluciones VARCHAR(100),
+    Resoluciones VARCHAR(100) DEFAULT '',
     Estado VARCHAR(15) DEFAULT 'Pendiente',
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
@@ -142,6 +142,22 @@ BEGIN
 END
 $$
 
+
+-- Verificar que la reunión sea pendiente e iniciada
+
+-- FinalizarReunion - Marca una reunión como finalizada
+-- Retorno : -1 si la reunión no existe
+
+CREATE PROCEDURE FinalizarReunion(pId int, pResoluciones varchar(100), out retorno int)
+BEGIN
+	IF NOT EXISTS (SELECT * FROM reuniones WHERE id = pId) THEN
+		SET retorno = -1;
+	ELSE
+		UPDATE reuniones SET estado = 'Finalizada', resoluciones = pResoluciones WHERE id = pId AND estado = 'Iniciada';
+	END IF;
+END
+$$
+
 -- ASISTENCIAS
 -- MarcarAsistencia - Marca la asistencia de un estudiante a una reunion
 -- Retorno : -1 si ya tiene asistencia, -2 si la reunion no existe , -3 si el estudiante no existe
@@ -245,7 +261,7 @@ $$
 DELIMITER ;
 
 CALL AltaGeneracion(0,@retorno);
-CALL AltaUsuario(4444444, 0, 'Luis', 'Peréz', '1234', 'luis@gmail.com', 'Admin',@retorno);
+CALL AltaUsuario(4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin',@retorno);
 
 
 
@@ -256,7 +272,7 @@ CALL AltaGeneracion(2013,@retorno);
 
 
 CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante',@retorno);
-CALL AltaUsuario(7777777,2012, 'Ana', 'Peréz', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado',@retorno);
+CALL AltaUsuario(7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado',@retorno);
 
 
 CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
@@ -264,14 +280,16 @@ CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez'
 
 CALL VerificarSolicitud(22222222);
 
-CALL AltaReunion('primera reunion', 'desc', '2016-10-20 15:00:00', 2012, 1, 'lugar', @retorno);
-CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'lugar',@retorno);
-CALL AltaReunion('otra reunion', 'desc', '2016-12-20 15:00:00', 2012, 1, 'lugar', @retorno);
+CALL AltaReunion('primera reunion', 'desc', '2016-10-20 15:00:00', 2012, 1, 'SALON 1', @retorno);
+CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'SALON 2',@retorno);
+CALL AltaReunion('otra reunion', 'desc', '2016-12-20 15:00:00', 2012, 1, 'SALON 3', @retorno);
+CALL AltaReunion('titulo', 'desc', NOW(),2012,0, 'SALON 4',@retorno);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
 SELECT * FROM usuarios;
 SELECT * FROM generaciones;
 SELECT * FROM reuniones;
+
 
 use arqrifa;

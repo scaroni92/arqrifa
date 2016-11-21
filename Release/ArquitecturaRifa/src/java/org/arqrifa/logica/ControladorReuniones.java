@@ -134,4 +134,17 @@ class ControladorReuniones implements IControladorReuniones {
         }
     }
 
+    @Override
+    public void finalizarReunion(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede finalizar una reunión nula");
+            }
+            
+            FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
 }

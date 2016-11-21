@@ -12,7 +12,7 @@ public class VMReunion extends ViewModel {
     private String generacion;
     private String estado;
     private String lugar;
-    private boolean activa;
+    private boolean habilitarInicio;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public String getId() {
@@ -55,8 +55,8 @@ public class VMReunion extends ViewModel {
         return lugar;
     }
 
-    public boolean isActiva() {
-        return activa;
+    public boolean isHabilitarInicio() {
+        return habilitarInicio;
     }
 
     
@@ -100,13 +100,13 @@ public class VMReunion extends ViewModel {
         this.lugar = lugar;
     }
 
-    public void setActiva(boolean activa) {
-        this.activa = activa;
+    public void setHabilitarInicio(boolean habilitarInicio) {
+        this.habilitarInicio = habilitarInicio;
     }
 
     //</editor-fold>
     
-    public VMReunion(String id, String titulo, String descripcion, String fecha, String hora, boolean obligatoria, String generacion, String estado, String lugar, boolean activa, String mensaje) {
+    public VMReunion(String id, String titulo, String descripcion, String fecha, String hora, boolean obligatoria, String generacion, String estado, String lugar, boolean habilitar, String mensaje) {
         super(mensaje);
         this.id = id;
         this.titulo = titulo;
@@ -117,7 +117,7 @@ public class VMReunion extends ViewModel {
         this.generacion = generacion;
         this.estado = estado;
         this.lugar = lugar;
-        this.activa = activa;
+        this.habilitarInicio = habilitar;
     }
 
     public VMReunion() {

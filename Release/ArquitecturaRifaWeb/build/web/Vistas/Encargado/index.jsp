@@ -14,6 +14,6 @@
         <p>${modelo.mensaje}</p>
         <br>
         <br>
-        <a href="Reuniones?accion=ver&id=1">Ver reunión</a>
+        <a href="Reuniones?accion=ver&id=4">Ver reunión</a>
     </body>
 </html>
