@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 class PersistenciaReunion implements IPersistenciaReunion {
 
@@ -27,6 +29,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
+    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -194,6 +197,57 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 con.close();
             }
         }
+    }
+
+    @Override
+    public List<DTReunion> listarIniciadas() throws Exception {
+        List<DTReunion> reuniones = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarReunionesIniciadas()");
+            res = stmt.executeQuery();
+
+            String titulo, descripcion, resoluciones, estado, lugar;
+            int generacion, id;
+            Date fecha;
+            boolean obligatoria;
+            
+            while (res.next()) {
+                id = res.getInt("id");
+                titulo = res.getString("titulo");
+                descripcion = res.getString("descripcion");
+                resoluciones = res.getString("resoluciones");
+                // Se utiliza getTimestamp porque getDate() no devuelve la hora.
+                fecha = new Date(res.getTimestamp("fecha").getTime());
+                obligatoria = res.getBoolean("obligatoria");
+                generacion = res.getInt("generacion");
+                estado = res.getString("estado");
+                lugar = res.getString("lugar");
+                
+                reuniones.add(new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar));
+            }
+        }
+        catch(SQLException e) {
+            throw new Exception("No se pudo listar las reuniones iniciadas, error de base de datos.");
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return reuniones;
     }
 
 }

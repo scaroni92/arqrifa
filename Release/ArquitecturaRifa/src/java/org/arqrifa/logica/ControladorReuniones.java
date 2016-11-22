@@ -2,7 +2,6 @@ package org.arqrifa.logica;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTEstado;
@@ -13,7 +12,7 @@ import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
 
 class ControladorReuniones implements IControladorReuniones {
 
-    private List<Reunion> reunionesActivas = new ArrayList();
+    //<editor-fold defaultstate="collapsed" desc="Singleton">
     private static ControladorReuniones instancia = null;
 
     public static IControladorReuniones getInstancia() {
@@ -24,16 +23,13 @@ class ControladorReuniones implements IControladorReuniones {
     }
 
     private ControladorReuniones() {
-        Reunion r = new Reunion(1, "titulo1", "desc1", "res", new Date(), true, 2010, DTEstado.LISTADO, "lugar1");
-        reunionesActivas.add(r);
-        r = new Reunion(2, "titulo2", "desc2", "res", new Date(), true, 2012, DTEstado.INICIADA, "lugar2");
-        reunionesActivas.add(r);
     }
+    //</editor-fold>
 
     @Override
     public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
-            if (!usuario.getRol().equals("estudiante")) {
+            /*if (!usuario.getRol().equals("estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
             Reunion reunionActiva = null;
@@ -47,7 +43,7 @@ class ControladorReuniones implements IControladorReuniones {
             }
             if (!reunionActiva.getEstado().equals(DTEstado.LISTADO)) {
                 throw new Exception("La lista no ha sido habilitada aún.");
-            }
+            }*/
             FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
@@ -56,12 +52,14 @@ class ControladorReuniones implements IControladorReuniones {
 
     // Filtrar por GENERACION
     @Override
-    public List<DTReunion> listarReunionesActivas() {
-        List<DTReunion> resp = new ArrayList();
-        for (Reunion reunion : reunionesActivas) {
-            resp.add(reunion.getDataType());
+    public List<DTReunion> listarReunionesIniciadas() {
+        List<DTReunion> reuniones = new ArrayList<>();
+        try {
+            reuniones = FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
         }
-        return resp;
+        return reuniones;
     }
 
     @Override
@@ -79,7 +77,7 @@ class ControladorReuniones implements IControladorReuniones {
             if (fechaReunion.compareTo(fechaActual) <= 0) {
                 throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
             }
-            
+
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
             List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 
@@ -116,7 +114,7 @@ class ControladorReuniones implements IControladorReuniones {
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            
+
             Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
             Date fechaActual = new Date();
 
@@ -140,7 +138,7 @@ class ControladorReuniones implements IControladorReuniones {
             if (reunion == null) {
                 throw new Exception("No se puede finalizar una reunión nula");
             }
-            
+
             FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());

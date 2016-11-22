@@ -1,5 +1,6 @@
 package org.arqrifa.persistencia;
 
+import java.util.List;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 
@@ -14,4 +15,6 @@ public interface IPersistenciaReunion {
     void marcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
     
     DTReunion buscar(int id) throws Exception;
+    
+    List<DTReunion> listarIniciadas() throws Exception;
 }

@@ -39,7 +39,7 @@ public class Servicio {
     @Path("/reuniones/getActivas")
     @GET
     public List<DTReunion> getReunionesActivas() {
-        return FabricaLogica.getControladorReuniones().listarReunionesActivas();
+        return FabricaLogica.getControladorReuniones().listarReunionesIniciadas();
     }
 
     @Path("/reunion/agendar")

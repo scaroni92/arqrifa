@@ -135,6 +135,12 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ListarReunionesIniciadas()
+BEGIN
+	SELECT * FROM reuniones WHERE estado = 'Iniciada';
+END
+$$
+
 -- IniciarReunion - Marca una reunión como iniciada
 CREATE PROCEDURE IniciarReunion(pId int)
 BEGIN

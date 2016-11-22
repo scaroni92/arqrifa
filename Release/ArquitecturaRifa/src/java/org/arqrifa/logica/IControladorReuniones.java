@@ -16,6 +16,6 @@ public interface IControladorReuniones {
 
     DTReunion buscarReunion(int id);
 
-    List<DTReunion> listarReunionesActivas();
+    List<DTReunion> listarReunionesIniciadas();
 
 }
