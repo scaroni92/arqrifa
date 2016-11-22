@@ -48,7 +48,7 @@ public class ControladorUsuarios extends Controlador {
             }
 
             cliente.enviarSolicitud(new DTSolicitud(ci, generacion, new Date(), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), 0, false));
-            mostrarVista("index.jsp");
+            mostrarVista("login.jsp");
 
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
@@ -80,9 +80,9 @@ public class ControladorUsuarios extends Controlador {
             mostrarVista("Vistas/" + usuario.getRol() + "/index.jsp");
 
         } catch (NumberFormatException ex) {
-            mostrarVista("index.jsp", new ViewModel("La cédula debe ser numérica."));
+            mostrarVista("login.jsp", new ViewModel("La cédula debe ser numérica."));
         } catch (Exception ex) {
-            mostrarVista("index.jsp", new ViewModel(ex.getMessage()));
+            mostrarVista("login.jsp", new ViewModel(ex.getMessage()));
         }
     }
 
