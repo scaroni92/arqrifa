@@ -8,6 +8,7 @@ import java.util.List;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMSolicitudes;
 
@@ -26,15 +27,7 @@ public class ControladorEncargados extends Controlador {
 
     public void confirmar_get() {
         try {
-
-            int ci;
-            try {
-                ci = Integer.parseInt(request.getParameter("ci"));
-            } catch (Exception e) {
-                throw new Exception("La cédula debe ser numérica.");
-            }
-
-            cliente.confirmarSolicitud(cliente.buscarSolicitud(ci));
+            cliente.confirmarSolicitud(cliente.buscarSolicitud(Validador.validarCi(request.getParameter("ci"))));
 
             DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud confirmada exitosamente."));
@@ -46,14 +39,7 @@ public class ControladorEncargados extends Controlador {
 
     public void rechazar_get() {
         try {
-            int ci;
-            try {
-                ci = Integer.parseInt(request.getParameter("ci"));
-            } catch (Exception e) {
-                throw new Exception("La cédula debe ser numérica.");
-            }
-            
-            cliente.rechazarSolicitud(cliente.buscarSolicitud(ci));
+            cliente.rechazarSolicitud(cliente.buscarSolicitud(Validador.validarCi(request.getParameter("ci"))));
 
             DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
             mostrarVista("Vistas/Encargado/solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud rechazada exitosamente."));
@@ -86,7 +72,7 @@ public class ControladorEncargados extends Controlador {
             DTUsuario u = (DTUsuario) sesion.getAttribute("usuario");
             Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
             cliente.agendarReunion(new DTReunion(0, vm.getTitulo(), vm.getDescripcion(), "", fecha, vm.isObligatoria(), u.getGeneracion(), "", vm.getLugar()));
-            
+
             vm = new VMReunion();
             vm.setMensaje("Reuníon agendada exitosamente.");
 

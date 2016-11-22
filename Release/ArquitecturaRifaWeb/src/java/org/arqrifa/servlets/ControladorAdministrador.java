@@ -2,6 +2,7 @@ package org.arqrifa.servlets;
 
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMGeneraciones;
 import org.arqrifa.viewmodels.VMUsuario;
 
@@ -9,10 +10,9 @@ public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_get() {
         VMUsuario vm = new VMUsuario();
+        
         try {
-
             vm.setGeneraciones(cliente.listarGeneraciones());
-
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -21,23 +21,28 @@ public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_post() {
         VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
-        
+
         try {
             vm.setGeneraciones(cliente.listarGeneraciones());
-            
-            int ci;
-            try {
-                ci = Integer.parseInt(vm.getCi());
-            } catch (NumberFormatException e) {
-                throw new Exception("Ingrese una cédula válida.");
-            }
-            
+
+            int ci = Validador.validarCi(request.getParameter("ci"));
             int generacion = Integer.parseInt(vm.getGeneracion());
+            if (vm.getNombre().isEmpty()) {
+                throw new Exception("El campo nombre no puede estar vacio");
+            }
+            if (vm.getApellido().isEmpty()) {
+                throw new Exception("El campo apellido no puede estar vacio");
+            }
+            if (vm.getContrasena().isEmpty()) {
+                throw new Exception("El campo contraseña no puede estar vacio");
+            }
+            if (vm.getEmail().isEmpty()) {
+                throw new Exception("El campo email no puede estar vacio");
+            }
 
-            cliente.agregarEncargado(new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "encargado", generacion));
+            cliente.agregarEncargado(new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "Encargado", generacion));
 
-            vm.setMensaje("Encargado agregado exitosamente.");        
-            
+            vm.setMensaje("Encargado agregado exitosamente.");
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
         }
@@ -63,10 +68,10 @@ public class ControladorAdministrador extends Controlador {
 
             cliente.agregarGeneracion(generacion);
 
-            vm.setMensaje("Generación agregada con éxito.");
+            vm.setMensaje("Generación agregada exitosamente.");
 
         } catch (NumberFormatException e) {
-            vm.setMensaje("El año debe ser numérico.");
+            vm.setMensaje("Ingrese un año válido.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

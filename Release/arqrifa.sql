@@ -281,15 +281,15 @@ CALL AltaUsuario(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com
 CALL AltaUsuario(7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado',@retorno);
 
 
-CALL AltaSolicitud(4444444, 2012, '2016-010-20 15:00:00', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
-CALL AltaSolicitud(3333333, 2012, '2016-010-20 16:00:00', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, @retorno);
+CALL AltaSolicitud(4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, @retorno);
+CALL AltaSolicitud(3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, @retorno);
 
 CALL VerificarSolicitud(22222222);
 
-CALL AltaReunion('primera reunion', 'desc', '2016-10-20 15:00:00', 2012, 1, 'SALON 1', @retorno);
-CALL AltaReunion('titulo', 'desc', '2016-06-20 15:00:00',2010,0, 'SALON 2',@retorno);
-CALL AltaReunion('otra reunion', 'desc', '2016-12-20 15:00:00', 2012, 1, 'SALON 3', @retorno);
-CALL AltaReunion('titulo', 'desc', NOW(),2012,0, 'SALON 4',@retorno);
+CALL AltaReunion('Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-10-20 15:00:00', 2012, 1, 'SALON 1', @retorno);
+CALL AltaReunion('Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',2010,0, 'SALON 2',@retorno);
+CALL AltaReunion('Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 2012, 1, 'SALON 3', @retorno);
+CALL AltaReunion('Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),2012,0, 'SALON 4',@retorno);
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;

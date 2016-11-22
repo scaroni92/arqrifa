@@ -3,6 +3,7 @@ package org.arqrifa.servlets;
 import java.util.Date;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.VMVerificacion;
 import org.arqrifa.viewmodels.ViewModel;
@@ -25,13 +26,7 @@ public class ControladorUsuarios extends Controlador {
         VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
         try {
 
-            int ci;
-            try {
-                ci = Integer.parseInt(vm.getCi());
-
-            } catch (Exception e) {
-                throw new Exception("Ingrese una cédula válida.");
-            }
+            int ci = Validador.validarCi(request.getParameter("ci"));
 
             int generacion = Integer.parseInt(vm.getGeneracion());
 

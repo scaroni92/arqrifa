@@ -29,6 +29,8 @@ class ControladorReuniones implements IControladorReuniones {
     @Override
     public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
+            //Hacer las validaciones comentadas en BD
+            
             /*if (!usuario.getRol().equals("estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
@@ -53,7 +55,7 @@ class ControladorReuniones implements IControladorReuniones {
     // Filtrar por GENERACION
     @Override
     public List<DTReunion> listarReunionesIniciadas() {
-        List<DTReunion> reuniones = new ArrayList<>();
+        List<DTReunion> reuniones = new ArrayList();
         try {
             reuniones = FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
         } catch (Exception e) {
