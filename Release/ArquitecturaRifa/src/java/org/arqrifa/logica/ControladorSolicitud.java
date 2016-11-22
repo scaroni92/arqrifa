@@ -25,25 +25,25 @@ class ControladorSolicitud implements IControladorSolicitud {
     //</editor-fold>
 
     @Override
-    public void agregarSolicitud(DTSolicitud solicitud) {
+    public void agregarSolicitud(DTSolicitud s) {
         String link = "http://localhost:8080/ArquitecturaRifaWeb/Usuarios?accion=verificar&codigo=";
 
         try {
-            if (solicitud == null) {
+            if (s == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
             }
-            if (solicitud.getCi() < 4000000) {
+            if (s.getUsuario().getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
 
-            solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
-            FabricaPersistencia.getPersistenciaSolicitud().agregar(solicitud);
+            s.setCodigo((int) (new Random().nextDouble() * 99999999));
+            FabricaPersistencia.getPersistenciaSolicitud().agregar(s);
 
-            String msj = solicitud.getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
+            String msj = s.getUsuario().getNombre() + " tu solicitud ha sido enviada exitosamente, ahora solo"
                     + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                    + link + solicitud.getCodigo();
+                    + link + s.getCodigo();
 
-            new Mensajeria(new Mensaje(solicitud.getEmail(), "Confirmar registro", msj)).enviar();
+            new Mensajeria(new Mensaje(s.getUsuario().getEmail(), "Confirmar registro", msj)).enviar();
         } catch (MessagingException me) {
             System.out.println(me.getMessage());
         } catch (Exception e) {
@@ -74,7 +74,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             String msj = "Tu solicitud ha sido confirmada, ya puedes iniciar sesión.\n Para descarcar la app móvil: " + link;
 
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(s);
-            new Mensajeria(new Mensaje(s.getEmail(), "Solicitud aceptada", msj)).enviar();
+            new Mensajeria(new Mensaje(s.getUsuario().getEmail(), "Solicitud aceptada", msj)).enviar();
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

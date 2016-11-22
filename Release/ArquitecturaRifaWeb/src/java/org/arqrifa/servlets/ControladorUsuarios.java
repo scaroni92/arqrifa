@@ -47,7 +47,7 @@ public class ControladorUsuarios extends Controlador {
                 throw new Exception("Ingrese el mail");
             }
 
-            cliente.enviarSolicitud(new DTSolicitud(ci, generacion, new Date(), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), 0, false));
+            cliente.enviarSolicitud(new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(),vm.getContrasena(), vm.getEmail(), "Estudiante", generacion)));
             mostrarVista("login.jsp");
 
         } catch (Exception ex) {

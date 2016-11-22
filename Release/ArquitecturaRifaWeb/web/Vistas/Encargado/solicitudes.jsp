@@ -16,18 +16,18 @@
 
             <c:forEach items="${modelo.solicitudes}" var="solicitud">
                 <tr>
-                    <td style="text-align: center;">${solicitud.ci}</td>
-                    <td>${solicitud.nombre}</td>
-                    <td>${solicitud.apellido}</td>
+                    <td style="text-align: center;">${solicitud.usuario.ci}</td>
+                    <td>${solicitud.usuario.nombre}</td>
+                    <td>${solicitud.usuario.apellido}</td>
                     <c:choose>
                         <c:when test="${solicitud.verificada}">
-                            <td><a href="Encargados?accion=confirmar&ci=${solicitud.ci}">Confirmar</a></td>
+                            <td><a href="Encargados?accion=confirmar&ci=${solicitud.usuario.ci}">Confirmar</a></td>
                         </c:when>
                         <c:otherwise>
                             <td><span>Correo no verificado</span></td>
                         </c:otherwise>
                     </c:choose>
-                    <td><a href="Encargados?accion=rechazar&ci=${solicitud.ci}">Rechazar</a></td>
+                    <td><a href="Encargados?accion=rechazar&ci=${solicitud.usuario.ci}">Rechazar</a></td>
                 </tr>
             </c:forEach>
         </table>

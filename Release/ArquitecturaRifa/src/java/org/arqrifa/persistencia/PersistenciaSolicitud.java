@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTSolicitud;
+import org.arqrifa.datatypes.DTUsuario;
 
 class PersistenciaSolicitud implements IPersistenciaSolicitud {
 
@@ -27,20 +28,20 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     //</editor-fold>
 
     @Override
-    public void agregar(DTSolicitud solicitud) throws Exception {
+    public void agregar(DTSolicitud s) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL AltaSolicitud(?, ?, ?, ?, ?, ?, ?, ?, ?);");
-            stmt.setInt(1, solicitud.getCi());
-            stmt.setInt(2, solicitud.getGeneracion());
-            stmt.setDate(3, new java.sql.Date(solicitud.getFecha().getTime()));
-            stmt.setString(4, solicitud.getNombre());
-            stmt.setString(5, solicitud.getApellido());
-            stmt.setString(6, solicitud.getContrasena());
-            stmt.setString(7, solicitud.getEmail());
-            stmt.setInt(8, solicitud.getCodigo());
+            stmt.setInt(1, s.getUsuario().getCi());
+            stmt.setInt(2, s.getUsuario().getGeneracion());
+            stmt.setDate(3, new java.sql.Date(s.getFecha().getTime()));
+            stmt.setString(4, s.getUsuario().getNombre());
+            stmt.setString(5, s.getUsuario().getApellido());
+            stmt.setString(6, s.getUsuario().getContrasena());
+            stmt.setString(7, s.getUsuario().getEmail());
+            stmt.setInt(8, s.getCodigo());
             stmt.registerOutParameter(9, Types.INTEGER);
             stmt.execute();
             int retorno = stmt.getInt(9);
@@ -91,18 +92,18 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
     }
 
     @Override
-    public void confirmar(DTSolicitud solicitud) throws Exception {
+    public void confirmar(DTSolicitud s) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL ConfirmarSolicitud(?, ?, ?, ?, ?, ?, ?);");
-            stmt.setInt(1, solicitud.getCi());
-            stmt.setInt(2, solicitud.getGeneracion());
-            stmt.setString(3, solicitud.getNombre());
-            stmt.setString(4, solicitud.getApellido());
-            stmt.setString(5, solicitud.getContrasena());
-            stmt.setString(6, solicitud.getEmail());
+            stmt.setInt(1, s.getUsuario().getCi());
+            stmt.setInt(2, s.getUsuario().getGeneracion());
+            stmt.setString(3, s.getUsuario().getNombre());
+            stmt.setString(4, s.getUsuario().getApellido());
+            stmt.setString(5, s.getUsuario().getContrasena());
+            stmt.setString(6, s.getUsuario().getEmail());
             stmt.registerOutParameter(7, Types.INTEGER);
             stmt.execute();
             if (stmt.getInt(7) == -1) {
@@ -129,7 +130,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL EliminarSolicitud (?, ?)");
-            stmt.setInt(1, solicitud.getCi());
+            stmt.setInt(1, solicitud.getUsuario().getCi());
             stmt.registerOutParameter(2, Types.INTEGER);
             stmt.execute();
             if (stmt.getInt(2) == -1) {
@@ -170,7 +171,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
                 int codigo = res.getInt("codigo");
                 boolean verficiada = res.getBoolean("verificada");
 
-                solicitud = new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, codigo, verficiada);
+                solicitud = new DTSolicitud(codigo, fecha, verficiada, new  DTUsuario(ci, nombre, apellido, contrasena, email, email, generacion));
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo buscar la solicitud, error de base de datos.");
@@ -211,7 +212,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
                 String email = res.getString("email");
                 int codigo = res.getInt("codigo");
                 boolean verificada = res.getBoolean("verificada");
-                solicitudes.add(new DTSolicitud(ci, generacion, fecha, nombre, apellido, contrasena, email, codigo, verificada));
+                solicitudes.add(new DTSolicitud(codigo, fecha, verificada, new DTUsuario(ci, nombre, apellido, contrasena, email, email, generacion)));
             }
         } catch (SQLException e) {
             throw new Exception("No se pudieron listar las solicitudes. Error de base de datos.");
