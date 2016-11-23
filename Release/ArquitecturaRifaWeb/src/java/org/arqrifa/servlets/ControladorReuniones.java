@@ -2,10 +2,12 @@ package org.arqrifa.servlets;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMReunion;
+import org.arqrifa.viewmodels.VMReunionMantenimiento;
 
 public class ControladorReuniones extends Controlador {
     
@@ -27,15 +29,17 @@ public class ControladorReuniones extends Controlador {
             SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
             
             vm.setId(String.valueOf(r.getId()));
+            vm.setGeneracion(String.valueOf(r.getGeneracion()));
             vm.setTitulo(r.getTitulo());
             vm.setDescripcion(r.getDescripcion());
-            vm.setResoluciones(r.getResoluciones());
-            vm.setFecha(sdfFecha.format(r.getFecha()));
+             vm.setFecha(sdfFecha.format(r.getFecha()));
             vm.setHora(sdfHora.format(r.getFecha()));
             vm.setObligatoria(r.isObligatoria());
-            vm.setGeneracion(String.valueOf(r.getGeneracion()));
+            vm.setObservaciones(r.getObservaciones());
             vm.setEstado(r.getEstado());
             vm.setLugar(r.getLugar());
+            vm.setTemas(r.getTemas());
+            vm.setResoluciones(r.getResoluciones());
 
             // Si la reunión está en condiciones se habilita su inicio
             if (r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date()))) {
@@ -52,7 +56,7 @@ public class ControladorReuniones extends Controlador {
     }
     
     public void iniciar_post() {
-        VMReunion vm = (VMReunion) cargarModelo(new VMReunion());
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         try {
             
             DTReunion r = cliente.buscarReunion(Validador.validarId(request.getParameter("id")));
@@ -67,7 +71,7 @@ public class ControladorReuniones extends Controlador {
     }
     
     public void finalizar_post() {
-        VMReunion vm = (VMReunion) cargarModelo(new VMReunion());
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         
         try {
             if (vm.getResoluciones().isEmpty()) {
@@ -76,7 +80,12 @@ public class ControladorReuniones extends Controlador {
             
             DTReunion r = new DTReunion();
             r.setId(Integer.parseInt(vm.getId()));
-            r.setResoluciones(vm.getResoluciones());
+            r.setObservaciones(vm.getObservaciones());
+            
+            StringTokenizer st = new StringTokenizer(vm.getResoluciones(), "\n", false);
+            while (st.hasMoreTokens()) {
+                r.getResoluciones().add(st.nextToken());
+            }
             cliente.finalizarReunion(r);
             vm.setEstado("Finalizada");
             vm.setMensaje("reunión finalizada exitosamente");

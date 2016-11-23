@@ -15,10 +15,27 @@
             descripcion <input type="text" name="descripcion" value="${modelo.descripcion}"><br>
             fecha <input type="date" name="fecha" value="${modelo.fecha}"><br>
             hora <input type="time" name="hora" value="${modelo.hora}"><br>
+            duracion <input type="text" name="duracion" value="${modelo.duracion}"><br>
             obligatoria <input type="checkbox" name="obligatoria" <c:if test="${modelo.obligatoria}">checked</c:if>><br>
             lugar <input type="text" name="lugar" value="${modelo.lugar}"><br>
+            <input type="text" id="tema"/><input type="button" value="Agregar" onclick="agregarTema()">
+            <textarea name="temas" id="temas" readonly>${modelo.temas}</textarea>
             <input type="submit" name="accion" value="Agendar">
+            <input type="submit" name="accion" value="Limpiar">
         </form>
         ${modelo.mensaje}
+        <script>
+            function agregarTema() {
+                var input = document.getElementById("tema");
+                var tema = input.value;
+
+                if (tema !== "") {
+                    var textarea = document.getElementById("temas");
+                    textarea.innerHTML += tema + "\n";
+                    input.value = "";
+                }
+            }
+
+        </script>
     </body>
 </html>

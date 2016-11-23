@@ -5,11 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.validador.Validador;
-import org.arqrifa.viewmodels.VMReunion;
+import org.arqrifa.viewmodels.VMReunionMantenimiento;
 import org.arqrifa.viewmodels.VMSolicitudes;
 
 public class ControladorEncargados extends Controlador {
@@ -53,31 +54,45 @@ public class ControladorEncargados extends Controlador {
     }
 
     public void agendar_post() {
-        VMReunion vm = (VMReunion) cargarModelo(new VMReunion());
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
 
         try {
-
-            if (vm.getTitulo().isEmpty()) {
-                throw new Exception("Ingrese el título de la reunión.");
+            if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
+                throw new Exception("Debe completar todos los campos.");
+            }
+            if (vm.getTemas().isEmpty()) {
+                throw new Exception("Ingrese los temas de se debatiran en la reunión.");
             }
 
-            if (vm.getDescripcion().isEmpty()) {
-                throw new Exception("Ingrese alguna descripción de la reunión.");
-            }
+            int duracion = Integer.parseInt(vm.getDuracion());
 
-            if (vm.getLugar().isEmpty()) {
-                throw new Exception("Ingrese el lugar donde se realizará la reunión.");
-            }
-
-            DTUsuario u = (DTUsuario) sesion.getAttribute("usuario");
             Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
-            cliente.agendarReunion(new DTReunion(0, vm.getTitulo(), vm.getDescripcion(), "", fecha, vm.isObligatoria(), u.getGeneracion(), "", vm.getLugar()));
 
-            vm = new VMReunion();
+            DTReunion r = new DTReunion();
+
+            r.setGeneracion(((DTUsuario) sesion.getAttribute("usuario")).getGeneracion());
+            r.setTitulo(vm.getTitulo());
+            r.setDescripcion(vm.getDescripcion());
+            r.setFecha(fecha);
+            r.setDuracion(duracion);
+            r.setObligatoria(vm.isObligatoria());
+            r.setLugar(vm.getLugar());
+            
+            String temas = request.getParameter("temas");
+            
+            StringTokenizer st = new StringTokenizer(temas, "\n", false);
+            while (st.hasMoreTokens()) {
+                r.getTemas().add(st.nextToken());
+            }
+
+            cliente.agendarReunion(r);
+            vm = new VMReunionMantenimiento();
             vm.setMensaje("Reuníon agendada exitosamente.");
 
+        } catch (NumberFormatException e) {
+            vm.setMensaje("Ingrese una duración válida.");
         } catch (ParseException e) {
-            vm.setMensaje("ingrese una fecha válida");
+            vm.setMensaje("Ingrese una fecha válida");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

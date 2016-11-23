@@ -35,18 +35,25 @@ class PersistenciaReunion implements IPersistenciaReunion {
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?)");
-            stmt.setString(1, reunion.getTitulo());
-            stmt.setString(2, reunion.getDescripcion());
-            stmt.setString(3, new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(reunion.getFecha()));
-            stmt.setInt(4, reunion.getGeneracion());
-            stmt.setBoolean(5, reunion.isObligatoria());
-            stmt.setString(6, reunion.getLugar());
-            stmt.registerOutParameter(7, Types.INTEGER);
+            stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt.setInt(1, reunion.getGeneracion());
+            stmt.setString(2, reunion.getTitulo());
+            stmt.setString(3, reunion.getDescripcion());
+            stmt.setString(4, new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(reunion.getFecha()));
+            stmt.setInt(5, reunion.getDuracion());
+            stmt.setBoolean(6, reunion.isObligatoria());
+            stmt.setString(7, reunion.getLugar());
+            stmt.registerOutParameter(8, Types.INTEGER);
             stmt.execute();
-            if (stmt.getInt(7) == -1) {
+            if (stmt.getInt(8) == -1) {
                 throw new Exception("Ya hay agendada una reunión para el día ingresado.");
             }
+            if (stmt.getInt(8) > 0) {
+                for (String tema : reunion.getTemas()) {
+                    this.agregarTema(stmt.getInt(8), tema, con);
+                }
+            }
+
         } catch (SQLException e) {
             throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
         } catch (Exception e) {
@@ -94,7 +101,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL finalizarReunion(?, ?, ?)");
             stmt.setInt(1, reunion.getId());
-            //stmt.setString(2, reunion.getResoluciones());
+            stmt.setString(2, reunion.getObservaciones());
             stmt.registerOutParameter(3, Types.INTEGER);
             int filasAfectadas = stmt.executeUpdate();
             if (stmt.getInt(3) == -1) {
@@ -102,6 +109,9 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
             if (filasAfectadas == 0) {
                 throw new Exception("No se puede finalizar una reunión que no está iniciada.");
+            }
+            for (String resolucion : reunion.getResoluciones()) {
+                this.agregarResolucion(reunion.getId(), resolucion, con);
             }
 
         } catch (SQLException e) {
@@ -191,7 +201,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 estado = res.getString("estado");
                 temas = this.listarTemas(id, con);
                 resoluciones = this.listarResoluciones(id, con);
-                
 
                 reunion = new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones);
             }
@@ -249,7 +258,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 estado = res.getString("estado");
                 temas = this.listarTemas(id, con);
                 resoluciones = this.listarResoluciones(id, con);
-                
 
                 reuniones.add(new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones));
             }
@@ -317,5 +325,43 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         }
         return resoluciones;
+    }
+
+    // Agregar transaction
+    private void agregarTema(int reunionId, String tema, Connection con) throws Exception {
+        CallableStatement stmt = null;
+        try {
+            stmt = con.prepareCall("CALL AltaTema(?,?)");
+            stmt.setInt(1, reunionId);
+            stmt.setString(2, tema);
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta el tema, error de base de datos");
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    // Agregar transaction
+
+    private void agregarResolucion(int reunionId, String resolucion, Connection con) throws Exception {
+        CallableStatement stmt = null;
+        try {
+            stmt = con.prepareCall("CALL AltaResolucion(?,?)");
+            stmt.setInt(1, reunionId);
+            stmt.setString(2, resolucion);
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta la resolucion, error de base de datos");
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
     }
 }

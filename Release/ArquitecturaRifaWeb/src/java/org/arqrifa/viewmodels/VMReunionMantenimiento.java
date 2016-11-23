@@ -1,32 +1,27 @@
-package org.arqrifa.datatypes;
+package org.arqrifa.viewmodels;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
+public class VMReunionMantenimiento extends ViewModel {
 
-@XmlRootElement
-public class DTReunion {
-
-    private int id;
-    private int generacion;
+    private String id;
+    private String generacion;
     private String titulo;
     private String descripcion;
-    private Date fecha;
-    private int duracion;
+    private String fecha;
+    private String hora;
+    private String duracion;
     private boolean obligatoria;
     private String lugar;
     private String observaciones;
     private String estado;
-    private List<String> temas;
-    private List<String> resoluciones;
+    private String temas;
+    private String resoluciones;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public int getGeneracion() {
+    public String getGeneracion() {
         return generacion;
     }
 
@@ -38,11 +33,15 @@ public class DTReunion {
         return descripcion;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public int getDuracion() {
+    public String getHora() {
+        return hora;
+    }
+
+    public String getDuracion() {
         return duracion;
     }
 
@@ -62,19 +61,19 @@ public class DTReunion {
         return estado;
     }
 
-    public List<String> getTemas() {
+    public String getTemas() {
         return temas;
     }
 
-    public List<String> getResoluciones() {
+    public String getResoluciones() {
         return resoluciones;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setGeneracion(int generacion) {
+    public void setGeneracion(String generacion) {
         this.generacion = generacion;
     }
 
@@ -86,11 +85,15 @@ public class DTReunion {
         this.descripcion = descripcion;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public void setDuracion(int duracion) {
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public void setDuracion(String duracion) {
         this.duracion = duracion;
     }
 
@@ -110,22 +113,22 @@ public class DTReunion {
         this.estado = estado;
     }
 
-    public void setTemas(List<String> temas) {
+    public void setTemas(String temas) {
         this.temas = temas;
     }
 
-    public void setResoluciones(List<String> resoluciones) {
+    public void setResoluciones(String resoluciones) {
         this.resoluciones = resoluciones;
     }
-
     //</editor-fold>
-    
-    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones) {
+
+    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, String temas, String resoluciones) {
         this.id = id;
         this.generacion = generacion;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.hora = hora;
         this.duracion = duracion;
         this.obligatoria = obligatoria;
         this.lugar = lugar;
@@ -135,8 +138,8 @@ public class DTReunion {
         this.resoluciones = resoluciones;
     }
 
-    public DTReunion() {
-        this(0, 0, "", "", null, 0, false, "", "", "", new ArrayList(), new ArrayList());
+    public VMReunionMantenimiento() {
+        super();
     }
 
 }

@@ -133,6 +133,7 @@ BEGIN
 		SET retorno = -1;
 	ELSE
 		INSERT INTO reuniones (Generacion,Titulo,Descripcion,Fecha,Duracion,Obligatoria,Lugar) VALUES (pGeneracion, pTitulo, pDescripcion, pFecha,pDuracion,pObligatoria, pLugar);
+        SET retorno = last_insert_id();
 	END IF;
 END
 $$
@@ -155,9 +156,9 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE ListarTemas(pReunionId int)
+CREATE PROCEDURE ListarResoluciones(pReunionId int)
 BEGIN
-	SELECT * FROM temas WHERE ReunionId = pReunionId;
+	SELECT * FROM resoluciones WHERE ReunionId = pReunionId;
 END
 $$
 -- BuscarReunion - Busca una reunion por ID
@@ -198,7 +199,7 @@ BEGIN
 	IF NOT EXISTS (SELECT * FROM reuniones WHERE id = pId) THEN
 		SET retorno = -1;
 	ELSE
-		UPDATE reuniones SET estado = 'Finalizada', observaciones = pResoluciones WHERE id = pId AND estado = 'Iniciada';
+		UPDATE reuniones SET estado = 'Finalizada', observaciones = pObservaciones WHERE id = pId AND estado = 'Iniciada';
 	END IF;
 END
 $$
@@ -344,8 +345,6 @@ SELECT * FROM generaciones;
 SELECT * FROM reuniones;
 SELECT * FROM temas;
 SELECT * FROM resoluciones;
-
-
 
 
 

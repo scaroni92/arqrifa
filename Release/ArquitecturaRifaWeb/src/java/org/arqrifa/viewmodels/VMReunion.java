@@ -1,22 +1,31 @@
 package org.arqrifa.viewmodels;
 
+import java.util.List;
+
 public class VMReunion extends ViewModel {
 
     private String id;
+    private String generacion;
     private String titulo;
     private String descripcion;
-    private String resoluciones;
     private String fecha;
     private String hora;
+    private String duracion;
+    private String observaciones;
     private boolean obligatoria;
-    private String generacion;
-    private String estado;
     private String lugar;
+    private String estado;
+    private List<String> temas;
+    private List<String> resoluciones;
     private boolean habilitarInicio;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public String getId() {
         return id;
+    }
+
+    public String getGeneracion() {
+        return generacion;
     }
 
     public String getTitulo() {
@@ -27,10 +36,6 @@ public class VMReunion extends ViewModel {
         return descripcion;
     }
 
-    public String getResoluciones() {
-        return resoluciones;
-    }
-
     public String getFecha() {
         return fecha;
     }
@@ -39,29 +44,44 @@ public class VMReunion extends ViewModel {
         return hora;
     }
 
+    public String getDuracion() {
+        return duracion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
     public boolean isObligatoria() {
         return obligatoria;
-    }
-
-    public String getGeneracion() {
-        return generacion;
-    }
-
-    public String getEstado() {
-        return estado;
     }
 
     public String getLugar() {
         return lugar;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
     public boolean isHabilitarInicio() {
         return habilitarInicio;
     }
 
-    
+    public List<String> getTemas() {
+        return temas;
+    }
+
+    public List<String> getResoluciones() {
+        return resoluciones;
+    }
+
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setGeneracion(String generacion) {
+        this.generacion = generacion;
     }
 
     public void setTitulo(String titulo) {
@@ -72,10 +92,6 @@ public class VMReunion extends ViewModel {
         this.descripcion = descripcion;
     }
 
-    public void setResoluciones(String resoluciones) {
-        this.resoluciones = resoluciones;
-    }
-
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
@@ -84,44 +100,60 @@ public class VMReunion extends ViewModel {
         this.hora = hora;
     }
 
+    public void setDuracion(String duracion) {
+        this.duracion = duracion;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     public void setObligatoria(boolean obligatoria) {
         this.obligatoria = obligatoria;
-    }
-
-    public void setGeneracion(String generacion) {
-        this.generacion = generacion;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
     }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public void setHabilitarInicio(boolean habilitarInicio) {
         this.habilitarInicio = habilitarInicio;
     }
 
-    //</editor-fold>
-    
-    public VMReunion(String id, String titulo, String descripcion, String fecha, String hora, boolean obligatoria, String generacion, String estado, String lugar, boolean habilitar, String mensaje) {
-        super(mensaje);
-        this.id = id;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.obligatoria = obligatoria;
-        this.generacion = generacion;
-        this.estado = estado;
-        this.lugar = lugar;
-        this.habilitarInicio = habilitar;
+    public void setTemas(List<String> temas) {
+        this.temas = temas;
     }
+
+    public void setResoluciones(List<String> resoluciones) {
+        this.resoluciones = resoluciones;
+    }
+
+    //</editor-fold>
 
     public VMReunion() {
         super();
     }
 
+    public VMReunion(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, String observaciones, boolean obligatoria, String lugar, String estado, List<String> temas, List<String> resoluciones, boolean habilitarInicio) {
+        this.id = id;
+        this.generacion = generacion;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.duracion = duracion;
+        this.observaciones = observaciones;
+        this.obligatoria = obligatoria;
+        this.lugar = lugar;
+        this.estado = estado;
+        this.temas = temas;
+        this.resoluciones = resoluciones;
+        this.habilitarInicio = habilitarInicio;
+    }
+    
+    
 }
