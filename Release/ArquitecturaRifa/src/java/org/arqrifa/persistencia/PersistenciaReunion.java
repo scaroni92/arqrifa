@@ -29,7 +29,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -95,7 +94,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL finalizarReunion(?, ?, ?)");
             stmt.setInt(1, reunion.getId());
-            stmt.setString(2, reunion.getResoluciones());
+            //stmt.setString(2, reunion.getResoluciones());
             stmt.registerOutParameter(3, Types.INTEGER);
             int filasAfectadas = stmt.executeUpdate();
             if (stmt.getInt(3) == -1) {
@@ -158,6 +157,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
     @Override
     public DTReunion buscar(int id) throws Exception {
+        DTReunion reunion = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -168,20 +168,34 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.setInt(1, id);
             res = stmt.executeQuery();
 
-            DTReunion reunion = null;
+            int generacion;
+            String titulo;
+            String descripcion;
+            Date fecha;
+            boolean obligatoria;
+            String lugar;
+            String observaciones;
+            String estado;
+            List<String> temas;
+            List<String> resoluciones;
+
             if (res.next()) {
-                String titulo = res.getString("titulo");
-                String descripcion = res.getString("descripcion");
-                String resoluciones = res.getString("resoluciones");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date fecha = sdf.parse(sdf.format(res.getTimestamp("fecha")));
-                boolean obligatoria = res.getBoolean("obligatoria");
-                int generacion = res.getInt("generacion");
-                String estado = res.getString("estado");
-                String lugar = res.getString("lugar");
-                reunion = new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar);
+                generacion = res.getInt("generacion");
+                titulo = res.getString("titulo");
+                descripcion = res.getString("descripcion");
+                // Se utiliza getTimestamp porque getDate() no devuelve la hora.
+                fecha = new Date(res.getTimestamp("fecha").getTime());
+                obligatoria = res.getBoolean("obligatoria");
+                lugar = res.getString("lugar");
+                observaciones = res.getString("observaciones");
+                estado = res.getString("estado");
+                temas = this.listarTemas(id, con);
+                resoluciones = this.listarResoluciones(id, con);
+                
+
+                reunion = new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones);
             }
-            return reunion;
+
         } catch (SQLException e) {
             throw new Exception("No se pudo encontrar la reunion - Error de base de datos.");
         } catch (Exception e) {
@@ -197,6 +211,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 con.close();
             }
         }
+        return reunion;
     }
 
     @Override
@@ -210,33 +225,39 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL ListarReunionesIniciadas()");
             res = stmt.executeQuery();
 
-            String titulo, descripcion, resoluciones, estado, lugar;
-            int generacion, id;
+            int id;
+            int generacion;
+            String titulo;
+            String descripcion;
             Date fecha;
             boolean obligatoria;
-            
+            String lugar;
+            String observaciones;
+            String estado;
+            List<String> temas;
+            List<String> resoluciones;
+
             while (res.next()) {
                 id = res.getInt("id");
+                generacion = res.getInt("generacion");
                 titulo = res.getString("titulo");
                 descripcion = res.getString("descripcion");
-                resoluciones = res.getString("resoluciones");
-                // Se utiliza getTimestamp porque getDate() no devuelve la hora.
                 fecha = new Date(res.getTimestamp("fecha").getTime());
                 obligatoria = res.getBoolean("obligatoria");
-                generacion = res.getInt("generacion");
-                estado = res.getString("estado");
                 lugar = res.getString("lugar");
+                observaciones = res.getString("observaciones");
+                estado = res.getString("estado");
+                temas = this.listarTemas(id, con);
+                resoluciones = this.listarResoluciones(id, con);
                 
-                reuniones.add(new DTReunion(id, titulo, descripcion, resoluciones, fecha, obligatoria, generacion, estado, lugar));
+
+                reuniones.add(new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones));
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new Exception("No se pudo listar las reuniones iniciadas, error de base de datos.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw e;
-        }
-        finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -250,4 +271,51 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return reuniones;
     }
 
+    private List<String> listarTemas(int reunionId, Connection con) throws Exception {
+        List<String> temas = new ArrayList();
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            stmt = con.prepareCall("CALL ListarTemas(?)");
+            stmt.setInt(1, reunionId);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                temas.add(res.getString("tema"));
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al cargar los temas de la reunión ID: " + reunionId);
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return temas;
+    }
+
+    private List<String> listarResoluciones(int reunionId, Connection con) throws Exception {
+        List<String> resoluciones = new ArrayList();
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            stmt = con.prepareCall("CALL ListarResoluciones(?)");
+            stmt.setInt(1, reunionId);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                resoluciones.add(res.getString("resolucion"));
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al cargar las resoluciones de la reunión ID: " + reunionId);
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return resoluciones;
+    }
 }

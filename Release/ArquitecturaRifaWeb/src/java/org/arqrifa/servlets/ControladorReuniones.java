@@ -37,7 +37,7 @@ public class ControladorReuniones extends Controlador {
             vm.setEstado(r.getEstado());
             vm.setLugar(r.getLugar());
 
-            // Si la reunión está en condiciones de iniciarse se habilita su inicio
+            // Si la reunión está en condiciones se habilita su inicio
             if (r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date()))) {
                 vm.setHabilitarInicio(r.getFecha().after(new Date()));
             }

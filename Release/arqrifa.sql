@@ -22,16 +22,32 @@ CREATE TABLE usuarios (
 
 CREATE TABLE reuniones (
     Id INT PRIMARY KEY AUTO_INCREMENT,
+    Generacion INT NOT NULL,
     Titulo VARCHAR(30) NOT NULL,
     Descripcion VARCHAR(100) NOT NULL,
     Fecha DATETIME NOT NULL,
-    Generacion INT NOT NULL,
+    Duracion INT NOT NULL,
     Obligatoria BIT NOT NULL,
     Lugar VARCHAR(50) NOT NULL,
-    Resoluciones VARCHAR(100) DEFAULT '',
+    Observaciones VARCHAR(100) DEFAULT '',
     Estado VARCHAR(15) DEFAULT 'Pendiente',
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
+
+CREATE TABLE temas (
+	Id INT PRIMARY KEY AUTO_INCREMENT,
+    ReunionId INT NOT NULL,
+    Tema VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ReunionId) REFERENCES reuniones(Id)
+);
+
+CREATE TABLE resoluciones (
+	Id INT PRIMARY KEY AUTO_INCREMENT,
+    ReunionId INT NOT NULL,
+    Resolucion VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ReunionId) REFERENCES reuniones(Id)
+);
+
 
 CREATE TABLE asistencias (
     Id INT,
@@ -111,16 +127,39 @@ $$
 -- REUNIONES
 -- AltaReunion  - Da de alta una reunion
 -- Retorno : -1 si existe una reunion para dicha generacion en el mismo dia
-CREATE PROCEDURE AltaReunion(pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pGeneracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
+CREATE PROCEDURE AltaReunion(pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha as date) = CAST(pFecha as date)) THEN
 		SET retorno = -1;
 	ELSE
-		INSERT INTO reuniones (Titulo,Descripcion,Fecha,Generacion,Obligatoria,Lugar) VALUES (pTitulo, pDescripcion, pFecha,pgeneracion,pObligatoria, pLugar);
+		INSERT INTO reuniones (Generacion,Titulo,Descripcion,Fecha,Duracion,Obligatoria,Lugar) VALUES (pGeneracion, pTitulo, pDescripcion, pFecha,pDuracion,pObligatoria, pLugar);
 	END IF;
 END
 $$
 
+CREATE PROCEDURE AltaTema(pReunionId int, pTema varchar(50))
+BEGIN
+	INSERT INTO temas (ReunionId, Tema) VALUES(pReunionId, pTema);
+END
+$$
+
+CREATE PROCEDURE ListarTemas(pReunionId int)
+BEGIN
+	SELECT * FROM temas WHERE ReunionId = pReunionId;
+END
+$$
+
+CREATE PROCEDURE AltaResolucion(pReunionId int, pResolucion varchar(50))
+BEGIN
+	INSERT INTO resoluciones (ReunionId, Resolucion) VALUES(pReunionId, pResolucion);
+END
+$$
+
+CREATE PROCEDURE ListarTemas(pReunionId int)
+BEGIN
+	SELECT * FROM temas WHERE ReunionId = pReunionId;
+END
+$$
 -- BuscarReunion - Busca una reunion por ID
 CREATE PROCEDURE BuscarReunion(pId int)
 BEGIN
@@ -154,12 +193,12 @@ $$
 -- FinalizarReunion - Marca una reunión como finalizada
 -- Retorno : -1 si la reunión no existe
 
-CREATE PROCEDURE FinalizarReunion(pId int, pResoluciones varchar(100), out retorno int)
+CREATE PROCEDURE FinalizarReunion(pId int, pObservaciones varchar(100), out retorno int)
 BEGIN
 	IF NOT EXISTS (SELECT * FROM reuniones WHERE id = pId) THEN
 		SET retorno = -1;
 	ELSE
-		UPDATE reuniones SET estado = 'Finalizada', resoluciones = pResoluciones WHERE id = pId AND estado = 'Iniciada';
+		UPDATE reuniones SET estado = 'Finalizada', observaciones = pResoluciones WHERE id = pId AND estado = 'Iniciada';
 	END IF;
 END
 $$
@@ -286,16 +325,29 @@ CALL AltaSolicitud(3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 
 
 CALL VerificarSolicitud(22222222);
 
-CALL AltaReunion('Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-10-20 15:00:00', 2012, 1, 'SALON 1', @retorno);
-CALL AltaReunion('Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',2010,0, 'SALON 2',@retorno);
-CALL AltaReunion('Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 2012, 1, 'SALON 3', @retorno);
-CALL AltaReunion('Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),2012,0, 'SALON 4',@retorno);
+CALL AltaReunion(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-10-20 15:00:00', 120, 1, 'SALON 1', @retorno);
+CALL AltaReunion(2010,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',60,0, 'SALON 2',@retorno);
+CALL AltaReunion(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', @retorno);
+CALL AltaReunion(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4',@retorno);
+
+CALL AltaTema(1, 'Disminución de ventas');
+CALL AltaTema(1, 'Otro tema de ventas');
+CALL AltaTema(1, 'Otro tema más de ventas');
+
+CALL AltaResolucion(1, 'Se baja el precio de las rifas');
+CALL AltaResolucion(1, 'Otra resolucion');
 
 SELECT * FROM asistencias;
 SELECT * FROM solicitudes;
 SELECT * FROM usuarios;
 SELECT * FROM generaciones;
 SELECT * FROM reuniones;
+SELECT * FROM temas;
+SELECT * FROM resoluciones;
+
+
+
+
 
 
 use arqrifa;
