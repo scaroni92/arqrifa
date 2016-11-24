@@ -25,21 +25,13 @@ public class ControladorUsuarios extends Controlador {
     public void registrar_post() {
         VMUsuario vm = (VMUsuario) cargarModelo(new VMUsuario());
         try {
+            vm.setGeneraciones(cliente.listarGeneraciones());
 
             int ci = Validador.validarCi(request.getParameter("ci"));
-
             int generacion = Integer.parseInt(vm.getGeneracion());
-
-            if (vm.getNombre().isEmpty()) {
-                throw new Exception("Ingrese su nombre");
-            }
-
-            if (vm.getApellido().isEmpty()) {
-                throw new Exception("Ingrese la contraseña");
-            }
-
-            if (vm.getEmail().isEmpty()) {
-                throw new Exception("Ingrese el mail");
+            
+            if (vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getEmail().isEmpty() ) {
+                throw new Exception("Todos los campos son obligatorios");
             }
 
             cliente.enviarSolicitud(new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(),vm.getContrasena(), vm.getEmail(), "Estudiante", generacion)));
@@ -47,11 +39,6 @@ public class ControladorUsuarios extends Controlador {
 
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
-            try {
-                vm.setGeneraciones(cliente.listarGeneraciones());
-            } catch (Exception e) {
-                vm.setMensaje("<br>Error al listar las generaciones.");
-            }
             mostrarVista("registro.jsp", vm);
         }
     }
@@ -63,7 +50,7 @@ public class ControladorUsuarios extends Controlador {
             String pass = request.getParameter("pass");
 
             if (pass.isEmpty()) {
-                throw new Exception("Ingrese la contraseña");
+                throw new Exception("El campo contraseña no puede estar vacio");
             }
 
             DTUsuario usuario = cliente.login(ci, pass);

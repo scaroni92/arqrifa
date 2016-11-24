@@ -21,13 +21,13 @@
                     <td>${solicitud.usuario.apellido}</td>
                     <c:choose>
                         <c:when test="${solicitud.verificada}">
-                            <td><a href="Encargados?accion=confirmar&ci=${solicitud.usuario.ci}">Confirmar</a></td>
+                            <td><a href="Encargados?accion=confirmar_solicitud&ci=${solicitud.usuario.ci}">Confirmar</a></td>
                         </c:when>
                         <c:otherwise>
                             <td><span>Correo no verificado</span></td>
                         </c:otherwise>
                     </c:choose>
-                    <td><a href="Encargados?accion=rechazar&ci=${solicitud.usuario.ci}">Rechazar</a></td>
+                    <td><a href="Encargados?accion=rechazar_solicitud&ci=${solicitud.usuario.ci}">Rechazar</a></td>
                 </tr>
             </c:forEach>
         </table>
