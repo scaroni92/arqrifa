@@ -9,6 +9,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import org.arqrifa.datatypes.DTMensaje;
 
 public class Mensajeria {
 
@@ -16,17 +17,17 @@ public class Mensajeria {
     private final String EMISOR = "arquitectura_rifa@hotmail.com";
     private final String CONTRASENA = "arqrifa123";
     private Session sesion = null;
-    private Mensaje mensaje;
+    private DTMensaje mensaje;
 
-    public Mensaje getMensaje() {
+    public DTMensaje getMensaje() {
         return mensaje;
     }
 
-    public void setMensaje(Mensaje mensaje) {
+    public void setMensaje(DTMensaje mensaje) {
         this.mensaje = mensaje;
     }
 
-    public Mensajeria(Mensaje mensaje) throws MessagingException {
+    public Mensajeria(DTMensaje mensaje) throws MessagingException {
         this.mensaje = mensaje;
         this.autenticar();
     }

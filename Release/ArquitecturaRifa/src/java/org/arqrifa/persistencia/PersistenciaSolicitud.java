@@ -161,17 +161,21 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL BuscarSolicitud(?)");
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
+            int gen, codigo;
+            Date fecha;
+            String nombre, apellido, contrasena, email;
+            boolean verificada;
             if (res.next()) {
-                int generacion = res.getInt("generacion");
-                Date fecha = res.getDate("fecha");
-                String nombre = res.getString("nombre");
-                String apellido = res.getString("apellido");
-                String contrasena = res.getString("contrasena");
-                String email = res.getString("email");
-                int codigo = res.getInt("codigo");
-                boolean verficiada = res.getBoolean("verificada");
+                gen = res.getInt("generacion");
+                fecha = res.getDate("fecha");
+                nombre = res.getString("nombre");
+                apellido = res.getString("apellido");
+                contrasena = res.getString("contrasena");
+                email = res.getString("email");
+                codigo = res.getInt("codigo");
+                verificada = res.getBoolean("verificada");
 
-                solicitud = new DTSolicitud(codigo, fecha, verficiada, new  DTUsuario(ci, nombre, apellido, contrasena, email, email, generacion));
+                solicitud = new DTSolicitud(codigo, fecha, verificada, new DTUsuario(ci, nombre, apellido, contrasena, email, email, gen));
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo buscar la solicitud, error de base de datos.");
@@ -202,16 +206,20 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL ListarSolicitudesDeGeneracion(?);");
             stmt.setInt(1, generacion);
             res = stmt.executeQuery();
+            int ci, codigo;
+            Date fecha;
+            String nombre, apellido, contrasena, email;
+            boolean verificada;
             while (res.next()) {
-                int ci = res.getInt("ci");
-                int gen = res.getInt("generacion");
-                Date fecha = res.getDate("fecha");
-                String nombre = res.getString("nombre");
-                String apellido = res.getString("apellido");
-                String contrasena = res.getString("contrasena");
-                String email = res.getString("email");
-                int codigo = res.getInt("codigo");
-                boolean verificada = res.getBoolean("verificada");
+                ci = res.getInt("ci");
+                generacion = res.getInt("generacion");
+                fecha = res.getDate("fecha");
+                nombre = res.getString("nombre");
+                apellido = res.getString("apellido");
+                contrasena = res.getString("contrasena");
+                email = res.getString("email");
+                codigo = res.getInt("codigo");
+                verificada = res.getBoolean("verificada");
                 solicitudes.add(new DTSolicitud(codigo, fecha, verificada, new DTUsuario(ci, nombre, apellido, contrasena, email, email, generacion)));
             }
         } catch (SQLException e) {

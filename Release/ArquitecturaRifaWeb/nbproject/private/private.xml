@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/servlets/Controlador.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/servlets/ControladorReuniones.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/web/Vistas/Encargado/agendar.jsp</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/web/Vistas/Reunion/efectuar.jsp</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/servlets/ControladorEncargados.java</file>
+            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/datatypes/DTUsuario.java</file>
+            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/datatypes/DTGeneracion.java</file>
         </group>
     </open-files>
 </project-private>

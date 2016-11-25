@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.mail.MessagingException;
+import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
 import org.arqrifa.persistencia.FabricaPersistencia;
@@ -43,7 +44,7 @@ class ControladorSolicitud implements IControladorSolicitud {
                     + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
                     + link + s.getCodigo();
 
-            new Mensajeria(new Mensaje(s.getUsuario().getEmail(), "Confirmar registro", msj)).enviar();
+            new Mensajeria(new DTMensaje(s.getUsuario().getEmail(), "Confirmar registro", msj)).enviar();
         } catch (MessagingException me) {
             System.out.println(me.getMessage());
         } catch (Exception e) {
@@ -71,10 +72,10 @@ class ControladorSolicitud implements IControladorSolicitud {
                 throw new Exception("No se puede confirmar una solicitud sin verificar");
             }
 
-            String msj = "Tu solicitud ha sido confirmada, ya puedes iniciar sesión.\n Para descarcar la app móvil: " + link;
+            String msj = "Tu solicitud ha sido confirmada, ya puedes iniciar sesión.\n Para descargar la app móvil: " + link;
 
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(s);
-            new Mensajeria(new Mensaje(s.getUsuario().getEmail(), "Solicitud aceptada", msj)).enviar();
+            new Mensajeria(new DTMensaje(s.getUsuario().getEmail(), "Solicitud aceptada", msj)).enviar();
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

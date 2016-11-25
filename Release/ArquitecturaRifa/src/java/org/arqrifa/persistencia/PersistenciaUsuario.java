@@ -26,7 +26,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTUsuario usuario) throws Exception {
         Connection con = null;
@@ -68,6 +67,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
 
     @Override
     public DTUsuario autenticar(int ci, String contrasena) throws Exception {
+        DTUsuario usuario = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -79,16 +79,17 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setString(2, contrasena);
             res = stmt.executeQuery();
 
-            DTUsuario estudiante = null;
+            String nombre, apellido, email, rol;
+            int gen;
             if (res.next()) {
-                String nombre = res.getString("nombre");
-                String apellido = res.getString("apellido");
-                String email = res.getString("email");
-                String rol = res.getString("rol");
-                int gen = res.getInt("generacion");
-                estudiante = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
+                nombre = res.getString("nombre");
+                apellido = res.getString("apellido");
+                email = res.getString("email");
+                rol = res.getString("rol");
+                gen = res.getInt("generacion");
+                usuario = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
             }
-            return estudiante;
+            return usuario;
         } catch (SQLException e) {
             throw new Exception("No se pudo autenticar al usuario - Error de base de datos.");
         } catch (Exception e) {
@@ -119,13 +120,15 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             res = stmt.executeQuery();
 
             DTUsuario estudiante = null;
+            String nombre, apellido, contrasena, email, rol;
+            int gen;
             if (res.next()) {
-                String nombre = res.getString("nombre");
-                String apellido = res.getString("apellido");
-                String contrasena = res.getString("contrasena");
-                String email = res.getString("email");
-                String rol = res.getString("rol");
-                int gen = res.getInt("generacion");
+                nombre = res.getString("nombre");
+                apellido = res.getString("apellido");
+                contrasena = res.getString("contrasena");
+                email = res.getString("email");
+                rol = res.getString("rol");
+                gen = res.getInt("generacion");
                 estudiante = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
             }
             return estudiante;

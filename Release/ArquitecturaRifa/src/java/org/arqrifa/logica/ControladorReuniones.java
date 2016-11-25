@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTEstado;
+import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.persistencia.FabricaPersistencia;
@@ -86,7 +87,7 @@ class ControladorReuniones implements IControladorReuniones {
             String asunto = "¡Nueva reunión agendada!";
             String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " + reunion.getFecha();
 
-            Mensajeria mensajeria = new Mensajeria(new Mensaje("", asunto, mensaje));
+            Mensajeria mensajeria = new Mensajeria(new DTMensaje("", asunto, mensaje));
 
             for (DTUsuario usuario : usuarios) {
                 mensajeria.getMensaje().setDestinatario(usuario.getEmail());

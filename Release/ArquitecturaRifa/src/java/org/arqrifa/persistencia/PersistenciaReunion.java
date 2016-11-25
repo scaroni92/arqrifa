@@ -179,15 +179,10 @@ class PersistenciaReunion implements IPersistenciaReunion {
             res = stmt.executeQuery();
 
             int generacion;
-            String titulo;
-            String descripcion;
+            String titulo, descripcion, lugar, observaciones, estado;
             Date fecha;
             boolean obligatoria;
-            String lugar;
-            String observaciones;
-            String estado;
-            List<String> temas;
-            List<String> resoluciones;
+            List<String> temas, resoluciones;
 
             if (res.next()) {
                 generacion = res.getInt("generacion");
@@ -234,18 +229,11 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL ListarReunionesIniciadas()");
             res = stmt.executeQuery();
 
-            int id;
-            int generacion;
-            String titulo;
-            String descripcion;
+            int id, generacion;
+            String titulo, descripcion, lugar, observaciones, estado;
             Date fecha;
             boolean obligatoria;
-            String lugar;
-            String observaciones;
-            String estado;
-            List<String> temas;
-            List<String> resoluciones;
-
+            List<String> temas, resoluciones;
             while (res.next()) {
                 id = res.getInt("id");
                 generacion = res.getInt("generacion");

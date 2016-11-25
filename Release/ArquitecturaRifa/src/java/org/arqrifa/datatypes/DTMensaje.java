@@ -1,6 +1,7 @@
-package org.arqrifa.logica;
- 
-class Mensaje {
+package org.arqrifa.datatypes;
+
+public class DTMensaje {
+
     private String destinatario;
     private String asunto;
     private String mensaje;
@@ -29,14 +30,14 @@ class Mensaje {
         this.mensaje = mensaje;
     }
 
-    public Mensaje(String destinatario, String asunto, String mensaje) {
+    public DTMensaje(String destinatario, String asunto, String mensaje) {
         this.destinatario = destinatario;
         this.asunto = asunto;
         this.mensaje = mensaje;
     }
 
-    public Mensaje() {
+    public DTMensaje() {
         this("", "", "");
     }
-        
+
 }
