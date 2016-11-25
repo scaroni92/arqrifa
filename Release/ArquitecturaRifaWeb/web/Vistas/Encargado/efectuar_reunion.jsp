@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,10 +21,8 @@
             <input type="text" name="estado" value="${modelo.estado}"readonly><br>
             <input type="text" name="lugar" value="${modelo.lugar}"readonly><br>
             <input type="text" name="observaciones" value="${modelo.observaciones}"><br>
+            <t:agregar_valores_textarea name="resoluciones" valores="${modelo.resoluciones}" />
             
-            <input type="text" id="resolucion"/>
-            <input type="button" value="Agregar" onclick="agregarResolucion()">
-            <textarea name="resoluciones" id="resoluciones" readonly>${modelo.resoluciones}</textarea>
             <c:if test="${modelo.estado == 'Pendiente'}">
                 <input type="submit" name="accion" value="Iniciar">
             </c:if>
@@ -32,19 +31,6 @@
             </c:if>
         </form>
         <p>${modelo.mensaje}</p>
-        <script>
-            function agregarResolucion() {
-                var input = document.getElementById("resolucion");
-                var resolucion = input.value;
-
-                if (resolucion !== "") {
-                    var textarea = document.getElementById("resoluciones");
-                    textarea.innerHTML += resolucion + "\n";
-                    input.value = "";
-                }
-            }
-
-        </script>
     </body>
 </html>
 

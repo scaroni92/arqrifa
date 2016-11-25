@@ -14,7 +14,7 @@
         </form>
         <table>
             <tr>
-                <th>Año</th>
+                <th>Generaciones</th>
             </tr>
 
             <c:forEach items="${modelo.generaciones}" var="generacion">

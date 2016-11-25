@@ -53,7 +53,7 @@ public class ControladorReuniones extends Controlador {
     }
 
     public void agendar_get() {
-        mostrarVista("Vistas/Encargado/agendar.jsp");
+        mostrarVista("Vistas/Encargado/agendar_reunion.jsp");
     }
 
     public void agendar_post() {
@@ -100,11 +100,11 @@ public class ControladorReuniones extends Controlador {
             vm.setMensaje(e.getMessage());
         }
 
-        mostrarVista("Vistas/Encargado/agendar.jsp", vm);
+        mostrarVista("Vistas/Encargado/agendar_reunion.jsp", vm);
     }
 
     public void iniciar_link_post() {
-        mostrarVista("Vistas/Reunion/efectuar.jsp", (VMReunion) cargarModelo(new VMReunion()));
+        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", (VMReunion) cargarModelo(new VMReunion()));
     }
 
     public void iniciar_post() {
@@ -119,7 +119,7 @@ public class ControladorReuniones extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Reunion/efectuar.jsp", vm);
+        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", vm);
     }
 
     public void finalizar_post() {
@@ -144,6 +144,6 @@ public class ControladorReuniones extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Reunion/efectuar.jsp", vm);
+        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", vm);
     }
 }

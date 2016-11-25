@@ -17,7 +17,7 @@ public class ControladorAdministrador extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Admin/agregarEncargado.jsp", vm);
+        mostrarVista("Vistas/Admin/agregar_encargado.jsp", vm);
     }
 
     public void agregar_encargado_post() {
@@ -40,7 +40,7 @@ public class ControladorAdministrador extends Controlador {
             vm.setMensaje(ex.getMessage());
         }
         vm.setGeneraciones(generaciones);
-        mostrarVista("/Vistas/Admin/agregarEncargado.jsp", vm);
+        mostrarVista("/Vistas/Admin/agregar_encargado.jsp", vm);
     }
 
     public void agregar_generacion_get() {
@@ -50,16 +50,16 @@ public class ControladorAdministrador extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", vm);
+        mostrarVista("/Vistas/Admin/agregar_generacion.jsp", vm);
     }
 
     public void agregar_generacion_post() {
         VMGeneraciones vm = (VMGeneraciones) cargarModelo(new VMGeneraciones());
 
         try {
-
-            cliente.agregarGeneracion(new DTGeneracion(Integer.parseInt(request.getParameter("anio"))));
             vm.setGeneraciones(cliente.listarGeneraciones());
+            cliente.agregarGeneracion(new DTGeneracion(Integer.parseInt(request.getParameter("anio"))));
+
             vm.setMensaje("Generación agregada exitosamente.");
 
         } catch (NumberFormatException e) {
@@ -67,6 +67,6 @@ public class ControladorAdministrador extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("/Vistas/Admin/agregarGeneracion.jsp", vm);
+        mostrarVista("/Vistas/Admin/agregar_generacion.jsp", vm);
     }
 }

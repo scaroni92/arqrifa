@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-@WebFilter(filterName = "filtroAutenticarEncargado", urlPatterns = {"/Vistas/Encargado/*", "/Vistas/Reunion/efectuar.jsp"})
+@WebFilter(filterName = "filtroAutenticarEncargado", urlPatterns = "/Vistas/Encargado/*")
 public class FiltroAutenticarEncargado implements Filter {
 
     @Override
