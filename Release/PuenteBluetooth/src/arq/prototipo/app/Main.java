@@ -194,18 +194,18 @@ public class Main extends javax.swing.JFrame {
             if (btnIniciar.getText().equals("INICIAR")) {
                 int selectedIndex = jListReuniones.getSelectedIndex();
                 if (jListReuniones.getSelectedIndex() >= 0) {
-                    DTReunion selectedReuinion = reunionesActivas.get(jListReuniones.getSelectedIndex());
+                    DTReunion selectedReunion = reunionesActivas.get(jListReuniones.getSelectedIndex());
                     //Creo el hilo del servidor bluetooth
-                    DesktopController.iniciarPuenteBluetooth(selectedReuinion);
+                    DesktopController.iniciarPuenteBluetooth(selectedReunion);
                     btnIniciar.setText("CERRAR");
                     lblEstado.setText("ON");
                     jPanelContent.removeAll();
                     jPanelContent.repaint();
                     jPanelContent.revalidate();
 
-                    jLabelId.setText(String.valueOf(selectedReuinion.getId()));
-                    jLabelFecha.setText(selectedReuinion.getFecha().toString());
-                    jLabelGen.setText(String.valueOf(selectedReuinion.getGeneracion()));
+                    jLabelId.setText(String.valueOf(selectedReunion.getId()));
+                    jLabelFecha.setText(selectedReunion.getFecha().toString());
+                    jLabelGen.setText(String.valueOf(selectedReunion.getGeneracion()));
 
                     jPanelContent.add(JPanelReunion);
                     jPanelContent.repaint();

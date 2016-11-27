@@ -36,7 +36,7 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
-    @Path("/reuniones/getActivas")
+    @Path("/reunion/iniciadas")
     @GET
     public List<DTReunion> getReunionesActivas() {
         return FabricaLogica.getControladorReuniones().listarReunionesIniciadas();

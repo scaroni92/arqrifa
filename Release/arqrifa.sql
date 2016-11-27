@@ -113,14 +113,14 @@ $$
 -- BuscarEstudiante - Busca el estudiante con las credenciales dadas
 CREATE PROCEDURE BuscarEstudiante(pCi int)
 BEGIN
-	SELECT * FROM usuarios WHERE ci = pCi AND rol = 'estudiante';
+	SELECT * FROM usuarios WHERE ci = pCi AND rol = 'Estudiante';
 END
 $$
 
 -- ListarEstudiantes - Devuelve los estudiantes de una generación
 CREATE PROCEDURE ListarEstudiantes(pGeneracion int)
 BEGIN
-	SELECT * FROM usuarios WHERE rol = 'estudiante' AND generacion = pGeneracion;
+	SELECT * FROM usuarios WHERE rol = 'Estudiante' AND generacion = pGeneracion;
 END
 $$
 
@@ -133,7 +133,7 @@ BEGIN
 		SET retorno = -1;
 	ELSE
 		INSERT INTO reuniones (Generacion,Titulo,Descripcion,Fecha,Duracion,Obligatoria,Lugar) VALUES (pGeneracion, pTitulo, pDescripcion, pFecha,pDuracion,pObligatoria, pLugar);
-        SET retorno = last_insert_id();
+        SET retorno = LAST_INSERT_ID();
 	END IF;
 END
 $$
@@ -213,13 +213,14 @@ BEGIN
 		SET retorno = -1;
 	ELSEIF NOT EXISTS (SELECT * FROM reuniones WHERE Id = pId) THEN
 		SET retorno = -2;
-	ELSEIF NOT EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'estudiante') THEN
+	ELSEIF NOT EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'Estudiante') THEN
 		SET retorno = -3;
 	ELSE
 		INSERT INTO asistencias VALUES (pId,pCi);
 	END IF;
 END
 $$
+
 
 -- SOLICITUDES
 -- AltaSolicitud  - Da de alta una solicitud
@@ -230,7 +231,7 @@ BEGIN
 		SET retorno = -1;
 	ELSEIF EXISTS(SELECT * FROM solicitudes WHERE Email = pEmail) THEN
 		SET retorno = -2;
-	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'estudiante') THEN
+	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Ci = pCi AND Rol = 'Estudiante') THEN
 		SET retorno = -3;
 	ELSEIF EXISTS (SELECT * FROM usuarios WHERE Email = pEmail) THEN
 		SET retorno = -4;
@@ -332,8 +333,8 @@ CALL AltaReunion(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran
 CALL AltaReunion(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4',@retorno);
 
 CALL AltaTema(1, 'Disminución de ventas');
-CALL AltaTema(1, 'Otro tema de ventas');
-CALL AltaTema(1, 'Otro tema más de ventas');
+CALL AltaTema(1, 'Nuevos premios');
+CALL AltaTema(1, 'Fijación de nuevos precios');
 
 CALL AltaResolucion(1, 'Se baja el precio de las rifas');
 CALL AltaResolucion(1, 'Otra resolucion');

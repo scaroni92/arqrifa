@@ -30,23 +30,15 @@ class ControladorReuniones implements IControladorReuniones {
     @Override
     public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
-            //Hacer las validaciones comentadas en BD
-            
-            /*if (!usuario.getRol().equals("estudiante")) {
+            if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-            Reunion reunionActiva = null;
-            for (Reunion reunionActual : reunionesActivas) {
-                if (reunionActual.getId() == reunion.getId()) {
-                    reunionActiva = reunionActual;
-                }
-            }
-            if (reunionActiva == null) {
-                throw new Exception("La reunión a la que se desea marcar asistencia no está en curso.");
-            }
-            if (!reunionActiva.getEstado().equals(DTEstado.LISTADO)) {
-                throw new Exception("La lista no ha sido habilitada aún.");
+            
+            // Controlar acá o en bd?
+            /*if (!reunion.getEstado().equals(DTEstado.LISTADO)) {
+                throw new Exception("La lista no se ha sido habilitada aún.");
             }*/
+
             FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());

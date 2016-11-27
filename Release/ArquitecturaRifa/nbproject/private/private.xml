@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifa/src/java/org/arqrifa/logica/ControladorGeneracion.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifa/src/java/org/arqrifa/logica/ControladorReuniones.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifa/src/java/org/arqrifa/logica/ControladorSolicitud.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifa/src/java/org/arqrifa/datatypes/DTUsuario.java</file>
-            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifa/src/java/org/arqrifa/datatypes/DTReunion.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

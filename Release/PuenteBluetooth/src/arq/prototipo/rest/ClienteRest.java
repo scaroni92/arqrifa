@@ -51,7 +51,7 @@ public class ClienteRest {
     }
 
     public List<DTReunion> getReunionesActivas() throws Exception {
-        webTarget = webTarget.path("reuniones/getActivas");
+        webTarget = webTarget.path("reunion/iniciadas");
         Response resultado = webTarget.request(MediaType.APPLICATION_JSON).get();
 
         switch (resultado.getStatus()) {
