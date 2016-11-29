@@ -11,7 +11,7 @@
 <%@attribute name="valores"%>
 
 <input type="text" id="valor"/>
-<input type="button" value="Agregar" onclick="agregar()">
+<input type="button" value="Agregar" onclick="agregar()"><br>
 <textarea name="${name}" id="valores" readonly>${valores}</textarea>
 
 <script>

@@ -43,8 +43,8 @@ public class ControladorReuniones extends Controlador {
             vm.setResoluciones(r.getResoluciones());
 
             // Si la reunión está en condiciones se habilita su inicio
-            if (r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date()))) {
-                vm.setHabilitarInicio(r.getFecha().after(new Date()));
+            if ((r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date())))|| r.getEstado().equals("Iniciada")) {
+                vm.setHabilitarBotonEfectuar(r.getFecha().after(new Date()));
             }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -103,7 +103,7 @@ public class ControladorReuniones extends Controlador {
         mostrarVista("Vistas/Encargado/agendar_reunion.jsp", vm);
     }
 
-    public void iniciar_link_post() {
+    public void efectuar_post() {
         mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", (VMReunion) cargarModelo(new VMReunion()));
     }
 

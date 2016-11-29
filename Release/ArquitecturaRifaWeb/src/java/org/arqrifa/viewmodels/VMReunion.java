@@ -17,7 +17,7 @@ public class VMReunion extends ViewModel {
     private String estado;
     private List<String> temas;
     private List<String> resoluciones;
-    private boolean habilitarInicio;
+    private boolean habilitarBotonEfectuar;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public String getId() {
@@ -64,8 +64,8 @@ public class VMReunion extends ViewModel {
         return estado;
     }
 
-    public boolean isHabilitarInicio() {
-        return habilitarInicio;
+    public boolean isHabilitarBotonEfectuar() {
+        return habilitarBotonEfectuar;
     }
 
     public List<String> getTemas() {
@@ -120,8 +120,8 @@ public class VMReunion extends ViewModel {
         this.estado = estado;
     }
 
-    public void setHabilitarInicio(boolean habilitarInicio) {
-        this.habilitarInicio = habilitarInicio;
+    public void setHabilitarBotonEfectuar(boolean habilitarBotonEfectuar) {
+        this.habilitarBotonEfectuar = habilitarBotonEfectuar;
     }
 
     public void setTemas(List<String> temas) {
@@ -138,7 +138,7 @@ public class VMReunion extends ViewModel {
         super();
     }
 
-    public VMReunion(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, String observaciones, boolean obligatoria, String lugar, String estado, List<String> temas, List<String> resoluciones, boolean habilitarInicio) {
+    public VMReunion(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, String observaciones, boolean obligatoria, String lugar, String estado, List<String> temas, List<String> resoluciones, boolean habilitarBtnEfectuar) {
         this.id = id;
         this.generacion = generacion;
         this.titulo = titulo;
@@ -152,7 +152,7 @@ public class VMReunion extends ViewModel {
         this.estado = estado;
         this.temas = temas;
         this.resoluciones = resoluciones;
-        this.habilitarInicio = habilitarInicio;
+        this.habilitarBotonEfectuar = habilitarBtnEfectuar;
     }
     
     

@@ -335,6 +335,9 @@ CALL AltaReunion(2012,'Fijación de precios de rifas', 'En esta reunión se disc
 CALL AltaTema(1, 'Disminución de ventas');
 CALL AltaTema(1, 'Nuevos premios');
 CALL AltaTema(1, 'Fijación de nuevos precios');
+CALL AltaTema(4, 'Disminución de ventas');
+CALL AltaTema(4, 'Nuevos premios');
+CALL AltaTema(4, 'Fijación de nuevos precios');
 
 CALL AltaResolucion(1, 'Se baja el precio de las rifas');
 CALL AltaResolucion(1, 'Otra resolucion');

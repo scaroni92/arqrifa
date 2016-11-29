@@ -34,10 +34,9 @@ class ControladorReuniones implements IControladorReuniones {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
             
-            // Controlar acá o en bd?
-            /*if (!reunion.getEstado().equals(DTEstado.LISTADO)) {
+            if (!reunion.getEstado().equals(DTEstado.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
-            }*/
+            }
 
             FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
         } catch (Exception e) {
