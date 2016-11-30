@@ -17,33 +17,33 @@ import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
 public class Controlador extends HttpServlet {
-    
+
     protected HttpSession sesion;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected ClienteJersey cliente = new ClienteJersey();
-    
+
     protected void despacharMetodoAccion()
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String accion = request.getParameter("accion") != null ? request.getParameter("accion").toLowerCase() : "index";
         String metodoRequest = request.getMethod().toLowerCase();
         String nombreMetodoAccion = accion + "_" + metodoRequest;
-        
+
         Method metodoAccion = this.getClass().getMethod(nombreMetodoAccion);
         metodoAccion.invoke(this);
     }
-    
+
     protected void mostrarVista(String vista) {
         mostrarVista(vista, null);
     }
-    
+
     protected void mostrarVista(String vista, ViewModel modelo) {
-        
+
         request.setAttribute("modelo", modelo);
-        
+
         try {
-            RequestDispatcher despachador = request.getRequestDispatcher(vista);
-            
+            RequestDispatcher despachador = request.getRequestDispatcher("/WEB-INF/Vistas/" + vista);
+
             if (despachador != null) {
                 despachador.forward(request, response);
             }
@@ -51,21 +51,21 @@ public class Controlador extends HttpServlet {
             System.out.println("¡ERROR! No se pudo mostrar la vista " + vista + ".");
         }
     }
-    
+
     protected ViewModel cargarModelo(ViewModel modelo) {
         ArrayList<String> parametros = Collections.list(request.getParameterNames());
-        
+
         String nombreSetter;
-        
+
         for (String p : parametros) {
             nombreSetter = "set" + p.substring(0, 1).toUpperCase() + p.substring(1);
-            
+
             for (Method m : modelo.getClass().getMethods()) {
                 try {
                     if (m.getName().equals(nombreSetter) && m.getParameterTypes().length > 0) {
                         if (m.getParameterTypes()[0].getSimpleName().equals("String")) {
                             m.invoke(modelo, request.getParameter(p));
-                        } else if (m.getParameterTypes()[0].getSimpleName().equals("boolean")){
+                        } else if (m.getParameterTypes()[0].getSimpleName().equals("boolean")) {
                             m.invoke(modelo, request.getParameter(p) != null);
                         }
                     }
@@ -74,16 +74,16 @@ public class Controlador extends HttpServlet {
                 }
             }
         }
-        
+
         return modelo;
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.sesion = request.getSession();
         this.request = request;
         this.response = response;
-        
+
         try {
             despacharMetodoAccion();
         } catch (Exception ex) {
@@ -97,13 +97,13 @@ public class Controlador extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

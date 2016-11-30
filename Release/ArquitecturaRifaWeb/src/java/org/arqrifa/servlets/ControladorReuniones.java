@@ -1,6 +1,5 @@
 package org.arqrifa.servlets;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -11,24 +10,22 @@ import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMReunionMantenimiento;
 
 public class ControladorReuniones extends Controlador {
-
+    
     public void ver_get() {
         VMReunion vm = new VMReunion();
         try {
-
+            
             DTReunion r = cliente.buscarReunion(Validador.validarId(request.getParameter("id")));
-
             if (r == null) {
-                throw new Exception("Reunión no encontrada");
+                mostrarVista("Error/no_encontrado.jsp");
             }
-
             if (r.getGeneracion() != ((DTUsuario) sesion.getAttribute("usuario")).getGeneracion()) {
-                throw new Exception("La reunión no pertenece a su generación");
+                mostrarVista("Error/no_encontrado.jsp");
             }
-
+            
             SimpleDateFormat sdfFecha = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
-
+            
             vm.setId(String.valueOf(r.getId()));
             vm.setGeneracion(String.valueOf(r.getGeneracion()));
             vm.setTitulo(r.getTitulo());
@@ -42,108 +39,110 @@ public class ControladorReuniones extends Controlador {
             vm.setTemas(r.getTemas());
             vm.setResoluciones(r.getResoluciones());
 
-            // Si la reunión está en condiciones se habilita su inicio
-            if ((r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date())))|| r.getEstado().equals("Iniciada")) {
-                vm.setHabilitarBotonEfectuar(r.getFecha().after(new Date()));
+            // Si la reunión está en condiciones se habilita el panel
+            if ((r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date()))) || r.getEstado().equals("Iniciada")) {
+                vm.setHabilitarBotonPanel(r.getFecha().after(new Date()));
             }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Reunion/ver.jsp", vm);
+        mostrarVista("Reunion/ver.jsp", vm);
     }
-
+    
     public void agendar_get() {
-        mostrarVista("Vistas/Encargado/agendar_reunion.jsp");
+        mostrarVista("Encargado/agendar_reunion.jsp");
     }
-
+    
     public void agendar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
-
+        
         try {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
-                throw new Exception("Debe completar todos los campos.");
+                throw new Exception("Complete todos los campos obligatorios.");
             }
             if (vm.getTemas().isEmpty()) {
-                throw new Exception("Ingrese los temas de se debatiran en la reunión.");
+                throw new Exception("Ingrese los temas a debatir en la reunión.");
             }
-
-            int duracion = Integer.parseInt(vm.getDuracion());
-
-            Date fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora());
-
+            
             DTReunion r = new DTReunion();
-
             r.setGeneracion(((DTUsuario) sesion.getAttribute("usuario")).getGeneracion());
             r.setTitulo(vm.getTitulo());
             r.setDescripcion(vm.getDescripcion());
-            r.setFecha(fecha);
-            r.setDuracion(duracion);
+            r.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
+            r.setDuracion(Integer.parseInt(vm.getDuracion()));
             r.setObligatoria(vm.isObligatoria());
             r.setLugar(vm.getLugar());
-
-            String temas = request.getParameter("temas");
-
-            StringTokenizer st = new StringTokenizer(temas, "\n", false);
+            
+            StringTokenizer st = new StringTokenizer(vm.getTemas(), "\n", false);
             while (st.hasMoreTokens()) {
                 r.getTemas().add(st.nextToken());
             }
-
+            
             cliente.agendarReunion(r);
             vm = new VMReunionMantenimiento();
             vm.setMensaje("Reuníon agendada exitosamente.");
-
-        } catch (NumberFormatException e) {
-            vm.setMensaje("Ingrese una duración válida.");
-        } catch (ParseException e) {
-            vm.setMensaje("Ingrese una fecha y hora válida.");
+            
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-
-        mostrarVista("Vistas/Encargado/agendar_reunion.jsp", vm);
+        
+        mostrarVista("Encargado/agendar_reunion.jsp", vm);
     }
-
-    public void efectuar_post() {
-        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", (VMReunion) cargarModelo(new VMReunion()));
+    
+    public void panel_post() {
+        VMReunionMantenimiento vm = new VMReunionMantenimiento();
+        try {
+            DTReunion r = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            
+            vm.setId(String.valueOf(r.getId()));
+            vm.setTitulo(r.getTitulo());
+            vm.setDescripcion(r.getDescripcion());
+            vm.setFecha(new SimpleDateFormat("yyyy-MM-dd").format(r.getFecha()));
+            vm.setHora(new SimpleDateFormat("HH:mm").format(r.getFecha()));
+            vm.setDuracion(String.valueOf(r.getDuracion()));
+            vm.setEstado(r.getEstado());
+            // cargar todos los atributos de ser necesario
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Encargado/panel.jsp", vm);
     }
-
+    
     public void iniciar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         try {
-
-            DTReunion r = cliente.buscarReunion(Validador.validarId(request.getParameter("id")));
-            cliente.iniciarReunion(r);
+            cliente.iniciarReunion(cliente.buscarReunion(Integer.parseInt(request.getParameter("id"))));
             vm.setEstado("Iniciada");
-
             vm.setMensaje("Reunión iniciada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", vm);
+        mostrarVista("Encargado/panel.jsp", vm);
     }
-
+    
     public void finalizar_post() {
-        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
-
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento()); 
         try {
             if (vm.getResoluciones().isEmpty()) {
                 throw new Exception("Debe ingresar las resoluciones de la reunión.");
             }
-
+            
             DTReunion r = new DTReunion();
             r.setId(Integer.parseInt(vm.getId()));
             r.setObservaciones(vm.getObservaciones());
-
+        
             StringTokenizer st = new StringTokenizer(vm.getResoluciones(), "\n", false);
             while (st.hasMoreTokens()) {
                 r.getResoluciones().add(st.nextToken());
             }
+            
             cliente.finalizarReunion(r);
             vm.setEstado("Finalizada");
-            vm.setMensaje("reunión finalizada exitosamente");
+            vm.setMensaje("Reunión finalizada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("Vistas/Encargado/efectuar_reunion.jsp", vm);
+        mostrarVista("Encargado/panel.jsp", vm);
     }
+    
 }

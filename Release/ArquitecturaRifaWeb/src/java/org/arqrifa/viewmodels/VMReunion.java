@@ -17,7 +17,7 @@ public class VMReunion extends ViewModel {
     private String estado;
     private List<String> temas;
     private List<String> resoluciones;
-    private boolean habilitarBotonEfectuar;
+    private boolean habilitarBotonPanel;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public String getId() {
@@ -64,8 +64,8 @@ public class VMReunion extends ViewModel {
         return estado;
     }
 
-    public boolean isHabilitarBotonEfectuar() {
-        return habilitarBotonEfectuar;
+    public boolean isHabilitarBotonPanel() {
+        return habilitarBotonPanel;
     }
 
     public List<String> getTemas() {
@@ -120,8 +120,8 @@ public class VMReunion extends ViewModel {
         this.estado = estado;
     }
 
-    public void setHabilitarBotonEfectuar(boolean habilitarBotonEfectuar) {
-        this.habilitarBotonEfectuar = habilitarBotonEfectuar;
+    public void setHabilitarBotonPanel(boolean habilitarBotonPanel) {
+        this.habilitarBotonPanel = habilitarBotonPanel;
     }
 
     public void setTemas(List<String> temas) {
@@ -152,7 +152,7 @@ public class VMReunion extends ViewModel {
         this.estado = estado;
         this.temas = temas;
         this.resoluciones = resoluciones;
-        this.habilitarBotonEfectuar = habilitarBtnEfectuar;
+        this.habilitarBotonPanel = habilitarBtnEfectuar;
     }
     
     

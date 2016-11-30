@@ -40,7 +40,6 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-            usuario.setRol("Encargado");
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
