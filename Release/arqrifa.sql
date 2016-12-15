@@ -48,7 +48,6 @@ CREATE TABLE resoluciones (
     FOREIGN KEY (ReunionId) REFERENCES reuniones(Id)
 );
 
-
 CREATE TABLE asistencias (
     Id INT,
     Ci INT,
@@ -69,6 +68,32 @@ CREATE TABLE solicitudes (
     Verificada BIT NOT NULL,
     FOREIGN KEY (Generacion) REFERENCES generaciones(genId)
 );
+
+CREATE TABLE encuestas (
+	Id INT PRIMARY KEY AUTO_INCREMENT,
+    ReunionId INT NOT NULL UNIQUE,
+    Titulo VARCHAR(30) NOT NULL,
+    Duracion INT NOT NULL,
+    Estado VARCHAR(15) DEFAULT 'Pendiente',
+    FOREIGN KEY (ReunionId) REFERENCES reuniones(Id)
+);
+
+CREATE TABLE propuestas (
+	Id INT PRIMARY KEY AUTO_INCREMENT,
+    EncuestaId INT NOT NULL,
+    Pregunta VARCHAR(30) NOT NULL,
+    FOREIGN KEY (EncuestaId) REFERENCES encuestas(Id)
+);
+
+CREATE TABLE respuestas (
+	Id INT PRIMARY KEY AUTO_INCREMENT,
+    PropuestaId INT NOT NULL,
+    Respuesta VARCHAR(30) NOT NULL,
+    FOREIGN KEY (PropuestaId) REFERENCES propuestas(Id)
+);
+
+
+
 
 DELIMITER $$
 -- GENERACIONES
@@ -204,6 +229,11 @@ BEGIN
 END
 $$
 
+
+
+
+
+
 -- ASISTENCIAS
 -- MarcarAsistencia - Marca la asistencia de un estudiante a una reunion
 -- Retorno : -1 si ya tiene asistencia, -2 si la reunion no existe , -3 si el estudiante no existe
@@ -305,6 +335,29 @@ END
 $$
 
 
+
+
+-- ENCUESTAS
+CREATE PROCEDURE AltaEncuesta(pReunionId int, pTitulo varchar(30), pDuracion int, out pRetorno int)
+BEGIN
+	INSERT INTO encuestas(ReunionId, titulo, duracion) VALUES(pReunionId, pTitulo, pDuracion);
+    SET pRetorno = LAST_INSERT_ID();
+END
+$$
+
+CREATE PROCEDURE AltaPropuesta(pEncuestaId int, pPregunta varchar(30), out pRetorno int)
+BEGIN
+	INSERT INTO propuestas(encuestaId, pregunta) VALUES (pEncuestaId, pPregunta);
+    SET pRetorno = LAST_INSERT_ID();
+END
+$$
+CREATE PROCEDURE AltaRespuesta(pPropuestaId int, pRespuesta varchar(30))
+BEGIN
+	INSERT INTO respuestas(propuestaId, respuesta) VALUES (pPropuestaId, pRespuesta);
+END
+$$
+
+
 DELIMITER ;
 
 CALL AltaGeneracion(0,@retorno);
@@ -349,6 +402,8 @@ SELECT * FROM generaciones;
 SELECT * FROM reuniones;
 SELECT * FROM temas;
 SELECT * FROM resoluciones;
+
+select * from encuestas, propuestas, respuestas;
 
 
 

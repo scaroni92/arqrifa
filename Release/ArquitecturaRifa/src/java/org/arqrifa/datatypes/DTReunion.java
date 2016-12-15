@@ -19,6 +19,17 @@ public class DTReunion {
     private String estado;
     private List<String> temas;
     private List<String> resoluciones;
+    private DTEncuesta encuesta;
+
+    public DTEncuesta getEncuesta() {
+        return encuesta;
+    }
+
+    public void setEncuesta(DTEncuesta encuesta) {
+        this.encuesta = encuesta;
+    }
+    
+    
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getId() {

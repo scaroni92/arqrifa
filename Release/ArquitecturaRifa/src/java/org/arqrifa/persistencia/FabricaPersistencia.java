@@ -17,4 +17,8 @@ public class FabricaPersistencia {
     public static IPersistenciaSolicitud getPersistenciaSolicitud() {
         return PersistenciaSolicitud.getInstancia();
     }
+    
+    public static IPersistenciaEncuesta getPersistenciaEncuesta() {
+        return PersistenciaEncuesta.getInstancia();
+    }
 }
