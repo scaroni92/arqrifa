@@ -63,7 +63,8 @@ class ControladorSolicitud implements IControladorSolicitud {
 
     @Override
     public void confirmarSolicitud(DTSolicitud s) {
-        String link = "http://";
+        String webURL = "http://localhost:8080/ArquitecturaRifaWeb";
+        String appURL = "http://";
         try {
             if (s == null) {
                 throw new Exception("No se puede confirmar una solicitud nula.");
@@ -71,10 +72,10 @@ class ControladorSolicitud implements IControladorSolicitud {
             if (!s.isVerificada()) {
                 throw new Exception("No se puede confirmar una solicitud sin verificar");
             }
-
-            String msj = "Tu solicitud ha sido confirmada, ya puedes iniciar sesión.\n Para descargar la app móvil: " + link;
-
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(s);
+
+            String msj = "Tu solicitud ha sido confirmada, ya puedes iniciar sesión en " + webURL
+                    + ".\n Para descargar la app móvil ingresa al siguiente enlace: " + appURL;
             new Mensajeria(new DTMensaje(s.getUsuario().getEmail(), "Solicitud aceptada", msj)).enviar();
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
@@ -106,9 +107,9 @@ class ControladorSolicitud implements IControladorSolicitud {
     public List<DTSolicitud> listarSolicitudes(int generacion) {
         List<DTSolicitud> solicitudes = new ArrayList();
         try {
-            
+
             solicitudes = FabricaPersistencia.getPersistenciaSolicitud().listar(generacion);
-            
+
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

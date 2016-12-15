@@ -73,14 +73,14 @@ class ControladorReuniones implements IControladorReuniones {
             }
 
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
-            List<DTUsuario> usuarios = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 
             String asunto = "¡Nueva reunión agendada!";
-            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " + reunion.getFecha();
+            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " +
+                    new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
 
             Mensajeria mensajeria = new Mensajeria(new DTMensaje("", asunto, mensaje));
 
-            for (DTUsuario usuario : usuarios) {
+            for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
                 mensajeria.getMensaje().setDestinatario(usuario.getEmail());
                 mensajeria.enviar();
             }
