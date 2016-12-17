@@ -25,7 +25,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     //</editor-fold>
 
     @Override
-    public void altaEncuesta(DTReunion reunion) throws Exception {
+    public void alta(DTReunion reunion) throws Exception {
         DTEncuesta encuesta = reunion.getEncuesta();
         Connection con = null;
         CallableStatement stmt = null;

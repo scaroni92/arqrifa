@@ -138,6 +138,13 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
+    
+    public void crearEncuesta(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("encuesta/agregar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
 
     public void close() {
         CLIENT.close();

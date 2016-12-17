@@ -1,6 +1,6 @@
 <%@attribute name="name"%>
 <%@attribute name="valores"%>
-
+<!-- tag provisorio para testeos-->
 <input type="text" id="valor"/>
 <input type="button" value="Agregar" onclick="agregar()"><br>
 <textarea name="${name}" id="valores" readonly>${valores}</textarea>

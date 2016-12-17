@@ -33,7 +33,7 @@ class ControladorReuniones implements IControladorReuniones {
             if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-            
+
             if (!reunion.getEstado().equals(DTEstado.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
             }
@@ -75,8 +75,8 @@ class ControladorReuniones implements IControladorReuniones {
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
             String asunto = "¡Nueva reunión agendada!";
-            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día " +
-                    new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
+            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día "
+                    + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
 
             Mensajeria mensajeria = new Mensajeria(new DTMensaje("", asunto, mensaje));
 
@@ -134,6 +134,29 @@ class ControladorReuniones implements IControladorReuniones {
             }
 
             FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
+    @Override
+    public void agregarEncuesta(DTReunion reunion) {
+        try {
+            System.out.println(reunion.getEncuesta().getPropuestas().size());
+            if (reunion == null) {
+                throw new Exception("La reunión no puede ser nula.");
+            }
+            if (reunion.getEstado().equals(DTEstado.FINALIZADA)) {
+                throw new Exception("No se puede crear encuestas para reuniones finalizadas.");
+            }
+            if (reunion.getEncuesta() == null) {
+                throw new Exception("La encuesta no puede ser nula.");
+            }
+            if (reunion.getEncuesta().getPropuestas().isEmpty()) {
+                throw new Exception("No se puede crear una encuesta sin propuestas.");
+            }
+            
+            FabricaPersistencia.getPersistenciaEncuesta().alta(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

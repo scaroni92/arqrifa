@@ -13,6 +13,8 @@ public interface IControladorReuniones {
     void finalizarReunion(DTReunion reunion);
 
     void MarcarAsistencia(DTUsuario usuario, DTReunion reunion);
+    
+    void agregarEncuesta(DTReunion reunion);
 
     DTReunion buscarReunion(int id);
 

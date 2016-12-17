@@ -32,7 +32,7 @@ public class NewClass {
         e.setPropuestas(propuestas);
         r.setEncuesta(e);
         try {
-            PersistenciaEncuesta.getInstancia().altaEncuesta(r);
+            PersistenciaEncuesta.getInstancia().alta(r);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

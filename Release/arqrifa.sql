@@ -403,9 +403,8 @@ SELECT * FROM reuniones;
 SELECT * FROM temas;
 SELECT * FROM resoluciones;
 
-select * from encuestas, propuestas, respuestas;
+select * from encuestas, propuestas;
 
-
-
-
+select * from solicitudes, usuarios;
 use arqrifa;
+select * from respuestas

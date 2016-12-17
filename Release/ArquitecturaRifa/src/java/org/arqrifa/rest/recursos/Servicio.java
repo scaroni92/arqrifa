@@ -89,6 +89,13 @@ public class Servicio {
         FabricaLogica.getLogicaUsuario().agregarEncargado(usuario);
         return Response.status(Response.Status.OK).build();
     }
+    
+    @Path("/encuesta/agregar")
+    @POST
+    public Response agregarEncuesta(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().agregarEncuesta(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Solicitudes">
     @Path("/solicitud/enviar")

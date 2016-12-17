@@ -20,6 +20,7 @@ public class DTReunion {
     private String estado;
     private List<String> temas;
     private List<String> resoluciones;
+    private DTEncuesta encuesta;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getId() {
@@ -70,6 +71,10 @@ public class DTReunion {
         return resoluciones;
     }
 
+    public DTEncuesta getEncuesta() {
+        return encuesta;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -118,9 +123,12 @@ public class DTReunion {
         this.resoluciones = resoluciones;
     }
 
+    public void setEncuesta(DTEncuesta encuesta) {
+        this.encuesta = encuesta;
+    }
+
     //</editor-fold>
-    
-    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones) {
+    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones, DTEncuesta encuesta) {
         this.id = id;
         this.generacion = generacion;
         this.titulo = titulo;
@@ -133,10 +141,19 @@ public class DTReunion {
         this.estado = estado;
         this.temas = temas;
         this.resoluciones = resoluciones;
+        this.encuesta = encuesta;
+    }
+
+    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones) {
+        this(id, generacion, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado, temas, resoluciones, new DTEncuesta());
+    }
+
+    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado) {
+        this(id, generacion, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado, new ArrayList(), new ArrayList(), new DTEncuesta());
     }
 
     public DTReunion() {
-        this(0, 0, "", "", null, 0, false, "", "", "", new ArrayList(), new ArrayList());
+        this(0, 0, "", "", null, 0, false, "", "", "", null, null);
     }
 
 }
