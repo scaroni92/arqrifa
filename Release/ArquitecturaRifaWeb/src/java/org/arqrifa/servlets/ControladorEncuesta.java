@@ -48,6 +48,7 @@ public class ControladorEncuesta extends Controlador {
             cliente.crearEncuesta(reunion);
             vm = new VMCrearEncuesta();
             vm.setMensaje("Encuesta creada exitosamente.");
+            sesion.setAttribute("Reunion", new DTReunion());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

@@ -7,7 +7,7 @@
     <body>
         <h1>Agregar Encargado</h1>
         <form action="Admin" method="post">
-            Cédula: <input type="number" name="ci" value="${modelo.ci}"  min="40000000" title="8 dígitos" required autofocus><br>
+            Cédula: <input type="number" name="ci" value="${modelo.ci}" required autofocus><br>
             Nombre: <input type="text" name="nombre" value="${modelo.nombre}" required><br>
             Apellido: <input type="text" name="apellido" value="${modelo.apellido}" required><br>
             Contraseña: <input type="password" name="contrasena" value="${modelo.contrasena}" required><br>

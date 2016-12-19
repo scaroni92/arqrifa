@@ -73,8 +73,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL VerificarSolicitud(?);");
             stmt.setInt(1, codigo);
-            int filasAfectadas = stmt.executeUpdate();
-            if (filasAfectadas == 0) {
+            if (stmt.executeUpdate() == 0) {
                 throw new Exception("Solicitud no encontrada.");
             }
         } catch (SQLException e) {
@@ -97,20 +96,16 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL ConfirmarSolicitud(?, ?, ?, ?, ?, ?, ?);");
+            stmt = con.prepareCall("CALL ConfirmarSolicitud(?, ?, ?, ?, ?, ?);");
             stmt.setInt(1, s.getUsuario().getCi());
             stmt.setInt(2, s.getUsuario().getGeneracion());
             stmt.setString(3, s.getUsuario().getNombre());
             stmt.setString(4, s.getUsuario().getApellido());
             stmt.setString(5, s.getUsuario().getContrasena());
             stmt.setString(6, s.getUsuario().getEmail());
-            stmt.registerOutParameter(7, Types.INTEGER);
             stmt.execute();
-            if (stmt.getInt(7) == -1) {
-                throw new Exception("No se pudo confirmar de alta la solicitud - Error de base de datos");
-            }
         } catch (SQLException e) {
-            throw new Exception("No se pudo confirmar la solicitud - Error de base de datos.");
+            throw new Exception("No se pudo confirmar la solicitud, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -129,11 +124,9 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL EliminarSolicitud (?, ?)");
+            stmt = con.prepareCall("CALL EliminarSolicitud (?)");
             stmt.setInt(1, solicitud.getUsuario().getCi());
-            stmt.registerOutParameter(2, Types.INTEGER);
-            stmt.execute();
-            if (stmt.getInt(2) == -1) {
+            if (stmt.executeUpdate() == 0) {
                 throw new Exception("La solicitud que desea rechazar no existe.");
             }
         } catch (SQLException e) {
@@ -166,7 +159,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             String nombre, apellido, contrasena, email;
             boolean verificada;
             if (res.next()) {
-                gen = res.getInt("generacion");
+                gen = res.getInt("id_gen");
                 fecha = res.getDate("fecha");
                 nombre = res.getString("nombre");
                 apellido = res.getString("apellido");
@@ -203,7 +196,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         ResultSet res = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL ListarSolicitudesDeGeneracion(?);");
+            stmt = con.prepareCall("CALL ListarSolicitudesPorGeneracion(?);");
             stmt.setInt(1, generacion);
             res = stmt.executeQuery();
             int ci, codigo;
@@ -212,7 +205,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             boolean verificada;
             while (res.next()) {
                 ci = res.getInt("ci");
-                generacion = res.getInt("generacion");
+                generacion = res.getInt("id_gen");
                 fecha = res.getDate("fecha");
                 nombre = res.getString("nombre");
                 apellido = res.getString("apellido");

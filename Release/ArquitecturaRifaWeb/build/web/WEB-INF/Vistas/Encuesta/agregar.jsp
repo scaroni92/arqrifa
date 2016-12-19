@@ -19,12 +19,7 @@
                 <legend>General</legend>
                 <p>
                     Título: <input type="text" name="titulo" value="${modelo.titulo}" placeholder="Ej: Encuesta del 30/12/2016" />
-                    Duración: 
-                    <select name="duracion">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>15</option>
-                    </select>
+                    Duración: <input type="number" name="duracion" value="${modelo.duracion}">
                 </p>
                 <hr>
                 <h3>Agregue Propuestas</h3>
@@ -47,9 +42,6 @@
             <fieldset>
                 <legend>Vista previa</legend>
                 <h3>${modelo.titulo}</h3>
-                <c:if test="${modelo.duracion > 0}">
-                    <p>Duración: ${modelo.duracion}</p>
-                </c:if>
                 <c:forEach var="p" items="${reunion.encuesta.propuestas}" >
                     <span>${p.pregunta}</span>
                     <c:forEach var="r" items="${p.respuestas}">

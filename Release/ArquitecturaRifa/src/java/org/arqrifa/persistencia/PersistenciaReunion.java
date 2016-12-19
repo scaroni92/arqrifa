@@ -36,6 +36,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
+            con.setAutoCommit(false);
             stmt = con.prepareCall("CALL AltaReunion(?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setInt(1, reunion.getGeneracion());
             stmt.setString(2, reunion.getTitulo());
@@ -54,10 +55,13 @@ class PersistenciaReunion implements IPersistenciaReunion {
                     this.agregarTema(stmt.getInt(8), tema, con);
                 }
             }
+            con.commit();
 
         } catch (SQLException e) {
+            con.rollback();
             throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
         } catch (Exception e) {
+            con.rollback();
             throw e;
         } finally {
             if (stmt != null) {
@@ -100,16 +104,11 @@ class PersistenciaReunion implements IPersistenciaReunion {
         CallableStatement stmt = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL finalizarReunion(?, ?, ?)");
+            stmt = con.prepareCall("CALL finalizarReunion(?, ?)");
             stmt.setInt(1, reunion.getId());
             stmt.setString(2, reunion.getObservaciones());
-            stmt.registerOutParameter(3, Types.INTEGER);
-            int filasAfectadas = stmt.executeUpdate();
-            if (stmt.getInt(3) == -1) {
-                throw new Exception("La reunión ingresada no existe.");
-            }
-            if (filasAfectadas == 0) {
-                throw new Exception("No se puede finalizar una reunión que no está iniciada.");
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("La reunión que desea finalizar no ha sido iniciada aún.");
             }
             for (String resolucion : reunion.getResoluciones()) {
                 this.agregarResolucion(reunion.getId(), resolucion, con);
@@ -136,24 +135,21 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
         try {
             con = getConexion();
-            stmt = con.prepareCall("CALL MarcarAsistencia(?, ?, ?);");
+            stmt = con.prepareCall("CALL MarcarAsistencia(?, ?);");
             stmt.setInt(1, reunion.getId());
             stmt.setInt(2, estudiante.getCi());
-            stmt.registerOutParameter(3, Types.INTEGER);
             stmt.execute();
 
-            switch (stmt.getInt(3)) {
-                case -1:
-                    throw new Exception("El estudiante ya marcó su asistencia.");
-                case -2:
-                    throw new Exception("La reunión ingresada no existe.");
-                case -3:
-                    throw new Exception("El estudiante ingresado no existe.");
-                default:
-                    break;
-            }
         } catch (SQLException e) {
-            throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
+            switch (e.getErrorCode()) {
+                case 1062:
+                    throw new Exception("El estudiante marcó su asistencia previamente.");
+                case 1452:
+                    throw new Exception("El estudiante o la reunión ingresada no existe.");
+                default:
+                    throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
+            }
+            
         } catch (Exception e) {
             throw e;
         } finally {
@@ -186,7 +182,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             List<String> temas, resoluciones;
 
             if (res.next()) {
-                generacion = res.getInt("generacion");
+                generacion = res.getInt("id_gen");
                 titulo = res.getString("titulo");
                 descripcion = res.getString("descripcion");
                 // Se utiliza getTimestamp porque getDate() no devuelve la hora.
@@ -237,7 +233,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             List<String> temas, resoluciones;
             while (res.next()) {
                 id = res.getInt("id");
-                generacion = res.getInt("generacion");
+                generacion = res.getInt("id_gen");
                 titulo = res.getString("titulo");
                 descripcion = res.getString("descripcion");
                 fecha = new Date(res.getTimestamp("fecha").getTime());
@@ -273,14 +269,15 @@ class PersistenciaReunion implements IPersistenciaReunion {
         CallableStatement stmt = null;
         ResultSet res = null;
         try {
-            stmt = con.prepareCall("CALL ListarTemas(?)");
+            stmt = con.prepareCall("CALL ListarTemasDeReunion(?)");
             stmt.setInt(1, reunionId);
             res = stmt.executeQuery();
             while (res.next()) {
                 temas.add(res.getString("tema"));
             }
         } catch (Exception e) {
-            throw new Exception("Error al cargar los temas de la reunión ID: " + reunionId);
+            throw new Exception(e.getMessage());
+            //throw new Exception("Error al cargar los temas de la reunión");
         } finally {
             if (res != null) {
                 res.close();
@@ -297,7 +294,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         CallableStatement stmt = null;
         ResultSet res = null;
         try {
-            stmt = con.prepareCall("CALL ListarResoluciones(?)");
+            stmt = con.prepareCall("CALL ListarResolucionesDeReunion(?)");
             stmt.setInt(1, reunionId);
             res = stmt.executeQuery();
             while (res.next()) {
@@ -316,7 +313,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return resoluciones;
     }
 
-    // Agregar transaction
     private void agregarTema(int reunionId, String tema, Connection con) throws Exception {
         CallableStatement stmt = null;
         try {
@@ -334,7 +330,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         }
     }
-    // Agregar transaction
 
     private void agregarResolucion(int reunionId, String resolucion, Connection con) throws Exception {
         CallableStatement stmt = null;

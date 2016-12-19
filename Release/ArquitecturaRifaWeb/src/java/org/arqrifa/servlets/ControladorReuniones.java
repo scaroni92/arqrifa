@@ -1,8 +1,8 @@
 package org.arqrifa.servlets;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.StringTokenizer;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.validador.Validador;
@@ -10,22 +10,20 @@ import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMReunionMantenimiento;
 
 public class ControladorReuniones extends Controlador {
-    
+
     public void ver_get() {
         VMReunion vm = new VMReunion();
         try {
-            
+
             DTReunion r = cliente.buscarReunion(Validador.validarId(request.getParameter("id")));
-            if (r == null) {
-                mostrarVista("Error/no_encontrado.jsp");
-            }
+
             if (r.getGeneracion() != ((DTUsuario) sesion.getAttribute("usuario")).getGeneracion()) {
                 mostrarVista("Error/no_encontrado.jsp");
             }
-            
+
             SimpleDateFormat sdfFecha = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
-            
+
             vm.setId(String.valueOf(r.getId()));
             vm.setGeneracion(String.valueOf(r.getGeneracion()));
             vm.setTitulo(r.getTitulo());
@@ -43,19 +41,23 @@ public class ControladorReuniones extends Controlador {
             if ((r.getEstado().equals("Pendiente") && vm.getFecha().equals(sdfFecha.format(new Date()))) || r.getEstado().equals("Iniciada")) {
                 vm.setHabilitarBotonPanel(r.getFecha().after(new Date()));
             }
+            mostrarVista("Reunion/ver.jsp", vm);
+        } catch (NullPointerException e) {
+            mostrarVista("Error/no_encontrado.jsp");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
+            mostrarVista("Reunion/ver.jsp", vm);
         }
-        mostrarVista("Reunion/ver.jsp", vm);
+
     }
-    
+
     public void agendar_get() {
         mostrarVista("Encargado/agendar_reunion.jsp");
     }
-    
+
     public void agendar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
-        
+
         try {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
                 throw new Exception("Complete todos los campos obligatorios.");
@@ -63,7 +65,7 @@ public class ControladorReuniones extends Controlador {
             if (vm.getTemas().isEmpty()) {
                 throw new Exception("Ingrese los temas a debatir en la reunión.");
             }
-            
+
             DTReunion r = new DTReunion();
             r.setGeneracion(((DTUsuario) sesion.getAttribute("usuario")).getGeneracion());
             r.setTitulo(vm.getTitulo());
@@ -72,28 +74,24 @@ public class ControladorReuniones extends Controlador {
             r.setDuracion(Integer.parseInt(vm.getDuracion()));
             r.setObligatoria(vm.isObligatoria());
             r.setLugar(vm.getLugar());
-            
-            StringTokenizer st = new StringTokenizer(vm.getTemas(), "\n", false);
-            while (st.hasMoreTokens()) {
-                r.getTemas().add(st.nextToken());
-            }
-            
+            r.setTemas(Arrays.asList(vm.getTemas().split("\n")));
+
             cliente.agendarReunion(r);
             vm = new VMReunionMantenimiento();
             vm.setMensaje("Reuníon agendada exitosamente.");
-            
+
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        
+
         mostrarVista("Encargado/agendar_reunion.jsp", vm);
     }
-    
+
     public void panel_post() {
         VMReunionMantenimiento vm = new VMReunionMantenimiento();
         try {
             DTReunion r = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
-            
+
             vm.setId(String.valueOf(r.getId()));
             vm.setTitulo(r.getTitulo());
             vm.setDescripcion(r.getDescripcion());
@@ -107,7 +105,7 @@ public class ControladorReuniones extends Controlador {
         }
         mostrarVista("Encargado/panel.jsp", vm);
     }
-    
+
     public void iniciar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         try {
@@ -119,30 +117,26 @@ public class ControladorReuniones extends Controlador {
         }
         mostrarVista("Encargado/panel.jsp", vm);
     }
-    
+
     public void finalizar_post() {
-        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento()); 
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         try {
             if (vm.getResoluciones().isEmpty()) {
                 throw new Exception("Debe ingresar las resoluciones de la reunión.");
             }
-            
+
             DTReunion r = new DTReunion();
             r.setId(Integer.parseInt(vm.getId()));
             r.setObservaciones(vm.getObservaciones());
-        
-            StringTokenizer st = new StringTokenizer(vm.getResoluciones(), "\n", false);
-            while (st.hasMoreTokens()) {
-                r.getResoluciones().add(st.nextToken());
-            }
-            
+            r.setResoluciones(Arrays.asList(vm.getResoluciones().split("\n")));
             cliente.finalizarReunion(r);
             vm.setEstado("Finalizada");
+            //redireccionar a ver reunión
             vm.setMensaje("Reunión finalizada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Encargado/panel.jsp", vm);
     }
-    
+
 }

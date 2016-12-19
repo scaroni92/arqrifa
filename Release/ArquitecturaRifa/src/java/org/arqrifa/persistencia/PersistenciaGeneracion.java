@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
@@ -32,18 +31,18 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
 
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL AltaGeneracion(?, ?)");
+            stmt = con.prepareCall("CALL AltaGeneracion(?)");
             stmt.setInt(1, generacion.getId());
-            stmt.registerOutParameter(2, Types.INTEGER);
-            stmt.executeQuery();
-            if (stmt.getInt(2) == -1) {
+            stmt.execute();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
                 throw new Exception("Ya existe una generación para ese año.");
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            throw new Exception("No se pudo dar de alta la generación, erro de base de datos.");
+            else {
+                throw new Exception("No se pudo dar de alta la generación, erro de base de datos.");
+            }
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw e;
         } finally {
             if (stmt != null) {
                 stmt.close();
@@ -52,7 +51,6 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
                 con.close();
             }
         }
-
     }
 
     @Override
@@ -66,8 +64,7 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
             stmt = con.prepareCall("CALL ListarGeneraciones();");
             res = stmt.executeQuery();
             while (res.next()) {
-                int generacion = res.getInt("genId");
-                generaciones.add(new DTGeneracion(generacion));
+                generaciones.add(new DTGeneracion(res.getInt("id")));
             }
         } catch (SQLException e) {
             throw new Exception("No se pudieron listar las generaciones. Error de base de datos.");

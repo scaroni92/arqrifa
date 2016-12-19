@@ -42,17 +42,20 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setString(7, usuario.getRol());
             stmt.registerOutParameter(8, Types.INTEGER);
             stmt.execute();
-            int retorno = stmt.getInt(8);
-            switch (retorno) {
-                case -1:
-                    throw new Exception("La cédula ingresada está en uso.");
-                case -2:
-                    throw new Exception("El correo ingresado está en uso.");
-                case -3:
-                    throw new Exception("La generación ingresada no existe.");
+            
+            if (stmt.getInt(8) == -1) {
+                throw new Exception("El correo ingresado está en uso.");
             }
         } catch (SQLException e) {
-            throw new Exception("No se pudo dar de alta al usuario. Error de base de datos.");
+            switch (e.getErrorCode()) {
+                case 1062:
+                    throw new Exception("La cédula ingresada está en uso.");
+                case 1452:
+                    throw new Exception("La generación ingresada no existe.");
+                default:
+                    throw new Exception("No se pudo dar de alta al usuario. Error de base de datos.");
+            }
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -86,7 +89,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 apellido = res.getString("apellido");
                 email = res.getString("email");
                 rol = res.getString("rol");
-                gen = res.getInt("generacion");
+                gen = res.getInt("id_gen");
                 usuario = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
             }
             return usuario;
@@ -157,7 +160,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         ResultSet res = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL ListarEstudiantes(?)");
+            stmt = con.prepareCall("CALL ListarEstudiantesPorGeneracion(?)");
             stmt.setInt(1, generacion);
             res = stmt.executeQuery();
 

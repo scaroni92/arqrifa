@@ -51,8 +51,11 @@ public class ControladorAdministrador extends Controlador {
         VMGeneraciones vm = (VMGeneraciones) cargarModelo(new VMGeneraciones());
         try {
             vm.setGeneraciones(cliente.listarGeneraciones());
-            cliente.agregarGeneracion(new DTGeneracion(Integer.parseInt(request.getParameter("anio"))));
-
+            
+            DTGeneracion generacion = new DTGeneracion(Integer.parseInt(request.getParameter("anio")));
+            cliente.agregarGeneracion(generacion);
+            
+            vm.getGeneraciones().add(generacion);
             vm.setMensaje("Generación agregada exitosamente.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
