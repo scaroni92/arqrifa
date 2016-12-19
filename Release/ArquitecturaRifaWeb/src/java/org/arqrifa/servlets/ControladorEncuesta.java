@@ -1,6 +1,8 @@
 package org.arqrifa.servlets;
 
 import java.util.Arrays;
+import java.util.List;
+import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.viewmodels.VMCrearEncuesta;
@@ -32,8 +34,7 @@ public class ControladorEncuesta extends Controlador {
     public void agregar_propuesta_post() {
         VMCrearEncuesta vm = (VMCrearEncuesta) cargarModelo(new VMCrearEncuesta());
         try {
-            String pregunta = request.getParameter("pregunta");
-            if (pregunta.isEmpty()) {
+            if (request.getParameter("pregunta").isEmpty()) {
                 throw new Exception("Ingrese la pregunta o título de la propuesta");
             }
             String pRespuestas = request.getParameter("respuestas");
@@ -41,8 +42,8 @@ public class ControladorEncuesta extends Controlador {
                 throw new Exception("Ingrese las respuestas de la pregunta");
             }
 
-            DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
-            reunion.getEncuesta().getPropuestas().add(new DTPropuesta(0, pregunta, Arrays.asList(pRespuestas.split("\n"))));
+            List<DTPropuesta> propuestas = (((DTReunion) sesion.getAttribute("reunion")).getEncuesta()).getPropuestas();
+            propuestas.add(new DTPropuesta(0, request.getParameter("pregunta"), Arrays.asList(pRespuestas.split("\n"))));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

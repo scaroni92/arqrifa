@@ -99,6 +99,11 @@ public class ControladorReuniones extends Controlador {
             vm.setHora(new SimpleDateFormat("HH:mm").format(r.getFecha()));
             vm.setDuracion(String.valueOf(r.getDuracion()));
             vm.setEstado(r.getEstado());
+            String temas = "";
+            for (String tema : r.getTemas()) {
+                temas += tema+",";
+            }
+            vm.setTemas(temas);
             // cargar todos los atributos de ser necesario
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

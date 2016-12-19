@@ -43,7 +43,7 @@
                 <legend>Vista previa</legend>
                 <h3>${modelo.titulo}</h3>
                 <c:forEach var="p" items="${reunion.encuesta.propuestas}" >
-                    <span>${p.pregunta}</span>
+                    <span style="display:block">${p.pregunta}</span>
                     <c:forEach var="r" items="${p.respuestas}">
                         ${r}<br>
                     </c:forEach>

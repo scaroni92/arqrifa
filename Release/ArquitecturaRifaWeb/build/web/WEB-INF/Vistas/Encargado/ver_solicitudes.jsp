@@ -20,7 +20,7 @@
                             <td><a href="Encargados?accion=confirmar_solicitud&ci=${solicitud.usuario.ci}">Confirmar</a></td>
                         </c:when>
                         <c:otherwise>
-                            <td><span>Correo no verificado</span></td>
+                            <td>Sin verificar</td>
                         </c:otherwise>
                     </c:choose>
                     <td><a href="Encargados?accion=rechazar_solicitud&ci=${solicitud.usuario.ci}">Rechazar</a></td>
