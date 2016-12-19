@@ -27,7 +27,7 @@
             <ul>
                 <c:forEach var="resolucion" items="${modelo.resoluciones}">
                     <li>${resolucion}</li>
-                </c:forEach>
+                    </c:forEach>
             </ul>
             Observaciones: ${modelo.observaciones}
         </c:if>
@@ -39,9 +39,11 @@
             </c:if>
         </form>
 
-            <c:if test="${!modelo.estado eq 'Finalizada'}">
-                
-            </c:if>
+        <c:if test="${!modelo.estado eq 'Finalizada'}">
+
+        </c:if>
+
+        <a href="Encuesta?accion=ver&reunion_id=${modelo.id}">Ver encuesta</a>
         <a href="Encuesta?accion=agregar&id=${modelo.id}">Agregar encuesta</a>
         <p>${modelo.mensaje}</p>
     </body>

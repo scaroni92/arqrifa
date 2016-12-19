@@ -96,6 +96,13 @@ public class Servicio {
         FabricaLogica.getControladorReuniones().agregarEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
+    
+    @Path("/encuesta/iniciar_votacion")
+    @POST
+    public Response iniciarVotacionEncuesta(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().habilitarVotacion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Solicitudes">
     @Path("/solicitud/enviar")

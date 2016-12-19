@@ -26,12 +26,12 @@ CREATE TABLE reuniones (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_gen INT NOT NULL,
     titulo VARCHAR(30) NOT NULL,
-    descripcion VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(200) NOT NULL,
     fecha DATETIME NOT NULL,
     duracion INT NOT NULL,
     obligatoria BIT NOT NULL,
     lugar VARCHAR(50) NOT NULL,
-    observaciones VARCHAR(100) DEFAULT '',
+    observaciones VARCHAR(200) DEFAULT '',
     estado VARCHAR(15) DEFAULT 'Pendiente',
     FOREIGN KEY (id_gen) REFERENCES generaciones(id)
 );
@@ -46,7 +46,7 @@ CREATE TABLE temas (
 CREATE TABLE resoluciones (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_reunion INT NOT NULL,
-    resolucion VARCHAR(50) NOT NULL,
+    resolucion VARCHAR(100) NOT NULL,
     FOREIGN KEY (id_reunion) REFERENCES reuniones(id)
 );
 
@@ -76,28 +76,28 @@ CREATE TABLE encuestas (
     id_reunion INT NOT NULL UNIQUE,
     titulo VARCHAR(30) NOT NULL,
     duracion INT NOT NULL,
-    estado VARCHAR(15) DEFAULT 'Pendiente',
+    habilitada BIT NOT NULL DEFAULT 0,
     FOREIGN KEY (id_reunion) REFERENCES reuniones(id)
 );
 
 CREATE TABLE propuestas (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_encuesta INT NOT NULL,
-    pregunta VARCHAR(30) NOT NULL,
+    pregunta VARCHAR(100) NOT NULL,
     FOREIGN KEY (id_encuesta) REFERENCES encuestas(id)
 );
 
 CREATE TABLE respuestas (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_propuesta INT NOT NULL,
-    respuesta VARCHAR(30) NOT NULL,
+    respuesta VARCHAR(100) NOT NULL,
     FOREIGN KEY (id_propuesta) REFERENCES propuestas(id)
 );
 
 
 -- -------------------REGISTROS DE PRUEBA-------------------
 
-INSERT INTO generaciones VALUES(0),(2010),(2012);
+INSERT INTO generaciones VALUES (0),(2010),(2012);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),
@@ -110,8 +110,8 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, estado) VALUES
 (2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-10-20 15:00:00', 120, 1, 'SALON 1', 'Pendiente'),
-(2010,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',60,0, 'SALON 2', 'Finalizada'),
-(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', 'Pendiente'),
+(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',60,0, 'SALON 2', 'Finalizada'),
+(2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', 'Pendiente'),
 (2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4', 'Pendiente');
 
 INSERT INTO temas(id_reunion, tema) VALUES 
@@ -127,6 +127,22 @@ INSERT INTO temas(id_reunion, tema) VALUES
 (4, 'Disminución de ventas'),
 (4, 'Nuevos premios'),
 (4, 'Fijación de nuevos precios');
+
+INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
+(2, 'Encuesta del 20/6/16', 5);
+
+INSERT INTO propuestas (id_encuesta, pregunta) VALUES
+(1, '¿Cuál de estos premios deberíamos incorporar?'),
+(1, '¿Qué precio de rifa le parece mejor?');
+
+INSERT INTO respuestas (id_propuesta, respuesta) VALUES
+(1, 'Cámara Sony'),
+(1, 'IPhone 6S'),
+(1, 'giftcards en tienda inglesa valor $30.000'),
+(2, '$3960'),
+(2, '$3980'),
+(2, '$3990'),
+(2, '$3400');
 
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
@@ -289,6 +305,11 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE HabilitarVotacion(pEncuestaId int)
+BEGIN
+	UPDATE encuestas SET habilitada = 1 WHERE id = pEncuestaId;
+END
+$$
 -- --------------------------------------------------------
 
 --
@@ -310,6 +331,12 @@ $$
 CREATE PROCEDURE BuscarReunion(pId int)
 BEGIN
 	SELECT * FROM reuniones WHERE id = pId;
+END
+$$
+
+CREATE PROCEDURE BuscarEncuestaDeReunion(pReunionId int)
+BEGIN
+	SELECT * FROM encuestas WHERE id_reunion = pReunionId;
 END
 $$
 
@@ -366,11 +393,19 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ListarPropuestasDeEncuesta(pEncuestaId int)
+BEGIN
+	SELECT * FROM propuestas WHERE id_encuesta = pEncuestaId;
+END
+$$
 
-
+CREATE PROCEDURE ListarRespuestasDePropuesta(pPropuestaId int)
+BEGIN
+	SELECT * FROM respuestas WHERE id_propuesta = pPropuestaId;
+END
+$$
 
 
 
 DELIMITER ;
-
  -- SELECT * FROM reuniones PROCEDURE ANALYSE();

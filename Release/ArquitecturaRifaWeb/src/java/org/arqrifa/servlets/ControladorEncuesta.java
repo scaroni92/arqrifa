@@ -4,8 +4,20 @@ import java.util.Arrays;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.viewmodels.VMCrearEncuesta;
+import org.arqrifa.viewmodels.VMEncuesta;
 
 public class ControladorEncuesta extends Controlador {
+
+    public void ver_get() {
+        VMEncuesta vm = new VMEncuesta();
+        try {
+
+            vm.setReunionId(request.getParameter("reunion_id"));
+            vm.setEncuesta(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id"))).getEncuesta());
+        } catch (Exception e) {
+        }
+        mostrarVista("Encuesta/ver.jsp", vm);
+    }
 
     public void agregar_get() {
         VMCrearEncuesta vm = new VMCrearEncuesta();
@@ -28,9 +40,9 @@ public class ControladorEncuesta extends Controlador {
             if (pRespuestas.isEmpty()) {
                 throw new Exception("Ingrese las respuestas de la pregunta");
             }
-            
+
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
-            reunion.getEncuesta().getPropuestas().add(new DTPropuesta(0, pregunta,  Arrays.asList(pRespuestas.split("\n"))));
+            reunion.getEncuesta().getPropuestas().add(new DTPropuesta(0, pregunta, Arrays.asList(pRespuestas.split("\n"))));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -53,5 +65,19 @@ public class ControladorEncuesta extends Controlador {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Encuesta/agregar.jsp", vm);
+    }
+
+    public void iniciar_votacion_post() {
+        VMEncuesta vm = new VMEncuesta();
+        try {
+            vm.setReunionId(request.getParameter("reunion_id"));
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getReunionId()));
+            cliente.iniciarVotacion(reunion);
+            vm.setEncuesta(reunion.getEncuesta());
+            vm.setMensaje("Votación iniciada con éxito.");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Encuesta/ver.jsp", vm);
     }
 }

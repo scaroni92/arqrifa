@@ -128,7 +128,8 @@ public class DTReunion {
     }
 
     //</editor-fold>
-    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones) {
+
+    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones, DTEncuesta encuesta) {
         this.id = id;
         this.generacion = generacion;
         this.titulo = titulo;
@@ -141,7 +142,11 @@ public class DTReunion {
         this.estado = estado;
         this.temas = temas;
         this.resoluciones = resoluciones;
-        this.encuesta = new DTEncuesta();
+        this.encuesta = encuesta;
+    }
+    
+    public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones) {
+        this(id, generacion, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado, temas, resoluciones, new DTEncuesta());
     }
 
     public DTReunion() {

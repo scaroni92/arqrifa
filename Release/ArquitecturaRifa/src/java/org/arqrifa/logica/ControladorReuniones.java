@@ -155,8 +155,23 @@ class ControladorReuniones implements IControladorReuniones {
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("No se puede crear una encuesta sin propuestas.");
             }
-            
+
             FabricaPersistencia.getPersistenciaEncuesta().alta(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaExcepcion(e.getMessage());
+        }
+    }
+
+    @Override
+    public void habilitarVotacion(DTReunion reunion) {
+        try {
+            if (!reunion.getEstado().equals(DTEstado.INICIADA)) {
+                throw new Exception("No se puede habilitar la votación de una reunión que no está en progreso.");
+            }
+            if (reunion.getEncuesta().isHabilitada()) {
+                throw new Exception("No se puede habilitar la votación de una encuesta que ya fue habilitada.");
+            }
+            FabricaPersistencia.getPersistenciaEncuesta().habilitarVotacion(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaExcepcion(e.getMessage());
         }

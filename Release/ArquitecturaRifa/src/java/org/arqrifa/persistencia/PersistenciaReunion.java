@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.arqrifa.datatypes.DTEncuesta;
 
 class PersistenciaReunion implements IPersistenciaReunion {
 
@@ -174,27 +175,22 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL BuscarReunion(?)");
             stmt.setInt(1, id);
             res = stmt.executeQuery();
-
-            int generacion;
-            String titulo, descripcion, lugar, observaciones, estado;
-            Date fecha;
-            boolean obligatoria;
-            List<String> temas, resoluciones;
-
+            
             if (res.next()) {
-                generacion = res.getInt("id_gen");
-                titulo = res.getString("titulo");
-                descripcion = res.getString("descripcion");
+                int generacion = res.getInt("id_gen");
+                String titulo = res.getString("titulo");
+                String descripcion = res.getString("descripcion");
                 // Se utiliza getTimestamp porque getDate() no devuelve la hora.
-                fecha = new Date(res.getTimestamp("fecha").getTime());
-                obligatoria = res.getBoolean("obligatoria");
-                lugar = res.getString("lugar");
-                observaciones = res.getString("observaciones");
-                estado = res.getString("estado");
-                temas = this.listarTemas(id, con);
-                resoluciones = this.listarResoluciones(id, con);
+                Date fecha = new Date(res.getTimestamp("fecha").getTime());
+                boolean obligatoria = res.getBoolean("obligatoria");
+                String lugar = res.getString("lugar");
+                String observaciones = res.getString("observaciones");
+                String estado = res.getString("estado");
+                List<String> temas = this.listarTemas(id, con);
+                List<String> resoluciones = this.listarResoluciones(id, con);
+                DTEncuesta encuesta = PersistenciaEncuesta.getInstancia().buscar(id);
 
-                reunion = new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones);
+                reunion = new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones, encuesta);
             }
 
         } catch (SQLException e) {
