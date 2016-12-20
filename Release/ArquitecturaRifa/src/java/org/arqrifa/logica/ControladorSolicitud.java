@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
-import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
+import org.arqrifa.excepciones.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorSolicitud implements IControladorSolicitud {
@@ -48,7 +48,7 @@ class ControladorSolicitud implements IControladorSolicitud {
         } catch (MessagingException me) {
             System.out.println(me.getMessage());
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -57,7 +57,7 @@ class ControladorSolicitud implements IControladorSolicitud {
         try {
             FabricaPersistencia.getPersistenciaSolicitud().verificar(codigo);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ class ControladorSolicitud implements IControladorSolicitud {
                     + ".\n Para descargar la app móvil ingresa al siguiente enlace: " + appURL;
             new Mensajeria(new DTMensaje(s.getUsuario().getEmail(), "Solicitud aceptada", msj)).enviar();
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             }
             FabricaPersistencia.getPersistenciaSolicitud().rechazar(solicitud);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ class ControladorSolicitud implements IControladorSolicitud {
         try {
             return FabricaPersistencia.getPersistenciaSolicitud().buscar(ci);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -111,7 +111,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             solicitudes = FabricaPersistencia.getPersistenciaSolicitud().listar(generacion);
 
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
         return solicitudes;
     }

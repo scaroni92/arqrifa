@@ -94,6 +94,16 @@ CREATE TABLE respuestas (
     FOREIGN KEY (id_propuesta) REFERENCES propuestas(id)
 );
 
+CREATE TABLE votos (
+        ci INT NOT NULL,
+        id_respuesta INT NOT NULL,
+        PRIMARY KEY(ci, id_respuesta),
+        FOREIGN KEY (ci) REFERENCES usuarios(ci),
+        FOREIGN KEY (id_respuesta) REFERENCES respuestas(id)
+);
+
+
+
 
 -- -------------------REGISTROS DE PRUEBA-------------------
 
@@ -101,7 +111,7 @@ INSERT INTO generaciones VALUES (0),(2010),(2012);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),
-(5555555,2010, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
+(5555555,2012, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
 (7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado');
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo) VALUES
@@ -109,10 +119,11 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 (3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, estado) VALUES
-(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-10-20 15:00:00', 120, 1, 'SALON 1', 'Pendiente'),
+(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', NOW(), 120, 1, 'SALON 1', 'Iniciada'),
 (2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2016-06-20 15:00:00',60,0, 'SALON 2', 'Finalizada'),
 (2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', 'Pendiente'),
 (2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4', 'Pendiente');
+
 
 INSERT INTO temas(id_reunion, tema) VALUES 
 (1, 'Disminución de ventas'),
@@ -129,11 +140,14 @@ INSERT INTO temas(id_reunion, tema) VALUES
 (4, 'Fijación de nuevos precios');
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
+(1, 'Encuesta ...', 5),
 (2, 'Encuesta del 20/6/16', 5);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Cuál de estos premios deberíamos incorporar?'),
-(1, '¿Qué precio de rifa le parece mejor?');
+(1, '¿Qué precio de rifa le parece mejor?'),
+(2, '¿Cuál de estos premios deberíamos incorporar?'),
+(2, '¿Qué precio de rifa le parece mejor?');
 
 INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (1, 'Cámara Sony'),
@@ -142,7 +156,14 @@ INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (2, '$3960'),
 (2, '$3980'),
 (2, '$3990'),
-(2, '$3400');
+(2, '$3400'),
+(3, 'Cámara Sony'),
+(3, 'IPhone 6S'),
+(3, 'giftcards en tienda inglesa valor $30.000'),
+(4, '$3960'),
+(4, '$3980'),
+(4, '$3990'),
+(4, '$3400');
 
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
@@ -308,6 +329,12 @@ $$
 CREATE PROCEDURE HabilitarVotacion(pEncuestaId int)
 BEGIN
 	UPDATE encuestas SET habilitada = 1 WHERE id = pEncuestaId;
+END
+$$
+
+CREATE PROCEDURE AltaVoto(pCi int, pRespuestaId int)
+BEGIN
+	INSERT INTO votos VALUES(pCi, pRespuestaId);
 END
 $$
 -- --------------------------------------------------------

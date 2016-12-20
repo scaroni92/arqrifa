@@ -2,7 +2,7 @@ package org.arqrifa.logica;
 
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
-import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
+import org.arqrifa.excepciones.ArquitecturaRifaException;
 
 class ControladorUsuario implements IControladorUsuario {
 
@@ -26,7 +26,7 @@ class ControladorUsuario implements IControladorUsuario {
         try {
             resp = FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
         return resp;
     }
@@ -42,7 +42,7 @@ class ControladorUsuario implements IControladorUsuario {
             }
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 

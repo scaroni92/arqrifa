@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
-import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
+import org.arqrifa.excepciones.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorGeneracion implements IControladorGeneracion {
@@ -37,7 +37,7 @@ class ControladorGeneracion implements IControladorGeneracion {
             FabricaPersistencia.getPersistenciaGeneracion().agregar(generacion);
             
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ class ControladorGeneracion implements IControladorGeneracion {
             generaciones = FabricaPersistencia.getPersistenciaGeneracion().listar();
             
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
         return generaciones;
     }

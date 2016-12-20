@@ -8,8 +8,9 @@ import org.arqrifa.datatypes.DTEstado;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
+import org.arqrifa.datatypes.DTVoto;
 import org.arqrifa.persistencia.FabricaPersistencia;
-import org.arqrifa.excepciones.ArquitecturaRifaExcepcion;
+import org.arqrifa.excepciones.ArquitecturaRifaException;
 
 class ControladorReuniones implements IControladorReuniones {
 
@@ -40,7 +41,7 @@ class ControladorReuniones implements IControladorReuniones {
 
             FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -51,7 +52,7 @@ class ControladorReuniones implements IControladorReuniones {
         try {
             reuniones = FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
         return reuniones;
     }
@@ -85,7 +86,7 @@ class ControladorReuniones implements IControladorReuniones {
                 mensajeria.enviar();
             }
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -95,7 +96,7 @@ class ControladorReuniones implements IControladorReuniones {
         try {
             reunion = FabricaPersistencia.getPersistenciaReunion().buscar(id);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
         return reunion;
     }
@@ -122,7 +123,7 @@ class ControladorReuniones implements IControladorReuniones {
 
             FabricaPersistencia.getPersistenciaReunion().iniciar(reunion);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -135,7 +136,7 @@ class ControladorReuniones implements IControladorReuniones {
 
             FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -158,7 +159,7 @@ class ControladorReuniones implements IControladorReuniones {
 
             FabricaPersistencia.getPersistenciaEncuesta().alta(reunion);
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
@@ -173,7 +174,16 @@ class ControladorReuniones implements IControladorReuniones {
             }
             FabricaPersistencia.getPersistenciaEncuesta().habilitarVotacion(reunion.getEncuesta());
         } catch (Exception e) {
-            throw new ArquitecturaRifaExcepcion(e.getMessage());
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void agregarVoto(DTVoto voto) {
+        try {
+            FabricaPersistencia.getPersistenciaEncuesta().altaVoto(voto);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 

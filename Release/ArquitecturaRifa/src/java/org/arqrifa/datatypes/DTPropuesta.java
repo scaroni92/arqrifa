@@ -6,9 +6,9 @@ public class DTPropuesta {
 
     private int id;
     private String pregunta;
-    private List<String> respuestas;
+    private List<DTRespuesta> respuestas;
 
-    public DTPropuesta(int id, String pregunta, List<String> respuestas) {
+    public DTPropuesta(int id, String pregunta, List<DTRespuesta> respuestas) {
         this.id = id;
         this.pregunta = pregunta;
         this.respuestas = respuestas;
@@ -25,7 +25,7 @@ public class DTPropuesta {
         return pregunta;
     }
 
-    public List<String> getRespuestas() {
+    public List<DTRespuesta> getRespuestas() {
         return respuestas;
     }
 
@@ -37,8 +37,10 @@ public class DTPropuesta {
         this.pregunta = pregunta;
     }
 
-    public void setRespuestas(List<String> respuestas) {
+    public void setRespuestas(List<DTRespuesta> respuestas) {
         this.respuestas = respuestas;
     }
+
+
 
 }

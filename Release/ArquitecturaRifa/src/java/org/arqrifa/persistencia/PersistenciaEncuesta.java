@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
+import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
+import org.arqrifa.datatypes.DTVoto;
 
 class PersistenciaEncuesta implements IPersistenciaEncuesta {
 
@@ -70,7 +72,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.setString(2, propuesta.getPregunta());
             stmt.registerOutParameter(3, Types.INTEGER);
             if (stmt.executeUpdate() > 0) {
-                for (String r : propuesta.getRespuestas()) {
+                for (DTRespuesta r : propuesta.getRespuestas()) {
                     this.altaRespuesta(stmt.getInt(3), r, con);
                 }
             }
@@ -79,16 +81,16 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         }
     }
 
-    private void altaRespuesta(int propuestaId, String respuesta, Connection con) throws Exception {
+    private void altaRespuesta(int propuestaId, DTRespuesta respuesta, Connection con) throws Exception {
         try (CallableStatement stmt = con.prepareCall("CALL AltaRespuesta(?, ?)")) {
             stmt.setInt(1, propuestaId);
-            stmt.setString(2, respuesta);
+            stmt.setString(2, respuesta.getRespuesta());
             stmt.execute();
         } catch (Exception e) {
             throw new Exception("No se pudo dar de alta la respuesta, error de base de datos.");
         }
     }
-    
+
     public DTEncuesta buscar(int reunionId) throws Exception {
         DTEncuesta encuesta = null;
         Connection con = null;
@@ -100,16 +102,13 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.setInt(1, reunionId);
             res = stmt.executeQuery();
             if (res.next()) {
-                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"),res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
+                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             throw new Exception("No se pudo buscar la encuesta de la reunión, error de base de datos.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw e;
-        }
-        finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -122,7 +121,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         }
         return encuesta;
     }
-    
+
     private List<DTPropuesta> listarPropuestas(int encuestaId, Connection con) throws Exception {
         List<DTPropuesta> propuestas = new ArrayList();
         CallableStatement stmt = null;
@@ -136,8 +135,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
         } catch (Exception e) {
             throw new Exception("No se pudo listar las propuestas de la encuesta, error de base de datos.");
-        }
-        finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -147,23 +145,22 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         }
         return propuestas;
     }
-    
-    private List<String> listarRespuestas (int propuestaId, Connection con) throws Exception {
-        List<String> respuestas = new ArrayList();
+
+    private List<DTRespuesta> listarRespuestas(int propuestaId, Connection con) throws Exception {
+        List<DTRespuesta> respuestas = new ArrayList();
         CallableStatement stmt = null;
         ResultSet res = null;
-        try {            
+        try {
             stmt = con.prepareCall("CALL ListarRespuestasDePropuesta(?)");
             stmt.setInt(1, propuestaId);
-            res  = stmt.executeQuery();
+            res = stmt.executeQuery();
             while (res.next()) {
-                respuestas.add(res.getString("respuesta"));
+                respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta")));
             }
-            
+
         } catch (Exception e) {
             throw new Exception("No se pudieron listar las respuestas de la propuesta, error de base de datos.");
-        }
-        finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -190,6 +187,46 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw e;
         } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void altaVoto(DTVoto voto) throws Exception {
+        Connection con = null;
+        CallableStatement  stmt= null;
+        try {
+            con = Persistencia.getConexion();
+            con.setAutoCommit(false);
+            stmt = con.prepareCall("CALL AltaVoto(?, ?)");
+            stmt.setInt(1, voto.getUsuario().getCi());
+            for (DTRespuesta r : voto.getRespuestasEscogidas()) {
+                stmt.setInt(2, r.getId());
+                if (stmt.executeUpdate() == 0) {
+                    throw new Exception("No se pudo agregar el voto, error de base de datos.");
+                }
+            }
+            con.commit();  
+        }
+        catch(SQLException e) {
+            con.rollback();
+            switch (e.getErrorCode()) {
+                case 1062:
+                    throw new Exception("El estudiante ya voto previamente en la encuesta.");
+                default:
+                    throw new Exception("No se pudo agregar el voto, error de base de datos.");
+            }
+        }
+        catch (Exception e) {
+            con.rollback();
+            throw e;
+        }
+        finally {
             if (stmt != null) {
                 stmt.close();
             }
