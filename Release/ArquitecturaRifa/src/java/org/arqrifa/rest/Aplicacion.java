@@ -14,7 +14,7 @@ public class Aplicacion extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        final Set<Class<?>> classes = new HashSet<Class<?>>();
+        final Set<Class<?>> classes = new HashSet<>();
 
         classes.add(Servicio.class);
         classes.add(MultiPartFeature.class);

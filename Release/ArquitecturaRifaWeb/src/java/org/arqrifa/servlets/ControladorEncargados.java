@@ -2,7 +2,6 @@ package org.arqrifa.servlets;
 
 import java.util.ArrayList;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMSolicitudes;
 
 public class ControladorEncargados extends Controlador {
@@ -29,10 +28,14 @@ public class ControladorEncargados extends Controlador {
 
     public void rechazar_solicitud_get() {
         try {
-            cliente.rechazarSolicitud(cliente.buscarSolicitud(Validador.validarCi(request.getParameter("ci"))));
+            cliente.rechazarSolicitud(cliente.buscarSolicitud(Integer.parseInt(request.getParameter("ci"))));
             DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
             mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud rechazada exitosamente."));
-        } catch (Exception e) {
+        }
+        catch(NumberFormatException e){
+            mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(new ArrayList(), "Ingrese una cédula válida."));
+        }
+        catch (Exception e) {
             mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(new ArrayList(), e.getMessage()));
         }
     }

@@ -35,12 +35,7 @@ class PersistenciaGeneracion implements IPersistenciaGeneracion {
             stmt.setInt(1, generacion.getId());
             stmt.execute();
         } catch (SQLException e) {
-            if (e.getErrorCode() == 1062) {
-                throw new Exception("Ya existe una generación para ese año.");
-            }
-            else {
-                throw new Exception("No se pudo dar de alta la generación, erro de base de datos.");
-            }
+            throw new Exception(e.getErrorCode() == 1062 ? "Ya existe una generación para ese año." : "No se pudo dar de alta la generación, erro de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.validador.Validador;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMReunionMantenimiento;
 
@@ -15,7 +14,7 @@ public class ControladorReuniones extends Controlador {
         VMReunion vm = new VMReunion();
         try {
 
-            DTReunion r = cliente.buscarReunion(Validador.validarId(request.getParameter("id")));
+            DTReunion r = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
 
             if (r.getGeneracion() != ((DTUsuario) sesion.getAttribute("usuario")).getGeneracion()) {
                 mostrarVista("Error/no_encontrado.jsp");
@@ -42,7 +41,8 @@ public class ControladorReuniones extends Controlador {
                 vm.setHabilitarBotonPanel(r.getFecha().after(new Date()));
             }
             mostrarVista("Reunion/ver.jsp", vm);
-        } catch (NullPointerException e) {
+        }
+        catch(NumberFormatException | NullPointerException e){
             mostrarVista("Error/no_encontrado.jsp");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
@@ -47,8 +46,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             int retorno = stmt.getInt(9);
             if (retorno == -1 || retorno == -3) {
                 throw new Exception("La cédula ingresada está en uso.");
-            }
-            if (retorno == -2 || retorno == -4) {
+            } else if (retorno == -2 || retorno == -4) {
                 throw new Exception("El correo ingresado está en uso.");
             }
         } catch (SQLException e) {
@@ -154,22 +152,12 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL BuscarSolicitud(?)");
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
-            int gen, codigo;
-            Date fecha;
-            String nombre, apellido, contrasena, email;
-            boolean verificada;
+            
             if (res.next()) {
-                gen = res.getInt("id_gen");
-                fecha = res.getDate("fecha");
-                nombre = res.getString("nombre");
-                apellido = res.getString("apellido");
-                contrasena = res.getString("contrasena");
-                email = res.getString("email");
-                codigo = res.getInt("codigo");
-                verificada = res.getBoolean("verificada");
-
-                solicitud = new DTSolicitud(codigo, fecha, verificada, new DTUsuario(ci, nombre, apellido, contrasena, email, email, gen));
+                DTUsuario usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", res.getInt("id_gen"));
+                solicitud = new DTSolicitud(res.getInt("codigo"), res.getDate("fecha"), res.getBoolean("verificada"), usuario);
             }
+            
         } catch (SQLException e) {
             throw new Exception("No se pudo buscar la solicitud, error de base de datos.");
         } catch (Exception e) {
@@ -199,24 +187,13 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL ListarSolicitudesPorGeneracion(?);");
             stmt.setInt(1, generacion);
             res = stmt.executeQuery();
-            int ci, codigo;
-            Date fecha;
-            String nombre, apellido, contrasena, email;
-            boolean verificada;
+
             while (res.next()) {
-                ci = res.getInt("ci");
-                generacion = res.getInt("id_gen");
-                fecha = res.getDate("fecha");
-                nombre = res.getString("nombre");
-                apellido = res.getString("apellido");
-                contrasena = res.getString("contrasena");
-                email = res.getString("email");
-                codigo = res.getInt("codigo");
-                verificada = res.getBoolean("verificada");
-                solicitudes.add(new DTSolicitud(codigo, fecha, verificada, new DTUsuario(ci, nombre, apellido, contrasena, email, email, generacion)));
+                DTUsuario usuario = new DTUsuario(res.getInt("ci"), res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", generacion);
+                solicitudes.add(new DTSolicitud(res.getInt("codigo"), res.getDate("fecha"), res.getBoolean("verificada"), usuario));
             }
         } catch (SQLException e) {
-            throw new Exception("No se pudieron listar las solicitudes. Error de base de datos.");
+            throw new Exception("No se pudieron listar las solicitudes, error de base de datos.");
 
         } catch (Exception e) {
             throw e;

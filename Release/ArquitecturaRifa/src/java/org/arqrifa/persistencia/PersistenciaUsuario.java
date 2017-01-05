@@ -26,6 +26,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     }
 
     //</editor-fold>
+    
     @Override
     public void agregar(DTUsuario usuario) throws Exception {
         Connection con = null;
@@ -82,17 +83,10 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setString(2, contrasena);
             res = stmt.executeQuery();
 
-            String nombre, apellido, email, rol;
-            int gen;
             if (res.next()) {
-                nombre = res.getString("nombre");
-                apellido = res.getString("apellido");
-                email = res.getString("email");
-                rol = res.getString("rol");
-                gen = res.getInt("id_gen");
-                usuario = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
+                usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), contrasena, res.getString("email"), res.getString("rol"), res.getInt("id_gen"));
             }
-            return usuario;
+            
         } catch (SQLException e) {
             throw new Exception("No se pudo autenticar al usuario - Error de base de datos.");
         } catch (Exception e) {
@@ -108,10 +102,12 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 con.close();
             }
         }
+        return usuario;
     }
 
     @Override
     public DTUsuario buscarEstudiante(int ci) throws Exception {
+        DTUsuario estudiante = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -122,19 +118,16 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
 
-            DTUsuario estudiante = null;
-            String nombre, apellido, contrasena, email, rol;
-            int gen;
             if (res.next()) {
-                nombre = res.getString("nombre");
-                apellido = res.getString("apellido");
-                contrasena = res.getString("contrasena");
-                email = res.getString("email");
-                rol = res.getString("rol");
-                gen = res.getInt("generacion");
-                estudiante = new DTUsuario(ci, nombre, apellido, contrasena, email, rol, gen);
+                estudiante = new DTUsuario(res.getInt("ci"),
+                        res.getString("nombre"),
+                        res.getString("apellido"),
+                        res.getString("contrasena"),
+                        res.getString("email"),
+                        res.getString("rol"),
+                        res.getInt("id_gen"));
             }
-            return estudiante;
+            
         } catch (SQLException e) {
             throw new Exception("No se pudo encontrar al estudiante - Error de base de datos.");
         } catch (Exception e) {
@@ -150,6 +143,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 con.close();
             }
         }
+        return estudiante;
     }
 
     @Override

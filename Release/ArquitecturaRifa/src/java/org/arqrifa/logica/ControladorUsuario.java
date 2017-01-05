@@ -22,13 +22,11 @@ class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public DTUsuario autenticar(int ci, String contrasena) {
-        DTUsuario resp = null;
         try {
-            resp = FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
+            return FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-        return resp;
     }
 
     @Override
@@ -40,7 +38,9 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
+            
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
+            
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

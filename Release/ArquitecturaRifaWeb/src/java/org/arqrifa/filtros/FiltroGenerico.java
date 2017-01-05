@@ -18,7 +18,7 @@ public class FiltroGenerico implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //No necesarios ya que está todo en webinf
+        //Los filtros no son necesarios ya que todas las vistas están en el webinf
     }
 
     @Override

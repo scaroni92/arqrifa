@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.arqrifa.datatypes.DTEncuesta;
 
 class PersistenciaReunion implements IPersistenciaReunion {
 
@@ -30,7 +29,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -59,10 +57,14 @@ class PersistenciaReunion implements IPersistenciaReunion {
             con.commit();
 
         } catch (SQLException e) {
-            con.rollback();
+            if (con != null) {
+                con.rollback();
+            }
             throw new Exception("No se pudo agendar la reunión, error de base dadtos.");
         } catch (Exception e) {
-            con.rollback();
+            if (con != null) {
+                con.rollback();
+            }
             throw e;
         } finally {
             if (stmt != null) {
@@ -130,13 +132,13 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public void marcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
+    public void agregarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
         try {
             con = getConexion();
-            stmt = con.prepareCall("CALL MarcarAsistencia(?, ?);");
+            stmt = con.prepareCall("CALL AltaAsistencia(?, ?);");
             stmt.setInt(1, reunion.getId());
             stmt.setInt(2, estudiante.getCi());
             stmt.execute();
@@ -150,7 +152,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 default:
                     throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
             }
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -175,22 +177,23 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL BuscarReunion(?)");
             stmt.setInt(1, id);
             res = stmt.executeQuery();
-            
-            if (res.next()) {
-                int generacion = res.getInt("id_gen");
-                String titulo = res.getString("titulo");
-                String descripcion = res.getString("descripcion");
-                // Se utiliza getTimestamp porque getDate() no devuelve la hora.
-                Date fecha = new Date(res.getTimestamp("fecha").getTime());
-                boolean obligatoria = res.getBoolean("obligatoria");
-                String lugar = res.getString("lugar");
-                String observaciones = res.getString("observaciones");
-                String estado = res.getString("estado");
-                List<String> temas = this.listarTemas(id, con);
-                List<String> resoluciones = this.listarResoluciones(id, con);
-                DTEncuesta encuesta = PersistenciaEncuesta.getInstancia().buscar(id);
 
-                reunion = new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones, encuesta);
+            if (res.next()) {
+
+                reunion = new DTReunion(id,
+                        res.getInt("id_gen"),
+                        res.getString("titulo"),
+                        res.getString("descripcion"),
+                        new Date(res.getTimestamp("fecha").getTime()),
+                        res.getInt("duracion"),
+                        res.getBoolean("obligatoria"),
+                        res.getString("lugar"),
+                        res.getString("observaciones"),
+                        res.getString("estado"),
+                        PersistenciaEncuesta.getInstancia().buscar(id),
+                        this.listarTemas(id, con),
+                        this.listarResoluciones(id, con),
+                        this.listarParticipantes(id, con));
             }
 
         } catch (SQLException e) {
@@ -222,26 +225,26 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt = con.prepareCall("CALL ListarReunionesIniciadas()");
             res = stmt.executeQuery();
 
-            int id, generacion;
-            String titulo, descripcion, lugar, observaciones, estado;
-            Date fecha;
-            boolean obligatoria;
-            List<String> temas, resoluciones;
+            DTReunion reunion;
             while (res.next()) {
-                id = res.getInt("id");
-                generacion = res.getInt("id_gen");
-                titulo = res.getString("titulo");
-                descripcion = res.getString("descripcion");
-                fecha = new Date(res.getTimestamp("fecha").getTime());
-                obligatoria = res.getBoolean("obligatoria");
-                lugar = res.getString("lugar");
-                observaciones = res.getString("observaciones");
-                estado = res.getString("estado");
-                temas = this.listarTemas(id, con);
-                resoluciones = this.listarResoluciones(id, con);
+                reunion = new DTReunion(res.getInt("id"),
+                        res.getInt("id_gen"),
+                        res.getString("titulo"),
+                        res.getString("descripcion"),
+                        new Date(res.getTimestamp("fecha").getTime()),
+                        res.getInt("duracion"),
+                        res.getBoolean("obligatoria"),
+                        res.getString("lugar"),
+                        res.getString("observaciones"),
+                        res.getString("estado"),
+                        PersistenciaEncuesta.getInstancia().buscar(res.getInt("id")),
+                        this.listarTemas(res.getInt("id"), con),
+                        this.listarResoluciones(res.getInt("id"), con),
+                        this.listarParticipantes(res.getInt("id"), con));
 
-                reuniones.add(new DTReunion(id, generacion, titulo, descripcion, fecha, generacion, obligatoria, lugar, observaciones, estado, temas, resoluciones));
+                reuniones.add(reunion);
             }
+            
         } catch (SQLException e) {
             throw new Exception("No se pudo listar las reuniones iniciadas, error de base de datos.");
         } catch (Exception e) {
@@ -272,8 +275,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 temas.add(res.getString("tema"));
             }
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
-            //throw new Exception("Error al cargar los temas de la reunión");
+            throw new Exception("Error al cargar los temas de la reunión ID: " + reunionId);
         } finally {
             if (res != null) {
                 res.close();
@@ -309,10 +311,32 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return resoluciones;
     }
 
-    private void agregarTema(int reunionId, String tema, Connection con) throws Exception {
+    private List<DTUsuario> listarParticipantes(int reunionId, Connection con) throws Exception {
+        List<DTUsuario> participantes = new ArrayList();
         CallableStatement stmt = null;
+        ResultSet res = null;
         try {
-            stmt = con.prepareCall("CALL AltaTema(?,?)");
+            stmt = con.prepareCall("CALL ListarAsistenciasDeReunion(?)");
+            stmt.setInt(1, reunionId);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                participantes.add(PersistenciaUsuario.getInstancia().buscarEstudiante(res.getInt("ci")));
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al cargar las asistencias de la reunión ID: " + reunionId);
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return participantes;
+    }
+
+    private void agregarTema(int reunionId, String tema, Connection con) throws Exception {
+        try (CallableStatement stmt = con.prepareCall("CALL AltaTema(?,?)")) {
             stmt.setInt(1, reunionId);
             stmt.setString(2, tema);
             if (stmt.executeUpdate() == 0) {
@@ -320,17 +344,11 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         } catch (Exception e) {
             throw new Exception("No se pudo dar de alta el tema, error de base de datos");
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
         }
     }
 
     private void agregarResolucion(int reunionId, String resolucion, Connection con) throws Exception {
-        CallableStatement stmt = null;
-        try {
-            stmt = con.prepareCall("CALL AltaResolucion(?,?)");
+        try (CallableStatement stmt = con.prepareCall("CALL AltaResolucion(?,?)")) {
             stmt.setInt(1, reunionId);
             stmt.setString(2, resolucion);
             if (stmt.executeUpdate() == 0) {
@@ -338,10 +356,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         } catch (Exception e) {
             throw new Exception("No se pudo dar de alta la resolucion, error de base de datos");
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
         }
     }
 }

@@ -22,20 +22,20 @@ class ControladorGeneracion implements IControladorGeneracion {
     private ControladorGeneracion() {
     }
     //</editor-fold>
-    
+
     @Override
     public void agregarGeneracion(DTGeneracion generacion) {
         try {
-            
+
             if (generacion.getId() < 2009) {
                 throw new Exception("El año ingresado es inferior al permitido.");
             }
             if (generacion.getId() > Calendar.getInstance().get(Calendar.YEAR)) {
                 throw new Exception("No se puede agregar una generación cuyo año supere al actual");
             }
-            
+
             FabricaPersistencia.getPersistenciaGeneracion().agregar(generacion);
-            
+
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -43,16 +43,13 @@ class ControladorGeneracion implements IControladorGeneracion {
 
     @Override
     public List<DTGeneracion> listarGeneraciones() {
-        List<DTGeneracion> generaciones = new ArrayList();
-        
         try {
             
-            generaciones = FabricaPersistencia.getPersistenciaGeneracion().listar();
+            return FabricaPersistencia.getPersistenciaGeneracion().listar();
             
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-        return generaciones;
     }
 
 }

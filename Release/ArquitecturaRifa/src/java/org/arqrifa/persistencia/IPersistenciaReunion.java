@@ -12,7 +12,7 @@ public interface IPersistenciaReunion {
     
     void finalizar(DTReunion reunion) throws Exception;
     
-    void marcarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
+    void agregarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
     
     DTReunion buscar(int id) throws Exception;
     

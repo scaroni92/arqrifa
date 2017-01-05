@@ -30,12 +30,10 @@ public class ClienteJersey {
     public DTUsuario login(int ci, String pass) throws ClientErrorException, Exception {
         Response respuesta = TARGET.path("login").queryParam("ci", ci).queryParam("pass", pass).request(JSON_TYPE).get();
 
-        if (respuesta.getStatus() == 200) {
-            return respuesta.readEntity(DTUsuario.class);
-        } else if (respuesta.getStatus() != 204) {
+        if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
-        }
-        return null;
+        } 
+        return respuesta.readEntity(DTUsuario.class);
     }
 
     public void enviarSolicitud(DTSolicitud solicitud) throws Exception {
@@ -64,7 +62,6 @@ public class ClienteJersey {
     }
 
     public List<DTGeneracion> listarGeneraciones() throws Exception {
-
         Response respuesta = TARGET.path("generacion/listar").request(JSON_TYPE).get();
 
         if (respuesta.getStatus() == 409) {

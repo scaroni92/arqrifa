@@ -1,10 +1,8 @@
 package org.arqrifa.logica;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.arqrifa.datatypes.DTEstado;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
@@ -35,26 +33,23 @@ class ControladorReuniones implements IControladorReuniones {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
 
-            if (!reunion.getEstado().equals(DTEstado.LISTADO)) {
+            if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
             }
 
-            FabricaPersistencia.getPersistenciaReunion().marcarAsistencia(usuario, reunion);
+            FabricaPersistencia.getPersistenciaReunion().agregarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
-    // Filtrar por GENERACION
     @Override
     public List<DTReunion> listarReunionesIniciadas() {
-        List<DTReunion> reuniones = new ArrayList();
         try {
-            reuniones = FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
+            return FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-        return reuniones;
     }
 
     @Override
@@ -65,7 +60,6 @@ class ControladorReuniones implements IControladorReuniones {
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
             Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
             Date fechaActual = sdf.parse(sdf.format(new Date()));
 
@@ -75,15 +69,15 @@ class ControladorReuniones implements IControladorReuniones {
 
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
+            // Mail de notifiación
             String asunto = "¡Nueva reunión agendada!";
             String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día "
                     + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
 
-            Mensajeria mensajeria = new Mensajeria(new DTMensaje("", asunto, mensaje));
+            Mensajeria mensajeria = new Mensajeria();
 
             for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-                mensajeria.getMensaje().setDestinatario(usuario.getEmail());
-                mensajeria.enviar();
+                mensajeria.enviar(new DTMensaje(usuario.getEmail(), asunto, mensaje));
             }
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -92,13 +86,11 @@ class ControladorReuniones implements IControladorReuniones {
 
     @Override
     public DTReunion buscarReunion(int id) {
-        DTReunion reunion = null;
         try {
-            reunion = FabricaPersistencia.getPersistenciaReunion().buscar(id);
+            return FabricaPersistencia.getPersistenciaReunion().buscar(id);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-        return reunion;
     }
 
     @Override
@@ -143,11 +135,10 @@ class ControladorReuniones implements IControladorReuniones {
     @Override
     public void agregarEncuesta(DTReunion reunion) {
         try {
-            System.out.println(reunion.getEncuesta().getPropuestas().size());
             if (reunion == null) {
                 throw new Exception("La reunión no puede ser nula.");
             }
-            if (reunion.getEstado().equals(DTEstado.FINALIZADA)) {
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
                 throw new Exception("No se puede crear encuestas para reuniones finalizadas.");
             }
             if (reunion.getEncuesta() == null) {
@@ -166,7 +157,7 @@ class ControladorReuniones implements IControladorReuniones {
     @Override
     public void habilitarVotacion(DTReunion reunion) {
         try {
-            if (!reunion.getEstado().equals(DTEstado.INICIADA)) {
+            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
                 throw new Exception("No se puede habilitar la votación de una reunión que no está en progreso.");
             }
             if (reunion.getEncuesta().isHabilitada()) {

@@ -31,7 +31,6 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
 
     @Override
     public void alta(DTReunion reunion) throws Exception {
-        DTEncuesta encuesta = reunion.getEncuesta();
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -39,22 +38,24 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             con.setAutoCommit(false);
             stmt = con.prepareCall("CALL AltaEncuesta(?, ?, ?, ?)");
             stmt.setInt(1, reunion.getId());
-            stmt.setString(2, encuesta.getTitulo());
-            stmt.setInt(3, encuesta.getDuracion());
+            stmt.setString(2, reunion.getEncuesta().getTitulo());
+            stmt.setInt(3, reunion.getEncuesta().getDuracion());
             stmt.registerOutParameter(4, Types.INTEGER);
             if (stmt.executeUpdate() > 0) {
-                for (DTPropuesta p : encuesta.getPropuestas()) {
+                for (DTPropuesta p : reunion.getEncuesta().getPropuestas()) {
                     this.altaPropuesta(stmt.getInt(4), p, con);
                 }
             }
             con.commit();
         } catch (SQLException e) {
-            con.rollback();
-            if (e.getErrorCode() == 1062) {
-                throw new Exception("La reunión ya posee una encuesta.");
+            if (con != null) {
+                con.rollback();
             }
+            throw new Exception(e.getErrorCode() == 1062 ? "La reunión ya posee una encuesta." : "No se pudo dar de alta la encuesta, error de base de datos");
         } catch (Exception e) {
-            con.rollback();
+            if (con != null) {
+                con.rollback();
+            }
             throw e;
         } finally {
             if (stmt != null) {
@@ -96,6 +97,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
+
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL BuscarEncuestaDeReunion(?)");
@@ -126,6 +128,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         List<DTPropuesta> propuestas = new ArrayList();
         CallableStatement stmt = null;
         ResultSet res = null;
+
         try {
             stmt = con.prepareCall("CALL ListarPropuestasDeEncuesta(?)");
             stmt.setInt(1, encuestaId);
@@ -150,6 +153,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         List<DTRespuesta> respuestas = new ArrayList();
         CallableStatement stmt = null;
         ResultSet res = null;
+
         try {
             stmt = con.prepareCall("CALL ListarRespuestasDePropuesta(?)");
             stmt.setInt(1, propuestaId);
@@ -175,6 +179,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     public void habilitarVotacion(DTEncuesta encuesta) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
+
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL habilitarVotacion(?)");
@@ -199,7 +204,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     @Override
     public void altaVoto(DTVoto voto) throws Exception {
         Connection con = null;
-        CallableStatement  stmt= null;
+        CallableStatement stmt = null;
+
         try {
             con = Persistencia.getConexion();
             con.setAutoCommit(false);
@@ -211,22 +217,18 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
                     throw new Exception("No se pudo agregar el voto, error de base de datos.");
                 }
             }
-            con.commit();  
-        }
-        catch(SQLException e) {
-            con.rollback();
-            switch (e.getErrorCode()) {
-                case 1062:
-                    throw new Exception("El estudiante ya voto previamente en la encuesta.");
-                default:
-                    throw new Exception("No se pudo agregar el voto, error de base de datos.");
+            con.commit();
+        } catch (SQLException e) {
+            if (con != null) {
+                con.rollback();
             }
-        }
-        catch (Exception e) {
-            con.rollback();
+            throw new Exception(e.getErrorCode() == 1062 ? "El estudiante ya voto previamente en la encuesta." : "No se pudo agregar el voto, error de base de datos.");
+        } catch (Exception e) {
+            if (con != null) {
+                con.rollback();
+            }
             throw e;
-        }
-        finally {
+        } finally {
             if (stmt != null) {
                 stmt.close();
             }
