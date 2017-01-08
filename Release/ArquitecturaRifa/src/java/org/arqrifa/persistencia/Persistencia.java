@@ -9,11 +9,7 @@ class Persistencia {
     private static final String URL_CONEXION = "jdbc:mysql://localhost:3306/arqrifa";
     private static final String USUARIO_BASE_DATOS = "root";
     private static final String CONTRASENA_BASE_DATOS = "root";
-    /*
-    static {
-        Class.forName("com.mysql.jdbc.Driver");
-    }
-*/
+
     protected static Connection getConexion() throws Exception {
         try {
             Class.forName("com.mysql.jdbc.Driver");

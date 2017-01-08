@@ -2,6 +2,7 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
@@ -9,42 +10,39 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>${modelo.titulo}</h1>
-        <h2>${modelo.descripcion}</h2>
+        <h1>${modelo.reunion.titulo}</h1>
+        <h2>${modelo.reunion.descripcion}</h2>
         Temas:
         <ul>
-            <c:forEach var="tema" items="${modelo.temas}">
+            <c:forEach var="tema" items="${modelo.reunion.temas}">
                 <li>${tema}</li>
                 </c:forEach>
         </ul>
-        Fecha: ${modelo.fecha}<br>
-        Hora: ${modelo.hora}<br>
-        Obligatoria: <c:choose><c:when test="${modelo.obligatoria}">Si</c:when><c:otherwise>No</c:otherwise></c:choose><br>
-        Estado: ${modelo.estado}<br>
-        Lugar: ${modelo.lugar}<br><br>
-        <c:if test="${modelo.estado eq 'Finalizada'}">
+        Fecha:<fmt:formatDate pattern="dd/MM/yy" value="${modelo.reunion.fecha}" /><br>
+        Hora: <fmt:formatDate pattern="hh:mm" value="${modelo.reunion.fecha}" /><br>
+        Obligatoria: <c:choose><c:when test="${modelo.reunion.obligatoria}">Si</c:when><c:otherwise>No</c:otherwise></c:choose><br>
+        Estado: ${modelo.reunion.estado}<br>
+        Lugar: ${modelo.reunion.lugar}<br><br>
+        <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
             Resoluciones:
             <ul>
-                <c:forEach var="resolucion" items="${modelo.resoluciones}">
+                <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
                     <li>${resolucion}</li>
                     </c:forEach>
             </ul>
-            Observaciones: ${modelo.observaciones}
+            Observaciones: ${modelo.reunion.observaciones}
         </c:if>
 
-        <form action="Reuniones" method="post">
-            <c:if test="${usuario.rol == 'Encargado' and modelo.habilitarBotonPanel}">
-                La reunión está lista para ser iniciada <button type="submit" name="accion" value="panel">Ir al panel</button>
-                <input type="text" name="id" value="${modelo.id}" hidden/>
-            </c:if>
-        </form>
 
-        <c:if test="${!modelo.estado eq 'Finalizada'}">
-
+        <c:if test="${usuario.rol == 'Encargado'}">
+            <form action="Reuniones" method="post">
+                <button type="submit" name="accion" value="panel">Ir al panel</button>
+                <input type="text" name="id" value="${modelo.reunion.id}" hidden/>
+            </form>
         </c:if>
 
-        <a href="Encuesta?accion=ver&reunion_id=${modelo.id}">Ver encuesta</a>
-        <a href="Encuesta?accion=agregar&id=${modelo.id}">Agregar encuesta</a>
+        <a href="Encuesta?accion=ver&reunion_id=${modelo.reunion.id}">Ver encuesta</a>
+        <a href="Encuesta?accion=agregar&id=${modelo.reunion.id}">Agregar encuesta</a>
         <p>${modelo.mensaje}</p>
     </body>
 </html>

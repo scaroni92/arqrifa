@@ -13,10 +13,14 @@ public class ControladorEncuesta extends Controlador {
 
     public void ver_get() {
         VMEncuesta vm = new VMEncuesta();
-        try {
-            vm.setReunionId(request.getParameter("reunion_id"));
-            vm.setEncuesta(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id"))).getEncuesta());
-        } catch (Exception e) {
+        try {            
+            vm = new VMEncuesta(request.getParameter("reunion_id"), cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id"))).getEncuesta());
+        }
+        catch(NumberFormatException e){
+            vm.setMensaje("Ingrese un ID de reunión válido");
+        }
+        catch (Exception e) {
+            vm.setMensaje(e.getMessage());
         }
         mostrarVista("Encuesta/ver.jsp", vm);
     }

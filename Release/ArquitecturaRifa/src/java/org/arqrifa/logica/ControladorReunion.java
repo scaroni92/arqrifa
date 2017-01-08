@@ -10,19 +10,19 @@ import org.arqrifa.datatypes.DTVoto;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaException;
 
-class ControladorReuniones implements IControladorReuniones {
+class ControladorReunion implements IControladorReunion {
 
     //<editor-fold defaultstate="collapsed" desc="Singleton">
-    private static ControladorReuniones instancia = null;
+    private static ControladorReunion instancia = null;
 
-    public static IControladorReuniones getInstancia() {
+    public static IControladorReunion getInstancia() {
         if (instancia == null) {
-            instancia = new ControladorReuniones();
+            instancia = new ControladorReunion();
         }
         return instancia;
     }
 
-    private ControladorReuniones() {
+    private ControladorReunion() {
     }
     //</editor-fold>
 
@@ -173,6 +173,15 @@ class ControladorReuniones implements IControladorReuniones {
     public void agregarVoto(DTVoto voto) {
         try {
             FabricaPersistencia.getPersistenciaEncuesta().altaVoto(voto);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public DTReunion buscarUltimaReunionFinalizada(int id_gen) {
+        try {
+            return FabricaPersistencia.getPersistenciaReunion().buscarUltimaReunionFinalizada(id_gen);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

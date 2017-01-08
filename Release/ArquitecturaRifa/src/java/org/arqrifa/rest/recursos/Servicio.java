@@ -69,6 +69,13 @@ public class Servicio {
         FabricaLogica.getControladorReuniones().finalizarReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
+    
+    @Path("reunion/ultima_finalizada")
+    @GET
+    public DTReunion buscarUltimaReunion(@QueryParam("id_gen") int id_gen){
+        return FabricaLogica.getControladorReuniones().buscarUltimaReunionFinalizada(id_gen);
+    }
+            
 
     @Path("/generacion/listar")
     @GET

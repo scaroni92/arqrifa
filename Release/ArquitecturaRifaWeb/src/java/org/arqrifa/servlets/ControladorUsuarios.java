@@ -36,7 +36,6 @@ public class ControladorUsuarios extends Controlador {
     public void registrar_post() {
         VMUsuarioMantenimiento vm = (VMUsuarioMantenimiento) cargarModelo(new VMUsuarioMantenimiento());
         try {
-            vm.setGeneraciones(cliente.listarGeneraciones());
 
             int ci = Integer.parseInt(vm.getCi());
             int generacion = Integer.parseInt(vm.getGeneracion());

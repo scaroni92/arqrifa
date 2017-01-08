@@ -5,7 +5,7 @@ import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
 
-public interface IControladorReuniones {
+public interface IControladorReunion {
 
     void agregarReunion(DTReunion reunion);
 
@@ -22,6 +22,8 @@ public interface IControladorReuniones {
     void agregarVoto(DTVoto voto);
 
     DTReunion buscarReunion(int id);
+    
+    DTReunion buscarUltimaReunionFinalizada(int id_gen);
     
     List<DTReunion> listarReunionesIniciadas();
 

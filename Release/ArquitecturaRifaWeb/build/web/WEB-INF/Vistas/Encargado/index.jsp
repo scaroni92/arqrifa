@@ -13,5 +13,6 @@
         <br>
         <br>
         <a href="Reuniones?accion=ver&id=4">Ver reunión</a>
+        <a href="Reuniones?accion=resumen">Resumen de última reunión</a>
     </body>
 </html>

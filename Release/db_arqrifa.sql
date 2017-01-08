@@ -119,11 +119,11 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 (4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111),
 (3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222);
 
-INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, estado) VALUES
-(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'Finalizada'),
-(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', 'Iniciada'),
-(2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', 'Pendiente'),
-(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4', 'Pendiente');
+INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
+(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
+(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Iniciada'),
+(2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
+(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(),60,1, 'SALON 4', '', 'Pendiente');
 
 
 INSERT INTO temas(id_reunion, tema) VALUES 
@@ -165,6 +165,10 @@ INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (4, '$3980'),
 (4, '$3990'),
 (4, '$3400');
+
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 1');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 2');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 3');
 
 INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666);
 
@@ -361,6 +365,13 @@ $$
 CREATE PROCEDURE BuscarReunion(pId int)
 BEGIN
 	SELECT * FROM reuniones WHERE id = pId;
+END
+$$
+
+
+CREATE PROCEDURE BuscarUltimaReunionPorGeneracion(pGenId int)
+BEGIN
+	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Finalizada' ORDER BY fecha DESC LIMIT 1;
 END
 $$
 

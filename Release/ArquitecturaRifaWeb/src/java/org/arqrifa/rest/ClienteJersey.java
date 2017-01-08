@@ -149,6 +149,14 @@ public class ClienteJersey {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
+    
+    public DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception {
+        Response respuesta = TARGET.path("reunion/ultima_finalizada").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+        return respuesta.readEntity(DTReunion.class);
+    }
 
     public void close() {
         CLIENT.close();

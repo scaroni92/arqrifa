@@ -1,5 +1,6 @@
 package org.arqrifa.datatypes;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +31,7 @@ public class DTReunion {
     private List<DTUsuario> participantes;
 
     public DTReunion() {
-        this(0, 0, "", "", null, 0, 0, "", "", "", null, "", new ArrayList(), new ArrayList());
+        this(0, 0, "", "", null, 0, false, "","", "", null, new ArrayList(), new ArrayList(), new ArrayList());
     }
 
     public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, DTEncuesta encuesta, List<String> temas, List<String> resoluciones, List<DTUsuario> participantes) {

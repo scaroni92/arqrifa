@@ -1,6 +1,5 @@
 package org.arqrifa.servlets;
 
-import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMGeneraciones;
@@ -20,9 +19,8 @@ public class ControladorAdministrador extends Controlador {
 
     public void agregar_encargado_post() {
         VMUsuarioMantenimiento vm = (VMUsuarioMantenimiento) cargarModelo(new VMUsuarioMantenimiento());
-        List<DTGeneracion> generaciones = null;
         try {
-            generaciones = cliente.listarGeneraciones();
+            vm.setGeneraciones(cliente.listarGeneraciones());
 
             if (vm.getCi().isEmpty() || vm.getGeneracion().isEmpty() || vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getContrasena().isEmpty() || vm.getEmail().isEmpty()) {
                 throw new Exception("Complete todos los campos obligatorios.");
@@ -33,7 +31,6 @@ public class ControladorAdministrador extends Controlador {
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
         }
-        vm.setGeneraciones(generaciones);
         mostrarVista("Admin/agregar_encargado.jsp", vm);
     }
 

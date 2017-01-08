@@ -9,5 +9,8 @@
         <h1>Inicio Estudiante</h1>
         <h2>Nombre : ${usuario.nombre} ${usuario.apellido}</h2>
         <h3>Generación: ${usuario.generacion}</h3>
+        <br>
+        <br>
+        <a href="Reuniones?accion=resumen">Resumen de última reunión</a>
     </body>
 </html>

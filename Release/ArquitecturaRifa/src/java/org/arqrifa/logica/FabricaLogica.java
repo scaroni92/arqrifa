@@ -6,8 +6,8 @@ public class FabricaLogica {
         return ControladorUsuario.getInstancia();
     }
 
-    public static IControladorReuniones getControladorReuniones() {
-        return ControladorReuniones.getInstancia();
+    public static IControladorReunion getControladorReuniones() {
+        return ControladorReunion.getInstancia();
     }
 
     public static IControladorGeneracion getControladorGeneracion() {

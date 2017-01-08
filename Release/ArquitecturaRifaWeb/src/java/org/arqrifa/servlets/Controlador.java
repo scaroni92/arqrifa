@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.ClienteJersey;
 import org.arqrifa.viewmodels.ViewModel;
 
@@ -22,6 +23,10 @@ public class Controlador extends HttpServlet {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected ClienteJersey cliente = new ClienteJersey();
+    
+    public DTUsuario getUsuario(){
+        return (DTUsuario)sesion.getAttribute("usuario");
+    }
 
     protected void despacharMetodoAccion()
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
