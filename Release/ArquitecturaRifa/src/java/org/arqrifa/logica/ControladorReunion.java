@@ -1,8 +1,10 @@
 package org.arqrifa.logica;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
@@ -185,6 +187,37 @@ class ControladorReunion implements IControladorReunion {
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<DTReunion> listarReunionesPorGeneracion(int id_gen) {
+        try {
+            return FabricaPersistencia.getPersistenciaReunion().listarPorGeneracion(id_gen);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<DTAsistencia> listarAsistencias(DTReunion reunion) {
+        List<DTAsistencia> asistencias = new ArrayList();
+        try {
+            List<DTUsuario> estudiantes = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
+
+            for (DTUsuario estudiante : estudiantes) {
+                boolean encontrado = false;
+                for (DTUsuario participante : reunion.getParticipantes()) {
+                    if (estudiante.getCi() == participante.getCi()) {
+                        encontrado = true;
+                        break;
+                    }
+                }
+                asistencias.add(new DTAsistencia(estudiante, encontrado ? DTAsistencia.PRESENTE : DTAsistencia.AUSENTE));
+            }
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+        return asistencias;
     }
 
 }

@@ -23,10 +23,4 @@ public class VMReunion extends ViewModel {
     public void setReunion(DTReunion reunion) {
         this.reunion = reunion;
     }
-
-    public int getCantidadParticipantes(){
-        
-        int can = reunion.getParticipantes().size();
-        return can;
-    }
 }

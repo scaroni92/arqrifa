@@ -93,6 +93,7 @@ public class Controlador extends HttpServlet {
             despacharMetodoAccion();
         } catch (Exception ex) {
             System.out.println("¡ERROR! No se pudo despachar el método de la acción solicitada.");
+            System.out.println(ex.getMessage());
         }
     }
 

@@ -16,7 +16,7 @@
         <form action="Reuniones"  method="post">  
             <fieldset>
                 <label style="text-align:center; display:block;">${modelo.titulo}</label><br>
-                Hora: ${modelo.hora}
+                <p>Fecha y hora de inicio: ${modelo.fecha} ${modelo.hora}</p>
                 <label style="float:right;">Estado: <span style="font-weight: bolder;">${modelo.estado}</span></label>
                 
                 <h3>Temas</h3>              

@@ -3,6 +3,7 @@ package org.arqrifa.servlets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
@@ -40,26 +41,29 @@ public class ControladorEncuesta extends Controlador {
         try {
             if (request.getParameter("pregunta").isEmpty()) {
                 throw new Exception("Ingrese la pregunta de la propuesta");
+            }       
+            if (request.getParameter("respuestas").isEmpty()) {
+                throw new Exception("Ingrese las respuestas de la pregunta.");
             }
 
             List<DTRespuesta> respuestas = new ArrayList();
             for (String respuesta : Arrays.asList(request.getParameter("respuestas").split("\n"))) {
                 respuestas.add(new DTRespuesta(0, respuesta));
             }
-            if (respuestas.isEmpty()) {
-                throw new Exception("Ingrese las respuestas de la pregunta.");
+            
+            DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
+            if (reunion.getEncuesta() == null) {
+                reunion.setEncuesta(new DTEncuesta());
             }
-
-            List<DTPropuesta> propuestas = (((DTReunion) sesion.getAttribute("reunion")).getEncuesta()).getPropuestas();
-            propuestas.add(new DTPropuesta(0, request.getParameter("pregunta"), respuestas));
-         
+            DTEncuesta encuesta = ((DTReunion) sesion.getAttribute("reunion")).getEncuesta();
+            reunion.getEncuesta().getPropuestas().add(new DTPropuesta(0, request.getParameter("pregunta"), respuestas));            
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Encuesta/agregar.jsp", vm);
     }
 
-    public void crear_encuesta_post() {
+    public void agregar_encuesta_post() {
         VMCrearEncuesta vm = (VMCrearEncuesta) cargarModelo(new VMCrearEncuesta());
         try {
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");

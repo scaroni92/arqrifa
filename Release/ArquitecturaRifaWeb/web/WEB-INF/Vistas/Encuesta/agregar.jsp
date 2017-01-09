@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Arquitectura Rifa | Crear Encuesta</title>
+        <title>Arquitectura Rifa | Agregar Encuesta</title>
         <style>
             #pregunta, #respuestas, #respuesta {
                 width:400px;
@@ -13,12 +13,12 @@
     </head>
 
     <body>
-        <h1>Agregar Encuesta a la Reunión</h1>
+        <h1>Agregar encuesta</h1>
         <form action="Encuesta" method="post" onKeypress="if(event.keyCode == 13) event.returnValue = false;">
             <fieldset>
                 <legend>General</legend>
                 <p>
-                    Título: <input type="text" name="titulo" value="${modelo.titulo}" placeholder="Ej: Encuesta del 30/12/2016" />
+                    Título de la encuesta: <input type="text" name="titulo" value="${modelo.titulo}" />
                     Duración: <input type="number" name="duracion" value="${modelo.duracion}">
                 </p>
                 <hr>
@@ -26,7 +26,7 @@
                 <table>
                     <tr>
                         <td>Pregunta </td>
-                        <td><input type="text" id="pregunta" name="pregunta" placeholder="Ej: ¿Cuál es tu color favorito?"/></td>
+                        <td><input type="text" id="pregunta" name="pregunta"/></td>
                     </tr>
                     <tr>
                         <td>Respuestas</td>
@@ -42,14 +42,14 @@
             <fieldset>
                 <legend>Vista previa</legend>
                 <h3>${modelo.titulo}</h3>
-                <c:forEach var="p" items="${reunion.encuesta.propuestas}" >
-                    <span style="display:block">${p.pregunta}</span>
-                    <c:forEach var="r" items="${p.respuestas}">
-                        ${r}<br>
+                <c:forEach var="propuesta" items="${reunion.encuesta.propuestas}" >
+                    <span style="display:block">${propuesta.pregunta}</span>
+                    <c:forEach var="respuesta" items="${propuesta.respuestas}">
+                        ${respuesta.respuesta}<br>
                     </c:forEach>
                 </c:forEach>
             </fieldset>
-            <p><button type="submit" name="accion" value="crear_encuesta">CONFIRMAR</button></p>
+            <p><button type="submit" name="accion" value="agregar_encuesta">CONFIRMAR</button></p>
         </form>
         <script>
             function agregarRespuesta(e) {

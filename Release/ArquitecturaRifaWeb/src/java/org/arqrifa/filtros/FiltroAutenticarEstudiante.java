@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-@WebFilter(filterName = "filtroAutenticarEstudiante", urlPatterns = "/WEB-INF/Vistas/Estudiante/*")
+@WebFilter(filterName = "filtroAutenticarEstudiante", urlPatterns = "/Estudiante")
 public class FiltroAutenticarEstudiante implements Filter {
 
     @Override
@@ -29,14 +29,16 @@ public class FiltroAutenticarEstudiante implements Filter {
 
         DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
 
-        if (usuario != null) {
-            if (usuario.getRol().equals("Estudiante")) {
-                chain.doFilter(request, response);
+        try {
+            if (usuario == null) {
+                request.getRequestDispatcher("/WEB-INF/Vistas/login.jsp").forward(request, response);
+            } else if (!usuario.getRol().equals("Estudiante")) {
+                request.getRequestDispatcher("/WEB-INF/Vistas/" + usuario.getRol() + "/index.jsp").forward(request, response);
             } else {
-                respuesta.sendRedirect(pedido.getContextPath() + "/Vistas/" + usuario.getRol() + "/index.jsp");
+                chain.doFilter(request, response);
             }
-        } else {
-            respuesta.sendRedirect(pedido.getContextPath() + "/login.jsp");
+        } catch (Exception e) {
+            System.out.println("Error al ejecutar el filtro");
         }
     }
 

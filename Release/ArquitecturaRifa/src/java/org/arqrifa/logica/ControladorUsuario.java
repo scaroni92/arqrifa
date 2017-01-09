@@ -1,5 +1,7 @@
 package org.arqrifa.logica;
 
+import java.util.List;
+import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaException;
@@ -45,5 +47,15 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
+
+    @Override
+    public List<DTUsuario> listarEstudiantes(int id_gen) {
+        try {
+            return FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(id_gen);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 
 }

@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -75,6 +76,18 @@ public class Servicio {
     public DTReunion buscarUltimaReunion(@QueryParam("id_gen") int id_gen){
         return FabricaLogica.getControladorReuniones().buscarUltimaReunionFinalizada(id_gen);
     }
+    
+    @Path("reunion/listar_por_generacion")
+    @GET
+    public List<DTReunion> listarReunionesPorGeneracion(@QueryParam("id_gen") int id_gen){
+        return FabricaLogica.getControladorReuniones().listarReunionesPorGeneracion(id_gen);
+    }
+    
+    @Path("reunion/listar_asistencias")
+    @POST
+    public List<DTAsistencia> listarAsistecnias(DTReunion reunion){
+        return FabricaLogica.getControladorReuniones().listarAsistencias(reunion);
+    }
             
 
     @Path("/generacion/listar")
@@ -109,6 +122,12 @@ public class Servicio {
     public Response iniciarVotacionEncuesta(DTReunion reunion) {
         FabricaLogica.getControladorReuniones().habilitarVotacion(reunion);
         return Response.status(Response.Status.OK).build();
+    }
+    
+    @Path("/estudiante/listar_por_generacion")
+    @GET
+    public List<DTUsuario> listarEstudiantesPorGeneracion(@QueryParam("id_gen")int id_gen){
+        return FabricaLogica.getLogicaUsuario().listarEstudiantes(id_gen);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Solicitudes">

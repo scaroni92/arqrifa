@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-//Cambiar URL PATTERN por nombre de servlets
-
-@WebFilter(filterName = "filtroGenerico", urlPatterns = "/WEB-INF/Vistas/login.jsp")
+@WebFilter(filterName = "filtroGenerico", urlPatterns = "")
 public class FiltroGenerico implements Filter {
 
     @Override

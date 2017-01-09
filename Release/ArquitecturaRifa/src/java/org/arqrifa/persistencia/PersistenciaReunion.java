@@ -227,20 +227,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
             DTReunion reunion;
             while (res.next()) {
-                reunion = new DTReunion(res.getInt("id"),
-                        res.getInt("id_gen"),
-                        res.getString("titulo"),
-                        res.getString("descripcion"),
-                        new Date(res.getTimestamp("fecha").getTime()),
-                        res.getInt("duracion"),
-                        res.getBoolean("obligatoria"),
-                        res.getString("lugar"),
-                        res.getString("observaciones"),
-                        res.getString("estado"),
-                        PersistenciaEncuesta.getInstancia().buscar(res.getInt("id")),
-                        this.listarTemas(res.getInt("id"), con),
-                        this.listarResoluciones(res.getInt("id"), con),
-                        this.listarParticipantes(res.getInt("id"), con));
+                reunion = cargarDatosReunion(res, con);
 
                 reuniones.add(reunion);
             }
@@ -371,20 +358,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.setInt(1, id_gen);
             res = stmt.executeQuery();
             if (res.next()) {
-                reunion = new DTReunion(res.getInt("id"),
-                        res.getInt("id_gen"),
-                        res.getString("titulo"),
-                        res.getString("descripcion"),
-                        new Date(res.getTimestamp("fecha").getTime()),
-                        res.getInt("duracion"),
-                        res.getBoolean("obligatoria"),
-                        res.getString("lugar"),
-                        res.getString("observaciones"),
-                        res.getString("estado"),
-                        PersistenciaEncuesta.getInstancia().buscar(res.getInt("id")),
-                        this.listarTemas(res.getInt("id"), con),
-                        this.listarResoluciones(res.getInt("id"), con),
-                        this.listarParticipantes(res.getInt("id"), con));
+                reunion = cargarDatosReunion(res, con);
             }
 
         } catch (Exception e) {
@@ -401,5 +375,56 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         }
         return reunion;
+    }
+
+    @Override
+    public List<DTReunion> listarPorGeneracion(int id_gen) throws Exception {
+        List<DTReunion> reuniones = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarReunionesPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                reuniones.add(cargarDatosReunion(res, con));
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudo listar las reuniones, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        }
+        finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return reuniones;
+    }
+
+    private DTReunion cargarDatosReunion(ResultSet res, Connection con) throws Exception {
+        return new DTReunion(res.getInt("id"),
+                res.getInt("id_gen"),
+                res.getString("titulo"),
+                res.getString("descripcion"),
+                new Date(res.getTimestamp("fecha").getTime()),
+                res.getInt("duracion"),
+                res.getBoolean("obligatoria"),
+                res.getString("lugar"),
+                res.getString("observaciones"),
+                res.getString("estado"),
+                PersistenciaEncuesta.getInstancia().buscar(res.getInt("id")),
+                this.listarTemas(res.getInt("id"), con),
+                this.listarResoluciones(res.getInt("id"), con),
+                this.listarParticipantes(res.getInt("id"), con));
     }
 }
