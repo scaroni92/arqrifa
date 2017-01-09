@@ -29,15 +29,16 @@ class ControladorReunion implements IControladorReunion {
     //</editor-fold>
 
     @Override
-    public void MarcarAsistencia(DTUsuario usuario, DTReunion reunion) {
+    public void agregarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
             if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-
+            
+            /* SE COMENTA ESTA VALIDACIÓN PARA HACER PRUEBAS
             if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
-            }
+            }*/
 
             FabricaPersistencia.getPersistenciaReunion().agregarAsistencia(usuario, reunion);
         } catch (Exception e) {
@@ -150,20 +151,20 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede crear una encuesta sin propuestas.");
             }
 
-            FabricaPersistencia.getPersistenciaEncuesta().alta(reunion);
+            FabricaPersistencia.getPersistenciaEncuesta().agregarEncuesta(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public void habilitarVotacion(DTReunion reunion) {
+    public void habilitarVotacionEncuesta(DTReunion reunion) {
         try {
             if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No se puede habilitar la votación de una reunión que no está en progreso.");
+                throw new Exception("No es posible habilitar la votación de una encuesta si la reunión no está en progreso.");
             }
             if (reunion.getEncuesta().isHabilitada()) {
-                throw new Exception("No se puede habilitar la votación de una encuesta que ya fue habilitada.");
+                throw new Exception("No es posible habilitar la votación de la encuesta si ésta ya fue habilitada.");
             }
             FabricaPersistencia.getPersistenciaEncuesta().habilitarVotacion(reunion.getEncuesta());
         } catch (Exception e) {
@@ -174,7 +175,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void agregarVoto(DTVoto voto) {
         try {
-            FabricaPersistencia.getPersistenciaEncuesta().altaVoto(voto);
+            FabricaPersistencia.getPersistenciaEncuesta().agregarVoto(voto);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -218,6 +219,15 @@ class ControladorReunion implements IControladorReunion {
             throw new ArquitecturaRifaException(e.getMessage());
         }
         return asistencias;
+    }
+
+    @Override
+    public DTReunion buscarProximaReunionPorRealizar(int id_gen) {
+        try {
+            return FabricaPersistencia.getPersistenciaReunion().buscarProximaReunion(id_gen);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
     }
 
 }

@@ -2,7 +2,6 @@ package org.arqrifa.viewmodels;
 
 import org.arqrifa.datatypes.DTEncuesta;
 
-//@author Ale
 public class VMEncuesta extends ViewModel {
 
     private String reunionId;

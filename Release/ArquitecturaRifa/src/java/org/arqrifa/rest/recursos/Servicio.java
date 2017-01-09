@@ -29,11 +29,21 @@ public class Servicio {
         return FabricaLogica.getLogicaUsuario().autenticar(ci, pass);
     }
 
+    
+    // Borrar este método cuando se reemplace en la app desktop
     @POST
     @Path("/asistencias/marcar")
     @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
     public Response marcarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().MarcarAsistencia(usuario, reunion);
+        FabricaLogica.getControladorReuniones().agregarAsistencia(usuario, reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+    
+    @POST
+    @Path("/reunion/agregar_asistencia")
+    @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
+    public Response agregarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().agregarAsistencia(usuario, reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -88,6 +98,12 @@ public class Servicio {
     public List<DTAsistencia> listarAsistecnias(DTReunion reunion){
         return FabricaLogica.getControladorReuniones().listarAsistencias(reunion);
     }
+    
+    @Path("reunion/siguiente")
+    @GET
+    public DTReunion buscarSiguienteReunion(@QueryParam("id_gen") int id_gen){
+        return FabricaLogica.getControladorReuniones().buscarProximaReunionPorRealizar(id_gen);
+    }
             
 
     @Path("/generacion/listar")
@@ -120,7 +136,7 @@ public class Servicio {
     @Path("/encuesta/iniciar_votacion")
     @POST
     public Response iniciarVotacionEncuesta(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().habilitarVotacion(reunion);
+        FabricaLogica.getControladorReuniones().habilitarVotacionEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
     

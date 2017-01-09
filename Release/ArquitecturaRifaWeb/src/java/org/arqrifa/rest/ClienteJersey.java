@@ -9,11 +9,15 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 public class ClienteJersey {
 
@@ -23,7 +27,7 @@ public class ClienteJersey {
     private final String JSON_TYPE = "application/json;charset=utf-8";
 
     public ClienteJersey() {
-        CLIENT = ClientBuilder.newClient();
+        CLIENT = ClientBuilder.newClient().register(MultiPartFeature.class);
         TARGET = CLIENT.target(BASE_URI).path("servicio");
     }
 
@@ -121,6 +125,12 @@ public class ClienteJersey {
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }
+    
+    public DTReunion buscarSiguienteReunion(int id_gen) throws Exception {
+        Response respuesta = TARGET.path("reunion/siguiente").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return respuesta.readEntity(DTReunion.class);
+    }
 
     public List<DTReunion> listarReunionesPorGeneracion(int id_gen) throws Exception {
         Response respuesta = TARGET.path("reunion/listar_por_generacion").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
@@ -138,6 +148,14 @@ public class ClienteJersey {
         Response respuesta = TARGET.path("reunion/listar_asistencias").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);
         return Arrays.asList(respuesta.readEntity(DTAsistencia[].class));
+    }
+    
+    public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception{
+        MultiPart multipart = new FormDataMultiPart()
+                .field("usuario", usuario, MediaType.APPLICATION_JSON_TYPE)
+                .field("reunion", reunion, MediaType.APPLICATION_JSON_TYPE);
+        Response respuesta = TARGET.path("reunion/agregar_asistencia").request(JSON_TYPE).post(Entity.entity(multipart, multipart.getMediaType()));
+        comprobarError(respuesta);
     }
 
     private void comprobarError(Response respuesta) throws Exception {

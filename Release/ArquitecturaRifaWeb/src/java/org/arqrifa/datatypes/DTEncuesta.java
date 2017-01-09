@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DTEncuesta {
+
     private int id;
     private String titulo;
-    private String estado;
     private int duracion;
+    private boolean habilitada;
     private List<DTPropuesta> propuestas;
 
-    public DTEncuesta(int id, String titulo, String estado, int duracion, List<DTPropuesta> propuestas) {
+    public DTEncuesta(int id, String titulo, int duracion, boolean habilitada, List<DTPropuesta> propuestas) {
         this.id = id;
         this.titulo = titulo;
-        this.estado = estado;
         this.duracion = duracion;
+        this.habilitada = habilitada;
         this.propuestas = propuestas;
     }
 
     public DTEncuesta() {
-        this(0, "", "", 0, new ArrayList());
+        this(0, "", 0, false, new ArrayList());
     }
 
     public int getId() {
@@ -30,12 +31,12 @@ public class DTEncuesta {
         return titulo;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
     public int getDuracion() {
         return duracion;
+    }
+
+    public boolean isHabilitada() {
+        return habilitada;
     }
 
     public List<DTPropuesta> getPropuestas() {
@@ -50,17 +51,16 @@ public class DTEncuesta {
         this.titulo = titulo;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public void setDuracion(int duracion) {
         this.duracion = duracion;
+    }
+
+    public void setHabilitada(boolean habilitada) {
+        this.habilitada = habilitada;
     }
 
     public void setPropuestas(List<DTPropuesta> propuestas) {
         this.propuestas = propuestas;
     }
-    
-    
+
 }

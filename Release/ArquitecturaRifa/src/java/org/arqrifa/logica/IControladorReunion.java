@@ -14,17 +14,19 @@ public interface IControladorReunion {
     
     void finalizarReunion(DTReunion reunion);
 
-    void MarcarAsistencia(DTUsuario usuario, DTReunion reunion);
+    void agregarAsistencia(DTUsuario usuario, DTReunion reunion);
     
     void agregarEncuesta(DTReunion reunion);
     
-    void habilitarVotacion(DTReunion reunion);
+    void habilitarVotacionEncuesta(DTReunion reunion);
     
     void agregarVoto(DTVoto voto);
 
     DTReunion buscarReunion(int id);
     
     DTReunion buscarUltimaReunionFinalizada(int id_gen);
+    
+    DTReunion buscarProximaReunionPorRealizar(int id_gen);
     
     List<DTReunion> listarReunionesIniciadas();
     

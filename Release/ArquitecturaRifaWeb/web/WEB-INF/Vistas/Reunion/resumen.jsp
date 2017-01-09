@@ -7,8 +7,9 @@
         <title>Arquitectura Rifa | Resumen de Reunion</title>
     </head>
     <body>
-        <h4>${modelo.reunion.titulo}</h4>
         <h1>RESUMEN</h1>
+        <h4>${modelo.reunion.titulo}</h4>
+        <p>${modelo.reunion.fecha}</p>
         <h3>Observaciones</h3>
         <p>${modelo.reunion.observaciones}</p>
         <h3>Temas tratados</h3>
@@ -23,7 +24,10 @@
                 <li>${resolucion}</li>
             </c:forEach>
         </ul>
+        <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
+            <p>Participantes: ${fn:length(modelo.reunion.participantes)}</p>
+        </c:if>
 
-        <p>Participantes: ${fn:length(modelo.reunion.participantes)}</p>
+        <a href="Reuniones?accion=ver&id=${modelo.reunion.id}">Ver detalles</a>
     </body>
 </html>

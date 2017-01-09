@@ -151,11 +151,39 @@ public class ControladorReuniones extends Controlador {
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
             vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Reunion/asistencias.jsp", vm);
+    }
+
+    public void agregar_asistencia_get() {
+        VMAsistencias vm = new VMAsistencias();
+        try {
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            DTUsuario estudiante = new DTUsuario();
+            estudiante.setCi(Integer.parseInt(request.getParameter("ci")));
+            estudiante.setRol("Estudiante");
+            
+            vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
+            
+            cliente.agregarAsistencia(reunion, estudiante);
+            vm.setMensaje("Asistencia agregada exitosamente.");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Reunion/asistencias.jsp", vm);
+    }
+
+    public void proxima_get() {
+        VMReunion vm = new VMReunion();
+        try {
+            DTReunion reunion = cliente.buscarSiguienteReunion(getUsuario().getGeneracion());
+            vm.setReunion(reunion);
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Reunion/resumen.jsp", vm);
     }
 
 }

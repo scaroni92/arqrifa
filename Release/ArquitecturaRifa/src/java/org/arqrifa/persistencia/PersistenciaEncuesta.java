@@ -30,7 +30,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     //</editor-fold>
 
     @Override
-    public void alta(DTReunion reunion) throws Exception {
+    public void agregarEncuesta(DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -202,7 +202,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
-    public void altaVoto(DTVoto voto) throws Exception {
+    public void agregarVoto(DTVoto voto) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 

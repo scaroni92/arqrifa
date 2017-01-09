@@ -18,6 +18,8 @@ public interface IPersistenciaReunion {
     
     DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception;
     
+    DTReunion buscarProximaReunion(int id_gen) throws Exception;
+    
     List<DTReunion> listarIniciadas() throws Exception;
     
     List<DTReunion> listarPorGeneracion(int id_gen) throws Exception;

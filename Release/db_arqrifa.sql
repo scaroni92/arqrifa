@@ -115,9 +115,9 @@ INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUE
 (6666666,2012, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
 (7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado');
 
-INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo) VALUES
-(4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111),
-(3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222);
+INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
+(4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
+(3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
 (2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
@@ -142,7 +142,7 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion, habilitada) VALUES
 (1, 'Encuesta ...', 5, false),
-(2, 'Encuesta del 20/6/16', 5, true);
+(2, 'Encuesta del 20/6/16', 5, false);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Cuál de estos premios deberíamos incorporar?'),
@@ -170,7 +170,7 @@ INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 1');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 2');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 3');
 
-INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666);
+INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555);
 
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
@@ -368,12 +368,18 @@ BEGIN
 END
 $$
 
-
 CREATE PROCEDURE BuscarUltimaReunionPorGeneracion(pGenId int)
 BEGIN
 	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Finalizada' ORDER BY fecha DESC LIMIT 1;
 END
 $$
+
+CREATE PROCEDURE BuscarProximaReunionPorGeneracion(pGenId int)
+BEGIN
+	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
+END
+$$
+
 
 CREATE PROCEDURE BuscarEncuestaDeReunion(pReunionId int)
 BEGIN

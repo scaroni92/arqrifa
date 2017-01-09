@@ -84,10 +84,9 @@ public class ControladorEncuesta extends Controlador {
     public void iniciar_votacion_post() {
         VMEncuesta vm = new VMEncuesta();
         try {
-            vm.setReunionId(request.getParameter("reunion_id"));
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getReunionId()));
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
+            vm = new VMEncuesta(request.getParameter("reunion_id"), reunion.getEncuesta());
             cliente.iniciarVotacion(reunion);
-            vm.setEncuesta(reunion.getEncuesta());
             vm.setMensaje("Votación iniciada con éxito.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

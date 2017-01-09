@@ -396,8 +396,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             throw new Exception("No se pudo listar las reuniones, error de base de datos.");
         } catch (Exception e) {
             throw e;
-        }
-        finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -409,6 +408,37 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
         }
         return reuniones;
+    }
+
+    @Override
+    public DTReunion buscarProximaReunion(int id_gen) throws Exception {
+        DTReunion reunion = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarProximaReunionPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                reunion = cargarDatosReunion(res, con);
+            }
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return reunion;
     }
 
     private DTReunion cargarDatosReunion(ResultSet res, Connection con) throws Exception {
@@ -427,4 +457,5 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 this.listarResoluciones(res.getInt("id"), con),
                 this.listarParticipantes(res.getInt("id"), con));
     }
+
 }
