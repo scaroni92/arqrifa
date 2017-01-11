@@ -15,6 +15,7 @@ import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
+import org.arqrifa.datatypes.DTVoto;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -155,6 +156,17 @@ public class ClienteJersey {
                 .field("usuario", usuario, MediaType.APPLICATION_JSON_TYPE)
                 .field("reunion", reunion, MediaType.APPLICATION_JSON_TYPE);
         Response respuesta = TARGET.path("reunion/agregar_asistencia").request(JSON_TYPE).post(Entity.entity(multipart, multipart.getMediaType()));
+        comprobarError(respuesta);
+    }
+    
+    public DTUsuario buscarUsuario(int ci) throws Exception {
+        Response respuesta = TARGET.path("usuario/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return respuesta.readEntity(DTUsuario.class);
+    }
+    
+    public void agregarVoto(DTVoto voto) throws Exception {
+        Response respuesta = TARGET.path("encuesta/votar").request(JSON_TYPE).post(Entity.entity(voto, JSON_TYPE));
         comprobarError(respuesta);
     }
 

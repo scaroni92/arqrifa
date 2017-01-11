@@ -29,6 +29,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
+    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;

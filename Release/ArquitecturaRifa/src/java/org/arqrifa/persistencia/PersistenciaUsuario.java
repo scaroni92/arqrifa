@@ -188,4 +188,45 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         return estudiantes;
     }
 
+    @Override
+    public DTUsuario buscar(int ci) throws Exception {
+        DTUsuario estudiante = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+
+        try {
+            con = getConexion();
+            stmt = con.prepareCall("CALL BuscarUsuario(?)");
+            stmt.setInt(1, ci);
+            res = stmt.executeQuery();
+
+            if (res.next()) {
+                estudiante = new DTUsuario(res.getInt("ci"),
+                        res.getString("nombre"),
+                        res.getString("apellido"),
+                        res.getString("contrasena"),
+                        res.getString("email"),
+                        res.getString("rol"),
+                        res.getInt("id_gen"));
+            }
+            
+        } catch (SQLException e) {
+            throw new Exception("No se pudo encontrar al estudiante - Error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return estudiante;
+    }
+
 }

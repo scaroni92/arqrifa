@@ -11,5 +11,6 @@ public interface IControladorUsuario {
     
     List<DTUsuario> listarEstudiantes(int id_gen);
    
+    DTUsuario buscarUsuario(int ci);
 
 }

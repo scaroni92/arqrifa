@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
@@ -136,52 +137,6 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public void agregarEncuesta(DTReunion reunion) {
-        try {
-            if (reunion == null) {
-                throw new Exception("La reunión no puede ser nula.");
-            }
-            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
-                throw new Exception("No se puede crear encuestas para reuniones finalizadas.");
-            }
-            if (reunion.getEncuesta() == null) {
-                throw new Exception("La encuesta no puede ser nula.");
-            }
-            if (reunion.getEncuesta().getPropuestas().isEmpty()) {
-                throw new Exception("No se puede crear una encuesta sin propuestas.");
-            }
-
-            FabricaPersistencia.getPersistenciaEncuesta().agregarEncuesta(reunion);
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void habilitarVotacionEncuesta(DTReunion reunion) {
-        try {
-            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No es posible habilitar la votación de una encuesta si la reunión no está en progreso.");
-            }
-            if (reunion.getEncuesta().isHabilitada()) {
-                throw new Exception("No es posible habilitar la votación de la encuesta si ésta ya fue habilitada.");
-            }
-            FabricaPersistencia.getPersistenciaEncuesta().habilitarVotacion(reunion.getEncuesta());
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void agregarVoto(DTVoto voto) {
-        try {
-            FabricaPersistencia.getPersistenciaEncuesta().agregarVoto(voto);
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
-
-    @Override
     public DTReunion buscarUltimaReunionFinalizada(int id_gen) {
         try {
             return FabricaPersistencia.getPersistenciaReunion().buscarUltimaReunionFinalizada(id_gen);
@@ -229,5 +184,7 @@ class ControladorReunion implements IControladorReunion {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
+
+
 
 }

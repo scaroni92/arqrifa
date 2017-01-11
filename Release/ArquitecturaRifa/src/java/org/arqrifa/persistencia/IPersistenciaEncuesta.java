@@ -8,4 +8,5 @@ public interface IPersistenciaEncuesta {
     public void agregarEncuesta(DTReunion reunion) throws Exception;
     public void habilitarVotacion(DTEncuesta encuesta) throws Exception;
     public void agregarVoto(DTVoto voto) throws Exception;
+    public DTEncuesta buscar(int id) throws Exception;
 }

@@ -92,6 +92,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         }
     }
 
+    @Override
     public DTEncuesta buscar(int reunionId) throws Exception {
         DTEncuesta encuesta = null;
         Connection con = null;

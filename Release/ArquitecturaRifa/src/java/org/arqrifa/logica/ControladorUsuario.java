@@ -57,5 +57,14 @@ class ControladorUsuario implements IControladorUsuario {
         }
     }
 
+    @Override
+    public DTUsuario buscarUsuario(int ci) {
+        try {
+            return FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 
 }

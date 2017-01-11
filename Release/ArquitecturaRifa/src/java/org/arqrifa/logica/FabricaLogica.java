@@ -17,4 +17,8 @@ public class FabricaLogica {
     public static IControladorSolicitud getControladorSolicitud() {
         return ControladorSolicitud.getInstancia();
     }
+    
+    public static IControladorEncuesta getControladorEncuesta() {
+        return ControladorEncuesta.getInstancia();
+    }
 }

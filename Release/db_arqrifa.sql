@@ -356,6 +356,14 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE BuscarUsuario(pCi int)
+BEGIN
+	SELECT * FROM usuarios WHERE ci = pCi;
+END
+$$
+
+
+
 CREATE PROCEDURE BuscarSolicitud(pCi int)
 BEGIN
 	SELECT * FROM solicitudes WHERE ci = pCi;
@@ -470,3 +478,5 @@ $$
 
 DELIMITER ;
  -- SELECT * FROM reuniones PROCEDURE ANALYSE();
+use arqrifa;
+select * from votos

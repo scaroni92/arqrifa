@@ -14,8 +14,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
+import org.arqrifa.datatypes.DTVoto;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 //</editor-fold>
 
@@ -29,7 +31,6 @@ public class Servicio {
         return FabricaLogica.getLogicaUsuario().autenticar(ci, pass);
     }
 
-    
     // Borrar este método cuando se reemplace en la app desktop
     @POST
     @Path("/asistencias/marcar")
@@ -38,7 +39,7 @@ public class Servicio {
         FabricaLogica.getControladorReuniones().agregarAsistencia(usuario, reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @POST
     @Path("/reunion/agregar_asistencia")
     @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
@@ -73,38 +74,36 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
-    
     @Path("/reunion/finalizar")
     @POST
     public Response finalizarReunion(DTReunion reunion) {
         FabricaLogica.getControladorReuniones().finalizarReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("reunion/ultima_finalizada")
     @GET
-    public DTReunion buscarUltimaReunion(@QueryParam("id_gen") int id_gen){
+    public DTReunion buscarUltimaReunion(@QueryParam("id_gen") int id_gen) {
         return FabricaLogica.getControladorReuniones().buscarUltimaReunionFinalizada(id_gen);
     }
-    
+
     @Path("reunion/listar_por_generacion")
     @GET
-    public List<DTReunion> listarReunionesPorGeneracion(@QueryParam("id_gen") int id_gen){
+    public List<DTReunion> listarReunionesPorGeneracion(@QueryParam("id_gen") int id_gen) {
         return FabricaLogica.getControladorReuniones().listarReunionesPorGeneracion(id_gen);
     }
-    
+
     @Path("reunion/listar_asistencias")
     @POST
-    public List<DTAsistencia> listarAsistecnias(DTReunion reunion){
+    public List<DTAsistencia> listarAsistecnias(DTReunion reunion) {
         return FabricaLogica.getControladorReuniones().listarAsistencias(reunion);
     }
-    
+
     @Path("reunion/siguiente")
     @GET
-    public DTReunion buscarSiguienteReunion(@QueryParam("id_gen") int id_gen){
+    public DTReunion buscarSiguienteReunion(@QueryParam("id_gen") int id_gen) {
         return FabricaLogica.getControladorReuniones().buscarProximaReunionPorRealizar(id_gen);
     }
-            
 
     @Path("/generacion/listar")
     @GET
@@ -125,25 +124,44 @@ public class Servicio {
         FabricaLogica.getLogicaUsuario().agregarEncargado(usuario);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/encuesta/agregar")
     @POST
     public Response agregarEncuesta(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().agregarEncuesta(reunion);
+        FabricaLogica.getControladorEncuesta().agregarEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/encuesta/iniciar_votacion")
     @POST
     public Response iniciarVotacionEncuesta(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().habilitarVotacionEncuesta(reunion);
+        FabricaLogica.getControladorEncuesta().habilitarVotacionEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
     
+    @Path("/encuesta/votar")
+    @POST
+    public Response agregarVoto(DTVoto voto) {
+        FabricaLogica.getControladorEncuesta().agregarVoto(voto);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/encuesta/buscar")
+    @POST
+    public DTEncuesta buscarEncuesta(@QueryParam("id") int id) {
+        return FabricaLogica.getControladorEncuesta().buscarEncuesta(id);
+    }
+
     @Path("/estudiante/listar_por_generacion")
     @GET
-    public List<DTUsuario> listarEstudiantesPorGeneracion(@QueryParam("id_gen")int id_gen){
+    public List<DTUsuario> listarEstudiantesPorGeneracion(@QueryParam("id_gen") int id_gen) {
         return FabricaLogica.getLogicaUsuario().listarEstudiantes(id_gen);
+    }
+
+    @Path("/usuario/buscar")
+    @GET
+    public DTUsuario buscarUsuario(@QueryParam("ci") int ci) {
+        return FabricaLogica.getLogicaUsuario().buscarUsuario(ci);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Solicitudes">
@@ -156,7 +174,7 @@ public class Servicio {
 
     @Path("/solicitud/listar")
     @GET
-    public List<DTSolicitud> getSolicitudes(@QueryParam("generacion")int generacion) {
+    public List<DTSolicitud> getSolicitudes(@QueryParam("generacion") int generacion) {
         return FabricaLogica.getControladorSolicitud().listarSolicitudes(generacion);
     }
 

@@ -22,13 +22,17 @@
                 </c:forEach>
             </c:forEach>
         </fieldset>
-        
-        
-        
-        <form action="Encuesta" method="post">
-            <input type="text" name="reunion_id" value="${modelo.reunionId}" hidden>
-            <button type="submit" name="accion" value="iniciar_votacion" >Iniciar votación</button>
-        </form>
-            ${modelo.mensaje}
+
+        <c:if test="${modelo.encuesta.habilitada}">
+            <a href="Encuesta?accion=cuestionario&id=${modelo.reunionId}">Agregar voto</a>
+        </c:if>
+
+        <c:if test="${!modelo.encuesta.habilitada}">
+            <form action="Encuesta" method="post">
+                <input type="text" name="reunion_id" value="${modelo.reunionId}" hidden>
+                <button type="submit" name="accion" value="iniciar_votacion" >Iniciar votación</button>
+            </form>
+        </c:if>
+        ${modelo.mensaje}
     </body>
 </html>
