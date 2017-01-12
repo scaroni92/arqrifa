@@ -12,6 +12,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
@@ -183,14 +184,13 @@ public class ClienteJersey {
         return Arrays.asList(respuesta.readEntity(DTUsuario[].class));
     }
 
-    private void comprobarError(Response respuesta) throws Exception {
-        if (respuesta.getStatus() == 409) {
-            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
-        }
-    }
-
     public void eliminarReunion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/eliminar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+
+    public void eliminarEncuesta(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("encuesta/eliminar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);
     }
 
@@ -198,4 +198,9 @@ public class ClienteJersey {
         CLIENT.close();
     }
 
+    private void comprobarError(Response respuesta) throws Exception {
+        if (respuesta.getStatus() == 409) {
+            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        }
+    }
 }

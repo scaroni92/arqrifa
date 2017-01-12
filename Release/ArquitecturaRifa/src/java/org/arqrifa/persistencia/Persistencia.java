@@ -1,7 +1,9 @@
 package org.arqrifa.persistencia;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 class Persistencia {
@@ -18,6 +20,18 @@ class Persistencia {
             throw new Exception("Error al instanciar el Driver JDBC.");
         } catch (SQLException e) {
             throw new Exception("Error de conexión con la base de datos.");
+        }
+    }
+
+    protected static void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
+        if (res != null) {
+            res.close();
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
+        if (con != null) {
+            con.close();
         }
     }
 }

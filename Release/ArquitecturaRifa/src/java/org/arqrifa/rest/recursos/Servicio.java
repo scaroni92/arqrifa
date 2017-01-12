@@ -145,6 +145,13 @@ public class Servicio {
         FabricaLogica.getControladorEncuesta().agregarEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
+    
+    @Path("/encuesta/eliminar")
+    @POST
+    public Response eliminarEncuesta(DTReunion reunion) {
+        FabricaLogica.getControladorEncuesta().eliminarEncuesta(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
 
     @Path("/encuesta/iniciar_votacion")
     @POST

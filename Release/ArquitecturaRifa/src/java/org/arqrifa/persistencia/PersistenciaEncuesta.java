@@ -58,12 +58,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -112,17 +107,21 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(res, stmt, con);
         }
         return encuesta;
+    }
+
+    private void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
+        if (res != null) {
+            res.close();
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
+        if (con != null) {
+            con.close();
+        }
     }
 
     private List<DTPropuesta> listarPropuestas(int encuestaId, Connection con) throws Exception {
@@ -140,12 +139,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw new Exception("No se pudo listar las propuestas de la encuesta, error de base de datos.");
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
+            cerrarConexiones(res, stmt, null);
         }
         return propuestas;
     }
@@ -166,12 +160,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw new Exception("No se pudieron listar las respuestas de la propuesta, error de base de datos.");
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
+            cerrarConexiones(res, stmt, null);
         }
         return respuestas;
     }
@@ -193,12 +182,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -230,13 +214,40 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(null, stmt, con);
         }
     }
 
+    @Override
+    public void eliminarEncuesta(DTEncuesta encuesta) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BajaEncuesta(?, ?)");
+            stmt.setInt(1, encuesta.getId());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(2) != 1) {
+                throw new Exception("No se pudo eliminar la encuesta.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            //throw new Exception("No se pudo eliminar la encuesta, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            DTEncuesta e = PersistenciaEncuesta.getInstancia().buscar(1);
+            PersistenciaEncuesta.getInstancia().eliminarEncuesta(e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

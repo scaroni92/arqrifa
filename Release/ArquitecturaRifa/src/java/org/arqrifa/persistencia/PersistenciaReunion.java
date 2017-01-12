@@ -67,7 +67,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -110,7 +110,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -225,7 +225,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return reunion;
     }
@@ -251,7 +251,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return reuniones;
     }
@@ -346,7 +346,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return reunion;
     }
@@ -371,7 +371,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return reuniones;
     }
@@ -394,7 +394,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return reunion;
     }
@@ -417,7 +417,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -474,25 +474,5 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     // mover método a Persistencia
-    private void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
-        if (res != null) {
-            res.close();
-        }
-        if (stmt != null) {
-            stmt.close();
-        }
-        if (con != null) {
-            con.close();
-        }
-    }
-    
-    public static void main(String[]args){
-        try {
-            DTReunion r = PersistenciaReunion.getInstancia().buscar(4);
-            r.setDescripcion("desde persistencia");
-            PersistenciaReunion.getInstancia().modificar(r);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+ 
 }

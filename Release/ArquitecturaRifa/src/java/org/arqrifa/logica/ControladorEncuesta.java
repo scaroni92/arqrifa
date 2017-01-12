@@ -75,4 +75,19 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
+    @Override
+    public void eliminarEncuesta(DTReunion reunion) {
+        try {
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
+                throw new Exception("No se puede eliminar la encuesta de una reunión finalizada");
+            }
+            if (reunion.getEncuesta().isHabilitada()) {
+                throw new Exception("No se puede eliminar una encuesta que ya fue habilitada.");
+            }
+            FabricaPersistencia.getPersistenciaEncuesta().eliminarEncuesta(reunion.getEncuesta());
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 }

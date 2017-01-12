@@ -145,4 +145,19 @@ public class ControladorEncuesta extends Controlador {
         mostrarVista("Encuesta/cuestionario.jsp", vm);
     }
 
+    public void eliminar_get(){
+        mostrarVista("Encuesta/Eliminar.jsp", new VMEncuesta(request.getParameter("id"), null));
+    }
+    
+    public void eliminar_post(){
+        VMEncuesta vm = new VMEncuesta();
+        try {
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
+            cliente.eliminarEncuesta(reunion);
+            vm.setMensaje("Encuesta eliminada exitosamente.");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Encuesta/Eliminar.jsp", vm);
+    }
 }

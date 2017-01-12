@@ -32,6 +32,7 @@
                 <input type="text" name="reunion_id" value="${modelo.reunionId}" hidden>
                 <button type="submit" name="accion" value="iniciar_votacion" >Iniciar votación</button>
             </form>
+                <a href="Encuesta?accion=eliminar&id=${modelo.reunionId}">Eliminar</a>
         </c:if>
         ${modelo.mensaje}
     </body>
