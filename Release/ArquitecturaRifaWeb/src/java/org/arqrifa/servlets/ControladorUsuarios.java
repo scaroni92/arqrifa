@@ -1,8 +1,12 @@
 package org.arqrifa.servlets;
 
 import java.util.Date;
+import java.util.List;
+import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.viewmodels.VMListadoUsuarios;
+import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.VMUsuarioMantenimiento;
 import org.arqrifa.viewmodels.VMVerificacion;
 import org.arqrifa.viewmodels.ViewModel;
@@ -15,9 +19,9 @@ public class ControladorUsuarios extends Controlador {
             if (usuario == null) {
                 throw new Exception("Usuario o contraseña incorrectos.");
             }
-            
+
             sesion.setAttribute("usuario", usuario);
-            mostrarVista(usuario.getRol() + "/index.jsp");  
+            mostrarVista(usuario.getRol() + "/index.jsp");
         } catch (Exception ex) {
             mostrarVista("login.jsp", new ViewModel(ex.getMessage()));
         }
@@ -68,5 +72,62 @@ public class ControladorUsuarios extends Controlador {
             vm.setMensaje("No se pudo verificar la solicitud, quizas haya sido rechazada por el encargado");
         }
         mostrarVista("Estudiante/verificar_solicitud.jsp", vm);
+    }
+
+    public void ver_get() {
+        VMUsuario vm = new VMUsuario();
+        try {
+
+            DTUsuario usuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+            
+            if (getUsuario().getRol().equals(DTUsuario.ENCARGADO) && getUsuario().getGeneracion() != usuario.getGeneracion()) {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            vm.setUsuario(usuario);
+            if (usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
+                vm.setInasistencias(contarInasistencias(usuario));
+            }
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Estudiante/ver.jsp", vm);
+    }
+
+    public void listar_get() {
+        VMListadoUsuarios vm = new VMListadoUsuarios();
+        try {
+            if (getUsuario().getRol().equals(DTUsuario.ADMIN)) {
+                vm.setUsuarios(cliente.listarUsuarios());
+            } else if (getUsuario().getRol().equals(DTUsuario.ENCARGADO)) {
+                vm.setUsuarios(cliente.listarEstudiantesPorGeneracion(getUsuario().getGeneracion()));
+            }
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Usuario/listado.jsp", vm);
+    }
+
+    private int contarInasistencias(DTUsuario usuario) throws Exception {
+
+        int inasistencias = 0;
+        List<DTReunion> reuniones = cliente.listarReunionesPorGeneracion(usuario.getGeneracion());
+
+        boolean esParticipante;
+        for (DTReunion reunion : reuniones) {
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
+                esParticipante = false;
+                for (DTUsuario participante : reunion.getParticipantes()) {
+                    if (participante.getCi() == usuario.getCi()) {
+                        esParticipante = true;
+                        break;
+                    }
+                }
+                if (!esParticipante) {
+                    inasistencias++;
+                }
+            }
+        }
+        return inasistencias;
     }
 }

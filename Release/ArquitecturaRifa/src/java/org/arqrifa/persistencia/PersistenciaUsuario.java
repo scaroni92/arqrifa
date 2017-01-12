@@ -26,7 +26,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTUsuario usuario) throws Exception {
         Connection con = null;
@@ -43,7 +42,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setString(7, usuario.getRol());
             stmt.registerOutParameter(8, Types.INTEGER);
             stmt.execute();
-            
+
             if (stmt.getInt(8) == -1) {
                 throw new Exception("El correo ingresado está en uso.");
             }
@@ -60,12 +59,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -86,21 +80,13 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             if (res.next()) {
                 usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), contrasena, res.getString("email"), res.getString("rol"), res.getInt("id_gen"));
             }
-            
+
         } catch (SQLException e) {
             throw new Exception("No se pudo autenticar al usuario - Error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(res, stmt, con);
         }
         return usuario;
     }
@@ -119,29 +105,15 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             res = stmt.executeQuery();
 
             if (res.next()) {
-                estudiante = new DTUsuario(res.getInt("ci"),
-                        res.getString("nombre"),
-                        res.getString("apellido"),
-                        res.getString("contrasena"),
-                        res.getString("email"),
-                        res.getString("rol"),
-                        res.getInt("id_gen"));
+                estudiante = cargarUsuario(res);
             }
-            
+
         } catch (SQLException e) {
             throw new Exception("No se pudo encontrar al estudiante - Error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(res, stmt, con);
         }
         return estudiante;
     }
@@ -175,22 +147,14 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(res, stmt, con);
         }
         return estudiantes;
     }
 
     @Override
     public DTUsuario buscar(int ci) throws Exception {
-        DTUsuario estudiante = null;
+        DTUsuario usuario = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -200,33 +164,61 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt = con.prepareCall("CALL BuscarUsuario(?)");
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
-
             if (res.next()) {
-                estudiante = new DTUsuario(res.getInt("ci"),
-                        res.getString("nombre"),
-                        res.getString("apellido"),
-                        res.getString("contrasena"),
-                        res.getString("email"),
-                        res.getString("rol"),
-                        res.getInt("id_gen"));
+                usuario = cargarUsuario(res);
             }
-            
+
         } catch (SQLException e) {
-            throw new Exception("No se pudo encontrar al estudiante - Error de base de datos.");
+            throw new Exception("No se pudo encontrar al usuario, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            cerrarConexiones(res, stmt, con);
         }
-        return estudiante;
+        return usuario;
+    }
+
+    @Override
+    public List<DTUsuario> listarTodos() throws Exception {
+        List<DTUsuario> usuarios = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarUsuarios();");
+            res = stmt.executeQuery();
+            while (res.next()) {
+                usuarios.add(cargarUsuario(res));
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cerrarConexiones(res, stmt, con);
+        }
+        return usuarios;
+    }
+
+    private DTUsuario cargarUsuario(ResultSet res) throws SQLException {
+        return new DTUsuario(res.getInt("ci"),
+                res.getString("nombre"),
+                res.getString("apellido"),
+                res.getString("contrasena"),
+                res.getString("email"),
+                res.getString("rol"),
+                res.getInt("id_gen"));
+    }
+
+    private void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
+        if (res != null) {
+            res.close();
+        }
+        if (stmt != null) {
+            stmt.close();
+        }
+        if (con != null) {
+            con.close();
+        }
     }
 
 }

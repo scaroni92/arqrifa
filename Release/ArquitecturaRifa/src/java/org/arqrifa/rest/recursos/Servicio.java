@@ -138,7 +138,7 @@ public class Servicio {
         FabricaLogica.getControladorEncuesta().habilitarVotacionEncuesta(reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("/encuesta/votar")
     @POST
     public Response agregarVoto(DTVoto voto) {
@@ -162,6 +162,12 @@ public class Servicio {
     @GET
     public DTUsuario buscarUsuario(@QueryParam("ci") int ci) {
         return FabricaLogica.getLogicaUsuario().buscarUsuario(ci);
+    }
+    
+    @Path("/usuario/listar")
+    @GET
+    public List<DTUsuario> listarTodos(){
+        return FabricaLogica.getLogicaUsuario().listarTodos();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Solicitudes">

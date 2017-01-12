@@ -2,6 +2,7 @@ package org.arqrifa.logica;
 
 import java.util.List;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaException;
@@ -40,9 +41,9 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario.getCi() < 4000000) {
                 throw new Exception("Cédula inválida.");
             }
-            
+
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
-            
+
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -66,5 +67,14 @@ class ControladorUsuario implements IControladorUsuario {
         }
     }
 
+ 
+    @Override
+    public List<DTUsuario> listarTodos() {
+        try {
+            return FabricaPersistencia.getPersistenciaUsuario().listarTodos();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
 
 }

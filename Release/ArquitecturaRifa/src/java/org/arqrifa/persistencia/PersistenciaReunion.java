@@ -29,7 +29,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     //</editor-fold>
-    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -180,21 +179,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             res = stmt.executeQuery();
 
             if (res.next()) {
-
-                reunion = new DTReunion(id,
-                        res.getInt("id_gen"),
-                        res.getString("titulo"),
-                        res.getString("descripcion"),
-                        new Date(res.getTimestamp("fecha").getTime()),
-                        res.getInt("duracion"),
-                        res.getBoolean("obligatoria"),
-                        res.getString("lugar"),
-                        res.getString("observaciones"),
-                        res.getString("estado"),
-                        PersistenciaEncuesta.getInstancia().buscar(id),
-                        this.listarTemas(id, con),
-                        this.listarResoluciones(id, con),
-                        this.listarParticipantes(id, con));
+                reunion = cargarDatosReunion(res, con);
             }
 
         } catch (SQLException e) {
@@ -228,9 +213,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
             DTReunion reunion;
             while (res.next()) {
-                reunion = cargarDatosReunion(res, con);
-
-                reuniones.add(reunion);
+                reuniones.add(cargarDatosReunion(res, con));
             }
 
         } catch (SQLException e) {

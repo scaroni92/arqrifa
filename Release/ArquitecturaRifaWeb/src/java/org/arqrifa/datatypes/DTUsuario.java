@@ -4,7 +4,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class DTUsuario {
-
+    public static String ADMIN = "Admin";
+    public static String ENCARGADO = "Encargado";
+    public static String ESTUDIANTE = "Estudiante";
+    
     private int ci;
     private String nombre;
     private String apellido;

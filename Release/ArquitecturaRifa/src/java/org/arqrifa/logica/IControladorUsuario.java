@@ -10,7 +10,10 @@ public interface IControladorUsuario {
     DTUsuario autenticar(int ci, String contrasena);
     
     List<DTUsuario> listarEstudiantes(int id_gen);
+    
+    List<DTUsuario> listarTodos();
    
     DTUsuario buscarUsuario(int ci);
+    
 
 }

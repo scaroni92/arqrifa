@@ -406,6 +406,14 @@ BEGIN
 END
 $$
 
+
+CREATE PROCEDURE ListarUsuarios()
+BEGIN
+	SELECT * FROM usuarios WHERE id_gen != 0;
+END
+$$
+
+
 CREATE PROCEDURE ListarSolicitudesPorGeneracion(pGen int)
 BEGIN
 	SELECT * FROM solicitudes WHERE id_gen = pGen;

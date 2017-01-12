@@ -169,6 +169,17 @@ public class ClienteJersey {
         Response respuesta = TARGET.path("encuesta/votar").request(JSON_TYPE).post(Entity.entity(voto, JSON_TYPE));
         comprobarError(respuesta);
     }
+    
+    public void contarInasistencias(DTUsuario usuario) throws Exception {
+        Response respuesta = TARGET.path("estudiante/inasistencias").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+    
+    public List<DTUsuario> listarUsuarios() throws Exception{
+        Response respuesta = TARGET.path("usuario/listar").request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return Arrays.asList(respuesta.readEntity(DTUsuario[].class));
+    }
 
     private void comprobarError(Response respuesta) throws Exception {
         if (respuesta.getStatus() == 409) {
