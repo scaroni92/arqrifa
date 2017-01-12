@@ -8,6 +8,10 @@ public interface IPersistenciaReunion {
     
     void agregar(DTReunion reunion) throws Exception;
     
+    void eliminar(DTReunion reunion) throws Exception;
+    
+    void modificar(DTReunion reunion) throws Exception;
+    
     void iniciar(DTReunion reunion) throws Exception;
     
     void finalizar(DTReunion reunion) throws Exception;

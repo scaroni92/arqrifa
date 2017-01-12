@@ -19,10 +19,7 @@
         <fieldset>
             <h4>Estado de reunión: ${modelo.reunion.estado}</h4>
             <p>Fecha y hora de inicio: <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></p>
-            <c:choose>
-                <c:when test="${modelo.reunion.obligatoria}"><p><u>La asistencia es de carácter obligatorio</u></p></c:when>
-                <c:otherwise><p>La asistencia no es de carácter obligatorio</p></c:otherwise>
-            </c:choose>
+            <p>${modelo.reunion.obligatoria ? "<u>La asistencia es de carácter obligatorio</u>" : ""}</p>
         </fieldset>
         <br>
         <br>

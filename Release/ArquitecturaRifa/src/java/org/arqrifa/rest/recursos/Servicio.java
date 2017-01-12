@@ -56,8 +56,22 @@ public class Servicio {
 
     @Path("/reunion/agendar")
     @POST
-    public Response agendarReunion(DTReunion reunion) {
+    public Response agregarReunion(DTReunion reunion) {
         FabricaLogica.getControladorReuniones().agregarReunion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/reunion/eliminar")
+    @POST
+    public Response eliminarReunion(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().eliminarReunion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/reunion/modificar")
+    @POST
+    public Response modificarReunion(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().modificarReunion(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -163,10 +177,10 @@ public class Servicio {
     public DTUsuario buscarUsuario(@QueryParam("ci") int ci) {
         return FabricaLogica.getLogicaUsuario().buscarUsuario(ci);
     }
-    
+
     @Path("/usuario/listar")
     @GET
-    public List<DTUsuario> listarTodos(){
+    public List<DTUsuario> listarTodos() {
         return FabricaLogica.getLogicaUsuario().listarTodos();
     }
 

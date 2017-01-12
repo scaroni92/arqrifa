@@ -1,5 +1,6 @@
 package org.arqrifa.logica;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,12 +36,11 @@ class ControladorReunion implements IControladorReunion {
             if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-            
+
             /* SE COMENTA ESTA VALIDACIÓN PARA HACER PRUEBAS
             if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
             }*/
-
             FabricaPersistencia.getPersistenciaReunion().agregarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -63,14 +63,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
-            Date fechaActual = sdf.parse(sdf.format(new Date()));
-
-            if (fechaReunion.compareTo(fechaActual) <= 0) {
-                throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
-            }
-
+            comprobarConFechaActual(reunion);
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
             // Mail de notifiación
@@ -85,6 +78,16 @@ class ControladorReunion implements IControladorReunion {
             }
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    private void comprobarConFechaActual(DTReunion reunion) throws ParseException, Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
+        Date fechaActual = sdf.parse(sdf.format(new Date()));
+
+        if (fechaReunion.compareTo(fechaActual) <= 0) {
+            throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
         }
     }
 
@@ -185,6 +188,31 @@ class ControladorReunion implements IControladorReunion {
         }
     }
 
+    @Override
+    public void eliminarReunion(DTReunion reunion) {
+        try {
+            if (reunion.getEstado().equals(DTReunion.INICIADA)) {
+                throw new Exception("No se puede eliminar una reunión en progreso.");
+            }
+            FabricaPersistencia.getPersistenciaReunion().eliminar(reunion);
 
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void modificarReunion(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede modificar uan reunión nula.");
+            }
+
+            comprobarConFechaActual(reunion);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
 
 }

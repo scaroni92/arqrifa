@@ -139,7 +139,7 @@ public class VMReunionMantenimiento extends ViewModel {
     }
 
     public VMReunionMantenimiento() {
-        super();
+        this("", "", "", "", "", "", "", false, "", "", "", "", "");
     }
 
 }

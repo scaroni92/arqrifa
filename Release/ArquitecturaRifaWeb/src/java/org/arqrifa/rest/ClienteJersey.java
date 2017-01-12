@@ -46,7 +46,6 @@ public class ClienteJersey {
 
     public void verificarSolicitud(int codigo) throws ClientErrorException, Exception {
         Response respuesta = TARGET.path("solicitud/verificar").queryParam("codigo", codigo).request(JSON_TYPE).get();
-
         comprobarError(respuesta);
     }
 
@@ -90,9 +89,12 @@ public class ClienteJersey {
 
     public void agendarReunion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/agendar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
-        if (respuesta.getStatus() != 200 && respuesta.getStatus() != 204) {
-            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
-        }
+        comprobarError(respuesta);
+    }
+
+    public void modificarReunion(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/modificar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
     }
 
     public DTReunion buscarReunion(int id) throws Exception {
@@ -126,7 +128,7 @@ public class ClienteJersey {
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }
-    
+
     public DTReunion buscarSiguienteReunion(int id_gen) throws Exception {
         Response respuesta = TARGET.path("reunion/siguiente").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
         comprobarError(respuesta);
@@ -150,32 +152,32 @@ public class ClienteJersey {
         comprobarError(respuesta);
         return Arrays.asList(respuesta.readEntity(DTAsistencia[].class));
     }
-    
-    public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception{
+
+    public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception {
         MultiPart multipart = new FormDataMultiPart()
                 .field("usuario", usuario, MediaType.APPLICATION_JSON_TYPE)
                 .field("reunion", reunion, MediaType.APPLICATION_JSON_TYPE);
         Response respuesta = TARGET.path("reunion/agregar_asistencia").request(JSON_TYPE).post(Entity.entity(multipart, multipart.getMediaType()));
         comprobarError(respuesta);
     }
-    
+
     public DTUsuario buscarUsuario(int ci) throws Exception {
         Response respuesta = TARGET.path("usuario/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
         comprobarError(respuesta);
         return respuesta.readEntity(DTUsuario.class);
     }
-    
+
     public void agregarVoto(DTVoto voto) throws Exception {
         Response respuesta = TARGET.path("encuesta/votar").request(JSON_TYPE).post(Entity.entity(voto, JSON_TYPE));
         comprobarError(respuesta);
     }
-    
+
     public void contarInasistencias(DTUsuario usuario) throws Exception {
         Response respuesta = TARGET.path("estudiante/inasistencias").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
         comprobarError(respuesta);
     }
-    
-    public List<DTUsuario> listarUsuarios() throws Exception{
+
+    public List<DTUsuario> listarUsuarios() throws Exception {
         Response respuesta = TARGET.path("usuario/listar").request(JSON_TYPE).get();
         comprobarError(respuesta);
         return Arrays.asList(respuesta.readEntity(DTUsuario[].class));
@@ -185,6 +187,11 @@ public class ClienteJersey {
         if (respuesta.getStatus() == 409) {
             throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
+    }
+
+    public void eliminarReunion(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/eliminar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
     }
 
     public void close() {

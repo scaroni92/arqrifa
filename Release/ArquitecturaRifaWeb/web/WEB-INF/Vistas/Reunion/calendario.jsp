@@ -31,7 +31,13 @@
                     </td>
                     <td>${reunion.descripcion}</td>
                     <td>
-                        <a href="Reuniones?accion=ver&id=${reunion.id}">Ver detalles</a>
+                        <a href="Reuniones?accion=ver&id=${reunion.id}">Detalles</a>
+                        <c:if test="${reunion.estado != 'Iniciada'}">
+                            <a href="Reuniones?accion=eliminar&id=${reunion.id}">Eliminar</a>    
+                        </c:if>
+                        <c:if test="${reunion.estado eq 'Pendiente'}">
+                            <a href="Reuniones?accion=modificar&id=${reunion.id}">Modificar</a>
+                        </c:if>
                     </td>
                 </tr>    
             </c:forEach>

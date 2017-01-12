@@ -33,6 +33,7 @@ CREATE TABLE reuniones (
     lugar VARCHAR(50) NOT NULL,
     observaciones VARCHAR(200) DEFAULT '',
     estado VARCHAR(15) DEFAULT 'Pendiente',
+    eliminada BIT DEFAULT 0,
     FOREIGN KEY (id_gen) REFERENCES generaciones(id)
 );
 
@@ -142,13 +143,16 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion, habilitada) VALUES
 (1, 'Encuesta ...', 5, false),
-(2, 'Encuesta del 20/6/16', 5, false);
+(2, 'Encuesta del 20/6/16', 5, false),
+(3, 'Encuesta de la reunion ID: 3', 5, false);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Cuál de estos premios deberíamos incorporar?'),
 (1, '¿Qué precio de rifa le parece mejor?'),
 (2, '¿Cuál de estos premios deberíamos incorporar?'),
-(2, '¿Qué precio de rifa le parece mejor?');
+(2, '¿Qué precio de rifa le parece mejor?'),
+(3, '¿Cuál de estos premios deberíamos incorporar?'),
+(3, '¿Qué precio de rifa le parece mejor?');
 
 INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (1, 'Cámara Sony'),
@@ -164,7 +168,14 @@ INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (4, '$3960'),
 (4, '$3980'),
 (4, '$3990'),
-(4, '$3400');
+(4, '$3400'),
+(5, 'Cámara Sony'),
+(5, 'IPhone 6S'),
+(5, 'Giftcards en tienda inglesa valor $30.000'),
+(6, '$3960'),
+(6, '$3980'),
+(6, '$3990'),
+(6, '$3400');
 
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 1');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 2');
@@ -226,6 +237,53 @@ BEGIN
 END
 $$
 
+-- retorno: -1 si ya existe una reunión para el mismo día
+CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
+BEGIN
+	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha AS DATE) = CAST(pFecha AS DATE) AND id_gen = pGeneracion AND id != pId) THEN
+		SET retorno = -1;
+	ELSE
+		UPDATE reuniones SET titulo = pTitulo, descripcion = pDescripcion, fecha = pFecha, duracion = pDuracion, obligatoria = pObligatoria, lugar = pLugar WHERE id = pId;
+	END IF;
+END
+$$select * from reuniones
+
+-- call modificarreunion(4, 2012, 't', 'd', '2017-02-20 15:00:00', 1, 1, 'l', @retorno);
+-- retorno 1 baja exitosa, -1 la reunión no existe o está en progreso
+CREATE PROCEDURE BajaReunion(pId int, out retorno int)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+	IF NOT EXISTS (SELECT * FROM reuniones WHERE reuniones.id = pId AND reuniones.estado != 'Iniciada') THEN
+		SET retorno = -1;
+	ELSEIF EXISTS (SELECT * FROM reuniones WHERE reuniones.id = pId AND reuniones.estado = 'Pendiente') THEN
+		START TRANSACTION;
+        
+        DELETE re.* FROM respuestas AS re 
+			INNER JOIN propuestas AS p ON(re.id_propuesta = p.id)
+			INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
+			INNER JOIN reuniones AS r ON(e.id_reunion = r.id) 
+            WHERE r.id = pId;
+            
+		DELETE p.* FROM propuestas AS p
+			INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
+			INNER JOIN reuniones AS r ON(e.id_reunion = r.id) 
+            WHERE r.id = pId;
+            
+
+		DELETE FROM encuestas WHERE encuestas.id_reunion = pId;
+        DELETE FROM temas WHERE temas.id_reunion = pId;
+		DELETE FROM asistencias WHERE asistencias.id_reunion = pId;
+		DELETE FROM reuniones WHERE reuniones.id = pId;
+        
+        SET retorno = 1;
+        COMMIT;
+    ELSE
+		UPDATE reuniones SET eliminada = 1 WHERE reuniones.id = pId;
+        SET retorno = 1;
+    END IF;
+END
+$$
+
 CREATE PROCEDURE IniciarReunion(pId int)
 BEGIN
 	UPDATE reuniones SET estado = 'Iniciada' WHERE id = pId;
@@ -244,6 +302,12 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE BajaTemas(pReunionId int)
+BEGIN
+	DELETE FROM temas WHERE id_reunion = pReunionId;
+END
+$$
+
 CREATE PROCEDURE AltaResolucion(pReunionId int, pResolucion varchar(50))
 BEGIN
 	INSERT INTO resoluciones (id_reunion, resolucion) VALUES(pReunionId, pResolucion);
@@ -252,7 +316,7 @@ $$
 
 -- --------------------------------------------------------
 
---
+-- 
 -- ASISTENCIAS
 --
 
@@ -319,6 +383,25 @@ BEGIN
     SET pRetorno = LAST_INSERT_ID();
 END
 $$
+
+-- retorna 1 si la baja es exitosa
+CREATE PROCEDURE BajaEncuesta(pId int, out retorno int)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+    START TRANSACTION;
+    DELETE r.* FROM respuestas AS r 
+			INNER JOIN propuestas AS p ON(r.id_propuesta = p.id)
+			INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
+            WHERE e.id = pId;
+	
+    DELETE FROM propuestas WHERE id_encuesta = pId;
+    DELETE FROM encuestas WHERE id = pId;
+    
+    SET retorno = 1;
+    COMMIT;
+END
+$$
+
 
 CREATE PROCEDURE AltaPropuesta(pEncuestaId int, pPregunta varchar(30), out pRetorno int)
 BEGIN
@@ -438,13 +521,14 @@ BEGIN
 END
 $$
 
-
+-- necesario?
 CREATE PROCEDURE ListarReunionesDelDia()
 BEGIN
 	SELECT * FROM reuniones WHERE CAST(fecha AS DATE) >= CAST(CURDATE() AS DATE);
 END
 $$
 
+-- necesario?
 CREATE PROCEDURE ListarReunionesIniciadas()
 BEGIN
 	SELECT * FROM reuniones WHERE estado = 'Iniciada';
@@ -453,13 +537,13 @@ $$
 
 CREATE PROCEDURE ListarReunionesPorGeneracion(pGen int)
 BEGIN
-	SELECT * FROM reuniones WHERE id_gen = pGen ORDER BY fecha DESC;
+	SELECT * FROM reuniones WHERE id_gen = pGen AND eliminada = 0 ORDER BY fecha DESC;
 END
 $$
 
 CREATE PROCEDURE ListarReunionesIniciadasPorGeneracion(pGen int)
 BEGIN
-	SELECT * FROM reuniones WHERE estado = 'Iniciada';
+	SELECT * FROM reuniones WHERE estado = 'Iniciada' AND eliminada = 0;
 END
 $$
 

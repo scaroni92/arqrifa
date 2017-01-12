@@ -68,11 +68,72 @@ public class ControladorReuniones extends Controlador {
         mostrarVista("Reunion/agendar.jsp", vm);
     }
 
+    public void modificar_get() {
+        VMReunionMantenimiento vm = new VMReunionMantenimiento();
+        try {
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+
+            String id, titulo, descripcion, fecha, hora, duracion, lugar, temas = "";
+            boolean obligatoria;
+
+            id = String.valueOf(reunion.getId());
+            titulo = reunion.getTitulo();
+            descripcion = reunion.getDescripcion();
+            fecha = new SimpleDateFormat("yyyy-MM-dd").format(reunion.getFecha());
+            hora = new SimpleDateFormat("HH:mm").format(reunion.getFecha());
+            duracion = String.valueOf(reunion.getDuracion());
+            obligatoria = reunion.isObligatoria();
+            lugar = reunion.getLugar();
+
+            for (String tema : reunion.getTemas()) {
+                temas += tema + ",";
+            }
+
+            vm = new VMReunionMantenimiento(id, "", titulo, descripcion, fecha, hora, duracion, obligatoria, lugar, "", "", temas, "");
+
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Reunion/modificar.jsp", vm);
+    }
+
+    public void modificar_post() {
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
+        try {
+            if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
+                throw new Exception("Complete todos los campos obligatorios.");
+            }
+            
+            List<String> temas = Arrays.asList(request.getParameterValues("temas"));
+            if (temas.isEmpty()) {
+                throw new Exception("Ingrese los temas a debatir en la reunión.");
+            }
+
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
+
+            reunion.setTitulo(vm.getTitulo());
+            reunion.setDescripcion(vm.getDescripcion());
+            reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
+            reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
+            reunion.setObligatoria(vm.isObligatoria());
+            reunion.setLugar(vm.getLugar());
+            reunion.setTemas(temas);
+
+            cliente.modificarReunion(reunion);
+            vm.setMensaje("Reunión modificada exitosamente");
+
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("Reunion/modificar.jsp", vm);
+    }
+
     public void panel_get() {
         VMReunionMantenimiento vm = new VMReunionMantenimiento();
         try {
             DTReunion r = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
 
+            //añadir a método
             vm.setId(String.valueOf(r.getId()));
             vm.setTitulo(r.getTitulo());
             vm.setDescripcion(r.getDescripcion());
@@ -164,9 +225,9 @@ public class ControladorReuniones extends Controlador {
             DTUsuario estudiante = new DTUsuario();
             estudiante.setCi(Integer.parseInt(request.getParameter("ci")));
             estudiante.setRol("Estudiante");
-            
+
             vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
-            
+
             cliente.agregarAsistencia(reunion, estudiante);
             vm.setMensaje("Asistencia agregada exitosamente.");
         } catch (Exception e) {
@@ -186,4 +247,20 @@ public class ControladorReuniones extends Controlador {
         mostrarVista("Reunion/resumen.jsp", vm);
     }
 
+    public void eliminar_get() {
+        mostrarVista("Reunion/eliminar.jsp", (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento()));
+    }
+
+    public void eliminar_post() {
+        VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
+        try {
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
+            cliente.eliminarReunion(reunion);
+            this.calendario_get();
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+            mostrarVista("Reunion/eliminar.jsp", vm);
+        }
+
+    }
 }
