@@ -8,12 +8,11 @@ public interface IControladorUsuario {
     void agregarEncargado(DTUsuario usuario);
 
     DTUsuario autenticar(int ci, String contrasena);
-    
-    List<DTUsuario> listarEstudiantes(int id_gen);
-    
+
+    DTUsuario buscar(int ci);
+
     List<DTUsuario> listarTodos();
-   
-    DTUsuario buscarUsuario(int ci);
-    
+
+    List<DTUsuario> listarEstudiantes(int id_gen);
 
 }

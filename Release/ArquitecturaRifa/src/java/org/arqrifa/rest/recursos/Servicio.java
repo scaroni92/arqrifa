@@ -42,47 +42,47 @@ public class Servicio {
     @Path("/reunion/iniciadas")
     @GET
     public List<DTReunion> getReunionesActivas() {
-        return FabricaLogica.getControladorReuniones().listarReunionesIniciadas();
+        return FabricaLogica.getControladorReuniones().listarIniciadas();
     }
 
     @Path("/reunion/agendar")
     @POST
     public Response agregarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().agregarReunion(reunion);
+        FabricaLogica.getControladorReuniones().agregar(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/reunion/eliminar")
     @POST
     public Response eliminarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().eliminarReunion(reunion);
+        FabricaLogica.getControladorReuniones().eliminar(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/reunion/modificar")
     @POST
     public Response modificarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().modificarReunion(reunion);
+        FabricaLogica.getControladorReuniones().modificar(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/reunion/buscar")
     @GET
     public DTReunion buscarReunion(@QueryParam("id") int id) {
-        return FabricaLogica.getControladorReuniones().buscarReunion(id);
+        return FabricaLogica.getControladorReuniones().buscar(id);
     }
 
     @Path("/reunion/iniciar")
     @POST
     public Response iniciarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().iniciarReunion(reunion);
+        FabricaLogica.getControladorReuniones().iniciar(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("/reunion/finalizar")
     @POST
     public Response finalizarReunion(DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().finalizarReunion(reunion);
+        FabricaLogica.getControladorReuniones().finalizar(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -101,7 +101,7 @@ public class Servicio {
     @Path("reunion/listar_por_generacion")
     @GET
     public List<DTReunion> listarReunionesPorGeneracion(@QueryParam("id_gen") int id_gen) {
-        return FabricaLogica.getControladorReuniones().listarReunionesPorGeneracion(id_gen);
+        return FabricaLogica.getControladorReuniones().listarPorGeneracion(id_gen);
     }
 
     @Path("reunion/listar_asistencias")
@@ -166,7 +166,7 @@ public class Servicio {
     @Path("/encuesta/iniciar_votacion")
     @POST
     public Response iniciarVotacionEncuesta(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().habilitarVotacionEncuesta(reunion);
+        FabricaLogica.getControladorEncuesta().habilitarVotacion(reunion);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -186,7 +186,7 @@ public class Servicio {
     @Path("/usuario/buscar")
     @GET
     public DTUsuario buscarUsuario(@QueryParam("ci") int ci) {
-        return FabricaLogica.getLogicaUsuario().buscarUsuario(ci);
+        return FabricaLogica.getLogicaUsuario().buscar(ci);
     }
 
     @Path("/usuario/listar")

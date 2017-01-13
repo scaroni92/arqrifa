@@ -18,7 +18,7 @@ public class Mensajeria {
     private Session sesion = null;
 
     public Mensajeria() throws MessagingException {
-        // Autenticación
+        
         Properties properties = new Properties();
         properties.put("mail.transport.protocol", "smtp");
         properties.put("mail.smtp.host", "smtp.live.com");
@@ -28,6 +28,7 @@ public class Mensajeria {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.port", "587");
 
+        // Autenticación
         sesion = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {

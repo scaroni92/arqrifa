@@ -1,8 +1,6 @@
 package org.arqrifa.logica;
 
 import java.util.List;
-import org.arqrifa.datatypes.DTEstadoAsistencia;
-import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaException;
@@ -24,15 +22,6 @@ class ControladorUsuario implements IControladorUsuario {
     //</editor-fold>
 
     @Override
-    public DTUsuario autenticar(int ci, String contrasena) {
-        try {
-            return FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
-
-    @Override
     public void agregarEncargado(DTUsuario usuario) {
         try {
             if (usuario == null) {
@@ -50,16 +39,16 @@ class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public List<DTUsuario> listarEstudiantes(int id_gen) {
+    public DTUsuario autenticar(int ci, String contrasena) {
         try {
-            return FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(id_gen);
+            return FabricaPersistencia.getPersistenciaUsuario().autenticar(ci, contrasena);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public DTUsuario buscarUsuario(int ci) {
+    public DTUsuario buscar(int ci) {
         try {
             return FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
         } catch (Exception e) {
@@ -67,11 +56,19 @@ class ControladorUsuario implements IControladorUsuario {
         }
     }
 
- 
     @Override
     public List<DTUsuario> listarTodos() {
         try {
             return FabricaPersistencia.getPersistenciaUsuario().listarTodos();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<DTUsuario> listarEstudiantes(int id_gen) {
+        try {
+            return FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(id_gen);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

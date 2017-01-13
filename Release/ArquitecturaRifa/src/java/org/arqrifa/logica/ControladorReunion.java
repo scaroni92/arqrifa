@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTEstadoAsistencia;
-import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTVoto;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.excepciones.ArquitecturaRifaException;
 
@@ -48,7 +46,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public List<DTReunion> listarReunionesIniciadas() {
+    public List<DTReunion> listarIniciadas() {
         try {
             return FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
         } catch (Exception e) {
@@ -57,7 +55,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public void agregarReunion(DTReunion reunion) {
+    public void agregar(DTReunion reunion) {
         try {
             if (reunion == null) {
                 throw new Exception("No se puede agendar una reunión nula.");
@@ -92,7 +90,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public DTReunion buscarReunion(int id) {
+    public DTReunion buscar(int id) {
         try {
             return FabricaPersistencia.getPersistenciaReunion().buscar(id);
         } catch (Exception e) {
@@ -101,7 +99,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public void iniciarReunion(DTReunion reunion) {
+    public void iniciar(DTReunion reunion) {
         try {
             if (reunion == null) {
                 throw new Exception("No se puede iniciar una reunión nula.");
@@ -127,7 +125,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public void finalizarReunion(DTReunion reunion) {
+    public void finalizar(DTReunion reunion) {
         try {
             if (reunion == null) {
                 throw new Exception("No se puede finalizar una reunión nula");
@@ -140,18 +138,18 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public DTReunion buscarUltimaReunionFinalizada(int id_gen) {
+    public DTReunion buscarUltimaReunionFinalizada(int genId) {
         try {
-            return FabricaPersistencia.getPersistenciaReunion().buscarUltimaReunionFinalizada(id_gen);
+            return FabricaPersistencia.getPersistenciaReunion().buscarUltimaReunionFinalizada(genId);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public List<DTReunion> listarReunionesPorGeneracion(int id_gen) {
+    public List<DTReunion> listarPorGeneracion(int genId) {
         try {
-            return FabricaPersistencia.getPersistenciaReunion().listarPorGeneracion(id_gen);
+            return FabricaPersistencia.getPersistenciaReunion().listarPorGeneracion(genId);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -180,16 +178,16 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public DTReunion buscarProximaReunionPorRealizar(int id_gen) {
+    public DTReunion buscarProximaReunionPorRealizar(int genId) {
         try {
-            return FabricaPersistencia.getPersistenciaReunion().buscarProximaReunion(id_gen);
+            return FabricaPersistencia.getPersistenciaReunion().buscarProximaReunion(genId);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public void eliminarReunion(DTReunion reunion) {
+    public void eliminar(DTReunion reunion) {
         try {
             if (reunion.getEstado().equals(DTReunion.INICIADA)) {
                 throw new Exception("No se puede eliminar una reunión en progreso.");
@@ -202,7 +200,7 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public void modificarReunion(DTReunion reunion) {
+    public void modificar(DTReunion reunion) {
         try {
             if (reunion == null) {
                 throw new Exception("No se puede modificar uan reunión nula.");

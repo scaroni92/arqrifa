@@ -6,30 +6,30 @@ import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 public interface IControladorReunion {
 
-    void agregarReunion(DTReunion reunion);
+    void agregar(DTReunion reunion);
     
-    void eliminarReunion(DTReunion reunion);
+    void eliminar(DTReunion reunion);
     
-    void modificarReunion(DTReunion reunion);
+    void modificar(DTReunion reunion);
 
-    void iniciarReunion(DTReunion reunion);
+    void iniciar(DTReunion reunion);
     
-    void finalizarReunion(DTReunion reunion);
+    void finalizar(DTReunion reunion);
 
     void agregarAsistencia(DTUsuario usuario, DTReunion reunion);
     
-    DTReunion buscarReunion(int id);
+    DTReunion buscar(int id);
     
-    DTReunion buscarUltimaReunionFinalizada(int id_gen);
+    DTReunion buscarUltimaReunionFinalizada(int genId);
     
-    DTReunion buscarProximaReunionPorRealizar(int id_gen);
+    DTReunion buscarProximaReunionPorRealizar(int genId);
     
     List<DTReunion> listarTodas();
     
-    List<DTReunion> listarReunionesIniciadas();
+    List<DTReunion> listarIniciadas();
     
-    List<DTReunion> listarReunionesPorGeneracion(int id_gen);
+    List<DTReunion> listarPorGeneracion(int genId);
     
-    List<DTEstadoAsistencia> listarAsistencias(DTReunion r);
+    List<DTEstadoAsistencia> listarAsistencias(DTReunion reunion);
     
 }
