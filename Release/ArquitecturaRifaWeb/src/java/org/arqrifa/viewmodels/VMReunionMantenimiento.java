@@ -122,7 +122,8 @@ public class VMReunionMantenimiento extends ViewModel {
     }
     //</editor-fold>
 
-    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, String temas, String resoluciones) {
+    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, String temas, String resoluciones, String mensaje) {
+        super(mensaje);
         this.id = id;
         this.generacion = generacion;
         this.titulo = titulo;
@@ -139,7 +140,11 @@ public class VMReunionMantenimiento extends ViewModel {
     }
 
     public VMReunionMantenimiento() {
-        this("", "", "", "", "", "", "", false, "", "", "", "", "");
+        this("", "", "", "", "", "", "", false, "", "", "", "", "", "");
+    }
+
+    public VMReunionMantenimiento(String mensaje) {
+        this("", "", "", "", "", "", "", false, "", "", "", "", "", mensaje);
     }
 
 }

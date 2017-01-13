@@ -1,8 +1,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Arquitectura Rifa | Registro</title>
+        <style>
+            .mensaje-error {
+                color:red;
+            }
+        </style>
     </head>
     <body>
         <h1>Registro</h1>
@@ -20,6 +26,14 @@
             </select><br>
             <input type="submit" name="accion" value="Registrar">
         </form>
-        <p>${modelo.mensaje}</p>
+
+        <c:choose>
+            <c:when test="${fn:contains(modelo.mensaje, 'mensaje-error')}">
+                <p class="mensaje-error">${fn:replace(modelo.mensaje, 'mensaje-error', '')}</p>
+            </c:when>
+            <c:otherwise>
+                <p>${modelo.mensaje}</p>
+            </c:otherwise>
+        </c:choose>
     </body>
 </html>

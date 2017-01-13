@@ -43,14 +43,15 @@
             </table>
             <fieldset>
                 <legend>Temas</legend>
-
                 <div id="temas_wrapper">
+                    
                     <c:forTokens items="${modelo.temas}" delims="," var="tema" varStatus="contador">
                         <p id="${contador.index}">
                             <input type="text" name="temas" placeholder="Ingrese un tema aquí" value="${tema}" required>
                             <input type="button" value="X" onclick="eliminarTema(${contador.index})" />
                         <p>
-                        </c:forTokens>
+                    </c:forTokens>
+                            
                 </div>
                 <input type="button" value="Nuevo tema" onclick="agregarTema()"/>
             </fieldset>
@@ -65,19 +66,19 @@
 
         <script>
             function agregarTema() {
-                var div_temas = document.getElementById('temas_wrapper');
-                var indice = div_temas.childElementCount;
-                var container = document.createElement('p');
-                container.id = indice;
-                container.innerHTML = "<input type='text' name='temas' placeholder='Ingrese un tema aquí' autofocus required />"
-                        + "<input type='button' value='X' onclick='eliminarTema(" + indice + ")'/>";
-                div_temas.appendChild(container);
+                var temasWrapper = document.getElementById('temas_wrapper');
+                var temaContainer = document.createElement('p');
+                
+                temaContainer.id = temasWrapper.childElementCount;
+                temaContainer.innerHTML = "<input type='text' name='temas' placeholder='Ingrese un tema aquí' autofocus required />"
+                        + "<input type='button' value='X' onclick='eliminarTema(" + temasWrapper.childElementCount + ")'/>";
+                
+                temasWrapper.appendChild(temaContainer);
             }
 
             function eliminarTema(indice) {
-                var div_temas = document.getElementById('temas_wrapper');
-                var tema = document.getElementById(indice);
-                div_temas.removeChild(tema);
+                var temasWrapper = document.getElementById('temas_wrapper');
+                temasWrapper.removeChild(document.getElementById(indice));
             }
         </script>
     </body>

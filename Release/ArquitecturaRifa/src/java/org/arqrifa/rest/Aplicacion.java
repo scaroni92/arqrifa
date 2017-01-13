@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import org.arqrifa.excepciones.ArquitecturaRifaException;
-import org.arqrifa.excepciones.ArquitecturaRifaMapper;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
+import org.arqrifa.exceptions.ArquitecturaRifaMapper;
 import org.arqrifa.rest.recursos.Servicio;
 
 @ApplicationPath("api")

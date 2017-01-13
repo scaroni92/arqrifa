@@ -14,7 +14,7 @@
         <br>
         <a href="Reuniones?accion=proxima">Próxima reunión</a>
         <a href="Reuniones?accion=resumen">Resumen de última reunión</a>
-        <a href="Reuniones?accion=calendario">Ver calendario</a>
+        <a href="Reuniones">Ver calendario</a>
         <br>
         <a href="Usuarios?accion=ver&ci=5555555">Ver estudiante</a>
     </body>

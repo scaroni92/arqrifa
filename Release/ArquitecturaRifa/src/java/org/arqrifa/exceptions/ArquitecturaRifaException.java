@@ -1,4 +1,4 @@
-package org.arqrifa.excepciones;
+package org.arqrifa.exceptions;
 
 
 public class ArquitecturaRifaException extends RuntimeException {

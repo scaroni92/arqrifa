@@ -29,7 +29,11 @@
                         <h3><fmt:formatDate pattern="dd/MM/yy" value="${reunion.fecha}" /></h3>
                         <p><fmt:formatDate pattern="hh:mm" value="${reunion.fecha}" /></p>
                     </td>
-                    <td>${reunion.descripcion}</td>
+                    <td>
+                        <h5>${reunion.titulo}</h5>
+                        <p>${reunion.descripcion}</p>
+                        ${reunion.estado}
+                    </td>
                     <td>
                         <a href="Reuniones?accion=ver&id=${reunion.id}">Detalles</a>
                         <c:if test="${reunion.estado != 'Iniciada'}">

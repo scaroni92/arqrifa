@@ -1,4 +1,4 @@
-package org.arqrifa.excepciones;
+package org.arqrifa.exceptions;
 
 import org.arqrifa.datatypes.DTMensajeError;
 import javax.ws.rs.core.Response;

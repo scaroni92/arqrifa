@@ -3,7 +3,7 @@ package org.arqrifa.logica;
 import java.util.Calendar;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
-import org.arqrifa.excepciones.ArquitecturaRifaException;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorGeneracion implements IControladorGeneracion {

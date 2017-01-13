@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
-import org.arqrifa.excepciones.ArquitecturaRifaException;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorSolicitud implements IControladorSolicitud {

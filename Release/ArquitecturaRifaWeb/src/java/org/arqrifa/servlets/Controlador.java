@@ -23,9 +23,9 @@ public class Controlador extends HttpServlet {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected ClienteJersey cliente = new ClienteJersey();
-    
-    public DTUsuario getUsuario(){
-        return (DTUsuario)sesion.getAttribute("usuario");
+
+    public DTUsuario getUsuario() {
+        return (DTUsuario) sesion.getAttribute("usuario");
     }
 
     protected void despacharMetodoAccion()
@@ -43,7 +43,7 @@ public class Controlador extends HttpServlet {
     }
 
     protected void mostrarVista(String vista, ViewModel modelo) {
-
+        cargarEnModeloMensajeSesion(modelo);
         request.setAttribute("modelo", modelo);
 
         try {
@@ -81,6 +81,20 @@ public class Controlador extends HttpServlet {
         }
 
         return modelo;
+    }
+
+    protected void cargarEnModeloMensajeSesion(ViewModel modelo) {
+        String mensajeSesion = (String) request.getSession().getAttribute("mensaje");
+
+        if (mensajeSesion != null && modelo != null) {
+            if (modelo.getMensaje() == null) {
+                modelo.setMensaje(mensajeSesion);
+            } else {
+                modelo.setMensaje(modelo.getMensaje() + "<br /><br />" + mensajeSesion);
+            }
+
+            request.getSession().removeAttribute("mensaje");
+        }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

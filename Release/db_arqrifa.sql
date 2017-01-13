@@ -499,7 +499,6 @@ END
 $$
 
 
-
 CREATE PROCEDURE BuscarEncuestaDeReunion(pReunionId int)
 BEGIN
 	SELECT * FROM encuestas WHERE id_reunion = pReunionId;

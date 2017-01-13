@@ -1,10 +1,13 @@
 package org.arqrifa.servlets;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.VMUsuarioMantenimiento;
@@ -39,19 +42,21 @@ public class ControladorUsuarios extends Controlador {
 
     public void registrar_post() {
         VMUsuarioMantenimiento vm = (VMUsuarioMantenimiento) cargarModelo(new VMUsuarioMantenimiento());
+        List<DTGeneracion> generaciones = new ArrayList();
         try {
-
+            generaciones = cliente.listarGeneraciones();
             int ci = Integer.parseInt(vm.getCi());
             int generacion = Integer.parseInt(vm.getGeneracion());
 
             if (vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getEmail().isEmpty()) {
-                throw new Exception("Completa todos los campos obligatorios.");
+                throw new ArquitecturaRifaException("Completa todos los campos obligatorios.");
             }
 
-            cliente.enviarSolicitud(new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "", generacion)));
+            cliente.agregarSolicitud(new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "", generacion)));
             mostrarVista("login.jsp", new ViewModel("Solicitud enviada exitosamente. <br> Se ha enviado un mail de verificación a tu correo electrónico."));
 
         } catch (Exception ex) {
+            vm.setGeneraciones(generaciones);
             vm.setMensaje(ex.getMessage());
             mostrarVista("Estudiante/registro.jsp", vm);
         }

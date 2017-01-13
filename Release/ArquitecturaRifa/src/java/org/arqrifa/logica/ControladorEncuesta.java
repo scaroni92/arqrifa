@@ -4,7 +4,7 @@ import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTVoto;
-import org.arqrifa.excepciones.ArquitecturaRifaException;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 public class ControladorEncuesta implements IControladorEncuesta {

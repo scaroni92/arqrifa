@@ -10,7 +10,7 @@ import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.persistencia.FabricaPersistencia;
-import org.arqrifa.excepciones.ArquitecturaRifaException;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 
 class ControladorReunion implements IControladorReunion {
 
