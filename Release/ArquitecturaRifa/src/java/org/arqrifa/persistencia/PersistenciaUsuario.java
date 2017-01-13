@@ -24,8 +24,8 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
 
     private PersistenciaUsuario() {
     }
-
     //</editor-fold>
+
     @Override
     public void agregar(DTUsuario usuario) throws Exception {
         Connection con = null;
@@ -59,7 +59,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -86,7 +86,33 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return usuario;
+    }
+
+    @Override
+    public DTUsuario buscar(int ci) throws Exception {
+        DTUsuario usuario = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+
+        try {
+            con = getConexion();
+            stmt = con.prepareCall("CALL BuscarUsuario(?)");
+            stmt.setInt(1, ci);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                usuario = cargarUsuario(res);
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudo encontrar al usuario, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return usuario;
     }
@@ -113,69 +139,9 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return estudiante;
-    }
-
-    @Override
-    public List<DTUsuario> listarEstudiantes(int generacion) throws Exception {
-        List<DTUsuario> estudiantes = new ArrayList();
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL ListarEstudiantesPorGeneracion(?)");
-            stmt.setInt(1, generacion);
-            res = stmt.executeQuery();
-
-            DTUsuario estudiante;
-            while (res.next()) {
-                estudiante = new DTUsuario(res.getInt("ci"),
-                        res.getString("nombre"),
-                        res.getString("apellido"),
-                        res.getString("contrasena"),
-                        res.getString("email"),
-                        res.getString("rol"),
-                        generacion);
-                estudiantes.add(estudiante);
-            }
-
-        } catch (SQLException e) {
-            throw new Exception("No se pudieron listar los estudiantes, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            cerrarConexiones(res, stmt, con);
-        }
-        return estudiantes;
-    }
-
-    @Override
-    public DTUsuario buscar(int ci) throws Exception {
-        DTUsuario usuario = null;
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-
-        try {
-            con = getConexion();
-            stmt = con.prepareCall("CALL BuscarUsuario(?)");
-            stmt.setInt(1, ci);
-            res = stmt.executeQuery();
-            if (res.next()) {
-                usuario = cargarUsuario(res);
-            }
-
-        } catch (SQLException e) {
-            throw new Exception("No se pudo encontrar al usuario, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            cerrarConexiones(res, stmt, con);
-        }
-        return usuario;
     }
 
     @Override
@@ -194,9 +160,35 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return usuarios;
+    }
+
+    @Override
+    public List<DTUsuario> listarEstudiantes(int generacion) throws Exception {
+        List<DTUsuario> estudiantes = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarEstudiantesPorGeneracion(?)");
+            stmt.setInt(1, generacion);
+            res = stmt.executeQuery();
+
+            while (res.next()) {
+                estudiantes.add(cargarUsuario(res));
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudieron listar los estudiantes, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return estudiantes;
     }
 
     private DTUsuario cargarUsuario(ResultSet res) throws SQLException {
@@ -207,18 +199,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 res.getString("email"),
                 res.getString("rol"),
                 res.getInt("id_gen"));
-    }
-
-    private void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
-        if (res != null) {
-            res.close();
-        }
-        if (stmt != null) {
-            stmt.close();
-        }
-        if (con != null) {
-            con.close();
-        }
     }
 
 }

@@ -476,19 +476,19 @@ $$
 
 CREATE PROCEDURE BuscarReunion(pId int)
 BEGIN
-	SELECT * FROM reuniones WHERE id = pId;
+	SELECT * FROM reuniones WHERE id = pId AND eliminada = 0;
 END
 $$
 
 CREATE PROCEDURE BuscarUltimaReunionPorGeneracion(pGenId int)
 BEGIN
-	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Finalizada' ORDER BY fecha DESC LIMIT 1;
+	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Finalizada' AND eliminada = 0 ORDER BY fecha DESC LIMIT 1;
 END
 $$
 
 CREATE PROCEDURE BuscarProximaReunionPorGeneracion(pGenId int)
 BEGIN
-	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
+	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND eliminada = 0 AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
 END
 $$
 
@@ -549,17 +549,24 @@ BEGIN
 END
 $$
 
+
+CREATE PROCEDURE ListarReunionesTodas()
+BEGIN
+	SELECT * FROM reuniones;
+END
+$$
+
 -- necesario?
 CREATE PROCEDURE ListarReunionesDelDia()
 BEGIN
-	SELECT * FROM reuniones WHERE CAST(fecha AS DATE) >= CAST(CURDATE() AS DATE);
+	SELECT * FROM reuniones WHERE CAST(fecha AS DATE) >= CAST(CURDATE() AS DATE) AND eliminada = 0;
 END
 $$
 
 -- necesario?
 CREATE PROCEDURE ListarReunionesIniciadas()
 BEGIN
-	SELECT * FROM reuniones WHERE estado = 'Iniciada';
+	SELECT * FROM reuniones WHERE estado = 'Iniciada' AND eliminada = 0;
 END
 $$
 
@@ -574,8 +581,6 @@ BEGIN
 	SELECT * FROM reuniones WHERE estado = 'Iniciada' AND eliminada = 0;
 END
 $$
-
-
 
 CREATE PROCEDURE ListarGeneraciones()
 BEGIN

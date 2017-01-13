@@ -27,8 +27,8 @@ class PersistenciaReunion implements IPersistenciaReunion {
 
     private PersistenciaReunion() {
     }
-
     //</editor-fold>
+    
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -65,6 +65,28 @@ class PersistenciaReunion implements IPersistenciaReunion {
             if (con != null) {
                 con.rollback();
             }
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
+    @Override
+    public void eliminar(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BajaReunion(?, ?)");
+            stmt.setInt(1, reunion.getId());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(2) == -1) {
+                throw new Exception("No se puede dar de baja una reunión en progreso.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo dar de baja la reunión, error de base de datos.");
+        } catch (Exception e) {
             throw e;
         } finally {
             Persistencia.cerrarConexiones(null, stmt, con);
@@ -231,6 +253,101 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
+    public DTReunion buscarProximaReunion(int id_gen) throws Exception {
+        DTReunion reunion = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarProximaReunionPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                reunion = cargarDatosReunion(res, con);
+            }
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return reunion;
+    }
+
+    @Override
+    public DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception {
+        DTReunion reunion = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarUltimaReunionPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                reunion = cargarDatosReunion(res, con);
+            }
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return reunion;
+    }
+
+    @Override
+    public List<DTReunion> listarTodas() throws Exception {
+        List<DTReunion> reuniones = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarReunionesTodas()");
+            res = stmt.executeQuery();
+            while (res.next()) {
+                reuniones.add(cargarDatosReunion(res, con));
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudo listar las reuniones, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return reuniones;
+    }
+
+    @Override
+    public List<DTReunion> listarPorGeneracion(int id_gen) throws Exception {
+        List<DTReunion> reuniones = new ArrayList();
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ListarReunionesPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                reuniones.add(cargarDatosReunion(res, con));
+            }
+
+        } catch (SQLException e) {
+            throw new Exception("No se pudo listar las reuniones, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return reuniones;
+    }
+
+    @Override
     public List<DTReunion> listarIniciadas() throws Exception {
         List<DTReunion> reuniones = new ArrayList();
         Connection con = null;
@@ -328,99 +445,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return participantes;
     }
 
-    @Override
-    public DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception {
-        DTReunion reunion = null;
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BuscarUltimaReunionPorGeneracion(?)");
-            stmt.setInt(1, id_gen);
-            res = stmt.executeQuery();
-            if (res.next()) {
-                reunion = cargarDatosReunion(res, con);
-            }
-
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(res, stmt, con);
-        }
-        return reunion;
-    }
-
-    @Override
-    public List<DTReunion> listarPorGeneracion(int id_gen) throws Exception {
-        List<DTReunion> reuniones = new ArrayList();
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL ListarReunionesPorGeneracion(?)");
-            stmt.setInt(1, id_gen);
-            res = stmt.executeQuery();
-            while (res.next()) {
-                reuniones.add(cargarDatosReunion(res, con));
-            }
-
-        } catch (SQLException e) {
-            throw new Exception("No se pudo listar las reuniones, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(res, stmt, con);
-        }
-        return reuniones;
-    }
-
-    @Override
-    public DTReunion buscarProximaReunion(int id_gen) throws Exception {
-        DTReunion reunion = null;
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BuscarProximaReunionPorGeneracion(?)");
-            stmt.setInt(1, id_gen);
-            res = stmt.executeQuery();
-            if (res.next()) {
-                reunion = cargarDatosReunion(res, con);
-            }
-
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(res, stmt, con);
-        }
-        return reunion;
-    }
-
-    @Override
-    public void eliminar(DTReunion reunion) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BajaReunion(?, ?)");
-            stmt.setInt(1, reunion.getId());
-            stmt.registerOutParameter(2, Types.INTEGER);
-            stmt.execute();
-            if (stmt.getInt(2) == -1) {
-                throw new Exception("No se puede dar de baja una reunión en progreso.");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo dar de baja la reunión, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(null, stmt, con);
-        }
-    }
-
     private void agregarTema(int reunionId, String tema, Connection con) throws Exception {
         try (CallableStatement stmt = con.prepareCall("CALL AltaTema(?,?)")) {
             stmt.setInt(1, reunionId);
@@ -473,6 +497,4 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 this.listarParticipantes(res.getInt("id"), con));
     }
 
-    // mover método a Persistencia
- 
 }

@@ -54,12 +54,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -79,12 +74,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -107,12 +97,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -132,12 +117,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
@@ -152,26 +132,18 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL BuscarSolicitud(?)");
             stmt.setInt(1, ci);
             res = stmt.executeQuery();
-            
+
             if (res.next()) {
                 DTUsuario usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", res.getInt("id_gen"));
                 solicitud = new DTSolicitud(res.getInt("codigo"), res.getDate("fecha"), res.getBoolean("verificada"), usuario);
             }
-            
+
         } catch (SQLException e) {
             throw new Exception("No se pudo buscar la solicitud, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return solicitud;
     }
@@ -198,15 +170,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            Persistencia.cerrarConexiones(res, stmt, con);
         }
         return solicitudes;
     }

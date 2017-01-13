@@ -18,10 +18,10 @@ public class ControladorReuniones extends Controlador {
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
 
-            if (reunion.getGeneracion() != (getUsuario().getGeneracion())) {
-                mostrarVista("Error/no_encontrado.jsp");
-            } else {
+            if (getUsuario().getRol().equals(DTUsuario.ADMIN) || getUsuario().getGeneracion() == reunion.getGeneracion()) {
                 mostrarVista("Reunion/ver.jsp", new VMReunion(reunion, ""));
+            } else {
+                mostrarVista("Error/no_encontrado.jsp");
             }
 
         } catch (NumberFormatException | NullPointerException e) {
@@ -103,7 +103,7 @@ public class ControladorReuniones extends Controlador {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
                 throw new Exception("Complete todos los campos obligatorios.");
             }
-            
+
             List<String> temas = Arrays.asList(request.getParameterValues("temas"));
             if (temas.isEmpty()) {
                 throw new Exception("Ingrese los temas a debatir en la reunión.");
@@ -199,8 +199,11 @@ public class ControladorReuniones extends Controlador {
     public void calendario_get() {
         VMCalendario vm = new VMCalendario("");
         try {
-            List<DTReunion> reuniones = cliente.listarReunionesPorGeneracion(getUsuario().getGeneracion());
-            vm.setReuniones(reuniones);
+            if (getUsuario().getRol().equals(DTUsuario.ADMIN)) {
+                vm.setReuniones(cliente.listarReunionesTodas());
+            } else {
+                vm.setReuniones(cliente.listarReunionesPorGeneracion(getUsuario().getGeneracion()));
+            }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -227,7 +230,7 @@ public class ControladorReuniones extends Controlador {
             estudiante.setRol("Estudiante");
 
             cliente.agregarAsistencia(reunion, estudiante);
-            
+
             vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
             vm.setMensaje("Asistencia marcada exitosamente.");
         } catch (Exception e) {

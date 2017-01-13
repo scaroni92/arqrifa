@@ -92,6 +92,12 @@ public class Servicio {
         return FabricaLogica.getControladorReuniones().buscarUltimaReunionFinalizada(id_gen);
     }
 
+    @Path("reunion/listar")
+    @GET
+    public List<DTReunion> listarTodas() {
+        return FabricaLogica.getControladorReuniones().listarTodas();
+    }
+
     @Path("reunion/listar_por_generacion")
     @GET
     public List<DTReunion> listarReunionesPorGeneracion(@QueryParam("id_gen") int id_gen) {

@@ -24,6 +24,8 @@ public interface IControladorReunion {
     
     DTReunion buscarProximaReunionPorRealizar(int id_gen);
     
+    List<DTReunion> listarTodas();
+    
     List<DTReunion> listarReunionesIniciadas();
     
     List<DTReunion> listarReunionesPorGeneracion(int id_gen);

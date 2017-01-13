@@ -215,4 +215,13 @@ class ControladorReunion implements IControladorReunion {
         }
     }
 
+    @Override
+    public List<DTReunion> listarTodas() {
+        try {
+            return FabricaPersistencia.getPersistenciaReunion().listarTodas();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 }

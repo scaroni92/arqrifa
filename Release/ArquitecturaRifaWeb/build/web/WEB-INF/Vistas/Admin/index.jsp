@@ -12,5 +12,6 @@
         <a href="Admin?accion=agregar_generacion">Agregar Generación</a>
         <a href="Usuarios?accion=ver&ci=7777777">Ver usuario</a>
         <a href="Usuarios?accion=listar">Listar usuarios</a>
+        <a href="Reuniones?accion=calendario">Ver calendario</a>
     </body>
 </html>

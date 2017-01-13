@@ -133,6 +133,12 @@ public class ClienteJersey {
         return respuesta.readEntity(DTReunion.class);
     }
 
+    public List<DTReunion> listarReunionesTodas() throws Exception {
+        Response respuesta = TARGET.path("reunion/listar").request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return Arrays.asList(respuesta.readEntity(DTReunion[].class));
+    }
+
     public List<DTReunion> listarReunionesPorGeneracion(int id_gen) throws Exception {
         Response respuesta = TARGET.path("reunion/listar_por_generacion").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
         comprobarError(respuesta);
