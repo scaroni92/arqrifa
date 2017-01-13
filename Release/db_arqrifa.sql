@@ -387,23 +387,32 @@ $$
 CREATE PROCEDURE BajaEncuesta(pId int, out retorno int)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-    START TRANSACTION;
-    DELETE r.* FROM respuestas AS r 
-			INNER JOIN propuestas AS p ON(r.id_propuesta = p.id)
-			INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
-            WHERE e.id = pId;
-	
-    DELETE FROM propuestas WHERE id_encuesta = pId;
-    DELETE FROM encuestas WHERE id = pId;
-    
-    SET retorno = 1;
-    COMMIT;
+	IF EXISTS (SELECT r.* FROM reuniones AS r INNER JOIN encuestas AS e on(r.id = e.id_reunion) WHERE e.id = pId AND r.estado = 'Finalizada') THEN
+		SET retorno = -1;
+	ELSE
+		START TRANSACTION;
+		DELETE r.* FROM respuestas AS r 
+				INNER JOIN propuestas AS p ON(r.id_propuesta = p.id)
+				INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
+				WHERE e.id = pId;
+		
+		DELETE FROM propuestas WHERE id_encuesta = pId;
+		DELETE FROM encuestas WHERE id = pId;
+		
+		SET retorno = 1;
+		COMMIT;
+    END IF;
 END
 $$
 
-CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int)
+-- retorno -1 si la reunión está finalizada
+CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int, out retorno int)
 BEGIN
-	UPDATE Encuestas SET titulo = pTitulo, duracion = pDuracion WHERE id = pId;
+	IF EXISTS (SELECT r.* FROM reuniones AS r INNER JOIN encuestas AS e on(r.id = e.id_reunion) WHERE e.id = pId AND r.estado = 'Finalizada') THEN
+		SET retorno = -1;
+	ELSE
+		UPDATE Encuestas SET titulo = pTitulo, duracion = pDuracion WHERE id = pId;
+	END IF;
 END
 $$
 
@@ -482,6 +491,13 @@ BEGIN
 	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
 END
 $$
+
+CREATE PROCEDURE BuscarEncuesta(pId int)
+BEGIN
+	SELECT * FROM encuestas WHERE id = pId;
+END
+$$
+
 
 
 CREATE PROCEDURE BuscarEncuestaDeReunion(pReunionId int)

@@ -9,17 +9,14 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTEstadoAsistencia;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTVoto;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.MultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 public class ClienteJersey {
 
@@ -29,7 +26,7 @@ public class ClienteJersey {
     private final String JSON_TYPE = "application/json;charset=utf-8";
 
     public ClienteJersey() {
-        CLIENT = ClientBuilder.newClient().register(MultiPartFeature.class);
+        CLIENT = ClientBuilder.newClient();
         TARGET = CLIENT.target(BASE_URI).path("servicio");
     }
 
@@ -148,17 +145,14 @@ public class ClienteJersey {
         return Arrays.asList(respuesta.readEntity(DTUsuario[].class));
     }
 
-    public List<DTAsistencia> listarAsistencias(DTReunion reunion) throws Exception {
+    public List<DTEstadoAsistencia> listarAsistencias(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/listar_asistencias").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);
-        return Arrays.asList(respuesta.readEntity(DTAsistencia[].class));
+        return Arrays.asList(respuesta.readEntity(DTEstadoAsistencia[].class));
     }
 
     public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception {
-        MultiPart multipart = new FormDataMultiPart()
-                .field("usuario", usuario, MediaType.APPLICATION_JSON_TYPE)
-                .field("reunion", reunion, MediaType.APPLICATION_JSON_TYPE);
-        Response respuesta = TARGET.path("reunion/agregar_asistencia").request(JSON_TYPE).post(Entity.entity(multipart, multipart.getMediaType()));
+        Response respuesta = TARGET.path("asistencia/agregar").request(JSON_TYPE).post(Entity.entity(new DTAsistencia(usuario, reunion), JSON_TYPE));
         comprobarError(respuesta);
     }
 
@@ -189,8 +183,14 @@ public class ClienteJersey {
         comprobarError(respuesta);
     }
 
-    public void eliminarEncuesta(DTReunion reunion) throws Exception {
-        Response respuesta = TARGET.path("encuesta/eliminar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+    public DTEncuesta buscarEncuesta(int id) throws Exception {
+        Response respuesta = TARGET.path("encuesta/buscar").queryParam("id", id).request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return respuesta.readEntity(DTEncuesta.class);
+    }
+
+    public void eliminarEncuesta(DTEncuesta encuesta) throws Exception {
+        Response respuesta = TARGET.path("encuesta/eliminar").request(JSON_TYPE).post(Entity.entity(encuesta, JSON_TYPE));
         comprobarError(respuesta);
     }
 
@@ -204,8 +204,13 @@ public class ClienteJersey {
     }
 
     private void comprobarError(Response respuesta) throws Exception {
-        if (respuesta.getStatus() == 409) {
-            throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+        switch (respuesta.getStatus()) {
+            case 400:
+                throw new Exception("Solicitud incorrecta");
+            case 404:
+                throw new Exception("Recurso no encontrado");
+            case 409:
+                throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
 }

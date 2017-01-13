@@ -467,7 +467,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 res.getString("lugar"),
                 res.getString("observaciones"),
                 res.getString("estado"),
-                PersistenciaEncuesta.getInstancia().buscar(res.getInt("id")),
+                PersistenciaEncuesta.getInstancia().buscarPorReunion(res.getInt("id")),
                 this.listarTemas(res.getInt("id"), con),
                 this.listarResoluciones(res.getInt("id"), con),
                 this.listarParticipantes(res.getInt("id"), con));

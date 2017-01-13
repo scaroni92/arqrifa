@@ -1,36 +1,35 @@
 package org.arqrifa.datatypes;
 
+// Este DataType es utilizado unicamente como wrapper en el servicio
+
 public class DTAsistencia {
+    private DTUsuario usuario;
+    private DTReunion reunion;
 
-    public static String PRESENTE = "Presente";
-    public static String AUSENTE = "Ausente";
-
-    private DTUsuario estudiante;
-    private String estado;
-
-    public DTAsistencia(DTUsuario estudiante, String estado) {
-        this.estudiante = estudiante;
-        this.estado = estado;
+    public DTAsistencia(DTUsuario usuario, DTReunion reunion) {
+        this.usuario = usuario;
+        this.reunion = reunion;
     }
 
     public DTAsistencia() {
-        this(null, "");
+        this(null, null);
     }
 
-    public DTUsuario getEstudiante() {
-        return estudiante;
+    public DTUsuario getUsuario() {
+        return usuario;
     }
 
-    public void setEstudiante(DTUsuario estudiante) {
-        this.estudiante = estudiante;
+    public void setUsuario(DTUsuario usuario) {
+        this.usuario = usuario;
     }
 
-    public String getEstado() {
-        return estado;
+    public DTReunion getReunion() {
+        return reunion;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setReunion(DTReunion reunion) {
+        this.reunion = reunion;
     }
-
+    
+    
 }

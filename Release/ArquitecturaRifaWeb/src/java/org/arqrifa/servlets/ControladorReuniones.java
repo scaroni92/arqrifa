@@ -226,10 +226,10 @@ public class ControladorReuniones extends Controlador {
             estudiante.setCi(Integer.parseInt(request.getParameter("ci")));
             estudiante.setRol("Estudiante");
 
-            vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
-
             cliente.agregarAsistencia(reunion, estudiante);
-            vm.setMensaje("Asistencia agregada exitosamente.");
+            
+            vm = new VMAsistencias(reunion, cliente.listarAsistencias(reunion), "");
+            vm.setMensaje("Asistencia marcada exitosamente.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

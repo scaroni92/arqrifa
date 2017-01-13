@@ -30,7 +30,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     //</editor-fold>
 
     @Override
-    public void agregarEncuesta(DTReunion reunion) throws Exception {
+    public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
         try {
@@ -43,7 +43,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.registerOutParameter(4, Types.INTEGER);
             if (stmt.executeUpdate() > 0) {
                 for (DTPropuesta p : reunion.getEncuesta().getPropuestas()) {
-                    this.altaPropuesta(stmt.getInt(4), p, con);
+                    this.agregarPropuesta(stmt.getInt(4), p, con);
                 }
             }
             con.commit();
@@ -58,115 +58,71 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
-        }
-    }
-
-    private void altaPropuesta(int encuestaId, DTPropuesta propuesta, Connection con) throws Exception {
-        try (CallableStatement stmt = con.prepareCall("CALL AltaPropuesta(?, ?, ?)")) {
-            stmt.setInt(1, encuestaId);
-            stmt.setString(2, propuesta.getPregunta());
-            stmt.registerOutParameter(3, Types.INTEGER);
-            if (stmt.executeUpdate() > 0) {
-                for (DTRespuesta r : propuesta.getRespuestas()) {
-                    this.altaRespuesta(stmt.getInt(3), r, con);
-                }
-            }
-        } catch (Exception e) {
-            throw new Exception("No se pudo dar de alta la propuesta, error de base de datos.");
-        }
-    }
-
-    private void altaRespuesta(int propuestaId, DTRespuesta respuesta, Connection con) throws Exception {
-        try (CallableStatement stmt = con.prepareCall("CALL AltaRespuesta(?, ?)")) {
-            stmt.setInt(1, propuestaId);
-            stmt.setString(2, respuesta.getRespuesta());
-            stmt.execute();
-        } catch (Exception e) {
-            throw new Exception("No se pudo dar de alta la respuesta, error de base de datos.");
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
     @Override
-    public DTEncuesta buscar(int reunionId) throws Exception {
-        DTEncuesta encuesta = null;
+    public void eliminar(DTEncuesta encuesta) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
-        ResultSet res = null;
-
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BuscarEncuestaDeReunion(?)");
-            stmt.setInt(1, reunionId);
-            res = stmt.executeQuery();
-            if (res.next()) {
-                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
+            stmt = con.prepareCall("CALL BajaEncuesta(?, ?)");
+            stmt.setInt(1, encuesta.getId());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            stmt.execute();
+            if (stmt.getInt(2) == -1) {
+                throw new Exception("No se puede eliminar la encuesta de una reunión finalizada.");
+
+            } else if (stmt.getInt(2) != 1) {
+                throw new Exception("No se pudo eliminar la encuesta, problema en la base de datos.");
             }
         } catch (SQLException e) {
-            throw new Exception("No se pudo buscar la encuesta de la reunión, error de base de datos.");
+            throw new Exception("No se pudo eliminar la encuesta, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(res, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
-        return encuesta;
-    }
-
-    private void cerrarConexiones(ResultSet res, CallableStatement stmt, Connection con) throws SQLException {
-        if (res != null) {
-            res.close();
-        }
-        if (stmt != null) {
-            stmt.close();
-        }
-        if (con != null) {
-            con.close();
-        }
-    }
-
-    private List<DTPropuesta> listarPropuestas(int encuestaId, Connection con) throws Exception {
-        List<DTPropuesta> propuestas = new ArrayList();
-        CallableStatement stmt = null;
-        ResultSet res = null;
-
-        try {
-            stmt = con.prepareCall("CALL ListarPropuestasDeEncuesta(?)");
-            stmt.setInt(1, encuestaId);
-            res = stmt.executeQuery();
-            while (res.next()) {
-                propuestas.add(new DTPropuesta(res.getInt("id"), res.getString("pregunta"), this.listarRespuestas(res.getInt("id"), con)));
-            }
-        } catch (Exception e) {
-            throw new Exception("No se pudo listar las propuestas de la encuesta, error de base de datos.");
-        } finally {
-            cerrarConexiones(res, stmt, null);
-        }
-        return propuestas;
-    }
-
-    private List<DTRespuesta> listarRespuestas(int propuestaId, Connection con) throws Exception {
-        List<DTRespuesta> respuestas = new ArrayList();
-        CallableStatement stmt = null;
-        ResultSet res = null;
-
-        try {
-            stmt = con.prepareCall("CALL ListarRespuestasDePropuesta(?)");
-            stmt.setInt(1, propuestaId);
-            res = stmt.executeQuery();
-            while (res.next()) {
-                respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta")));
-            }
-
-        } catch (Exception e) {
-            throw new Exception("No se pudieron listar las respuestas de la propuesta, error de base de datos.");
-        } finally {
-            cerrarConexiones(res, stmt, null);
-        }
-        return respuestas;
     }
 
     @Override
-    public void habilitarVotacion(DTEncuesta encuesta) throws Exception {
+    public void modificar(DTEncuesta encuesta) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            con.setAutoCommit(false);
+            stmt = con.prepareCall("CALL ModificarEncuesta(?, ?, ?, ?)");
+            stmt.setInt(1, encuesta.getId());
+            stmt.setString(2, encuesta.getTitulo());
+            stmt.setInt(3, encuesta.getDuracion());
+            stmt.registerOutParameter(4, Types.INTEGER);
+            stmt.execute();
+
+            if (stmt.getInt(4) == -1) {
+                throw new Exception("No se puede modificar la encuesta de una reunión finalizada.");
+            }
+
+            this.eliminarPropuestas(encuesta.getId(), con);
+
+            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
+                this.agregarPropuesta(encuesta.getId(), propuesta, con);
+            }
+            con.commit();
+        } catch (Exception e) {
+            if (con != null) {
+                con.rollback();
+            }
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
+    @Override
+    public void habilitar(DTEncuesta encuesta) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -182,12 +138,12 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         } catch (Exception e) {
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
     @Override
-    public void agregarVoto(DTVoto voto) throws Exception {
+    public void votar(DTVoto voto) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -214,68 +170,82 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             throw e;
         } finally {
-            cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(null, stmt, con);
         }
     }
 
     @Override
-    public void eliminarEncuesta(DTEncuesta encuesta) throws Exception {
+    public DTEncuesta buscar(int id) throws Exception {
+        DTEncuesta encuesta = null;
         Connection con = null;
         CallableStatement stmt = null;
+        ResultSet res = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BajaEncuesta(?, ?)");
-            stmt.setInt(1, encuesta.getId());
-            stmt.registerOutParameter(2, Types.INTEGER);
-            stmt.execute();
-            if (stmt.getInt(2) != 1) {
-                throw new Exception("No se pudo eliminar la encuesta.");
+            stmt = con.prepareCall("CALL BuscarEncuesta(?)");
+            stmt.setInt(1, id);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                encuesta = new DTEncuesta(id, res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            //throw new Exception("No se pudo eliminar la encuesta, error de base de datos.");
+            throw new Exception(e.getMessage());
+            //throw new Exception("No se pudo buscar la encuesta, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
             Persistencia.cerrarConexiones(null, stmt, con);
         }
-    }
-
-    public static void main(String[] args) {
-        try {
-            DTEncuesta e = PersistenciaEncuesta.getInstancia().buscar(1);
-            PersistenciaEncuesta.getInstancia().modificarEncuesta(e);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        return encuesta;
     }
 
     @Override
-    public void modificarEncuesta(DTEncuesta encuesta) throws Exception {
+    public DTEncuesta buscarPorReunion(int reunionId) throws Exception {
+        DTEncuesta encuesta = null;
         Connection con = null;
         CallableStatement stmt = null;
+        ResultSet res = null;
+
         try {
             con = Persistencia.getConexion();
-            con.setAutoCommit(false);
-            stmt = con.prepareCall("CALL ModificarEncuesta(?, ?, ?)");
-            stmt.setInt(1, encuesta.getId());
-            stmt.setString(2, encuesta.getTitulo());
-            stmt.setInt(3, encuesta.getDuracion());
-            if (stmt.executeUpdate() > 0) {
-                this.eliminarPropuestas(encuesta.getId(), con);
+            stmt = con.prepareCall("CALL BuscarEncuestaDeReunion(?)");
+            stmt.setInt(1, reunionId);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
             }
-            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
-                this.altaPropuesta(encuesta.getId(), propuesta, con);
-            }
-            con.commit();
+        } catch (SQLException e) {
+            throw new Exception("No se pudo buscar la encuesta de la reunión, error de base de datos.");
         } catch (Exception e) {
-            if (con != null) {
-                con.rollback();
-            }
             throw e;
         } finally {
-            Persistencia.cerrarConexiones(null, stmt, con);
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return encuesta;
+    }
+
+    private void agregarPropuesta(int encuestaId, DTPropuesta propuesta, Connection con) throws Exception {
+        try (CallableStatement stmt = con.prepareCall("CALL AltaPropuesta(?, ?, ?)")) {
+            stmt.setInt(1, encuestaId);
+            stmt.setString(2, propuesta.getPregunta());
+            stmt.registerOutParameter(3, Types.INTEGER);
+            if (stmt.executeUpdate() > 0) {
+                for (DTRespuesta r : propuesta.getRespuestas()) {
+                    this.agregarRespuesta(stmt.getInt(3), r, con);
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta la propuesta, error de base de datos.");
+        }
+    }
+
+    private void agregarRespuesta(int propuestaId, DTRespuesta respuesta, Connection con) throws Exception {
+        try (CallableStatement stmt = con.prepareCall("CALL AltaRespuesta(?, ?)")) {
+            stmt.setInt(1, propuestaId);
+            stmt.setString(2, respuesta.getRespuesta());
+            stmt.execute();
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta la respuesta, error de base de datos.");
         }
     }
 
@@ -290,4 +260,46 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             throw e;
         }
     }
+
+    private List<DTPropuesta> listarPropuestas(int encuestaId, Connection con) throws Exception {
+        List<DTPropuesta> propuestas = new ArrayList();
+        CallableStatement stmt = null;
+        ResultSet res = null;
+
+        try {
+            stmt = con.prepareCall("CALL ListarPropuestasDeEncuesta(?)");
+            stmt.setInt(1, encuestaId);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                propuestas.add(new DTPropuesta(res.getInt("id"), res.getString("pregunta"), this.listarRespuestas(res.getInt("id"), con)));
+            }
+        } catch (Exception e) {
+            throw new Exception("No se pudo listar las propuestas de la encuesta, error de base de datos.");
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, null);
+        }
+        return propuestas;
+    }
+
+    private List<DTRespuesta> listarRespuestas(int propuestaId, Connection con) throws Exception {
+        List<DTRespuesta> respuestas = new ArrayList();
+        CallableStatement stmt = null;
+        ResultSet res = null;
+
+        try {
+            stmt = con.prepareCall("CALL ListarRespuestasDePropuesta(?)");
+            stmt.setInt(1, propuestaId);
+            res = stmt.executeQuery();
+            while (res.next()) {
+                respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta")));
+            }
+
+        } catch (Exception e) {
+            throw new Exception("No se pudieron listar las respuestas de la propuesta, error de base de datos.");
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, null);
+        }
+        return respuestas;
+    }
+
 }

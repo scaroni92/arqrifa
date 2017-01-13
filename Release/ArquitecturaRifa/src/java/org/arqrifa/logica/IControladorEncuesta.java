@@ -7,7 +7,7 @@ import org.arqrifa.datatypes.DTVoto;
 public interface IControladorEncuesta {
     void agregarEncuesta(DTReunion reunion);
     void modificarEncuesta(DTEncuesta encuesta);
-    void eliminarEncuesta(DTReunion reunion);
+    void eliminarEncuesta(DTEncuesta encuesta);
     void agregarVoto(DTVoto voto);
     DTEncuesta buscarEncuesta(int id);
     void habilitarVotacionEncuesta(DTReunion reunion);

@@ -29,12 +29,13 @@
 
         <c:if test="${!modelo.encuesta.habilitada}">
             <form action="Encuesta" method="post">
-                <input type="text" name="reunion_id" value="${modelo.reunionId}" hidden>
+                <input type="hidden" name="reunion_id" value="${modelo.reunionId}">
                 <button type="submit" name="accion" value="iniciar_votacion" >Iniciar votación</button>
             </form>
-                <a href="Encuesta?accion=eliminar&id=${modelo.reunionId}">Eliminar</a>
-                <a href="Encuesta?accion=modificar&id=${modelo.reunionId}">Modificar</a>
+            <a href="Encuesta?accion=eliminar&id=${modelo.encuesta.id}">Eliminar</a>
+            <a href="Encuesta?accion=modificar&id=${modelo.encuesta.id}">Modificar</a>
         </c:if>
+
         ${modelo.mensaje}
     </body>
 </html>

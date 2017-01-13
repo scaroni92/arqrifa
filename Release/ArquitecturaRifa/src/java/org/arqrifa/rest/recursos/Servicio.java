@@ -14,11 +14,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTEstadoAsistencia;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTVoto;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 //</editor-fold>
 
 @Path("/servicio")
@@ -31,20 +31,11 @@ public class Servicio {
         return FabricaLogica.getLogicaUsuario().autenticar(ci, pass);
     }
 
-    // Borrar este método cuando se reemplace en la app desktop
     @POST
-    @Path("/asistencias/marcar")
-    @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-    public Response marcarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().agregarAsistencia(usuario, reunion);
-        return Response.status(Response.Status.OK).build();
-    }
-
-    @POST
-    @Path("/reunion/agregar_asistencia")
-    @Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-    public Response agregarAsistencia(@FormDataParam("usuario") DTUsuario usuario, @FormDataParam("reunion") DTReunion reunion) {
-        FabricaLogica.getControladorReuniones().agregarAsistencia(usuario, reunion);
+    @Path("/asistencia/agregar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response agregarAsistencia(DTAsistencia asistencia) {
+        FabricaLogica.getControladorReuniones().agregarAsistencia(asistencia.getUsuario(), asistencia.getReunion());
         return Response.status(Response.Status.OK).build();
     }
 
@@ -109,7 +100,7 @@ public class Servicio {
 
     @Path("reunion/listar_asistencias")
     @POST
-    public List<DTAsistencia> listarAsistecnias(DTReunion reunion) {
+    public List<DTEstadoAsistencia> listarAsistecnias(DTReunion reunion) {
         return FabricaLogica.getControladorReuniones().listarAsistencias(reunion);
     }
 
@@ -139,6 +130,12 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("/encuesta/buscar")
+    @GET
+    public DTEncuesta buscarEncuesta(@QueryParam("id") int id) {
+        return FabricaLogica.getControladorEncuesta().buscarEncuesta(id);
+    }
+
     @Path("/encuesta/agregar")
     @POST
     public Response agregarEncuesta(DTReunion reunion) {
@@ -148,8 +145,8 @@ public class Servicio {
 
     @Path("/encuesta/eliminar")
     @POST
-    public Response eliminarEncuesta(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().eliminarEncuesta(reunion);
+    public Response eliminarEncuesta(DTEncuesta encuesta) {
+        FabricaLogica.getControladorEncuesta().eliminarEncuesta(encuesta);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -172,12 +169,6 @@ public class Servicio {
     public Response agregarVoto(DTVoto voto) {
         FabricaLogica.getControladorEncuesta().agregarVoto(voto);
         return Response.status(Response.Status.OK).build();
-    }
-
-    @Path("/encuesta/buscar")
-    @POST
-    public DTEncuesta buscarEncuesta(@QueryParam("id") int id) {
-        return FabricaLogica.getControladorEncuesta().buscarEncuesta(id);
     }
 
     @Path("/estudiante/listar_por_generacion")
