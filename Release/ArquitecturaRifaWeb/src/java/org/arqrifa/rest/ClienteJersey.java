@@ -194,6 +194,11 @@ public class ClienteJersey {
         comprobarError(respuesta);
     }
 
+    public void modificarEncuesta(DTEncuesta encuesta) throws Exception {
+        Response respuesta = TARGET.path("encuesta/modificar").request(JSON_TYPE).post(Entity.entity(encuesta, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+
     public void close() {
         CLIENT.close();
     }

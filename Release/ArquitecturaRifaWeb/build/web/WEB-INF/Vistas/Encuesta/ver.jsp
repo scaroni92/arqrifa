@@ -33,6 +33,7 @@
                 <button type="submit" name="accion" value="iniciar_votacion" >Iniciar votación</button>
             </form>
                 <a href="Encuesta?accion=eliminar&id=${modelo.reunionId}">Eliminar</a>
+                <a href="Encuesta?accion=modificar&id=${modelo.reunionId}">Modificar</a>
         </c:if>
         ${modelo.mensaje}
     </body>

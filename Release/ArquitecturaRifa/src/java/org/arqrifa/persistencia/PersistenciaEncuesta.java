@@ -245,9 +245,49 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     public static void main(String[] args) {
         try {
             DTEncuesta e = PersistenciaEncuesta.getInstancia().buscar(1);
-            PersistenciaEncuesta.getInstancia().eliminarEncuesta(e);
+            PersistenciaEncuesta.getInstancia().modificarEncuesta(e);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void modificarEncuesta(DTEncuesta encuesta) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            con.setAutoCommit(false);
+            stmt = con.prepareCall("CALL ModificarEncuesta(?, ?, ?)");
+            stmt.setInt(1, encuesta.getId());
+            stmt.setString(2, encuesta.getTitulo());
+            stmt.setInt(3, encuesta.getDuracion());
+            if (stmt.executeUpdate() > 0) {
+                this.eliminarPropuestas(encuesta.getId(), con);
+            }
+            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
+                this.altaPropuesta(encuesta.getId(), propuesta, con);
+            }
+            con.commit();
+        } catch (Exception e) {
+            if (con != null) {
+                con.rollback();
+            }
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
+    private void eliminarPropuestas(int id_encuesta, Connection con) throws Exception {
+
+        try (CallableStatement stmt = con.prepareCall("CALL BajaPropuestas(?)")) {
+            stmt.setInt(1, id_encuesta);
+            if (stmt.execute()) {
+                throw new Exception("No se pudo eliminar las propuestas.");
+            }
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

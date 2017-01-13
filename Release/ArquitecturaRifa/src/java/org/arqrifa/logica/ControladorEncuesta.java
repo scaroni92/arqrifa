@@ -90,4 +90,29 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
+    @Override
+    public void modificarEncuesta(DTEncuesta encuesta) {
+        try {
+
+            /* Checkear estado d ereunion en SP
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA) || ) {
+                throw new Exception(".");
+            }*/
+            if (encuesta.isHabilitada()) {
+                throw new Exception("No se puede modificar una encuesta que ya fue habilitada.");
+            }
+            if (encuesta.getPropuestas().isEmpty()) {
+                throw new Exception("Agregue almenos una propuesta a la encuesta.");
+            }
+            for (int i = 0; i < encuesta.getPropuestas().size(); i++) {
+                if (encuesta.getPropuestas().get(i).getRespuestas().size() < 2) {
+                    throw new Exception("Ingrese almenos dos respuestas para la propuesta " + i);
+                }
+            }
+            FabricaPersistencia.getPersistenciaEncuesta().modificarEncuesta(encuesta);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 }

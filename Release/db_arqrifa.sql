@@ -246,9 +246,8 @@ BEGIN
 		UPDATE reuniones SET titulo = pTitulo, descripcion = pDescripcion, fecha = pFecha, duracion = pDuracion, obligatoria = pObligatoria, lugar = pLugar WHERE id = pId;
 	END IF;
 END
-$$select * from reuniones
+$$
 
--- call modificarreunion(4, 2012, 't', 'd', '2017-02-20 15:00:00', 1, 1, 'l', @retorno);
 -- retorno 1 baja exitosa, -1 la reunión no existe o está en progreso
 CREATE PROCEDURE BajaReunion(pId int, out retorno int)
 BEGIN
@@ -402,15 +401,28 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int)
+BEGIN
+	UPDATE Encuestas SET titulo = pTitulo, duracion = pDuracion WHERE id = pId;
+END
+$$
 
-CREATE PROCEDURE AltaPropuesta(pEncuestaId int, pPregunta varchar(30), out pRetorno int)
+
+CREATE PROCEDURE AltaPropuesta(pEncuestaId int, pPregunta varchar(100), out pRetorno int)
 BEGIN
 	INSERT INTO propuestas(id_encuesta, pregunta) VALUES (pEncuestaId, pPregunta);
     SET pRetorno = LAST_INSERT_ID();
 END
 $$
 
-CREATE PROCEDURE AltaRespuesta(pPropuestaId int, pRespuesta varchar(30))
+CREATE PROCEDURE BajaPropuestas(pEncuestaId int)
+BEGIN
+	DELETE r.* FROM respuestas AS r INNER JOIN propuestas AS p ON(r.id_propuesta = p.id) INNER JOIN encuestas AS e ON(p.id_encuesta = e.id) WHERE e.id = pEncuestaId;
+    DELETE FROM propuestas WHERE propuestas.id_encuesta = pEncuestaId;
+END
+$$
+
+CREATE PROCEDURE AltaRespuesta(pPropuestaId int, pRespuesta varchar(100))
 BEGIN
 	INSERT INTO respuestas(id_propuesta, respuesta) VALUES (pPropuestaId, pRespuesta);
 END

@@ -3,6 +3,8 @@ package org.arqrifa.servlets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
@@ -127,15 +129,14 @@ public class ControladorEncuesta extends Controlador {
             DTUsuario estudiante = (DTUsuario) sesion.getAttribute("estudiante");
             DTEncuesta encuesta = (DTEncuesta) sesion.getAttribute("encuesta");
 
-            
             List<DTRespuesta> respuestasEscogidas = new ArrayList();
             for (DTPropuesta propuesta : encuesta.getPropuestas()) {
                 String strRespuesta = request.getParameter(String.valueOf(propuesta.getId()));
                 respuestasEscogidas.add(new DTRespuesta(Integer.parseInt(strRespuesta), ""));
             }
-            
+
             cliente.agregarVoto(new DTVoto(estudiante, respuestasEscogidas));
-            
+
             sesion.setAttribute("estudiante", null);
             sesion.setAttribute("encuesta", null);
             vm.setMensaje("Votación exitosa");
@@ -145,11 +146,11 @@ public class ControladorEncuesta extends Controlador {
         mostrarVista("Encuesta/cuestionario.jsp", vm);
     }
 
-    public void eliminar_get(){
+    public void eliminar_get() {
         mostrarVista("Encuesta/Eliminar.jsp", new VMEncuesta(request.getParameter("id"), null));
     }
-    
-    public void eliminar_post(){
+
+    public void eliminar_post() {
         VMEncuesta vm = new VMEncuesta();
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
@@ -159,5 +160,48 @@ public class ControladorEncuesta extends Controlador {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Encuesta/Eliminar.jsp", vm);
+    }
+
+    public void modificar_get() {
+        try {
+            DTReunion r = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            sesion.setAttribute("encuesta", r.getEncuesta());
+            mostrarVista("Encuesta/modificar.jsp");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void modificar_post() {
+        ViewModel vm = new ViewModel();
+        try {
+            DTEncuesta encuesta = (DTEncuesta) sesion.getAttribute("encuesta");
+
+            encuesta.setTitulo(request.getParameter("titulo"));
+            encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
+
+            int cantPropuestas = Integer.parseInt(request.getParameter("cantidad_propuestas"));
+            List<DTPropuesta> propuestas = new ArrayList();
+            DTPropuesta propuesta;
+            for (int i = 0; i < cantPropuestas; i++) {
+                propuesta = new DTPropuesta();
+                propuesta.setPregunta(request.getParameter("propuesta" + i + "_pregunta"));
+
+                int cantRespuestas = Integer.parseInt(request.getParameter("propuesta" + i + "_cantidad_respuestas"));
+
+                for (int j = 0; j < cantRespuestas; j++) {
+                    propuesta.getRespuestas().add(new DTRespuesta(0, request.getParameter("propuesta" + i + "_respuesta" + j)));
+                }
+                propuestas.add(propuesta);
+            }
+            encuesta.setPropuestas(propuestas);      
+            
+            cliente.modificarEncuesta(encuesta);
+            vm.setMensaje("Encuesta modificada exitosamente");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+
+        mostrarVista("Encuesta/modificar.jsp", vm);
     }
 }
