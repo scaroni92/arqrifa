@@ -17,9 +17,18 @@
             <h4>Propuestas</h4>
             <c:forEach var="propuesta" items="${modelo.encuesta.propuestas}">
                 <h5>${propuesta.pregunta}</h5>
-                <c:forEach var="respuesta" items="${propuesta.respuestas}">
-                    - ${respuesta.respuesta}<br>
-                </c:forEach>
+                <table>
+                    <tr>
+                        <th>Respuestas</th>
+                        <th>Votos</th>
+                    </tr>
+                    <c:forEach var="respuesta" items="${propuesta.respuestas}">
+                        <tr>
+                            <td>${respuesta.respuesta}</td>
+                            <td>${respuesta.cantidadVotos}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </c:forEach>
         </fieldset>
 

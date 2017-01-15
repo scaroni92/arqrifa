@@ -114,7 +114,8 @@ INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUE
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),
 (5555555,2012, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
 (6666666,2012, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
-(7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado');
+(7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado'),
+(8888888,2012, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante');
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
 (4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
@@ -181,7 +182,9 @@ INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 1');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 2');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 3');
 
-INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555);
+INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666);
+
+INSERT INTO votos(id_respuesta, ci) VALUES(3, 5555555), (3, 6666666), (1, 8888888), (4, 5555555), (5, 6666666), (6, 8888888);
 
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
@@ -599,8 +602,19 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ListarRespuestasDePropuestaConVotos(pPropuestaId int)
+BEGIN
+	SELECT r.*, COUNT(v.id_respuesta) AS votos FROM respuestas AS r LEFT JOIN votos AS v ON(r.id = v.id_respuesta) WHERE id_propuesta = pPropuestaId GROUP BY id;
+END
+$$
 
 DELIMITER ;
- -- SELECT * FROM reuniones PROCEDURE ANALYSE();
+ -- SELECT * FROM reuniones PROCEDURE ANALYSE(); 
 use arqrifa;
-select * from votos
+
+
+
+			
+            
+			
+

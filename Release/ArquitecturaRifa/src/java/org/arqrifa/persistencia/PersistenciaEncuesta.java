@@ -287,11 +287,11 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         ResultSet res = null;
 
         try {
-            stmt = con.prepareCall("CALL ListarRespuestasDePropuesta(?)");
+            stmt = con.prepareCall("CALL ListarRespuestasDePropuestaConVotos(?)");
             stmt.setInt(1, propuestaId);
             res = stmt.executeQuery();
             while (res.next()) {
-                respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta")));
+                respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta"), res.getInt("votos")));
             }
 
         } catch (Exception e) {
