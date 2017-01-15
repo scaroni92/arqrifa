@@ -74,7 +74,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
             }
             for (int i = 0; i < encuesta.getPropuestas().size(); i++) {
                 if (encuesta.getPropuestas().get(i).getRespuestas().size() < 2) {
-                    throw new Exception("Ingrese almenos dos respuestas para la propuesta " + i);
+                    throw new Exception("Todas las propuestas deben tener almenos dos respuestas");
                 }
             }
             FabricaPersistencia.getPersistenciaEncuesta().modificar(encuesta);

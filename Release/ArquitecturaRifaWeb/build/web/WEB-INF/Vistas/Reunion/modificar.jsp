@@ -44,14 +44,14 @@
             <fieldset>
                 <legend>Temas</legend>
                 <div id="temas_wrapper">
-                    
-                    <c:forTokens items="${modelo.temas}" delims="," var="tema" varStatus="contador">
+
+                    <c:forEach var="tema" items="${modelo.temas}"  varStatus="contador">
                         <p id="${contador.index}">
                             <input type="text" name="temas" placeholder="Ingrese un tema aquí" value="${tema}" required>
                             <input type="button" value="X" onclick="eliminarTema(${contador.index})" />
                         <p>
-                    </c:forTokens>
-                            
+                    </c:forEach>
+
                 </div>
                 <input type="button" value="Nuevo tema" onclick="agregarTema()"/>
             </fieldset>
@@ -68,11 +68,11 @@
             function agregarTema() {
                 var temasWrapper = document.getElementById('temas_wrapper');
                 var temaContainer = document.createElement('p');
-                
+
                 temaContainer.id = temasWrapper.childElementCount;
                 temaContainer.innerHTML = "<input type='text' name='temas' placeholder='Ingrese un tema aquí' autofocus required />"
                         + "<input type='button' value='X' onclick='eliminarTema(" + temasWrapper.childElementCount + ")'/>";
-                
+
                 temasWrapper.appendChild(temaContainer);
             }
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMAsistencias;
 import org.arqrifa.viewmodels.VMCalendario;
 import org.arqrifa.viewmodels.VMReunion;
@@ -52,31 +53,32 @@ public class ControladorReuniones extends Controlador {
 
     public void agendar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
-
         try {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
                 throw new Exception("Complete todos los campos obligatorios.");
             }
-            if (vm.getTemas().isEmpty()) {
-                throw new Exception("Ingrese los temas a debatir en la reunión.");
+
+            String[] temas = request.getParameterValues("temas");
+            if (temas.length == 0) {
+                throw new ArquitecturaRifaException("Agregue almenos un tema a la reunión.");
             }
+            vm.setTemas(Arrays.asList(temas));
 
             DTReunion reunion = new DTReunion();
 
-            reunion.setGeneracion(((DTUsuario) sesion.getAttribute("usuario")).getGeneracion());
             reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
             reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
             reunion.setObligatoria(vm.isObligatoria());
             reunion.setLugar(vm.getLugar());
-            reunion.setTemas(Arrays.asList(vm.getTemas().split("\n")));
+            reunion.setTemas(vm.getTemas());
+            reunion.setGeneracion(getUsuario().getGeneracion());
 
             cliente.agregarReunion(reunion);
 
             sesion.setAttribute("mensaje", "Reunión agendada exitosamente");
             response.sendRedirect("Reuniones");
-
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
             mostrarVista("Reunion/agendar.jsp", vm);
@@ -102,10 +104,11 @@ public class ControladorReuniones extends Controlador {
                 throw new Exception("Complete todos los campos obligatorios.");
             }
 
-            List<String> temas = Arrays.asList(request.getParameterValues("temas"));
-            if (temas.isEmpty()) {
+            String[] temas = request.getParameterValues("temas");
+            if (temas.length == 0) {
                 throw new Exception("Ingrese los temas a debatir en la reunión.");
             }
+            vm.setTemas(Arrays.asList(temas));
 
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
 
@@ -115,7 +118,7 @@ public class ControladorReuniones extends Controlador {
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
             reunion.setObligatoria(vm.isObligatoria());
             reunion.setLugar(vm.getLugar());
-            reunion.setTemas(temas);
+            reunion.setTemas(vm.getTemas());
 
             cliente.modificarReunion(reunion);
 
@@ -270,11 +273,6 @@ public class ControladorReuniones extends Controlador {
         vm.setObligatoria(reunion.isObligatoria());
         vm.setLugar(reunion.getLugar());
         vm.setEstado(reunion.getEstado());
-
-        String temas = "";
-        for (String tema : reunion.getTemas()) {
-            temas += tema + ",";
-        }
-        vm.setTemas(temas);
+        vm.setTemas(reunion.getTemas());
     }
 }

@@ -9,6 +9,7 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMCrearEncuesta;
 import org.arqrifa.viewmodels.VMEncuesta;
 import org.arqrifa.viewmodels.ViewModel;
@@ -159,7 +160,7 @@ public class ControladorEncuesta extends Controlador {
         try {
             DTEncuesta encuesta = cliente.buscarEncuesta(Integer.parseInt(request.getParameter("id")));
             cliente.eliminarEncuesta(encuesta);
-            
+
             sesion.setAttribute("mensaje", "Encuesta eliminada exitosamente.");
             response.sendRedirect("Reuniones");
         } catch (Exception e) {
@@ -186,27 +187,35 @@ public class ControladorEncuesta extends Controlador {
 
             encuesta.setTitulo(request.getParameter("titulo"));
             encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-
-            int cantPropuestas = Integer.parseInt(request.getParameter("cantidad_propuestas"));
+            encuesta.setPropuestas(new ArrayList());
             
-            List<DTPropuesta> propuestas = new ArrayList();
             DTPropuesta propuesta;
-            for (int i = 0; i < cantPropuestas; i++) {
-                propuesta = new DTPropuesta();
-                propuesta.setPregunta(request.getParameter("propuesta" + i + "_pregunta"));
+            String[] preguntas = request.getParameterValues("preguntas");
+            if (preguntas != null) {
+                for (int i = 0; i < preguntas.length; i++) {
+                    propuesta = new DTPropuesta();
+                    propuesta.setPregunta(preguntas[i]);
 
-                int cantRespuestas = Integer.parseInt(request.getParameter("propuesta" + i + "_cantidad_respuestas"));
-
-                for (int j = 0; j < cantRespuestas; j++) {
-                    propuesta.getRespuestas().add(new DTRespuesta(0, request.getParameter("propuesta" + i + "_respuesta" + j)));
+                    String[] respuestas = request.getParameterValues("respuestas" + i);
+                    if (respuestas != null) {
+                        for (String respuesta : respuestas) {
+                            if (!respuesta.isEmpty()) {
+                                propuesta.getRespuestas().add(new DTRespuesta(0, respuesta));
+                            }
+                        }
+                    }
+                    encuesta.getPropuestas().add(propuesta);
                 }
-                propuestas.add(propuesta);
             }
-            encuesta.setPropuestas(propuestas);
+
+            
 
             cliente.modificarEncuesta(encuesta);
+
             sesion.setAttribute("mensaje", "Encuesta modificada exitosamente");
+            sesion.removeAttribute("encuesta");
             response.sendRedirect("Reuniones");
+
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
             mostrarVista("Encuesta/modificar.jsp", vm);

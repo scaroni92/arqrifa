@@ -1,5 +1,8 @@
 package org.arqrifa.viewmodels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VMReunionMantenimiento extends ViewModel {
 
     private String id;
@@ -13,7 +16,7 @@ public class VMReunionMantenimiento extends ViewModel {
     private String lugar;
     private String observaciones;
     private String estado;
-    private String temas;
+    private List<String> temas;
     private String resoluciones;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
@@ -61,7 +64,7 @@ public class VMReunionMantenimiento extends ViewModel {
         return estado;
     }
 
-    public String getTemas() {
+    public List<String> getTemas() {
         return temas;
     }
 
@@ -113,7 +116,7 @@ public class VMReunionMantenimiento extends ViewModel {
         this.estado = estado;
     }
 
-    public void setTemas(String temas) {
+    public void setTemas(List<String> temas) {
         this.temas = temas;
     }
 
@@ -122,7 +125,7 @@ public class VMReunionMantenimiento extends ViewModel {
     }
     //</editor-fold>
 
-    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, String temas, String resoluciones, String mensaje) {
+    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, String resoluciones, String mensaje) {
         super(mensaje);
         this.id = id;
         this.generacion = generacion;
@@ -140,11 +143,9 @@ public class VMReunionMantenimiento extends ViewModel {
     }
 
     public VMReunionMantenimiento() {
-        this("", "", "", "", "", "", "", false, "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", false, "", "", "", new ArrayList(), "", "");
     }
-
-    public VMReunionMantenimiento(String mensaje) {
-        this("", "", "", "", "", "", "", false, "", "", "", "", "", mensaje);
-    }
+    
+    
 
 }
