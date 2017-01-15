@@ -17,7 +17,7 @@ public class VMReunionMantenimiento extends ViewModel {
     private String observaciones;
     private String estado;
     private List<String> temas;
-    private String resoluciones;
+    private List<String> resoluciones;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public String getId() {
@@ -68,7 +68,7 @@ public class VMReunionMantenimiento extends ViewModel {
         return temas;
     }
 
-    public String getResoluciones() {
+    public List<String> getResoluciones() {
         return resoluciones;
     }
 
@@ -120,12 +120,12 @@ public class VMReunionMantenimiento extends ViewModel {
         this.temas = temas;
     }
 
-    public void setResoluciones(String resoluciones) {
+    public void setResoluciones(List<String> resoluciones) {
         this.resoluciones = resoluciones;
     }
     //</editor-fold>
 
-    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, String resoluciones, String mensaje) {
+    public VMReunionMantenimiento(String id, String generacion, String titulo, String descripcion, String fecha, String hora, String duracion, boolean obligatoria, String lugar, String observaciones, String estado, List<String> temas, List<String> resoluciones, String mensaje) {
         super(mensaje);
         this.id = id;
         this.generacion = generacion;
@@ -143,7 +143,7 @@ public class VMReunionMantenimiento extends ViewModel {
     }
 
     public VMReunionMantenimiento() {
-        this("", "", "", "", "", "", "", false, "", "", "", new ArrayList(), "", "");
+        this("", "", "", "", "", "", "", false, "", "", "", new ArrayList(), new ArrayList(), "");
     }
     
     

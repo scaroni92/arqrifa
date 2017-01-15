@@ -130,6 +130,9 @@ class ControladorReunion implements IControladorReunion {
             if (reunion == null) {
                 throw new Exception("No se puede finalizar una reunión nula");
             }
+            if (reunion.getResoluciones().isEmpty()) {
+                throw new Exception("Ingrese alguna resolución de la reunión");
+            }
 
             FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
         } catch (Exception e) {

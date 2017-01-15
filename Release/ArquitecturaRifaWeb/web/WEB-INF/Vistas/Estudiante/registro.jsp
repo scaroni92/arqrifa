@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,13 +28,6 @@
             <input type="submit" name="accion" value="Registrar">
         </form>
 
-        <c:choose>
-            <c:when test="${fn:contains(modelo.mensaje, 'mensaje-error')}">
-                <p class="mensaje-error">${fn:replace(modelo.mensaje, 'mensaje-error', '')}</p>
-            </c:when>
-            <c:otherwise>
-                <p>${modelo.mensaje}</p>
-            </c:otherwise>
-        </c:choose>
+        <t:mostrar_mensaje />
     </body>
 </html>

@@ -32,11 +32,20 @@
                 <c:if test="${modelo.estado == 'Iniciada'}">
                 <fieldset>
                     <legend>Recapitulación</legend>
-                    Observaciones<br> 
-                    <textarea type="text" name="observaciones" id="observaciones" required>${modelo.observaciones}</textarea><br>
+                    Observaciones<br><textarea type="text" name="observaciones" id="observaciones" required>${modelo.observaciones}</textarea><br>
                     Resoluciones<br>
-                    <textarea type="text" name="resoluciones" id="resoluciones" readonly>${modelo.resoluciones}</textarea><br> 
-                    <input type="text" id="resolucion" placeholder="Ingrese aquí las resoluciones" ><a href="#" onclick="agregarResolucion()">Agregar</a>
+
+
+                    <div id="resoluciones-wrapper">
+                        <c:forEach var="resolucion" items="${modelo.resoluciones}" varStatus="contador">
+                            <p id="${contador.index}">
+                                <input type="text" name="resoluciones" placeholder="Ingrese una resolución aquí" value="${resolucion}" required>
+                                <input type="button" value="X" onclick="eliminarResolucion(${contador.index})" />
+                            <p>
+                        </c:forEach>
+                    </div>
+                    <input type="button" value="Nueva resolucion" onclick="agregarResolucion()"/>
+
                     <p><input type="submit" name="accion" value="Finalizar"></p>
                 </fieldset>
             </c:if>
@@ -44,12 +53,19 @@
         </form>
         <script>
             function agregarResolucion() {
-                var txtResolucion = document.getElementById("resolucion");
+                var resWrapper = document.getElementById('resoluciones-wrapper');
+                var resContainer = document.createElement('p');
 
-                if (txtResolucion.value !== "") {
-                    document.getElementById("resoluciones").innerHTML += txtResolucion.value + "\n";
-                    txtResolucion.value = "";
-                }
+                resContainer.id = resWrapper.childElementCount;
+                resContainer.innerHTML = "<input type='text' name='resoluciones' placeholder='Ingrese una resolución aquí' autofocus required />"
+                        + " <input type='button' value='X' onclick='eliminarResolucion(" + resWrapper.childElementCount + ")'/>";
+
+                resWrapper.appendChild(resContainer);
+            }
+
+            function eliminarResolucion(indice) {
+                var resWrapper = document.getElementById('resoluciones-wrapper');
+                resWrapper.removeChild(document.getElementById(indice));
             }
         </script>
     </body>
