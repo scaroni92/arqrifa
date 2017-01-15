@@ -12,6 +12,7 @@
         <br>
         <br>
         <a href="Reuniones?accion=resumen">Resumen de última reunión</a>
+        <a href="Reuniones?accion=proxima">Próxima reunión</a>
         <a href="Reuniones">Ver calendario</a>
     </body>
 </html>

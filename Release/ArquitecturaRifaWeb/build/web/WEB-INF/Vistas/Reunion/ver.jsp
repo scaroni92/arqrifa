@@ -84,11 +84,15 @@
 
             <a href="Reuniones?accion=asistencias&id=${modelo.reunion.id}">Ver asistencias</a>
 
-            <c:choose >
-                <c:when test="${modelo.reunion.encuesta == null}"><a href="Encuesta?accion=agregar&id=${modelo.reunion.id}">Agregar encuesta</a></c:when>
-                <c:otherwise><a href="Encuesta?accion=ver&reunion_id=${modelo.reunion.id}">Ver encuesta</a></c:otherwise>
-            </c:choose>
+            <c:if test="${modelo.reunion.encuesta == null}">
+                <a href="Encuesta?accion=agregar&id=${modelo.reunion.id}">Agregar encuesta</a>
+            </c:if>
         </c:if>
+
+        <c:if test="${modelo.reunion.encuesta != null}">
+            <a href="Encuesta?accion=ver&reunion_id=${modelo.reunion.id}">Ver encuesta</a>            
+        </c:if>
+
 
         <p>${modelo.mensaje}</p>
     </body>

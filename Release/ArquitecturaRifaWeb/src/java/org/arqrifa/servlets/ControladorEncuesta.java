@@ -8,6 +8,7 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMEncuesta;
 import org.arqrifa.viewmodels.ViewModel;
 
@@ -16,7 +17,7 @@ public class ControladorEncuesta extends Controlador {
     public void ver_get() {
         VMEncuesta vm = new VMEncuesta();
         try {
-            vm = new VMEncuesta(request.getParameter("reunion_id"), cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id"))).getEncuesta());
+            vm = new VMEncuesta(request.getParameter("reunion_id"), cliente.buscarEncuesta(Integer.parseInt(request.getParameter("reunion_id"))));
         } catch (NumberFormatException e) {
             vm.setMensaje("Ingrese un ID de reunión válido");
         } catch (Exception e) {
@@ -32,10 +33,10 @@ public class ControladorEncuesta extends Controlador {
             vm.setEncuesta(reunion.getEncuesta());
             vm.setReunionId(String.valueOf(reunion.getId()));
             if (reunion == null) {
-                throw new Exception("Reunion no encontrada.");
+                throw new ArquitecturaRifaException("Reunion no encontrada.");
             }
             if (reunion.getEncuesta() != null) {
-                throw new Exception("La reunión ya posee una encuesta");
+                throw new ArquitecturaRifaException("La reunión ya posee una encuesta");
             }
             sesion.setAttribute("reunion", reunion);
             mostrarVista("Encuesta/agregar.jsp");

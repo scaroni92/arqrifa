@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,6 +21,6 @@
             </select><br>
             <button type="submit" name="accion" value="agregar_encargado">Agregar</button>
         </form>
-        <p>${modelo.mensaje}</p>
+        <t:mostrar_mensaje />
     </body>
 </html>
