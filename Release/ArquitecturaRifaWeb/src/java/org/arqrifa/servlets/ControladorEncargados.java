@@ -1,17 +1,15 @@
 package org.arqrifa.servlets;
 
 import java.util.ArrayList;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMSolicitudes;
 
 public class ControladorEncargados extends Controlador {
 
     public void ver_solicitudes_get() {
         try {
-            DTUsuario usuario = (DTUsuario) sesion.getAttribute("usuario");
             mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(new ArrayList(cliente.listarSolicitudes(getUsuario().getGeneracion())), ""));
         } catch (Exception e) {
-            mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(new ArrayList(), "Error al listar las solicitudes"));
+            mostrarVista("Encargado/ver_solicitudes.jsp", new VMSolicitudes(new ArrayList(), "#error#Error al listar las solicitudes"));
         }
     }
 
@@ -31,7 +29,7 @@ public class ControladorEncargados extends Controlador {
             cliente.rechazarSolicitud(cliente.buscarSolicitud(Integer.parseInt(request.getParameter("ci"))));
             vm = new VMSolicitudes(cliente.listarSolicitudes(getUsuario().getGeneracion()), "Solicitud rechazada exitosamente.");
         } catch (NumberFormatException e) {
-            vm.setMensaje("Ingrese una cédula válida.");
+            vm.setMensaje("#error#Ingrese una cédula válida.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

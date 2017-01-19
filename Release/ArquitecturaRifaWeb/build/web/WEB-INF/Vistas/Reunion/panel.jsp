@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
@@ -37,6 +38,12 @@
 
 
                     <div id="resoluciones-wrapper">
+                        <c:if test="${empty modelo.resoluciones}">
+                            <p id="0">
+                                <input type="text" name="resoluciones" placeholder="Ingrese una resolución aquí" required>
+                                <input type="button" value="X" onclick="eliminarResolucion(0)" />
+                            <p>
+                        </c:if>
                         <c:forEach var="resolucion" items="${modelo.resoluciones}" varStatus="contador">
                             <p id="${contador.index}">
                                 <input type="text" name="resoluciones" placeholder="Ingrese una resolución aquí" value="${resolucion}" required>
@@ -44,8 +51,8 @@
                             <p>
                         </c:forEach>
                     </div>
+                    
                     <input type="button" value="Nueva resolucion" onclick="agregarResolucion()"/>
-
                     <p><input type="submit" name="accion" value="Finalizar"></p>
                 </fieldset>
             </c:if>
@@ -64,8 +71,10 @@
             }
 
             function eliminarResolucion(indice) {
-                var resWrapper = document.getElementById('resoluciones-wrapper');
-                resWrapper.removeChild(document.getElementById(indice));
+                if (indice > 0) {
+                    var resWrapper = document.getElementById('resoluciones-wrapper');
+                    resWrapper.removeChild(document.getElementById(indice));
+                }
             }
         </script>
     </body>

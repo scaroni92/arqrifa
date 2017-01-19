@@ -4,7 +4,6 @@ package org.arqrifa.viewmodels;
 import org.arqrifa.datatypes.DTUsuario;
 
 
- //@author Ale
  
 public class VMUsuario  extends ViewModel{
     private DTUsuario usuario;

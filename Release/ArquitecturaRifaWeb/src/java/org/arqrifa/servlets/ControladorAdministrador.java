@@ -2,6 +2,7 @@ package org.arqrifa.servlets;
 
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMGeneraciones;
 import org.arqrifa.viewmodels.VMUsuarioMantenimiento;
 
@@ -23,7 +24,7 @@ public class ControladorAdministrador extends Controlador {
             vm.setGeneraciones(cliente.listarGeneraciones());
 
             if (vm.getCi().isEmpty() || vm.getGeneracion().isEmpty() || vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getContrasena().isEmpty() || vm.getEmail().isEmpty()) {
-                throw new Exception("Complete todos los campos obligatorios.");
+                throw new ArquitecturaRifaException("Complete todos los campos obligatorios.");
             }
 
             cliente.agregarEncargado(new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "Encargado", Integer.parseInt(vm.getGeneracion())));

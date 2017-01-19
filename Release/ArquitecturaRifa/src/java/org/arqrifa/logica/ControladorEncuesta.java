@@ -101,6 +101,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void agregarVoto(DTVoto voto) {
         try {
+            //checkear si el estudiante voto
             FabricaPersistencia.getPersistenciaEncuesta().votar(voto);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

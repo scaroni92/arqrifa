@@ -40,7 +40,7 @@ public class ControladorReuniones extends Controlador {
             }
             
         } catch (NumberFormatException | NullPointerException e) {
-            mostrarVista("Error/no_encontrado.jsp");
+            mostrarVista("Error/404.jsp");
         } catch (Exception e) {
             mostrarVista("Reunion/ver.jsp", new VMReunion(null, e.getMessage()));
         }
@@ -57,12 +57,9 @@ public class ControladorReuniones extends Controlador {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
                 throw new Exception("Complete todos los campos obligatorios.");
             }
-            
-            String[] temas = request.getParameterValues("temas");
-            if (temas == null) {
+            if (vm.getTemas().isEmpty()) {
                 throw new ArquitecturaRifaException("Agregue los temas a debatir en la reunión");
             }
-            vm.setTemas(Arrays.asList(temas));
             
             DTReunion reunion = new DTReunion();
             
@@ -158,11 +155,10 @@ public class ControladorReuniones extends Controlador {
     public void finalizar_post() {
         VMReunionMantenimiento vm = (VMReunionMantenimiento) cargarModelo(new VMReunionMantenimiento());
         try {
-            String[] resoluciones = request.getParameterValues("resoluciones");
-            if (resoluciones == null) {
+            
+            if (vm.getResoluciones().isEmpty()) {
                 throw new Exception("Ingrese alguna resolución de la reunión.");
             }
-            vm.setResoluciones(Arrays.asList(resoluciones));
             
             DTReunion reunion = new DTReunion();
             reunion.setId(Integer.parseInt(vm.getId()));

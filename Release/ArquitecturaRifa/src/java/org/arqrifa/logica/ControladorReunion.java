@@ -71,6 +71,7 @@ class ControladorReunion implements IControladorReunion {
 
             Mensajeria mensajeria = new Mensajeria();
 
+            //Invocar asincronicamente
             for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
                 mensajeria.enviar(new DTMensaje(usuario.getEmail(), asunto, mensaje));
             }

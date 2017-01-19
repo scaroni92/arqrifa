@@ -10,55 +10,55 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMEncuesta;
+//import org.arqrifa.viewmodels.VMEncuesta;
+import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
 public class ControladorEncuesta extends Controlador {
 
     public void ver_get() {
-        VMEncuesta vm = new VMEncuesta();
         try {
-            vm = new VMEncuesta(request.getParameter("reunion_id"), cliente.buscarEncuesta(Integer.parseInt(request.getParameter("reunion_id"))));
-        } catch (NumberFormatException e) {
-            vm.setMensaje("Ingrese un ID de reunión válido");
+            String reunionId = request.getParameter("reunion_id");
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(reunionId));
+
+            if (reunion.getGeneracion() == getUsuario().getGeneracion() && reunion.getEncuesta() != null) {
+                mostrarVista("Encuesta/ver.jsp", new VMReunion(reunion, ""));
+            } else {
+                mostrarVista("Error/404.jsp");
+            }
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            mostrarVista("Error/404.jsp");
         }
-        mostrarVista("Encuesta/ver.jsp", vm);
+
     }
 
     public void agregar_get() {
-        VMEncuesta vm = new VMEncuesta();
+        DTReunion reunion = null;
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
-            vm.setEncuesta(reunion.getEncuesta());
-            vm.setReunionId(String.valueOf(reunion.getId()));
+            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+
             if (reunion == null) {
-                throw new ArquitecturaRifaException("Reunion no encontrada.");
+                mostrarVista("Error/404.jsp");
+            } else {
+                sesion.setAttribute("reunion", reunion);
+                mostrarVista("Encuesta/agregar.jsp");
             }
-            if (reunion.getEncuesta() != null) {
-                throw new ArquitecturaRifaException("La reunión ya posee una encuesta");
-            }
-            sesion.setAttribute("reunion", reunion);
-            mostrarVista("Encuesta/agregar.jsp");
+
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
-            mostrarVista("Encuesta/ver.jsp", vm);
+            mostrarVista("Reunion/ver.jsp", new VMReunion(reunion, "#error#" + e.getMessage()));
         }
 
     }
 
     public void agregar_post() {
-        VMEncuesta vm = new VMEncuesta();
         try {
-            DTEncuesta encuesta = new DTEncuesta();
-            sesion.setAttribute("encuesta", encuesta);
 
+            DTEncuesta encuesta = new DTEncuesta();
             encuesta.setTitulo(request.getParameter("titulo"));
             encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-            encuesta.setPropuestas(new ArrayList());
 
-            DTPropuesta propuesta;
             String[] preguntas = request.getParameterValues("preguntas");
+            DTPropuesta propuesta;
             if (preguntas != null) {
                 for (int i = 0; i < preguntas.length; i++) {
                     propuesta = new DTPropuesta();
@@ -80,34 +80,24 @@ public class ControladorEncuesta extends Controlador {
             reunion.setEncuesta(encuesta);
             cliente.agregarEncuesta(reunion);
 
-            reunion = cliente.buscarReunion(reunion.getId());
-
-            vm.setMensaje("Encuesta agregada exitosamente");
-            vm.setEncuesta(reunion.getEncuesta());
-            vm.setReunionId(String.valueOf(reunion.getId()));
-            request.setAttribute("modelo", vm);
-
-            sesion.removeAttribute("encuesta");
             sesion.removeAttribute("reunion");
-
-            mostrarVista("Encuesta/ver.jsp", vm);
+            mostrarVista("Reunion/ver.jsp", new VMReunion(reunion, "Encuesta agregada exitosamente"));
 
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
-            mostrarVista("Encuesta/agregar.jsp", vm);
+            mostrarVista("Encuesta/agregar.jsp", new ViewModel("#error#" + e.getMessage()));
         }
     }
 
     public void iniciar_votacion_post() {
-        VMEncuesta vm = new VMEncuesta();
+        VMReunion vm = new VMReunion();
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
-            vm = new VMEncuesta(request.getParameter("reunion_id"), reunion.getEncuesta());
             cliente.iniciarVotacion(reunion);
-            vm.getEncuesta().setHabilitada(true);
-            vm.setMensaje("Votación iniciada con éxito.");
+
+            reunion.getEncuesta().setHabilitada(true);
+            vm = new VMReunion(reunion, "Votación iniciada con éxito.");
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            vm.setMensaje("#error#" + e.getMessage());
         }
         mostrarVista("Encuesta/ver.jsp", vm);
     }
@@ -115,7 +105,7 @@ public class ControladorEncuesta extends Controlador {
     public void cuestionario_get() {
         ViewModel vm = new ViewModel();
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
             sesion.setAttribute("encuesta", reunion.getEncuesta());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -167,7 +157,7 @@ public class ControladorEncuesta extends Controlador {
         try {
             vm.setEncuesta(cliente.buscarEncuesta(Integer.parseInt(request.getParameter("id"))));
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            vm.setMensaje("#error#" + e.getMessage());
         }
         mostrarVista("Encuesta/Eliminar.jsp", vm);
     }

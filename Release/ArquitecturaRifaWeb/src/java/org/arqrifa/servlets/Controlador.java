@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -66,12 +68,21 @@ public class Controlador extends HttpServlet {
             nombreSetter = "set" + p.substring(0, 1).toUpperCase() + p.substring(1);
 
             for (Method m : modelo.getClass().getMethods()) {
+                
                 try {
                     if (m.getName().equals(nombreSetter) && m.getParameterTypes().length > 0) {
-                        if (m.getParameterTypes()[0].getSimpleName().equals("String")) {
-                            m.invoke(modelo, request.getParameter(p));
-                        } else if (m.getParameterTypes()[0].getSimpleName().equals("boolean")) {
-                            m.invoke(modelo, request.getParameter(p) != null);
+                        switch (m.getParameterTypes()[0].getSimpleName()) {
+                            case "String":
+                                m.invoke(modelo, request.getParameter(p));
+                                break;
+                            case "boolean":
+                                m.invoke(modelo, request.getParameter(p) != null);
+                                break;
+                            case "List":
+                                m.invoke(modelo, Arrays.asList(request.getParameterValues(p)));
+                                break;
+                            default:
+                                break;
                         }
                     }
                 } catch (Exception ex) {

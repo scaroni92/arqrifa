@@ -15,6 +15,7 @@
         </style>
     </head>
     <body>
+        <c:set var="encuesta" scope="page" value="${reunion.encuesta}"/>
         <h1>Agregar encuesta</h1>
         <form action='Encuesta' method='post' name="formulario">
             <p><input type="text" name="titulo" placeholder="Título de la encuesta" value="${encuesta.titulo}" required/></p>

@@ -152,8 +152,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             con.setAutoCommit(false);
             stmt = con.prepareCall("CALL AltaVoto(?, ?)");
             stmt.setInt(1, voto.getUsuario().getCi());
-            for (DTRespuesta r : voto.getRespuestasEscogidas()) {
-                stmt.setInt(2, r.getId());
+            for (DTRespuesta respuesta : voto.getRespuestasEscogidas()) {
+                stmt.setInt(2, respuesta.getId());
                 if (stmt.executeUpdate() == 0) {
                     throw new Exception("No se pudo agregar el voto, error de base de datos.");
                 }
