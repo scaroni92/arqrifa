@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTEstadoAsistencia;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
@@ -64,20 +65,34 @@ class ControladorReunion implements IControladorReunion {
             comprobarConFechaActual(reunion);
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
-            // Mail de notifiación
-            String asunto = "¡Nueva reunión agendada!";
-            String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día "
-                    + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
-
-            Mensajeria mensajeria = new Mensajeria();
-
-            //Invocar asincronicamente
-            for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-                mensajeria.enviar(new DTMensaje(usuario.getEmail(), asunto, mensaje));
-            }
+            notificarEstudiantesMail(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+    }
+
+    private void notificarEstudiantesMail(DTReunion reunion) throws MessagingException {
+        String asunto = "¡Nueva reunión agendada!";
+        String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día "
+                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
+
+        Mensajeria mensajeria = new Mensajeria();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
+                        mensajeria.enviar(new DTMensaje(usuario.getEmail(), asunto, mensaje));
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        };
+
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }
 
     private void comprobarConFechaActual(DTReunion reunion) throws ParseException, Exception {

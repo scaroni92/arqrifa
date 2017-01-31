@@ -35,23 +35,36 @@ class ControladorSolicitud implements IControladorSolicitud {
             }
 
             solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
+            
             FabricaPersistencia.getPersistenciaSolicitud().agregar(solicitud);
+            enviarNotificacionMail(solicitud);
 
-            // Envio de mail de notifiación
-            String destinatario = solicitud.getUsuario().getEmail();
-            String asunto = "Arquitectura Rifa - Confirmar registro";
-            String mensaje = "Hola " + solicitud.getUsuario().getNombre()
-                    + " tu solicitud ha sido enviada exitosamente, ahora solo"
-                    + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                    + "http://localhost:8080/ArquitecturaRifaWeb/Usuarios?accion=verificar&codigo=" + solicitud.getCodigo();
-
-            new Mensajeria().enviar(new DTMensaje(destinatario, asunto, mensaje));
-
-        } catch (MessagingException me) {
-            System.out.println(me.getMessage());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+    }
+
+    private void enviarNotificacionMail(DTSolicitud solicitud) {
+        String destinatario = solicitud.getUsuario().getEmail();
+        String asunto = "Arquitectura Rifa - Confirmar registro";
+        String mensaje = "Hola " + solicitud.getUsuario().getNombre()
+                + " tu solicitud ha sido enviada exitosamente, ahora solo"
+                + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
+                + "http://localhost:8080/ArquitecturaRifaWeb/Usuarios?accion=verificar&codigo=" + solicitud.getCodigo();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new Mensajeria().enviar(new DTMensaje(destinatario, asunto, mensaje));
+                } catch (MessagingException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        };
+
+        Thread hilo = new Thread(runnable);
+        hilo.start();
     }
 
     @Override
