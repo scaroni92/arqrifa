@@ -78,7 +78,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             res = stmt.executeQuery();
 
             if (res.next()) {
-                usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), contrasena, res.getString("email"), res.getString("rol"), res.getInt("id_gen"));
+                usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), contrasena, res.getString("email"), res.getString("rol"), res.getInt("id_gen"), 0);
             }
 
         } catch (SQLException e) {
@@ -198,7 +198,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 res.getString("contrasena"),
                 res.getString("email"),
                 res.getString("rol"),
-                res.getInt("id_gen"));
+                res.getInt("id_gen"), 0);
     }
 
 }

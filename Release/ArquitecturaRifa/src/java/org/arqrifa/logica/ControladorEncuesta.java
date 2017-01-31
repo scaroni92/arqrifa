@@ -72,8 +72,9 @@ public class ControladorEncuesta implements IControladorEncuesta {
             if (encuesta.getPropuestas().isEmpty()) {
                 throw new Exception("Agregue almenos una propuesta a la encuesta.");
             }
-            for (int i = 0; i < encuesta.getPropuestas().size(); i++) {
-                if (encuesta.getPropuestas().get(i).getRespuestas().size() < 2) {
+            
+            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
+                if (propuesta.getRespuestas().size() < 2) {
                     throw new Exception("Todas las propuestas deben tener almenos dos respuestas");
                 }
             }
@@ -101,7 +102,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void agregarVoto(DTVoto voto) {
         try {
-            //checkear si el estudiante voto
+            //checkear si el estudiante ya votó
             FabricaPersistencia.getPersistenciaEncuesta().votar(voto);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

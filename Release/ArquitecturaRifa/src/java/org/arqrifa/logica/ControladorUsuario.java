@@ -1,6 +1,7 @@
 package org.arqrifa.logica;
 
 import java.util.List;
+import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
@@ -50,10 +51,42 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public DTUsuario buscar(int ci) {
         try {
-            return FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
+            DTUsuario usuario = FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
+
+            if (DTUsuario.ESTUDIANTE.equals(usuario.getRol())) {
+                cargarInasistencias(usuario);
+            }
+
+            return usuario;
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+    }
+
+    private void cargarInasistencias(DTUsuario estudiante) {
+        int inasistencias = 0;
+        List<DTReunion> reuniones = ControladorReunion.getInstancia().listarPorGeneracion(estudiante.getGeneracion());
+
+        boolean esParticipante;
+        for (DTReunion reunion : reuniones) {
+            esParticipante = false;
+
+            if (DTReunion.FINALIZADA.equals(reunion.getEstado())) {
+
+                for (DTUsuario participante : reunion.getParticipantes()) {
+                    if (participante.getCi() == estudiante.getCi()) {
+                        esParticipante = true;
+                        break;
+                    }
+                }
+                if (!esParticipante) {
+                    inasistencias++;
+                }
+            }
+
+        }
+
+        estudiante.setInasistencias(inasistencias);
     }
 
     @Override

@@ -27,7 +27,8 @@ public class ControladorAdministrador extends Controlador {
                 throw new ArquitecturaRifaException("Complete todos los campos obligatorios.");
             }
 
-            cliente.agregarEncargado(new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "Encargado", Integer.parseInt(vm.getGeneracion())));
+            DTUsuario encargado = new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "Encargado", Integer.parseInt(vm.getGeneracion()), 0);
+            cliente.agregarEncargado(encargado);
             vm = new VMUsuarioMantenimiento("Encargado agregado exitosamente.");
         } catch (Exception ex) {
             vm.setMensaje(ex.getMessage());
@@ -49,10 +50,10 @@ public class ControladorAdministrador extends Controlador {
         VMGeneraciones vm = (VMGeneraciones) cargarModelo(new VMGeneraciones());
         try {
             vm.setGeneraciones(cliente.listarGeneraciones());
-            
+
             DTGeneracion generacion = new DTGeneracion(Integer.parseInt(request.getParameter("anio")));
             cliente.agregarGeneracion(generacion);
-            
+
             vm.getGeneraciones().add(generacion);
             vm.setMensaje("Generación agregada exitosamente.");
         } catch (Exception e) {

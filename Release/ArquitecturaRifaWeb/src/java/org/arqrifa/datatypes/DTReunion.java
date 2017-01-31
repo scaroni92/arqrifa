@@ -12,7 +12,6 @@ public class DTReunion {
     public static String INICIADA = "Iniciada";
     public static String LISTADO = "Listado";
     //public static String ACTIVA = "Activa"; es necesario este estado?
-    //public static String VOTACION = "Votacion"; este estado puede ser verificado desde encuesta.habilitada
     public static String FINALIZADA = "Finalizada";
 
     private int id;

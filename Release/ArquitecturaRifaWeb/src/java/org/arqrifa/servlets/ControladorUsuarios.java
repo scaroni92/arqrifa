@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTGeneracion;
-import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
@@ -20,7 +19,7 @@ public class ControladorUsuarios extends Controlador {
         try {
             DTUsuario usuario = cliente.login(Integer.parseInt(request.getParameter("ci")), request.getParameter("pass"));
             if (usuario == null) {
-                throw new Exception("Usuario o contraseña incorrectos.");
+                throw new ArquitecturaRifaException("Usuario y/o contraseña incorrectos.");
             }
 
             sesion.setAttribute("usuario", usuario);
@@ -52,7 +51,8 @@ public class ControladorUsuarios extends Controlador {
                 throw new ArquitecturaRifaException("Completa todos los campos obligatorios.");
             }
 
-            cliente.agregarSolicitud(new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "", generacion)));
+            DTSolicitud solicitud = new DTSolicitud(ci, new Date(), false, new DTUsuario(ci, vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "", generacion, 0));
+            cliente.agregarSolicitud(solicitud);
             mostrarVista("login.jsp", new ViewModel("Solicitud enviada exitosamente. <br> Se ha enviado un mail de verificación a tu correo electrónico."));
 
         } catch (Exception ex) {
@@ -84,15 +84,12 @@ public class ControladorUsuarios extends Controlador {
         try {
 
             DTUsuario usuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
-            
+
             if (getUsuario().getRol().equals(DTUsuario.ENCARGADO) && getUsuario().getGeneracion() != usuario.getGeneracion()) {
                 throw new Exception("Usuario no encontrado");
             }
 
             vm.setUsuario(usuario);
-            if (usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
-                vm.setInasistencias(contarInasistencias(usuario));
-            }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -111,28 +108,5 @@ public class ControladorUsuarios extends Controlador {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("Usuario/listado.jsp", vm);
-    }
-
-    private int contarInasistencias(DTUsuario usuario) throws Exception {
-
-        int inasistencias = 0;
-        List<DTReunion> reuniones = cliente.listarReunionesPorGeneracion(usuario.getGeneracion());
-
-        boolean esParticipante;
-        for (DTReunion reunion : reuniones) {
-            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
-                esParticipante = false;
-                for (DTUsuario participante : reunion.getParticipantes()) {
-                    if (participante.getCi() == usuario.getCi()) {
-                        esParticipante = true;
-                        break;
-                    }
-                }
-                if (!esParticipante) {
-                    inasistencias++;
-                }
-            }
-        }
-        return inasistencias;
     }
 }

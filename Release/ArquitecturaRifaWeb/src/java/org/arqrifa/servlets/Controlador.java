@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,7 +53,7 @@ public class Controlador extends HttpServlet {
             if (despachador != null) {
                 despachador.forward(request, response);
             }
-        } catch (Exception ex) {
+        } catch (IOException | ServletException ex) {
             System.out.println("¡ERROR! No se pudo mostrar la vista " + vista + ".");
         }
     }
@@ -85,7 +84,7 @@ public class Controlador extends HttpServlet {
                                 break;
                         }
                     }
-                } catch (Exception ex) {
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     System.out.println("¡ERROR! No se pudo invocar al setter " + nombreSetter + " al cargar el modelo.");
                 }
             }
@@ -116,7 +115,7 @@ public class Controlador extends HttpServlet {
 
         try {
             despacharMetodoAccion();
-        } catch (Exception ex) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             System.out.println("¡ERROR! No se pudo despachar el método de la acción solicitada.");
             System.out.println(ex.getMessage());
         }

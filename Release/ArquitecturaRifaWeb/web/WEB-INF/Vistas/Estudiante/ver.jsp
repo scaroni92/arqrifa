@@ -32,7 +32,7 @@
             <c:if test="${modelo.usuario.rol eq 'Estudiante'}">
                 <tr>
                     <td>Inasistencias</td>
-                    <td>${modelo.inasistencias}</td>
+                    <td>${modelo.usuario.inasistencias}</td>
                 </tr>                         
             </c:if>
             <tr>

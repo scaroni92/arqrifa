@@ -5,6 +5,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DTUsuario {
 
+    public static String ADMIN = "Admin";
+    public static String ENCARGADO = "Encargado";
+    public static String ESTUDIANTE = "Estudiante";
+
     private int ci;
     private String nombre;
     private String apellido;
@@ -12,6 +16,7 @@ public class DTUsuario {
     private String email;
     private String rol;
     private int generacion;
+    private int inasistencias;
 
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getCi() {
@@ -42,6 +47,10 @@ public class DTUsuario {
         return generacion;
     }
 
+    public int getInasistencias() {
+        return inasistencias;
+    }
+
     public void setCi(int ci) {
         this.ci = ci;
     }
@@ -69,13 +78,17 @@ public class DTUsuario {
     public void setGeneracion(int generacion) {
         this.generacion = generacion;
     }
+
+    public void setInasistencias(int inasistencias) {
+        this.inasistencias = inasistencias;
+    }
     //</editor-fold>
 
     public DTUsuario() {
-        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0);
+        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0, 0);
     }
 
-    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion) {
+    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion, int inasistencias) {
         this.ci = ci;
         this.nombre = nombre;
         this.apellido = apellido;

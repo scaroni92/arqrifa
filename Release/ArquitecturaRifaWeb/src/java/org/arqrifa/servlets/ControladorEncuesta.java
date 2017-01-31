@@ -8,9 +8,7 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
-import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.viewmodels.VMEncuesta;
-//import org.arqrifa.viewmodels.VMEncuesta;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 

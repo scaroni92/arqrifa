@@ -36,6 +36,4 @@ public class VMAsistencias extends ViewModel {
         this.asistencias = asistencias;
     }
 
-
-
 }

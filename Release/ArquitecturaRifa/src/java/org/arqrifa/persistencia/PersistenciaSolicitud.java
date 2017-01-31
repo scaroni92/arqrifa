@@ -134,7 +134,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             res = stmt.executeQuery();
 
             if (res.next()) {
-                DTUsuario usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", res.getInt("id_gen"));
+                DTUsuario usuario = new DTUsuario(ci, res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", res.getInt("id_gen"), 0);
                 solicitud = new DTSolicitud(res.getInt("codigo"), res.getDate("fecha"), res.getBoolean("verificada"), usuario);
             }
 
@@ -161,7 +161,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             res = stmt.executeQuery();
 
             while (res.next()) {
-                DTUsuario usuario = new DTUsuario(res.getInt("ci"), res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", generacion);
+                DTUsuario usuario = new DTUsuario(res.getInt("ci"), res.getString("nombre"), res.getString("apellido"), res.getString("contrasena"), res.getString("email"), "", generacion, 0);
                 solicitudes.add(new DTSolicitud(res.getInt("codigo"), res.getDate("fecha"), res.getBoolean("verificada"), usuario));
             }
         } catch (SQLException e) {
