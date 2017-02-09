@@ -37,7 +37,7 @@
                     <a ><span class="white-text email">${usuario.rol}</span> </a> 
                 </div>
             </li>
-            <li><a href="usuario"><i class="material-icons">dashboard</i>INICIO</a></li>
+            <li><a href="usuario"><i class="material-icons">home</i>INICIO</a></li>
             <li><a href="usuario?accion=ver-calendario"><i class="material-icons">event</i>Calendario</a></li>
             <li>
                 <div class="divider"></div>

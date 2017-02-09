@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//Acceso: ENCARGADO
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class ControladorEncuesta extends Controlador {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
 
             if (reunion != null) {
-                //Es necesario el uso de sessión ya que se manejan listas de listas
+                //Es necesario el uso de session ya que se manejan colecciones de colecciones
                 sesion.setAttribute("reunion", reunion);
                 mostrarVista("encuestas/agregar.jsp");
             }
@@ -34,42 +33,49 @@ public class ControladorEncuesta extends Controlador {
 
     public void agregar_post() {
         try {
-
             DTEncuesta encuesta = new DTEncuesta();
             encuesta.setTitulo(request.getParameter("titulo"));
             encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-
-            // se cargan las propuestas de la encuesta
-            // crear método
-            String[] preguntas = request.getParameterValues("preguntas");
-            DTPropuesta propuesta;
-            if (preguntas != null) {
-                for (int i = 0; i < preguntas.length; i++) {
-                    propuesta = new DTPropuesta();
-                    propuesta.setPregunta(preguntas[i]);
-
-                    String[] respuestas = request.getParameterValues("respuestas" + (i + 1));
-                    if (respuestas != null) {
-                        for (String respuesta : respuestas) {
-                            if (!respuesta.isEmpty()) {
-                                propuesta.getRespuestas().add(new DTRespuesta(0, respuesta, 0));
-                            }
-                        }
-                    }
-                    encuesta.getPropuestas().add(propuesta);
-                }
-            }
+            encuesta.setPropuestas(getPropuestas());
 
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
             reunion.setEncuesta(encuesta);
+
             cliente.agregarEncuesta(reunion);
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta agregada exitosamente");
-            response.sendRedirect("encuesta?accion=detalles&reunionId=" + reunion.getId());
-
+            response.sendRedirect("usuario");
         } catch (Exception e) {
-            mostrarVista("Encuesta/agregar.jsp", new ViewModel("#error#" + e.getMessage()));
+            mostrarVista("encuestas/agregar.jsp", new ViewModel(e.getMessage()));
         }
+    }
+
+    private List<DTPropuesta> getPropuestas() throws Exception {
+        List<DTPropuesta> propuestas = new ArrayList<>();
+        String[] preguntas = request.getParameterValues("preguntas");
+        DTPropuesta propuesta;
+        
+        if (preguntas == null) {
+            throw new Exception("Ingrese alguna propuesta");
+        }
+        
+        for (int i = 0; i < preguntas.length; i++) {
+            propuesta = new DTPropuesta();
+            propuesta.setPregunta(preguntas[i]);
+            String[] respuestas = request.getParameterValues("respuestas" + (i + 1));
+
+            if (respuestas == null) {
+                throw new Exception("Agregue las respuestas de la propuesta " + (i + 1));
+            }
+            for (String respuesta : respuestas) {
+                if (!respuesta.isEmpty()) {
+                    propuesta.getRespuestas().add(new DTRespuesta(0, respuesta, 0));
+                }
+            }
+            propuestas.add(propuesta);
+        }
+
+        return propuestas;
     }
 
     public void modificar_get() {
@@ -84,40 +90,16 @@ public class ControladorEncuesta extends Controlador {
 
     public void modificar_post() {
         try {
-
             DTEncuesta encuesta = (DTEncuesta) sesion.getAttribute("encuesta");
             encuesta.setId(Integer.parseInt(request.getParameter("id")));
             encuesta.setTitulo(request.getParameter("titulo"));
             encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-
-            // se cargan las propuestas de la encuesta
-            // crear método
-            List<DTPropuesta> propuestas = new ArrayList<>();
-            String[] preguntas = request.getParameterValues("preguntas");
-            DTPropuesta propuesta;
-            if (preguntas != null) {
-                for (int i = 0; i < preguntas.length; i++) {
-                    propuesta = new DTPropuesta();
-                    propuesta.setPregunta(preguntas[i]);
-
-                    String[] respuestas = request.getParameterValues("respuestas" + (i + 1));
-                    if (respuestas != null) {
-                        for (String respuesta : respuestas) {
-                            if (!respuesta.isEmpty()) {
-                                propuesta.getRespuestas().add(new DTRespuesta(0, respuesta, 0));
-                            }
-                        }
-                    }
-                    propuestas.add(propuesta);
-                }
-            }
-            encuesta.setPropuestas(propuestas);
+            encuesta.setPropuestas(getPropuestas());
 
             cliente.modificarEncuesta(encuesta);
             sesion.removeAttribute("encuesta");
             sesion.setAttribute("mensaje", "Encuesta modificada exitosamente");
-            this.detalles_get();
-
+            response.sendRedirect("usuario");
         } catch (Exception e) {
             mostrarVista("encuestas/modificar.jsp", new ViewModel(e.getMessage()));
         }

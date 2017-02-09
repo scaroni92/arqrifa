@@ -16,10 +16,9 @@ import org.arqrifa.viewmodels.ViewModel;
 public class ControladorCuestionario extends Controlador {
 
     public void index_get() {
-        //TODO buscar alternativa a session
         ViewModel vm = new ViewModel();
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunion_id")));
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
             sesion.setAttribute("encuesta", reunion.getEncuesta());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

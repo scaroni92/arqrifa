@@ -1,5 +1,5 @@
 package org.arqrifa.controllers;
-//ENCARGADO
+
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.viewmodels.VMListaSolicitudes;

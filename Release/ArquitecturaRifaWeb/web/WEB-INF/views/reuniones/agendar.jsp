@@ -8,8 +8,13 @@
                 <form action="reunion" id="reunion-form" class="col s12 card-panel" style="padding:20px;" method="post">
                     <div class="row">
                         <div class="col s12">
-                            <h5>Nueva reunión<span class="right"> <input type="checkbox" id="obligatoria" name="obligatoria" class="filled-in" />
-                                    <label for="obligatoria" class="right">Obligatoria</label></span></h5> </div>
+                            <h5>Nueva reunión
+                                <span class="right"> 
+                                <input type="checkbox" id="obligatoria" name="obligatoria" ${modelo.obligatoria? 'checked' : ''} class="filled-in" />
+                                <label for="obligatoria" class="right">Obligatoria</label>
+                                </span>
+                            </h5> 
+                        </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">

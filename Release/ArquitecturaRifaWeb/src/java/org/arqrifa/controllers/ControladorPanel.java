@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//acceso: ENCARGADO
 
 import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
@@ -48,12 +47,10 @@ public class ControladorPanel extends Controlador {
     public void finalizar_post() {
         VMMantenimientoReunion vm = (VMMantenimientoReunion) cargarModelo(new VMMantenimientoReunion());
         try {
-
             if (vm.getResoluciones().isEmpty()) {
                 throw new Exception("Ingrese alguna resolución.");
             }
 
-            //TODO usar cargarReunion
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
             reunion.setId(Integer.parseInt(vm.getId()));
             reunion.setObservaciones(vm.getObservaciones());
@@ -62,7 +59,6 @@ public class ControladorPanel extends Controlador {
             cliente.finalizarReunion(reunion);
             sesion.setAttribute("mensaje", "Reunión finalizada exitosamente.");
             response.sendRedirect("reunion?accion=detalles&id=" + vm.getId());
-
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
             mostrarVista("reuniones/panel.jsp", vm);

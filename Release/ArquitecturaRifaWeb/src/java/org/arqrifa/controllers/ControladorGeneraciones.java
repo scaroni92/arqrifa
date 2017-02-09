@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//acceso: ADMIN
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTGeneracion;

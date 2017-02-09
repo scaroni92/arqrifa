@@ -23,16 +23,7 @@
                     </div>
                     <p>Propuestas</p>
                     <div id="propuestas-container">
-                        <div id="propuesta-container1" class="row propuesta-container">
-                            <div class="input-field col s10">
-                                <input id="propuesta1" name="preguntas" type="text">
-                                <label for="propuesta1">Pregunta</label>
-                            </div>
-                            <div class="col s2"><span class="icon-btn right"><i class="material-icons" onclick="eliminarPropuesta('propuesta-container1')">close</i></span> </div>
-                            <div class="col s12">
-                                <div class="chips chips-placeholder respuestas-chips"></div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col">

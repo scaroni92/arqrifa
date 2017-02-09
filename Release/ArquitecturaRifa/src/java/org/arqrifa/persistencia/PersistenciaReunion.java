@@ -206,11 +206,11 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (SQLException e) {
             switch (e.getErrorCode()) {
                 case 1062:
-                    throw new Exception("El estudiante marcó su asistencia previamente.");
+                    throw new Exception("La asistencia del estudiante ya fue registrada previamente.");
                 case 1452:
                     throw new Exception("El estudiante o la reunión ingresada no existe.");
                 default:
-                    throw new Exception("No se pudo marcar la asistencia - Error de base de datos.");
+                    throw new Exception("No se pudo marcar la asistencia, error de base de datos.");
             }
 
         } catch (Exception e) {

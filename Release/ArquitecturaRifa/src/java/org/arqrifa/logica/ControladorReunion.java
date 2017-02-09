@@ -61,14 +61,19 @@ class ControladorReunion implements IControladorReunion {
             if (reunion == null) {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
-
-            validarFechaReunion(reunion);
+            if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) <= 0) {
+                throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación.");
+            }
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
-
             notificarEstudiantesMail(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+    }
+
+    private Date formatearFecha(Date fecha) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(sdf.format(fecha));
     }
 
     private void notificarEstudiantesMail(DTReunion reunion) throws MessagingException {
@@ -93,16 +98,6 @@ class ControladorReunion implements IControladorReunion {
 
         Thread hilo = new Thread(runnable);
         hilo.start();
-    }
-
-    private void validarFechaReunion(DTReunion reunion) throws ParseException, Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
-        Date fechaActual = sdf.parse(sdf.format(new Date()));
-
-        if (fechaReunion.compareTo(fechaActual) <= 0) {
-            throw new Exception("Las reunion deben agendarse con almenos un día de anticipación.");
-        }
     }
 
     @Override
@@ -224,8 +219,13 @@ class ControladorReunion implements IControladorReunion {
             if (reunion == null) {
                 throw new Exception("No se puede modificar uan reunión nula.");
             }
+            if (!reunion.getEstado().equals(DTReunion.PENDIENTE)) {
+                throw new Exception("No se puede modificar una reunión que ya fue iniciada.");
+            }
+             if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) < 0) {
+                throw new Exception("No se puede asignar una fehca menor a la actual.");
+            }
 
-            validarFechaReunion(reunion);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

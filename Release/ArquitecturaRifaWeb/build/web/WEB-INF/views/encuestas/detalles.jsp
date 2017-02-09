@@ -40,7 +40,7 @@
             <ul>
                 <li class="waves-effect waves-light"><a href="#modal"><i class="material-icons">delete</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=modificar&id=${encuesta.id}"><i class="material-icons">edit</i></a></li>
-                <li class="waves-effect waves-light"><a href="cuestionario?reunion_id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
+                <li class="waves-effect waves-light"><a href="cuestionario?reunionId=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=iniciar&reunionId=${modelo.reunion.id}"><i class="material-icons">play_circle_filled</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=finalizar&reunionId=${modelo.reunion.id}"><i class="material-icons">stop</i></a></li>
             </ul>

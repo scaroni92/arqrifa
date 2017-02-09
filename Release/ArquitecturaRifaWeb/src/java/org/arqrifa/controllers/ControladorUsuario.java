@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//acceso: encargado, admin, estudiante
 
 import java.util.Date;
 import javax.servlet.annotation.WebServlet;
@@ -80,8 +79,6 @@ public class ControladorUsuario extends Controlador {
     public void verificar_get() {
         VMVerificacion vm;
         try {
-            //TODO Establecer código como PK
-            //Enviar DTSolicitud para checkear en lógica
             cliente.verificarSolicitud(Integer.parseInt(request.getParameter("codigo")));
             vm = new VMVerificacion(true, "Ahora solo debes esperar a que sea aprobada por el encargado.", "¡Solicitud verificada exitosamente!");
         } catch (Exception ex) {

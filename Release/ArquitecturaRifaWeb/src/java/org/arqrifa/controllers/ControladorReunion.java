@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//Acceso: ENCARGADO, administrador
 
 import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
@@ -57,8 +56,6 @@ public class ControladorReunion extends Controlador {
     }
 
     public void modificar_post() {
-        // TODO quitar chekeo de fecha en lógica
-        // TODO Verificar estado de reunión
         VMMantenimientoReunion vm = (VMMantenimientoReunion) cargarModelo(new VMMantenimientoReunion());
         try {
             if (vm.getTitulo().isEmpty() || vm.getDescripcion().isEmpty() || vm.getLugar().isEmpty()) {
@@ -154,15 +151,14 @@ public class ControladorReunion extends Controlador {
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
 
-            //TODO revisr condición
-            if (!(this.usuario.getRol().equals(DTUsuario.ADMIN) || this.usuario.getGeneracion() == reunion.getGeneracion())) {
-                mostrarVista("Error/404.jsp");
+            if (this.usuario.getRol().equals(DTUsuario.ENCARGADO) && this.usuario.getGeneracion() != reunion.getGeneracion()) {
+                mostrarVista("error/403.jsp");
             }
 
             mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, ""));
 
         } catch (Exception e) {
-            mostrarVista("Error/500.jsp");
+            mostrarVista("error/500.jsp");
         }
     }
 
@@ -181,24 +177,18 @@ public class ControladorReunion extends Controlador {
         }
         mostrarVista("reuniones/lista.jsp", vm);
     }
-//TODO mover a ControladorAsistenica, comprobar estado de reunión en lógica
+    
     public void marcar_asistencia_get() {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
             DTUsuario estudiante = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
-
-            // mapeo de reunión para comprobar estado en lógica
-            DTReunion reunion = new DTReunion();
-            reunion.setId(Integer.parseInt(request.getParameter("id")));
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
 
             cliente.agregarAsistencia(reunion, estudiante);
-
-            reunion = cliente.buscarReunion(reunion.getId());
-            vm = new VMListaAsistencias(reunion, cliente.listarAsistencias(reunion), "");
-            vm.setMensaje("Asistencia marcada exitosamente.");
+            sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");     
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            sesion.setAttribute("mensaje", e.getMessage());
         }
-        mostrarVista("reuniones/lista.jsp", vm);
+        this.ver_lista_get();
     }
 }

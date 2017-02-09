@@ -29,20 +29,20 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s6">
-                            <input id="fecha" name="fecha" type="date" class="datepicker" value="${modelo.fecha}">
+                        <div class="input-field col m6 s12">
+                            <input id="fecha" name="fecha" type="date" class="datepicker" value="${modelo.fecha}" required>
                             <label for="fecha">Fecha</label>
                         </div>
-                        <div class="input-field col s6" >
-                            <input id="hora" name="hora" type="time" value="${modelo.hora}">
+                        <div class="input-field col m3 s12" >
+                            <input id="hora" name="hora" type="time" value="${modelo.hora}" required>
+                        </div>
+                        <div class="input-field col m3 s12">
+                            <input id="duracion" name="duracion" type="number" value="${modelo.duracion}" required>
+                            <label for="duracion">Duración (m)</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s3">
-                            <input id="duracion" name="duracion" type="number" value="${modelo.duracion}">
-                            <label for="duracion">Duración (m)</label>
-                        </div>
-                        <div class="input-field col s9">
+                        <div class="input-field col s12">
                             <input id="lugar" name="lugar" type="text" value="${modelo.lugar}">
                             <label for="lugar">Lugar</label>
                         </div>

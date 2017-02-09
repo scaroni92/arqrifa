@@ -24,7 +24,7 @@
             </div>
             <ul class="collapsible" data-collapsible="expandable">
                 <li>
-                    <div class="collapsible-header  green lighten-1 white-text"><i class="material-icons">assignment</i>Temas</div>
+                    <div class="collapsible-header green lighten-1 white-text active"><i class="material-icons">assignment</i>Temas</div>
                     <div class="collapsible-body white">
                         <c:forEach var="tema" items="${modelo.reunion.temas}">
                             <p>${tema}</p>
