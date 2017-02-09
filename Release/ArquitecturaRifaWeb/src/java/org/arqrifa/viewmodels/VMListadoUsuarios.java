@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.arqrifa.datatypes.DTUsuario;
 
- 
+
 public class VMListadoUsuarios extends ViewModel{
     private List<DTUsuario> usuarios;
 

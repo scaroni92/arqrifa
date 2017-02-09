@@ -9,7 +9,6 @@ public class VMReunion extends ViewModel {
     public VMReunion() {
         this(null, "");
     }
-    
 
     public VMReunion(DTReunion reunion, String mensaje) {
         super(mensaje);

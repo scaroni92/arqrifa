@@ -17,7 +17,6 @@ import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTVoto;
-import org.arqrifa.exceptions.ArquitecturaRifaException;
 
 public class ClienteJersey {
 
@@ -34,11 +33,11 @@ public class ClienteJersey {
     private void comprobarError(Response respuesta) throws Exception {
         switch (respuesta.getStatus()) {
             case 400:
-                throw new ArquitecturaRifaException("Solicitud incorrecta");
+                throw new Exception("Solicitud incorrecta");
             case 404:
-                throw new ArquitecturaRifaException("Recurso no encontrado");
+                throw new Exception("Recurso no encontrado");
             case 409:
-                throw new ArquitecturaRifaException(respuesta.readEntity(DTMensajeError.class).getMensaje());
+                throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
         }
     }
 

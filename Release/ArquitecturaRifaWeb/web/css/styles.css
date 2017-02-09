@@ -1,0 +1,49 @@
+@import url('layouts/master-page.css');
+@import url('layouts/card.css');
+
+/* Estilos generales*/
+
+h6 {
+    font-size: 1.3em;
+    padding: 10px;
+    margin: 0;
+}
+
+.icon-btn i {
+    color: grey;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+/* Se eliminan estilos por defecto de MaterializeCSS */
+
+.collapsible table th + th {
+    width: 80px;
+    text-align: center;
+
+}
+.collapsible table td + td {
+    text-align: center;
+
+}
+
+table th {
+    border-radius: 0;
+}
+
+.toolbar {
+    z-index: 1000;
+}
+
+
+/* Se eliminan estilos por defecto del navegador */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button,
+input[type=time]::-webkit-inner-spin-button,
+input[type=time]::-webkit-outer-spin-button,
+input[type=time]::-webkit-clear-button,
+input[type=time]::-webkit-clear-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

@@ -7,13 +7,13 @@ public class VMEncuesta extends ViewModel {
     private String reunionId;
     private DTEncuesta encuesta;
 
+    public VMEncuesta() {
+        this("", new DTEncuesta());
+    }
+
     public VMEncuesta(String reunionId, DTEncuesta encuesta) {
         this.reunionId = reunionId;
         this.encuesta = encuesta;
-    }
-
-    public VMEncuesta() {
-        this("", new DTEncuesta());
     }
 
     public String getReunionId() {

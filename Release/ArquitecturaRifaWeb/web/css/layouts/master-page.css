@@ -1,0 +1,22 @@
+header,
+main,
+footer {
+    padding-left: 300px;
+}
+
+nav .nav-content {
+    padding-left: 20px;
+}
+
+main {
+    padding-top: 50px;
+}
+
+@media only screen and (max-width: 992px) {
+    header,
+    nav,
+    main,
+    footer {
+        padding-left: 0;
+    }
+}

@@ -50,29 +50,30 @@ class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public DTUsuario buscar(int ci) {
+        DTUsuario usuario = null;
         try {
-            DTUsuario usuario = FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
+            usuario = FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
 
             if (DTUsuario.ESTUDIANTE.equals(usuario.getRol())) {
                 cargarInasistencias(usuario);
             }
 
-            return usuario;
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
+        return usuario;
     }
 
     private void cargarInasistencias(DTUsuario estudiante) {
         int inasistencias = 0;
+        boolean esParticipante;
+
         List<DTReunion> reuniones = ControladorReunion.getInstancia().listarPorGeneracion(estudiante.getGeneracion());
 
-        boolean esParticipante;
         for (DTReunion reunion : reuniones) {
             esParticipante = false;
 
             if (DTReunion.FINALIZADA.equals(reunion.getEstado())) {
-
                 for (DTUsuario participante : reunion.getParticipantes()) {
                     if (participante.getCi() == estudiante.getCi()) {
                         esParticipante = true;

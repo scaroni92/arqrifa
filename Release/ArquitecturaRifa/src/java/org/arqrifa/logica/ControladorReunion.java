@@ -36,7 +36,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
 
-            /* SE COMENTA ESTA VALIDACIÓN PARA HACER PRUEBAS
+            /* TODO: SE COMENTA ESTA VALIDACIÓN PARA HACER PRUEBAS
             if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
             }*/
@@ -62,7 +62,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
 
-            comprobarConFechaActual(reunion);
+            validarFechaReunion(reunion);
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
             notificarEstudiantesMail(reunion);
@@ -95,7 +95,7 @@ class ControladorReunion implements IControladorReunion {
         hilo.start();
     }
 
-    private void comprobarConFechaActual(DTReunion reunion) throws ParseException, Exception {
+    private void validarFechaReunion(DTReunion reunion) throws ParseException, Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
         Date fechaActual = sdf.parse(sdf.format(new Date()));
@@ -225,7 +225,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede modificar uan reunión nula.");
             }
 
-            comprobarConFechaActual(reunion);
+            validarFechaReunion(reunion);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

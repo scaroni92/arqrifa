@@ -7,6 +7,7 @@ public class VMUsuario extends ViewModel {
     private DTUsuario usuario;
 
     public VMUsuario() {
+        this(null, "");
     }
 
     public VMUsuario(DTUsuario usuario, String mensaje) {
