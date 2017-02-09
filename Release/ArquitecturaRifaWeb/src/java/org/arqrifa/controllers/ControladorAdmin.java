@@ -47,8 +47,8 @@ public class ControladorAdmin extends Controlador {
                 throw new Exception("Complete todos los campos obligatorios.");
             }
 
-            DTUsuario encargado = new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), vm.getRol(), Integer.parseInt(vm.getGeneracion()), 0);
-            cliente.agregarEncargado(encargado);
+            DTUsuario dtUsuario = new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), vm.getRol(), Integer.parseInt(vm.getGeneracion()), 0);
+            cliente.agregarUsuario(dtUsuario);
             vm = new VMMantenimientoUsuario();
             vm.setMensaje("Usuario agregado exitosamente");
         } catch (Exception ex) {
@@ -58,7 +58,6 @@ public class ControladorAdmin extends Controlador {
     }
 
     public void modificar_usuario_get() {
-
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {
             DTUsuario dtUsuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
@@ -71,6 +70,24 @@ public class ControladorAdmin extends Controlador {
             vm.setGeneracion(String.valueOf(dtUsuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("usuarios/modificar.jsp", vm);
+    }
+
+    public void modificar_usuario_post() {
+        VMMantenimientoUsuario vm = (VMMantenimientoUsuario) cargarModelo(new VMMantenimientoUsuario());
+        try {
+            vm.setGeneraciones(cliente.listarGeneraciones());
+
+            if (vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getContrasena().isEmpty()) {
+                throw new Exception("Complete todos los campos obligatorios.");
+            }
+
+            DTUsuario dtUsuario = new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), vm.getRol(), Integer.parseInt(vm.getGeneracion()), 0);
+            cliente.modificarUsuario(dtUsuario);
+            vm.setMensaje("Usuario modificado exitosamente");
+        } catch (Exception ex) {
+            vm.setMensaje(ex.getMessage());
         }
         mostrarVista("usuarios/modificar.jsp", vm);
     }

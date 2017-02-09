@@ -201,4 +201,35 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 res.getInt("id_gen"), 0);
     }
 
+    @Override
+    public void eliminar(DTUsuario usuario) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void modificar(DTUsuario usuario) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL ModificarUsuario(?, ?, ?, ?)");
+            stmt.setInt(1, usuario.getCi());
+            stmt.setString(2, usuario.getNombre());
+            stmt.setString(3, usuario.getApellido());
+            stmt.setString(4, usuario.getContrasena());
+            
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("No se pudo modificar al usuario.");
+            }
+        } catch (SQLException e) {
+            throw new Exception(e.getMessage());
+            //throw new Exception("No se pudo modificar al usuario, error de base de datos.");
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
 }

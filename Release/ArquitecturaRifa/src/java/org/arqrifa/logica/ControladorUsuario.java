@@ -23,17 +23,16 @@ class ControladorUsuario implements IControladorUsuario {
     //</editor-fold>
 
     @Override
-    public void agregarEncargado(DTUsuario usuario) {
+    public void agregar(DTUsuario usuario) {
         try {
             if (usuario == null) {
-                throw new Exception("No se puede dar de alta una solicitud nula.");
+                throw new Exception("No se puede dar de alta un usuario nula.");
             }
             if (usuario.getCi() < 4000000) {
-                throw new Exception("Cédula inválida.");
+                throw new Exception("Ingrese una cédula válida.");
             }
 
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
-
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -103,6 +102,20 @@ class ControladorUsuario implements IControladorUsuario {
     public List<DTUsuario> listarEstudiantes(int id_gen) {
         try {
             return FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(id_gen);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void eliminar(DTUsuario usuario) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void modificar(DTUsuario usuario) {
+        try {
+            FabricaPersistencia.getPersistenciaUsuario().modificar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

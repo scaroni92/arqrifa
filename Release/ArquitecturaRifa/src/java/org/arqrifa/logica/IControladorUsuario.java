@@ -5,7 +5,11 @@ import org.arqrifa.datatypes.DTUsuario;
 
 public interface IControladorUsuario {
 
-    void agregarEncargado(DTUsuario usuario);
+    void agregar(DTUsuario usuario);
+
+    void eliminar(DTUsuario usuario);
+
+    void modificar(DTUsuario usuario);
 
     DTUsuario autenticar(int ci, String contrasena);
 

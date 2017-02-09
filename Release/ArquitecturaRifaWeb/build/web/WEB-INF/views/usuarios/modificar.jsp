@@ -4,7 +4,7 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <form action="usuario" method="post" class="col s12">
+                <form action="admin" method="post" class="col s12">
                     <div class="wrapper card-panel formulario">
                         <div class="row">
                             <div class="col s12">
@@ -19,7 +19,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="nombre" name="nombre" type="text" value="${modelo.nombre}">
+                                <input id="nombre" name="nombre" type="text" value="${modelo.nombre}" required>
                                 <label for="nombre">Nombre</label>
                             </div>
                         </div>
@@ -31,13 +31,13 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="email" name="email" type="email" value="${modelo.email}">
+                                <input id="email" name="email" type="email" value="${modelo.email}" readonly>
                                 <label for="email">Email</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="pass" name="contrasena" type="password" value="${modelo.contrasena}">
+                                <input id="pass" name="contrasena" type="text" value="${modelo.contrasena}" required>
                                 <label for="pass">Contraseña</label>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 center">
-                                <button class="btn waves-effect waves-light" type="submit" name="accion" value="modificar">modificar<i class="material-icons right">send</i> </button>
+                                <button class="btn waves-effect waves-light" type="submit" name="accion" value="modificar-usuario">guardar<i class="material-icons right">save</i> </button>
                             </div>
                         </div>
                     </div>

@@ -31,10 +31,17 @@ public class Servicio {
         return FabricaLogica.getLogicaUsuario().autenticar(ci, pass);
     }
 
-    @Path("/encargado/agregar")
+    @Path("/usuario/agregar")
     @POST
-    public Response agregarEncargado(DTUsuario usuario) {
-        FabricaLogica.getLogicaUsuario().agregarEncargado(usuario);
+    public Response agregarUsuario(DTUsuario usuario) {
+        FabricaLogica.getLogicaUsuario().agregar(usuario);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/usuario/modificar")
+    @POST
+    public Response modificarUsuario(DTUsuario usuario) {
+        FabricaLogica.getLogicaUsuario().modificar(usuario);
         return Response.status(Response.Status.OK).build();
     }
 

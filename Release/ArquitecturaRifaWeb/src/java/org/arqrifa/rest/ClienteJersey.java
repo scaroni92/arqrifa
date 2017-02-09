@@ -48,8 +48,13 @@ public class ClienteJersey {
         return respuesta.readEntity(DTUsuario.class);
     }
 
-    public void agregarEncargado(DTUsuario usuario) throws Exception {
-        Response respuesta = TARGET.path("encargado/agregar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
+    public void agregarUsuario(DTUsuario usuario) throws Exception {
+        Response respuesta = TARGET.path("usuario/agregar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+    
+    public void modificarUsuario(DTUsuario usuario) throws Exception {
+        Response respuesta = TARGET.path("usuario/modificar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
         comprobarError(respuesta);
     }
 

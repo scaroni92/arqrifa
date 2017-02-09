@@ -216,6 +216,12 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE ModificarUsuario(pCi int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20))
+BEGIN
+	UPDATE usuarios SET nombre = pNombre, apellido = pApellido, contrasena = pContrasena WHERE ci = pCi;
+END
+$$
+
 CREATE PROCEDURE Autenticar(pCi int, pContrasena varchar(20))
 BEGIN
 	SELECT * FROM usuarios WHERE ci = pCi AND contrasena = pContraseña;
