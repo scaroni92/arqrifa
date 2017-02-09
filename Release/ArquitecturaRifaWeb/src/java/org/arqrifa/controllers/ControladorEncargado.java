@@ -2,6 +2,7 @@ package org.arqrifa.controllers;
 //Acceso: ENCARGADO
 
 import javax.servlet.annotation.WebServlet;
+import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 import org.arqrifa.viewmodels.VMListadoSolicitudes;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
@@ -32,10 +33,29 @@ public class ControladorEncargado extends Controlador {
     public void listar_reuniones_get() {
         VMListadoReuniones vm = new VMListadoReuniones();
         try {
-            vm.setReuniones(cliente.listarReunionesPorGeneracion(this.usuario.getGeneracion()));
+            vm.setReuniones(cliente.listarReunionesPorGeneracion(usuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("reuniones/listado.jsp", vm);
+    }
+
+    public void buscar_usuario_get() {
+        VMListadoUsuarios vm = new VMListadoUsuarios();
+        try {
+            //TODO hacer busqueda con criterio
+
+            if (request.getParameter("ci").isEmpty()) {
+                vm.setUsuarios(cliente.listarEstudiantesPorGeneracion(usuario.getGeneracion()));
+            } else {
+                DTUsuario estudiante = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+                if (estudiante.getRol().equals(DTUsuario.ESTUDIANTE) && estudiante.getGeneracion() == usuario.getGeneracion()) {
+                    vm.getUsuarios().add(estudiante);
+                }
+            }
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("usuarios/listado.jsp", vm);
     }
 }

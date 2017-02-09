@@ -133,5 +133,4 @@ public class ControladorUsuario extends Controlador {
         }
         mostrarVista("usuarios/detalles.jsp", vm);
     }
-
 }

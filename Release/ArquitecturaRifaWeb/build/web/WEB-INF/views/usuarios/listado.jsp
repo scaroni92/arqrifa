@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class=" center">
-                        <form action="admin">
+                        <form action="${usuario.rol eq 'Admin'? 'admin' : 'encargado'}">
                             <div class="input-field inline">
                                 <input id="ci" name="ci" type="number">
                                 <label for="ci">Cédula</label>

@@ -35,34 +35,34 @@ class ControladorSolicitud implements IControladorSolicitud {
             }
 
             solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
-            
+
             FabricaPersistencia.getPersistenciaSolicitud().agregar(solicitud);
-            enviarNotificacionMail(solicitud);
+
+            String destinatario = solicitud.getUsuario().getEmail();
+            String asunto = "Arquitectura Rifa - Confirmar registro";
+            String mensaje = "Hola " + solicitud.getUsuario().getNombre()
+                    + " tu solicitud ha sido enviada exitosamente, ahora solo"
+                    + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
+                    + "http://localhost:8080/ArquitecturaRifaWeb/usuario?accion=verificar&codigo=" + solicitud.getCodigo();
+            
+            enviarNotificacionMail(new DTMensaje(destinatario, asunto, mensaje));
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
-    private void enviarNotificacionMail(DTSolicitud solicitud) {
-        String destinatario = solicitud.getUsuario().getEmail();
-        String asunto = "Arquitectura Rifa - Confirmar registro";
-        String mensaje = "Hola " + solicitud.getUsuario().getNombre()
-                + " tu solicitud ha sido enviada exitosamente, ahora solo"
-                + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                + "http://localhost:8080/ArquitecturaRifaWeb/Usuarios?accion=verificar&codigo=" + solicitud.getCodigo();
-
+    private void enviarNotificacionMail(DTMensaje mensaje) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    new Mensajeria().enviar(new DTMensaje(destinatario, asunto, mensaje));
+                    new Mensajeria().enviar(mensaje);
                 } catch (MessagingException ex) {
                     System.out.println(ex.getMessage());
                 }
             }
         };
-
         Thread hilo = new Thread(runnable);
         hilo.start();
     }
@@ -95,7 +95,7 @@ class ControladorSolicitud implements IControladorSolicitud {
                     + "http://localhost:8080/ArquitecturaRifaWeb con tu cédula y contraseña. \n\n"
                     + "Para descargar la apliación móvil haz click en el siguiente enlace:\n http://.........................";
 
-            new Mensajeria().enviar(new DTMensaje(destinatario, asunto, mensaje));
+            enviarNotificacionMail(new DTMensaje(destinatario, asunto, mensaje));
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -116,7 +116,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             String mensaje = "Hola " + solicitud.getUsuario().getNombre() + ",\n\n"
                     + "Te informamos que tu solicitud ha sido rechazada, si tienes alguna duda ponte en contacto con el encargado de tu generación.";
 
-            new Mensajeria().enviar(new DTMensaje(destinatario, asunto, mensaje));
+            enviarNotificacionMail(new DTMensaje(destinatario, asunto, mensaje));
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
