@@ -28,7 +28,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     private PersistenciaReunion() {
     }
     //</editor-fold>
-    
+
     @Override
     public void agregar(DTReunion reunion) throws Exception {
         Connection con = null;
@@ -284,6 +284,29 @@ class PersistenciaReunion implements IPersistenciaReunion {
         try {
             con = Persistencia.getConexion();
             stmt = con.prepareCall("CALL BuscarUltimaReunionPorGeneracion(?)");
+            stmt.setInt(1, id_gen);
+            res = stmt.executeQuery();
+            if (res.next()) {
+                reunion = cargarDatosReunion(res, con);
+            }
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return reunion;
+    }
+
+    @Override
+    public DTReunion buscarReunionDelDia(int id_gen) throws Exception {
+        DTReunion reunion = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarReunionDelDiaPorGeneracion(?)");
             stmt.setInt(1, id_gen);
             res = stmt.executeQuery();
             if (res.next()) {

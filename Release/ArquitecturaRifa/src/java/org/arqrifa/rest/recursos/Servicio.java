@@ -1,6 +1,5 @@
 package org.arqrifa.rest.recursos;
 
-//<editor-fold defaultstate="collapsed" desc="imports">
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.logica.FabricaLogica;
@@ -18,7 +17,6 @@ import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTVoto;
-//</editor-fold>
 
 @Path("/servicio")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -156,6 +154,12 @@ public class Servicio {
     @GET
     public DTReunion buscarSiguienteReunion(@QueryParam("id_gen") int id_gen) {
         return FabricaLogica.getControladorReuniones().buscarProximaReunionPorRealizar(id_gen);
+    }
+
+    @Path("reunion/activa")
+    @GET
+    public DTReunion buscarReunionDelDia(@QueryParam("id_gen") int id_gen) {
+        return FabricaLogica.getControladorReuniones().BuscarReunionDelDia(id_gen);
     }
     //</editor-fold>
 

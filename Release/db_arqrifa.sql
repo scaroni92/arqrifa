@@ -501,6 +501,12 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE BuscarReunionDelDiaPorGeneracion(pGenId int)
+BEGIN
+	SELECT * FROM reuniones WHERE  id_gen = pGenId AND DATE_FORMAT(fecha,'%Y-%m-%d') =  DATE_FORMAT(NOW(),'%Y-%m-%d');
+END
+$$
+
 CREATE PROCEDURE BuscarEncuesta(pId int)
 BEGIN
 	SELECT * FROM encuestas WHERE id = pId;
@@ -619,8 +625,6 @@ DELIMITER ;
 use arqrifa;
 
 
-
-			
-            
+           
 			
 

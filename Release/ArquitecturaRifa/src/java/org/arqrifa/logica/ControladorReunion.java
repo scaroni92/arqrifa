@@ -161,6 +161,15 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
+    public DTReunion BuscarReunionDelDia(int genId) {
+        try {
+            return FabricaPersistencia.getPersistenciaReunion().buscarReunionDelDia(genId);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
     public List<DTReunion> listarPorGeneracion(int genId) {
         try {
             return FabricaPersistencia.getPersistenciaReunion().listarPorGeneracion(genId);
@@ -222,7 +231,7 @@ class ControladorReunion implements IControladorReunion {
             if (!reunion.getEstado().equals(DTReunion.PENDIENTE)) {
                 throw new Exception("No se puede modificar una reunión que ya fue iniciada.");
             }
-             if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) < 0) {
+            if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) < 0) {
                 throw new Exception("No se puede asignar una fehca menor a la actual.");
             }
 
