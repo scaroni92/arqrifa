@@ -45,18 +45,18 @@
             <li><a class="subheader">Tareas</a></li>
             <!-- OPCIONES DE ENCARGADO -->
             <c:if test="${usuario.rol eq 'Encargado'}">
-                <li><a class="waves-effect" href="reunion?accion=agendar"><i class="material-icons">add</i>Agendar reunión</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-solicitudes"><i class="material-icons">group_add</i>Listar solicitudes</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-estudiantes"><i class="material-icons">group</i>Listar estudiantes</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-reuniones"><i class="material-icons">list</i>Listar reuniones</a></li>
+                <li><a class="waves-effect" href="reunion?accion=agendar"><i class="material-icons">event_note</i>Agendar</a></li>
+                <li><a class="waves-effect" href="encargado?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
+                <li><a class="waves-effect" href="encargado?accion=listar-solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
+                <li><a class="waves-effect" href="encargado?accion=listar-estudiantes"><i class="material-icons">group</i>Estudiantes</a></li>
                 </c:if>
 
             <!-- OPCIONES DE ADMINISTRADOR -->
             <c:if test="${usuario.rol eq 'Admin'}">
-                <li><a class="waves-effect" href="admin?accion=listar-usuarios"><i class="material-icons">people</i>Listar usuarios</a></li>
+                <li><a class="waves-effect" href="admin?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
+                <li><a class="waves-effect" href="generaciones"><i class="material-icons">wc</i>Generaciones</a></li>
                 <li><a class="waves-effect" href="admin?accion=agregar-usuario"><i class="material-icons">person_add</i>Agregar usuario</a></li>
-                <li><a class="waves-effect" href="generaciones"><i class="material-icons">add</i>Agregar generación</a></li>
-                <li><a class="waves-effect" href="admin?accion=listar-reuniones"><i class="material-icons">list</i>Listar reuniones</a></li>
+                <li><a class="waves-effect" href="admin?accion=listar-usuarios"><i class="material-icons">people</i>Usuarios</a></li>
                 </c:if>
         </ul>
 
@@ -76,23 +76,31 @@
         <script type="text/javascript" src="js/layouts/panel.js"></script>
         <script type="text/javascript" src="js/layouts/encuesta.js"></script>
         <script>
-        //mover a main.js
-        function eliminar(id) {
-            $('#' + id).remove();
-        }
-
-        //cambiar en materialze.js
-        $('.datepicker').pickadate({
-            selectMonths: true
-            , min: true
-            , format: 'yyyy-mm-dd'
-        });
-
+        //Inicialización
         $(document).ready(function () {
             $('select').material_select();
             $('.modal').modal();
-            //$('.fixed-action-btn.toolbar').openToolbar();
+            $('.datepicker').pickadate({
+                selectMonths: true
+                , min: true
+                , format: 'yyyy-mm-dd'
+            });
+            $('.button-collapse').sideNav({
+                menuWidth: 300
+                , closeOnClick: false
+            });
+            $('.profile-dropdown').dropdown({
+                inDuration: 300
+                , outDuration: 225
+                , constrainWidth: false
+                , hover: false
+                , gutter: 0
+                , belowOrigin: false
+                , alignment: 'right'
+                , stopPropagation: false
+            });
         });
+
         </script>
 
     </body>

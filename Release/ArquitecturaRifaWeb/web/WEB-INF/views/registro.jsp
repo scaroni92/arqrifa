@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html class="teal">
+<html class="teal lighten-2">
     <head>
 
         <link rel="stylesheet" href="css/materialize.min.css">
@@ -15,7 +15,7 @@
     <body onload="Materialize.toast('${modelo.mensaje}', 4000)">
         <main>
             <div class="z-depth-4 card-panel grey-text text-darken-2" id="registro-form">
-                <form action="usuario" method="post">
+                <form action="index" method="post">
                     <h5 class="text-darken-3 ">Registro</h5>
                     <div class="row">
                         <div class="input-field col s12">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s6"> <a href="#">Ingresar</a> </div>
+                        <div class="input-field col s6"> <a href="index?accion=ingresar">Ingresar</a> </div>
                     </div>
                 </form>
             </div>

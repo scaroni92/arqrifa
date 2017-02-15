@@ -60,9 +60,7 @@
                                 <div id="chip${status.index}" class="chip">${tema}<i class="close material-icons" onclick="eliminar('tema${status.index}')">close</i>
                                 </div>
                             </c:forEach>
-                            <div class="chips chips-placeholder">
-
-                            </div>
+                            <div id="temas-chips" class="chips chips-placeholder"></div>
 
                         </div>
                     </div>

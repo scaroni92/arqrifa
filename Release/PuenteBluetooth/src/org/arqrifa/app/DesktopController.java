@@ -45,6 +45,7 @@ public class DesktopController {
     }
 
     public static void iniciarPuenteBluetooth() {
+        // TODO comprobar estado de la reunión
         thread.start();
     }
 

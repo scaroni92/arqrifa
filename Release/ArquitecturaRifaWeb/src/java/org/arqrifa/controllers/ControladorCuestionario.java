@@ -10,20 +10,25 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
 public class ControladorCuestionario extends Controlador {
 
     public void index_get() {
-        ViewModel vm = new ViewModel();
+        DTReunion reunion = null;
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            if (!reunion.getEncuesta().isHabilitada()) {
+                throw new Exception("La encuesta no está habilitada para votaciones");
+            }
             sesion.setAttribute("encuesta", reunion.getEncuesta());
+            mostrarVista("encuestas/cuestionario.jsp");
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, e.getMessage()));
         }
-        mostrarVista("encuestas/cuestionario.jsp", vm);
+
     }
 
     public void buscar_estudiante_get() {
@@ -62,6 +67,8 @@ public class ControladorCuestionario extends Controlador {
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
 
+        } catch (NumberFormatException e) {
+            vm.setMensaje("Seleccione una opción de cada respuesta");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//Acceso: ENCARGADO
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTUsuario;

@@ -10,7 +10,7 @@
 <body onload="Materialize.toast('${modelo.mensaje}', 4000)">
     <main class="row">
         <div class="col s12 z-depth-4 card-panel grey-text text-darken-2">
-            <form action="usuario" method="post">
+            <form action="index" method="post">
                 <div class="row">
                     <div class="input-field col s12 center"> <img src="img/login-icon.png" alt="" class="circle responsive-img valign profile-image-login">
                         <h5 class="text-darken-3">Arquitectura Rifa</h5> </div>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s6"> <a href="usuario?accion=registro">Registrarse</a> </div>
+                    <div class="input-field col s6"> <a href="index?accion=registro">Registrarse</a> </div>
                 </div>
             </form>
         </div>

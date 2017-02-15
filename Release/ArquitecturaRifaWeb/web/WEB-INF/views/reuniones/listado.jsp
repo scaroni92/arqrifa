@@ -23,7 +23,7 @@
                         <tr>
                             <td>${reunion.id}</td>
                             <td>${reunion.titulo}</td>
-                            <td>${reunion.fecha}</td>
+                            <td><fmt:formatDate pattern="dd/MM/yy hh:mm" value="${reunion.fecha}" /></td>
                             <td>${reunion.estado}</td>
                             <td>${reunion.lugar}</td>
                             <td class="icon-btn">
@@ -43,10 +43,5 @@
                 <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
             </ul>
         </div>
-        <c:if test="${usuario.rol eq 'Admin'}"> 
-            <div class="fixed-action-btn">
-                <a href="admin?accion=agregar-usuario" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
-            </div>    
-        </c:if>
     </jsp:body>
 </t:masterpage>

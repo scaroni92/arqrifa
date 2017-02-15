@@ -39,7 +39,7 @@
 
                 <div class="row">
                     <div class="input-field col s12 center">
-                        <button class="btn green waves-effect waves-light" type="submit" name="accion" value="confirmar_voto" ${estudiante == null? 'disabled' : ''}>confirmar votación </button>
+                        <button class="btn green waves-effect waves-light" type="submit" id="confirmar-voto" name="accion" value="confirmar-voto" ${estudiante == null? 'disabled' : ''}>confirmar votación </button>
                     </div>
                 </div>
             </form>

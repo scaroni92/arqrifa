@@ -229,7 +229,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede modificar uan reunión nula.");
             }
             if (!reunion.getEstado().equals(DTReunion.PENDIENTE)) {
-                throw new Exception("No se puede modificar una reunión que ya fue iniciada.");
+                throw new Exception("No se puede modificar una reunión " + reunion.getEstado().toLowerCase());
             }
             if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) < 0) {
                 throw new Exception("No se puede asignar una fehca menor a la actual.");

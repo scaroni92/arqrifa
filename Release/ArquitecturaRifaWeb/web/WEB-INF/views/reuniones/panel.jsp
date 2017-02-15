@@ -8,11 +8,11 @@
             <div class="card-panel">
                 <div class="panel-header"> 
                     <c:if test="${modelo.estado eq 'Pendiente'}">                    
-                        <span class="chip blue white-text right">Pendiente</span>
+                        <span class="chip blue lighten-1 white-text right">Pendiente</span>
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="iniciar">iniciar <i class="material-icons right">play_circle_outline</i> </button>
                     </c:if>
                     <c:if test="${modelo.estado eq 'Iniciada'}">
-                        <span class="chip green white-text right">Iniciada</span>
+                        <span class="chip green lighten-1 white-text right">Iniciada</span>
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="finalizar">finalizar <i class="material-icons right">stop</i> </button>
                     </c:if>
                 </div>

@@ -30,8 +30,8 @@ class ControladorSolicitud implements IControladorSolicitud {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
             }
-            if (solicitud.getUsuario().getCi() < 4000000) {
-                throw new Exception("Cédula inválida.");
+            if (solicitud.isVerificada()) {
+                throw new Exception("No se puede aceptar una solicitud sin verificar.");
             }
 
             solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
@@ -43,7 +43,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             String mensaje = "Hola " + solicitud.getUsuario().getNombre()
                     + " tu solicitud ha sido enviada exitosamente, ahora solo"
                     + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                    + "http://localhost:8080/ArquitecturaRifaWeb/usuario?accion=verificar&codigo=" + solicitud.getCodigo();
+                    + "http://localhost:8080/ArquitecturaRifaWeb/index?accion=verificar&codigo=" + solicitud.getCodigo();
             
             enviarNotificacionMail(new DTMensaje(destinatario, asunto, mensaje));
 

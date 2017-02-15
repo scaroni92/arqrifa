@@ -61,7 +61,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 center">
-                            <button class="btn waves-effect waves-light" type="submit" name="accion" value="agendar">Agregar al calendario<i class="material-icons right">send</i> </button>
+                            <button class="btn waves-effect waves-light" type="submit" name="accion" value="agendar">Agregar al calendario<i class="material-icons right">event_available</i> </button>
                         </div>
                     </div>
                 </form>

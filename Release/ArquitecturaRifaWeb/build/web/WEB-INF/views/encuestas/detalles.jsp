@@ -36,11 +36,11 @@
 
         <!-- Barra de herramientas -->                        
         <div class="fixed-action-btn toolbar">
-            <a class="btn-floating btn-large red"> <i class="large material-icons">more</i> </a>
+            <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
             <ul>
                 <li class="waves-effect waves-light"><a href="#modal"><i class="material-icons">delete</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=modificar&id=${encuesta.id}"><i class="material-icons">edit</i></a></li>
-                <li class="waves-effect waves-light"><a href="cuestionario?reunionId=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
+                <li class="waves-effect waves-light"><a href="cuestionario?reunionId=${modelo.reunion.id}"><i class="material-icons">speaker_notes</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=iniciar&reunionId=${modelo.reunion.id}"><i class="material-icons">play_circle_filled</i></a></li>
                 <li class="waves-effect waves-light"><a href="encuesta?accion=finalizar&reunionId=${modelo.reunion.id}"><i class="material-icons">stop</i></a></li>
             </ul>

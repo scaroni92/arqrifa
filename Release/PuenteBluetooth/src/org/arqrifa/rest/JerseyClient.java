@@ -50,4 +50,10 @@ public class JerseyClient {
         comprobarError(respuesta);
     }
 
+    public DTUsuario buscarUsuario(int ci) throws Exception {
+        Response respuesta = TARGET.path("usuario/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return respuesta.readEntity(DTUsuario.class);
+    }
+
 }

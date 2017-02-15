@@ -38,7 +38,7 @@ public class ControladorReunion extends Controlador {
             cliente.agregarReunion(reunion);
 
             sesion.setAttribute("mensaje", "Reunión agendada exitosamente");
-            response.sendRedirect("usuarios?accion=ver-calendario");
+            response.sendRedirect("usuario?accion=ver-calendario");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
             mostrarVista("reuniones/agendar.jsp", vm);
