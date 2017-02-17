@@ -192,6 +192,13 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("/encuesta/finalizar_votacion")
+    @POST
+    public Response finalizarVotacionEncuesta(DTReunion reunion) {
+        FabricaLogica.getControladorEncuesta().deshabilitarVotacion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("/encuesta/votar")
     @POST
     public Response agregarVoto(DTVoto voto) {

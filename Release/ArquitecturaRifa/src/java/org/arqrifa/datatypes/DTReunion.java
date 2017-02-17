@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DTReunion {
 
     public static String PENDIENTE = "Pendiente";
-    //public static String ACTIVA = "Activa"; // Reunion LISTA o PREPARADA para iniciarse
     public static String INICIADA = "Iniciada";
     public static String LISTADO = "Listado";
     //public static String VOTACION = "Votacion"; este estado puede ser verificado desde encuesta.habilitada

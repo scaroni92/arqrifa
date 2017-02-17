@@ -143,6 +143,27 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
+    public void deshabilitar(DTEncuesta encuesta) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL deshabilitarVotacion(?)");
+            stmt.setInt(1, encuesta.getId());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("La encuesta que desea finalizar no existe");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo deshabilitar la votación, error de base de datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
+    @Override
     public void votar(DTVoto voto) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;

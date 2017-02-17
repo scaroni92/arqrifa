@@ -52,7 +52,7 @@ public class ClienteJersey {
         Response respuesta = TARGET.path("usuario/agregar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
         comprobarError(respuesta);
     }
-    
+
     public void modificarUsuario(DTUsuario usuario) throws Exception {
         Response respuesta = TARGET.path("usuario/modificar").request(JSON_TYPE).post(Entity.entity(usuario, JSON_TYPE));
         comprobarError(respuesta);
@@ -210,6 +210,11 @@ public class ClienteJersey {
 
     public void iniciarVotacion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("encuesta/iniciar_votacion").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+
+    public void finalizarVotacion(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("encuesta/finalizar_votacion").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);
     }
 

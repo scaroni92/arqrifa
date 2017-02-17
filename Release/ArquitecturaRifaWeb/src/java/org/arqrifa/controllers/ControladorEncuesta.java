@@ -148,7 +148,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void finalizar_get() {
         try {
-            //cliente.iniciarVotacion(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId"))));
+            cliente.finalizarVotacion(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId"))));
             sesion.setAttribute("mensaje", "Votación finalizada exitosamente");
         } catch (Exception e) {
             sesion.setAttribute("mensaje", e.getMessage());

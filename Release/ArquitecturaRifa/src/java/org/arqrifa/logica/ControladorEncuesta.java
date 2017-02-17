@@ -88,12 +88,22 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void habilitarVotacion(DTReunion reunion) {
         try {
             if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No es posible habilitar la votación de una encuesta si la reunión no está en progreso.");
+                throw new Exception("No se puede habilitar la votación si el estado de la reunión es " + reunion.getEstado().toLowerCase());
             }
+            if (!reunion.getEncuesta().isHabilitada()) {
+                FabricaPersistencia.getPersistenciaEncuesta().habilitar(reunion.getEncuesta());
+            }
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deshabilitarVotacion(DTReunion reunion) {
+        try {
             if (reunion.getEncuesta().isHabilitada()) {
-                throw new Exception("No es posible habilitar la votación de la encuesta si ésta ya fue habilitada.");
+                FabricaPersistencia.getPersistenciaEncuesta().deshabilitar(reunion.getEncuesta());
             }
-            FabricaPersistencia.getPersistenciaEncuesta().habilitar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

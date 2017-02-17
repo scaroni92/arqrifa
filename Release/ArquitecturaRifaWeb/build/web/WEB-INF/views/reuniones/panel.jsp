@@ -7,12 +7,11 @@
         <form action="panel" id="panel-form" method="post">
             <div class="card-panel">
                 <div class="panel-header"> 
+                    <span class="chip right">${modelo.estado}</span>
                     <c:if test="${modelo.estado eq 'Pendiente'}">                    
-                        <span class="chip blue lighten-1 white-text right">Pendiente</span>
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="iniciar">iniciar <i class="material-icons right">play_circle_outline</i> </button>
                     </c:if>
                     <c:if test="${modelo.estado eq 'Iniciada'}">
-                        <span class="chip green lighten-1 white-text right">Iniciada</span>
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="finalizar">finalizar <i class="material-icons right">stop</i> </button>
                     </c:if>
                 </div>
@@ -47,18 +46,6 @@
                 </div>
             </c:if>
 
-            <!-- TOOLBAR -->
-            <div class="fixed-action-btn toolbar">
-                <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
-                <ul>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=detalles&id=${modelo.id}"><i class="material-icons">info_outline</i></a></li>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=ver-lista&id=${modelo.id}"><i class="material-icons">people</i></a></li>
-                    <li class="waves-effect waves-light"><a href="encuesta?accion=agregar&reunionId=${modelo.id}"><i class="material-icons">playlist_add</i></a></li>
-                    <li class="waves-effect waves-light"><a href="encuesta?accion=detalles&reunionId=${modelo.id}"><i class="material-icons">dvr</i></a></li>
-                </ul>
-            </div>
-
-
             <input type="hidden" name="id" value="${modelo.id}" >
             <input type="hidden" name="generacion" value="${modelo.generacion}" >
             <input type="hidden" name="titulo" value="${modelo.titulo}">
@@ -71,6 +58,17 @@
             <input type="hidden" name="observaciones" value="${modelo.observaciones}">
             <input type="hidden" name="estado" value="${modelo.estado}">
         </form>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="fixed-action-btn toolbar">
+        <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
+        <ul>
+            <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reunion?accion=detalles&id=${modelo.id}"><i class="material-icons">info_outline</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.id}"><i class="material-icons">people</i></a></li>
+            <!-- <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.id}"><i class="material-icons">playlist_add</i></a></li> -->
+            <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.id}"><i class="material-icons">dvr</i></a></li>
+        </ul>
     </div>
 </t:masterpage>
 

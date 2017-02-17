@@ -452,6 +452,12 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE DeshabilitarVotacion(pEncuestaId int)
+BEGIN
+	UPDATE encuestas SET habilitada = 0 WHERE id = pEncuestaId;
+END
+$$
+
 CREATE PROCEDURE AltaVoto(pCi int, pRespuestaId int)
 BEGIN
 	INSERT INTO votos VALUES(pCi, pRespuestaId);
@@ -566,7 +572,7 @@ $$
 
 CREATE PROCEDURE ListarReunionesTodas()
 BEGIN
-	SELECT * FROM reuniones;
+	SELECT * FROM reuniones ORDER BY fecha DESC;
 END
 $$
 
@@ -623,7 +629,6 @@ $$
 DELIMITER ;
  -- SELECT * FROM reuniones PROCEDURE ANALYSE(); 
 use arqrifa;
-
 
            
 			

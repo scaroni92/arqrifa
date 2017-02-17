@@ -99,6 +99,9 @@
                 , alignment: 'right'
                 , stopPropagation: false
             });
+            
+            $('.toolbar ul a').addClass('tooltipped');
+            $('.toolbar .tooltipped').tooltip({delay: 50,position: 'top'});
         });
 
         </script>

@@ -7,14 +7,13 @@
     <jsp:body>
         <div class="container">
             <div class="card-panel">
-                <c:if test="${modelo.reunion.encuesta != null}">
-                    <a href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}" class="btn-flat right">ver encuesta</a>    
-                </c:if>
+                <div class="panel-header"> 
+                    <span class="chip right">${modelo.reunion.estado}</span>
+                </div>
                 <h5>${modelo.reunion.titulo}</h5>
                 <p>${modelo.reunion.descripcion}</p>
                 <p>Fecha y hora: <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></p>
                 <p>Carácter: ${modelo.reunion.obligatoria? "obligatorio" : "no obligatorio"}</p>
-                <p>Estado: ${modelo.reunion.estado}</p>
                 <p>Duración: ${modelo.reunion.duracion} minutos</p>
                 <p>Lugar: ${modelo.reunion.lugar}</p>
                 <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
@@ -53,17 +52,17 @@
             <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
             <ul>
                 <c:if test="${usuario.rol eq 'Encargado'}">
-                    <li class="waves-effect waves-light"><a href="#modal"><i class="material-icons">delete</i></a></li>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=modificar&id=${modelo.reunion.id}"><i class="material-icons">edit</i></a></li>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=ver-lista&id=${modelo.reunion.id}"><i class="material-icons">people</i></a></li>
-                    <li class="waves-effect waves-light"><a href="panel?id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
-                    </c:if>
+                    <li class="waves-effect waves-light"><a data-tooltip="Eliminar" href="#modal"><i class="material-icons">delete</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Modificar" href="reunion?accion=modificar&id=${modelo.reunion.id}"><i class="material-icons">edit</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.reunion.id}"><i class="material-icons">people</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Panel" href="panel?id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
                     <c:if test="${modelo.reunion.encuesta == null}">
-                    <li class="waves-effect waves-light"><a href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}"><i class="material-icons">playlist_add</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}"><i class="material-icons">playlist_add</i></a></li>
                     </c:if>
-                    <c:if test="${modelo.reunion.encuesta != null}">
-                    <li class="waves-effect waves-light"><a href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}"><i class="material-icons">dvr</i></a></li>
-                    </c:if>
+                </c:if>
+                <c:if test="${modelo.reunion.encuesta != null}">
+                    <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}"><i class="material-icons">dvr</i></a></li>
+                </c:if>
             </ul>
         </div>
 
