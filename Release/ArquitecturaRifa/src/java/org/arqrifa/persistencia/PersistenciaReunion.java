@@ -520,4 +520,54 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 this.listarParticipantes(res.getInt("id"), con));
     }
 
+    @Override
+    public void habilitarLista(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL HabilitarLista(?)");
+            stmt.setInt(1, reunion.getId());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("Reunión no encontrada");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo habilitar la lista de asistencias, error de base datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    @Override
+    public void deshabilitarLista(DTReunion reunion) throws Exception {
+             Connection con = null;
+        CallableStatement stmt = null;
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL DeshabilitarLista(?)");
+            stmt.setInt(1, reunion.getId());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("Reunión no encontrada");
+            }
+        } catch (SQLException e) {
+            throw new Exception("No se pudo deshabilitar la lista de asistencias, error de base datos.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
 }

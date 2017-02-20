@@ -35,11 +35,10 @@ class ControladorReunion implements IControladorReunion {
             if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
             }
-
-            /* TODO: SE COMENTA ESTA VALIDACIÓN PARA HACER PRUEBAS
             if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("La lista no se ha sido habilitada aún.");
-            }*/
+            }
+
             FabricaPersistencia.getPersistenciaReunion().agregarAsistencia(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -245,6 +244,38 @@ class ControladorReunion implements IControladorReunion {
     public List<DTReunion> listarTodas() {
         try {
             return FabricaPersistencia.getPersistenciaReunion().listarTodas();
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void habilitarLista(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede finalizar una reunión nula");
+            }
+            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
+                throw new Exception("Para habilitar la lista, el estado de la reunión debe ser iniciada.");
+            }
+
+            FabricaPersistencia.getPersistenciaReunion().habilitarLista(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deshabilitarLista(DTReunion reunion) {
+        try {
+            if (reunion == null) {
+                throw new Exception("No se puede finalizar una reunión nula");
+            }
+            if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
+                throw new Exception("No se puede deshabilitar una lista que no fue habilitada aún.");
+            }
+
+            FabricaPersistencia.getPersistenciaReunion().deshabilitarLista(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

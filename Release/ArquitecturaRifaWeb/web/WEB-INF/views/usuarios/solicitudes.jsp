@@ -22,9 +22,10 @@
                             <td>${solicitud.usuario.apellido}</td>
                             <td><fmt:formatDate pattern="dd/MM/yy" value="${solicitud.fecha}" /></td>
                             <td>
-                                <div class="switch">
-                                    <label>No<input type="checkbox" ${solicitud.verificada ? 'checked': ''} onclick="return false;" /> <span class="lever"></span>Si</label>
-                                </div>
+                                <c:if test="${solicitud.verificada}">
+                                    <i class="material-icons blue-text" style="font-size: 2em">verified_user</i>
+                                </c:if>
+                                
                             </td>
                             <td class="icon-btn"> 
                                 <a href="solicitud?accion=detalles&ci=${solicitud.usuario.ci}"><i class="material-icons ">info_outline</i></a> 

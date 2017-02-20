@@ -41,6 +41,9 @@ public class ControladorCuestionario extends Controlador {
                     sesion.setAttribute("estudiante", dtUsuario);
                     vm.setMensaje("Estudiante encontrado");
                 }
+                else {
+                    vm.setMensaje("Estudiante no encontrado");
+                }
             }
 
         } catch (Exception e) {

@@ -322,6 +322,18 @@ BEGIN
 END
 $$
 
+CREATE PROCEDURE HabilitarLista(pId int)
+BEGIN
+	UPDATE reuniones SET estado = 'Listado' WHERE id = pId;
+END
+$$
+
+CREATE PROCEDURE DeshabilitarLista(pId int)
+BEGIN
+	UPDATE reuniones SET estado = 'Iniciada' WHERE id = pId;
+END
+$$
+
 -- --------------------------------------------------------
 
 -- 

@@ -107,6 +107,20 @@ public class Servicio {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("/reunion/habilitar_lista")
+    @POST
+    public Response habilitarLista(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().habilitarLista(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("/reunion/deshabilitar_lista")
+    @POST
+    public Response deshabilitarLista(DTReunion reunion) {
+        FabricaLogica.getControladorReuniones().deshabilitarLista(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @Path("/reunion/finalizar")
     @POST
     public Response finalizarReunion(DTReunion reunion) {

@@ -156,6 +156,16 @@ public class ClienteJersey {
         comprobarError(respuesta);
     }
 
+    public void habilitarLista(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/habilitar_lista").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+
+    public void deshabilitarLista(DTReunion reunion) throws Exception {
+        Response respuesta = TARGET.path("reunion/deshabilitar_lista").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
+        comprobarError(respuesta);
+    }
+
     public void finalizarReunion(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/finalizar").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);

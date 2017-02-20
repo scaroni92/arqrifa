@@ -9,6 +9,7 @@ public class ControladorListaAsistencias {
     }
 
     public void habilitar_get() {
+        
     }
 
     public void deshabilitar_get() {

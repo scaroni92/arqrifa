@@ -29,7 +29,7 @@
                     </div>
                 </li>
             </ul>
-            <c:if test="${modelo.estado eq 'Iniciada'}">
+            <c:if test="${modelo.estado != 'Pendiente' && modelo.estado != 'Finalizada'}">
                 <div class="card-panel">
                     <h6 class="center">Recapitulación</h6>
                     <div class="row">
@@ -65,8 +65,10 @@
         <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
         <ul>
             <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reunion?accion=detalles&id=${modelo.id}"><i class="material-icons">info_outline</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.id}"><i class="material-icons">people</i></a></li>
-            <!-- <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.id}"><i class="material-icons">playlist_add</i></a></li> -->
+            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.id}"><i class="material-icons">assignment</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Habilitar lista" href="panel?accion=habilitar-lista&id=${modelo.id}"><i class="material-icons">assignment_turned_in</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Deshabilitar lista" href="panel?accion=deshabilitar-lista&id=${modelo.id}"><i class="material-icons">assignment_late</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.id}"><i class="material-icons">playlist_add</i></a></li>
             <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.id}"><i class="material-icons">dvr</i></a></li>
         </ul>
     </div>

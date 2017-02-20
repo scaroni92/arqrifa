@@ -6,7 +6,7 @@
         <div class="container">
             <div class="card-panel grey-text text-darken-2">
                 <h4>${encuesta.titulo}</h4>
-                <h5>Estudiante: ${estudiante.nombre} ${estudiante.apellido}</h5> 
+                <h5>${estudiante != null? 'Votación para el estudiante' : ''} ${estudiante.nombre} ${estudiante.apellido}</h5> 
             </div>
             <nav>
                 <div class="nav-wrapper">
@@ -23,7 +23,8 @@
                 <c:forEach var="propuesta" items="${encuesta.propuestas}">
                     <div class="card">
                         <div class="card-header green white-text">
-                            <h6>${propuesta.pregunta}</h6> </div>
+                            <h6>${propuesta.pregunta}</h6> 
+                        </div>
                         <div class="card-content">
                             <c:forEach var="respuesta" items="${propuesta.respuestas}">
                                 <p>
@@ -31,9 +32,7 @@
                                     <label for="${respuesta.id}">${respuesta.respuesta}</label>
                                 </p>
                             </c:forEach>
-
                         </div>
-
                     </div>
                 </c:forEach>
 
