@@ -5,26 +5,21 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <form action="reunion" id="reunion-form" class="col s12 card-panel" style="padding:20px;" method="post">
+                <form action="reunion" class="col s12 card-panel" style="padding:20px;" method="post">
+                    <input type="hidden" name="id" value="${modelo.id}" />
                     <div class="row">
                         <div class="col s12">
                             <h5>Modificar reunión
                                 <span class="right"> 
-                                    <input type="checkbox" id="obligatoria" name="obligatoria" class="filled-in" ${modelo.obligatoria? 'checked' : ''} />
-                                    <label for="obligatoria" class="right" >Obligatoria</label>
+                                    <input type="checkbox" id="obligatoria" name="obligatoria" ${modelo.obligatoria? 'checked' : ''} class="filled-in" />
+                                    <label for="obligatoria" class="right">Obligatoria</label>
                                 </span>
                             </h5> 
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="id" name="id" type="text" readonly value="${modelo.id}">
-                            <label for="id">ID</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="titulo" name="titulo" type="text" value="${modelo.titulo}">
+                            <input id="titulo" name="titulo" type="text" value="${modelo.titulo}" required>
                             <label for="titulo">Título</label>
                         </div>
                     </div>
@@ -43,25 +38,19 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="lugar" name="lugar" type="text" value="${modelo.lugar}">
+                            <input id="lugar" name="lugar" type="text" value="${modelo.lugar}" required>
                             <label for="lugar">Lugar</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea id="descripcion" name="descripcion" class="materialize-textarea" data-length="300" >${modelo.descripcion}</textarea>
+                            <textarea id="descripcion" name="descripcion" class="materialize-textarea" data-length="300" required>${modelo.descripcion}</textarea>
                             <label for="descripcion">Descripción</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            <c:forEach var="tema" items="${modelo.temas}" varStatus="status">
-                                <input id="tema${status.index}" type="hidden" name="temas" value="${tema}">
-                                <div id="chip${status.index}" class="chip">${tema}<i class="close material-icons" onclick="eliminar('tema${status.index}')">close</i>
-                                </div>
-                            </c:forEach>
-                            <div id="temas-chips" class="chips chips-placeholder"></div>
-
+                            <div class="chips"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -72,5 +61,18 @@
                 </form>
             </div>
         </div>
+        <script>
+            $('form').on('submit', function () {
+                $.each($('.chips').material_chip('data'), function (i, val) {
+                    $('form').append('<input type="hidden" name="temas" value="' + val.tag + '" />');
+                });
+            });
+
+            $('.chips').material_chip({
+                data: [<c:forEach var="tema" items="${modelo.temas}">{tag: '${tema}'},</c:forEach>],
+                placeholder: 'Ingrese un tema',
+                secondaryPlaceholder: '+Temas'
+            });
+            </script>
     </jsp:body>
 </t:masterpage>
