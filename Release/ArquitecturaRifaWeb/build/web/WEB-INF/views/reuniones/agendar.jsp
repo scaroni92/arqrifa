@@ -5,13 +5,13 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <form action="reunion" id="reunion-form" class="col s12 card-panel" style="padding:20px;" method="post">
+                <form action="reunion" class="col s12 card-panel" style="padding:20px;" method="post">
                     <div class="row">
                         <div class="col s12">
                             <h5>Nueva reunión
                                 <span class="right"> 
-                                <input type="checkbox" id="obligatoria" name="obligatoria" ${modelo.obligatoria? 'checked' : ''} class="filled-in" />
-                                <label for="obligatoria" class="right">Obligatoria</label>
+                                    <input type="checkbox" id="obligatoria" name="obligatoria" ${modelo.obligatoria? 'checked' : ''} class="filled-in" />
+                                    <label for="obligatoria" class="right">Obligatoria</label>
                                 </span>
                             </h5> 
                         </div>
@@ -49,14 +49,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            <c:forEach var="tema" items="${modelo.temas}" varStatus="status">
-                                <input id="tema${status.index}" type="hidden" name="temas" value="${tema}">
-                                <div id="chip${status.index}" class="chip">${tema}<i class="close material-icons" onclick="eliminar('tema${status.index}')">close</i>
-                                </div>
-                            </c:forEach>
-                            <div id="temas-chips" class="chips chips-placeholder"></div>
-
-
+                            <div class="chips"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -67,5 +60,18 @@
                 </form>
             </div>
         </div>
+        <script>
+            $('form').on('submit', function () {
+                $.each($('.chips').material_chip('data'), function (i, val) {
+                    $('form').append('<input type="hidden" name="temas" value="' + val.tag + '" />');
+                });
+            });
+
+            $('.chips').material_chip({
+                data: [<c:forEach var="tema" items="${modelo.temas}">{tag: '${tema}'},</c:forEach>],
+                placeholder: 'Ingrese un tema',
+                secondaryPlaceholder: '+Temas'
+            });
+            </script>
     </jsp:body>
 </t:masterpage>

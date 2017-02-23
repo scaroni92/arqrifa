@@ -34,8 +34,6 @@ table th {
 .toolbar {
     z-index: 1000;
 }
-
-
 /* Se eliminan estilos por defecto del navegador */
 
 input[type=number]::-webkit-inner-spin-button,

@@ -67,8 +67,6 @@ public class ControladorReunion extends Controlador {
             }
 
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
-
-            reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
             reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));

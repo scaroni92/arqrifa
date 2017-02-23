@@ -33,18 +33,16 @@ public class ControladorEncuesta extends Controlador {
 
     public void agregar_post() {
         try {
-            DTEncuesta encuesta = new DTEncuesta();
-            encuesta.setTitulo(request.getParameter("titulo"));
-            encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-            encuesta.setPropuestas(getPropuestas());
-
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
-            reunion.setEncuesta(encuesta);
-
+            reunion.setEncuesta(new DTEncuesta());
+            reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
+            reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
+            reunion.getEncuesta().setPropuestas(getPropuestas());
+            
             cliente.agregarEncuesta(reunion);
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta agregada exitosamente");
-            response.sendRedirect("usuario");
+            response.sendRedirect("usuario?accion=ver-calendario");
         } catch (Exception e) {
             mostrarVista("encuestas/agregar.jsp", new ViewModel(e.getMessage()));
         }
@@ -62,7 +60,7 @@ public class ControladorEncuesta extends Controlador {
         for (int i = 0; i < preguntas.length; i++) {
             propuesta = new DTPropuesta();
             propuesta.setPregunta(preguntas[i]);
-            String[] respuestas = request.getParameterValues("respuestas" + (i + 1));
+            String[] respuestas = request.getParameterValues("respuestas" + i);
 
             if (respuestas == null) {
                 throw new Exception("Agregue las respuestas de la propuesta " + (i + 1));

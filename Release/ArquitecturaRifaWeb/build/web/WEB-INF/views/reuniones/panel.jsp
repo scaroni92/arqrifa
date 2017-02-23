@@ -40,7 +40,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            <div id="resoluciones-chips" class="chips chips-placeholder"></div>
+                            <div class="chips"></div>
                         </div>
                     </div>
                 </div>
@@ -72,5 +72,18 @@
             <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.id}"><i class="material-icons">dvr</i></a></li>
         </ul>
     </div>
+    <script>
+        $('form').on('submit', function () {
+            $.each($('.chips').material_chip('data'), function (i, val) {
+                $('form').append('<input type="hidden" name="resoluciones" value="' + val.tag + '" />');
+            });
+        });
+
+        $('.chips').material_chip({
+            data: [<c:forEach var="tema" items="${modelo.resoluciones}">{tag: '${tema}'},</c:forEach>],
+            placeholder: 'Agregar resolucion',
+            secondaryPlaceholder: '+Resolución'
+        });
+    </script>
 </t:masterpage>
 

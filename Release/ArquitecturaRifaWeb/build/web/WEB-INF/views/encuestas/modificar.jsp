@@ -47,5 +47,8 @@
                 </form>
             </div>
         </div>
+        <script>
+            var $propContainer = $('#propuestas-container');
+        </script>
     </jsp:body>
 </t:masterpage>

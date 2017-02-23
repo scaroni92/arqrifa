@@ -10,9 +10,11 @@
         <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
     </head>
 
-    <body onload="Materialize.toast('${modelo.mensaje}', 4000)">
+    <body>
         <header>
             <div class="navbar-fixed">
                 <nav>
@@ -69,15 +71,14 @@
         </ul>
 
 
-        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/layouts/reunion.js"></script>
-        <script type="text/javascript" src="js/layouts/panel.js"></script>
-        <script type="text/javascript" src="js/layouts/encuesta.js"></script>
+
+        <!-- <script type="text/javascript" src="js/main.js"></script> -->
+        <!-- <script type="text/javascript" src="js/layouts/reunion.js"></script>
+        <script type="text/javascript" src="js/layouts/panel.js"></script> -->
         <script>
-        //Inicialización
-        $(document).ready(function () {
+            //Inicialización
+            Materialize.toast('${modelo.mensaje}', 4000)
+            
             $('select').material_select();
             $('.modal').modal();
             $('.datepicker').pickadate({
@@ -99,13 +100,10 @@
                 , alignment: 'right'
                 , stopPropagation: false
             });
-            
+
             $('.toolbar ul a').addClass('tooltipped');
-            $('.toolbar .tooltipped').tooltip({delay: 50,position: 'top'});
-        });
-
+            $('.toolbar .tooltipped').tooltip({delay: 50, position: 'top'});
         </script>
-
     </body>
 
 </html>
