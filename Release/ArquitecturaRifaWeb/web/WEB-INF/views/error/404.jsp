@@ -11,7 +11,7 @@
     <main class="row">
         <div class="col s12 ">
             <div class="card">
-                <div class="card-image blue" style="height:100px;"> <h5 class="card-title">Error 404</h5> <a href="usuario" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
+                <div class="card-image blue" style="height:100px;"> <h5 class="card-title">Error 404</h5> <a href="index" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
                 <div class="card-content">
                     <h5>Oops! El recurso solicitado no fue encontrado</h5>
                 </div>

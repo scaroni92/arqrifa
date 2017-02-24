@@ -1,5 +1,6 @@
 package org.arqrifa.controllers;
 
+import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
@@ -15,11 +16,11 @@ public class ControladorUsuario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             sesion.removeAttribute("usuario");
-            mostrarVista("login.jsp");
-        } catch (Exception e) {
+            response.sendRedirect("");
+        } catch (IOException e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("login.jsp");
+        
     }
 
     public void ver_calendario_get() {

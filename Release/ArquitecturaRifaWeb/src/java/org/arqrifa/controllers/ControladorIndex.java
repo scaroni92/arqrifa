@@ -23,7 +23,7 @@ public class ControladorIndex extends Controlador {
         try {
             usuario = cliente.login(Integer.parseInt(request.getParameter("ci")), request.getParameter("pass"));
             if (usuario == null) {
-                throw new Exception("Usuario y/o contraseña incorrectos.");
+                throw new Exception("Usuario o contraseña incorrectos");
             }
             sesion.setAttribute("usuario", usuario);
             mostrarVista(usuario.getRol().toLowerCase() + "/index.jsp");

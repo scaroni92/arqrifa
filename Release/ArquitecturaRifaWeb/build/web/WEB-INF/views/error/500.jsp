@@ -12,7 +12,7 @@
         <div class="col s12 ">
             <div class="card">
                 <div class="card-image blue card-block" style="height:100px;">
-                    <h5 class="card-title">Error 500</h5> <a href="usuario" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
+                    <h5 class="card-title">Error 500</h5> <a href="index" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
                 <div class="card-content">
                     <h5>¡Vaya! Algo salió mal.</h5>
                     <p>Intenta recargar la página o no dudes en contactar con el administrador si el error persiste.</p>

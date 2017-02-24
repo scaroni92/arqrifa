@@ -39,7 +39,7 @@
                     <a ><span class="white-text email">${usuario.rol}</span> </a> 
                 </div>
             </li>
-            <li><a href="usuario"><i class="material-icons">home</i>INICIO</a></li>
+            <li><a href="index"><i class="material-icons">home</i>INICIO</a></li>
             <li><a href="usuario?accion=ver-calendario"><i class="material-icons">event</i>Calendario</a></li>
             <li>
                 <div class="divider"></div>
@@ -72,12 +72,8 @@
 
 
 
-        <!-- <script type="text/javascript" src="js/main.js"></script> -->
-        <!-- <script type="text/javascript" src="js/layouts/reunion.js"></script>
-        <script type="text/javascript" src="js/layouts/panel.js"></script> -->
         <script>
-            //Inicialización
-            Materialize.toast('${modelo.mensaje}', 4000)
+            Materialize.toast('${modelo.mensaje}', 4000);
             
             $('select').material_select();
             $('.modal').modal();
@@ -101,6 +97,7 @@
                 , stopPropagation: false
             });
 
+            // TODO solucionar funcionamiento de tooltips
             $('.toolbar ul a').addClass('tooltipped');
             $('.toolbar .tooltipped').tooltip({delay: 50, position: 'top'});
         </script>

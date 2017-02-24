@@ -46,7 +46,7 @@
 
                 var $propuestaContainer = $('<div></div>').addClass('row propuesta-container');
                 var $preguntaContainer = $('<div></div>').addClass('input-field col s12').append($('<span class="icon-btn right"><i class="material-icons">delete</i></span>'),
-                        $('<input id="pregunta' + indiceProp + '" name="preguntas" type="text" required ></input><label for="pregunta' + indiceProp + '">Pregunta ' + (+indiceProp + 1) + '</label>'));
+                        $('<input id="pregunta' + indiceProp + '" name="preguntas" type="text" required ></input><label for="pregunta' + indiceProp + '">Propuesta ' + (+indiceProp + 1) + '</label>'));
                 var $chips = $('<div class="chips chips-placeholder"></div>');
 
                 $propuestaContainer.append($preguntaContainer, $('<div class="col s12"></div>').append($chips));

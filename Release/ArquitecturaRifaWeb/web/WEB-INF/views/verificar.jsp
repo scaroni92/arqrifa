@@ -15,7 +15,7 @@
         <div class="col s12 ">
             <div class="card">
                 <div class="card-image blue .card-block" style="height:100px;">
-                    <h5 class="card-title">${modelo.verificada? 'Éxito':'Error'}</h5> <a href="http://localhost:8080/ArquitecturaRifaWeb/" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">input</i></a> </div>
+                    <h5 class="card-title">${modelo.verificada? 'Éxito':'Error'}</h5> <a href="index" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">input</i></a> </div>
                 <div class="card-content">
                     <h5>${modelo.mensaje}</h5>
                     <p>${modelo.descripcion}</p>

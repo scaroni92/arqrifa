@@ -23,7 +23,7 @@
                             <td><fmt:formatDate pattern="dd/MM/yy" value="${solicitud.fecha}" /></td>
                             <td>
                                 <c:if test="${solicitud.verificada}">
-                                    <i class="material-icons blue-text" style="font-size: 2em">verified_user</i>
+                                    <i class="material-icons green-text text-lighten-2" style="font-size: 2em">verified_user</i>
                                 </c:if>
                                 
                             </td>

@@ -10,8 +10,9 @@
                 <div class="panel-header"> 
                     <span class="chip right">${modelo.reunion.estado}</span>
                 </div>
-                <h5>${modelo.reunion.titulo}</h5>
-                <p>${modelo.reunion.descripcion}</p>
+                <h4>${modelo.reunion.titulo}</h4>
+                <p class="flow-text">${modelo.reunion.descripcion}</p>
+                <div class="divider"></div>
                 <p>Fecha y hora: <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></p>
                 <p>Carácter: ${modelo.reunion.obligatoria? "obligatorio" : "no obligatorio"}</p>
                 <p>Duración: ${modelo.reunion.duracion} minutos</p>
@@ -19,32 +20,33 @@
                 <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
                     <p>Participantes: ${fn:length(modelo.reunion.participantes)}</p>    
                 </c:if>
-
-            </div>
-            <ul class="collapsible" data-collapsible="expandable">
-                <li>
-                    <div class="collapsible-header green lighten-1 white-text active"><i class="material-icons">assignment</i>Temas</div>
-                    <div class="collapsible-body white">
-                        <c:forEach var="tema" items="${modelo.reunion.temas}">
-                            <p>${tema}</p>
+                <p>
+                    Temas
+                <ul>
+                    <c:forEach var="tema" items="${modelo.reunion.temas}">
+                        <li>${tema}</li>
                         </c:forEach>
-                    </div>
-                </li>
+                </ul>
+                </p>
+
                 <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
-                    <li>
-                        <div class="collapsible-header  green lighten-1 white-text"><i class="material-icons">rate_review</i>Resoluciones</div>
-                        <div class="collapsible-body white">
-                            <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
-                                <p>${resolucion}</p>
-                            </c:forEach>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="collapsible-header  green lighten-1 white-text"><i class="material-icons">find_in_page</i>Observaciones</div>
-                        <div class="collapsible-body white"><span>${modelo.reunion.observaciones}</span></div>
-                    </li>
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons grey-text text-darken-1 ">rate_review</i>Resoluciones</div>
+                            <div class="collapsible-body">
+                                <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
+                                    <p>${resolucion}</p>
+                                </c:forEach>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons grey-text text-darken-1">find_in_page</i>Observaciones</div>
+                            <div class="collapsible-body"><span>${modelo.reunion.observaciones}</span></div>
+                        </li>
+                    </ul>
                 </c:if>
-            </ul>
+            </div>
+
         </div>
 
         <!-- TOOLBAR -->
@@ -56,13 +58,13 @@
                     <li class="waves-effect waves-light"><a data-tooltip="Modificar" href="reunion?accion=modificar&id=${modelo.reunion.id}"><i class="material-icons">edit</i></a></li>
                     <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.reunion.id}"><i class="material-icons">people</i></a></li>
                     <li class="waves-effect waves-light"><a data-tooltip="Panel" href="panel?id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
-                    <c:if test="${modelo.reunion.encuesta == null}">
-                    <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}"><i class="material-icons">playlist_add</i></a></li>
+                        <c:if test="${modelo.reunion.encuesta == null}">
+                        <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}"><i class="material-icons">playlist_add</i></a></li>
+                        </c:if>
                     </c:if>
-                </c:if>
-                <c:if test="${modelo.reunion.encuesta != null}">
+                    <c:if test="${modelo.reunion.encuesta != null}">
                     <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}"><i class="material-icons">dvr</i></a></li>
-                </c:if>
+                    </c:if>
             </ul>
         </div>
 
