@@ -12,6 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
+
     </head>
 
     <body>
@@ -71,35 +72,9 @@
         </ul>
 
 
-
+        <script type="text/javascript" src="js/main.js"></script>
         <script>
             Materialize.toast('${modelo.mensaje}', 4000);
-            
-            $('select').material_select();
-            $('.modal').modal();
-            $('.datepicker').pickadate({
-                selectMonths: true
-                , min: true
-                , format: 'yyyy-mm-dd'
-            });
-            $('.button-collapse').sideNav({
-                menuWidth: 300
-                , closeOnClick: false
-            });
-            $('.profile-dropdown').dropdown({
-                inDuration: 300
-                , outDuration: 225
-                , constrainWidth: false
-                , hover: false
-                , gutter: 0
-                , belowOrigin: false
-                , alignment: 'right'
-                , stopPropagation: false
-            });
-
-            // TODO solucionar funcionamiento de tooltips
-            $('.toolbar ul a').addClass('tooltipped');
-            $('.toolbar .tooltipped').tooltip({delay: 50, position: 'top'});
         </script>
     </body>
 

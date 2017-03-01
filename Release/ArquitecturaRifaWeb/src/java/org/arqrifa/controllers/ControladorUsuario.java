@@ -1,6 +1,9 @@
 package org.arqrifa.controllers;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
@@ -20,10 +23,10 @@ public class ControladorUsuario extends Controlador {
         } catch (IOException e) {
             vm.setMensaje(e.getMessage());
         }
-        
+
     }
 
-    public void ver_calendario_get() {
+    /* public void ver_calendario_get() {
         VMListadoReuniones vm = new VMListadoReuniones();
         try {
             if (this.usuario.getRol().equals(DTUsuario.ADMIN)) {
@@ -31,6 +34,25 @@ public class ControladorUsuario extends Controlador {
             } else {
                 vm.setReuniones(cliente.listarReunionesPorGeneracion(this.usuario.getGeneracion()));
             }
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("reuniones/calendario.jsp", vm);
+    }*/
+    public void ver_calendario_get() {
+        VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
+        List<DTReunion> reuniones;
+        try {
+            if (usuario.getRol().equals(DTUsuario.ADMIN)) {
+                reuniones = cliente.listarReunionesTodas();
+            } else {
+                reuniones = cliente.listarReunionesPorGeneracion(usuario.getGeneracion());
+            }
+
+            if (vm.getFiltro().equalsIgnoreCase(DTReunion.PENDIENTE) || vm.getFiltro().equalsIgnoreCase(DTReunion.FINALIZADA)) {
+                reuniones = reuniones.stream().filter(reunion -> reunion.getEstado().equalsIgnoreCase(vm.getFiltro())).collect(Collectors.toList());
+            }
+            vm.setReuniones(reuniones);
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

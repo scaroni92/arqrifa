@@ -54,7 +54,7 @@
             <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
             <ul>
                 <c:if test="${usuario.rol eq 'Encargado'}">
-                    <li class="waves-effect waves-light"><a data-tooltip="Eliminar" href="#modal"><i class="material-icons">delete</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Eliminar" href="#modal" class="tooltipped"><i class="material-icons">delete</i></a></li>
                     <li class="waves-effect waves-light"><a data-tooltip="Modificar" href="reunion?accion=modificar&id=${modelo.reunion.id}"><i class="material-icons">edit</i></a></li>
                     <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.reunion.id}"><i class="material-icons">people</i></a></li>
                     <li class="waves-effect waves-light"><a data-tooltip="Panel" href="panel?id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>

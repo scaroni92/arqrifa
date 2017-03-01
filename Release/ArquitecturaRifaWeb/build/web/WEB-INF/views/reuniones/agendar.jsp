@@ -60,6 +60,7 @@
                 </form>
             </div>
         </div>
+
         <script>
             $('form').on('submit', function () {
                 $.each($('.chips').material_chip('data'), function (i, val) {
@@ -72,6 +73,6 @@
                 placeholder: 'Ingrese un tema',
                 secondaryPlaceholder: '+Temas'
             });
-            </script>
+         </script>
     </jsp:body>
 </t:masterpage>

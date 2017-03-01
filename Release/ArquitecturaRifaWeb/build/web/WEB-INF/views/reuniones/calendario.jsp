@@ -4,6 +4,17 @@
 
 <t:masterpage titulo="Calendario">
     <div class="container">
+        <div class="section center">
+            <form action="usuario">
+                <input type="hidden" name="accion" value="ver-calendario" />
+                <input class="with-gap" name="filtro" type="radio" id="todas" value="todas" />
+                <label for="todas">Todas</label>
+                <input class="with-gap" name="filtro" type="radio" id="pendiente" value="pendiente" />
+                <label for="pendiente">Pendientes</label>
+                <input class="with-gap" name="filtro" type="radio" id="finalizada" value="finalizada" />
+                <label for="finalizada">Finalizadas</label>
+            </form>
+        </div>
         <div class="row">
             <c:forEach var="reunion" items="${modelo.reuniones}" varStatus="status">
                 <c:set var="color" value="${reunion.estado eq 'Finalizada'? 'grey' : 'teal'}" scope="page"/>
@@ -33,6 +44,13 @@
         </div>    
     </c:if>
 
+    <script>
+        $('form').on('change', 'input', function(){
+            this.form.submit();
+        });
+        
+        $('#' + '${modelo.filtro}').attr('checked', true);
+    </script>
 </t:masterpage>
 
 
