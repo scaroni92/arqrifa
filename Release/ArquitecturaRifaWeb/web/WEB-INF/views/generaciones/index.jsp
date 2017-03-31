@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th>Generación</th>
-                        <th>Miembros</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>

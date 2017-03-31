@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Arquitectura Rifa</string>
+    <string name="ci_label">Cédula</string>
+    <string name="pass_label">Contraseña</string>
+
+    <string name="menu_action_asistencia">Marcar Asistencia</string>
+    <string name="menu_action_cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="title_reunion_activity">Detalles</string>
+    <string name="title_encuesta_activity">Encuesta</string>
+    <string name="title_cuestionario_activity">Cuestionario</string>
+    <string name="title_marcar_asistencia_activity">Marcar Asistencia</string>
+    <string name="confirm_button">Confirmar</string>
+    <string name="login_button">Login</string>
+</resources>

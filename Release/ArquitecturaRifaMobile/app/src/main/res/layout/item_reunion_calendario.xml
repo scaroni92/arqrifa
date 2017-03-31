@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:layout_marginTop="4dp">
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="2dp">
+
+        <LinearLayout
+            android:id="@+id/llFecha"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/md_orange_400">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvMes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/md_text_white"
+                android:text="[mes]"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvDia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textAlignment="center"
+                android:textColor="@color/md_text_white"
+                android:text="00"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvHora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/md_text_white"
+                android:text="00:00"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="[título]"
+                android:textColor="@color/md_black_1000_75"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="[descripción]"
+                android:textSize="12dp"/>
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvCaracter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textAllCaps="false"
+                android:text="[carácter]"
+                android:textSize="11dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/md_black_1000_75"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <View style="@style/Divider" />
+</LinearLayout>

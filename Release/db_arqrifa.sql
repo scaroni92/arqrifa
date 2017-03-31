@@ -125,7 +125,7 @@ INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria,
 (2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
 (2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Iniciada'),
 (2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-02-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
+(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
 
 
 INSERT INTO temas(id_reunion, tema) VALUES 
@@ -515,7 +515,7 @@ $$
 
 CREATE PROCEDURE BuscarProximaReunionPorGeneracion(pGenId int)
 BEGIN
-	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND eliminada = 0 AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
+	SELECT * FROM reuniones WHERE id_gen = pGenId AND estado = 'Pendiente' AND fecha >= DATE_FORMAT(NOW(),'%Y-%m-%d') ORDER BY fecha ASC LIMIT 1;
 END
 $$
 
@@ -641,7 +641,3 @@ $$
 DELIMITER ;
  -- SELECT * FROM reuniones PROCEDURE ANALYSE(); 
 use arqrifa;
-
-           
-			
-

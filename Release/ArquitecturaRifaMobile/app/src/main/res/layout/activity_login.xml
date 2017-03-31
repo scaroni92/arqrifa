@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="arqrifa.org.arquitecturarifamobile.layout.LoginActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:textStyle="normal|bold"
+        android:textAlignment="center"
+        android:textColor="@color/md_white_1000"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/txtCi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:hint="@string/ci_label"
+            android:textColor="@color/md_white_1000" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/txtPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:hint="@string/pass_label"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+      <Button style="@style/Button.Large"
+        android:text="@string/login_button"
+        android:onClick="login" />
+
+    <ProgressBar style="?android:attr/progressBarStyleLarge"
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

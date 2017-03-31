@@ -3,11 +3,11 @@
 <%@attribute name="titulo" %>
 
 <!DOCTYPE html>
-<html class="teal lighten-5">
+<html class="grey lighten-3">
 
     <head>
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+        <link type="text/css" rel="stylesheet" href="css/materialize.css">
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
@@ -58,7 +58,6 @@
             <c:if test="${usuario.rol eq 'Admin'}">
                 <li><a class="waves-effect" href="admin?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="generaciones"><i class="material-icons">wc</i>Generaciones</a></li>
-                <li><a class="waves-effect" href="admin?accion=agregar-usuario"><i class="material-icons">person_add</i>Agregar usuario</a></li>
                 <li><a class="waves-effect" href="admin?accion=listar-usuarios"><i class="material-icons">people</i>Usuarios</a></li>
                 </c:if>
         </ul>

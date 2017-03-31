@@ -1,8 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html class="teal lighten-2">
+<html class="green darken-1-2">
     <head>
-
+        <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/materialize.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> </head>
     <style>
