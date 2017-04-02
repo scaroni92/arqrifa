@@ -6,13 +6,17 @@
             <ul class="slides">
                 <li> <img src="img/slider1.jpeg">
                     <div class="caption left-align">
-                        <h3>Próxima reunión 02/10/16</h3>
-                        <h5 class="light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur sequi impedit ab tempore officiis vero veniam doloremque placeat magnam deserunt amet saepe, accusantium voluptatum eveniet nam quaerat modi maxime provident.</h5> <a href="#" class="btn-flat white-text waves-effect waves-yellow ">detalles</a> </div>
+                        <h3>Próxima reunión ${modelo.proximaReunion.fecha}</h3>
+                        <h5 class="light">${modelo.proximaReunion.descripcion}</h5> <a href="#" class="btn-flat white-text waves-effect waves-yellow ">detalles</a> </div>
                 </li>
                 <li> <img src="img/slider2.jpg">
                     <div class="caption right-align">
                         <h3>Últimas Resoluciones</h3>
-                        <h5 class="light grey-text text-lighten-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo ad optio in sunt officia a nam debitis laudantium officiis omnis qui, quos dignissimos provident, necessitatibus maiores, eos rerum deserunt? Delectus.</h5> <a href="#" class="btn-flat white-text waves-effect waves-white">detalles</a> </div>
+                        <c:forEach var="resolucion" items="${modelo.ultimaReunion.resoluciones}">
+                            <h5 class="light grey-text text-lighten-3">${resolucion}</h5>
+                        </c:forEach>
+                        <a href="#" class="btn-flat white-text waves-effect waves-white">detalles</a> </div>
+                        
                 </li>
                 <li> <img src="img/slider3.jpg">
                     <div class="caption center-align">
@@ -46,9 +50,12 @@
             $('.slider').slider({
                 interval: 10000
             });
+            <c:if test="${!empty modelo.solicitudes}">
             window.setTimeout(function () {
-                Materialize.toast('<span>Tienes una reunión pendiente para hoy </span> <a href="#" class="green-text" style="margin-left:10px"> VER</a>', 16000);
+                Materialize.toast('<span>Se encontraron solicitudes pendientes</span> <a href="encargado?accion=listar-solicitudes" class="green-text" style="margin-left:10px"> VER</a>', 16000);
             }, 2000);
+            </c:if>
+
         </script>
 
 
