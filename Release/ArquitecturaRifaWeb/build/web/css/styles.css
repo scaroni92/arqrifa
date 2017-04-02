@@ -1,7 +1,9 @@
-@import url('layouts/master-page.css');
-@import url('layouts/card.css');
-
-/* Estilos generales*/
+/* BASE */
+header,
+main,
+footer {
+    padding-left: 300px;
+}
 
 h6 {
     font-size: 1.3em;
@@ -9,32 +11,9 @@ h6 {
     margin: 0;
 }
 
-.icon-btn i {
-    color: grey;
-    cursor: pointer;
-    margin: 0 5px;
-}
-
-/* Se eliminan estilos por defecto de MaterializeCSS */
-
-.collapsible table th + th {
-    width: 80px;
-    text-align: center;
-
-}
-.collapsible table td + td {
-    text-align: center;
-
-}
-
 table th {
     border-radius: 0;
 }
-
-.toolbar {
-    z-index: 1000;
-}
-/* Se eliminan estilos por defecto del navegador */
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button,
@@ -46,10 +25,65 @@ input[type=time]::-webkit-clear-button {
     margin: 0;
 }
 
-/*
-    BASE
-    TEMA
-    ESTADO
-    LAYOUT
-    MODULOS
-*/
+
+/* TEMA */
+
+.collapsible table th + th {
+    width: 80px;
+    text-align: center;
+
+}
+.collapsible table td + td {
+    text-align: center;
+}
+
+.icon-btn i {
+    color: grey;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.toolbar {
+    z-index: 1000;
+}
+
+.card-active {
+    background-color: red;
+}
+.card-image .card-title {
+    font-size: 2.3em;
+}
+
+.text-shadow {
+    text-shadow: 1px 1px #222222;
+}
+
+.card-block {
+    height: 100px;
+}
+
+.calendario-numero {
+    font-size: 4em;
+}
+
+.calendario-hora {
+    font-size: 1.8em;
+    font-weight: 300;
+}
+
+.calendario h6 {
+    font-weight: 300;
+}
+
+nav .nav-content {
+    padding-left: 20px;
+}
+
+@media only screen and (max-width: 992px) {
+    header,
+    nav,
+    main,
+    footer {
+        padding-left: 0;
+    }
+}

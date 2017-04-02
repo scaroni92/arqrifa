@@ -58,7 +58,7 @@
                 <h4>¿Está segur@ que desea eliminar premanentemente la encuesta actual?</h4>
             </div>
             <div class="modal-footer">
-                <a href="#" class=" modal-action modal-close waves-teal btn-flat">Rechazar</a>
+                <a href="#" class=" modal-action modal-close waves-teal btn-flat">Cancelar</a>
                 <form action="encuesta" method="post">
                     <button type="submit" name="accion" value="eliminar" class="modal-action modal-close waves-effect waves-teal btn-flat">Eliminar</button>
                     <input type="hidden" name="reunionId" value="${modelo.reunion.id}">

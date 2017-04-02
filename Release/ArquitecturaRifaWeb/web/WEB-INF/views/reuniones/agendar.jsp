@@ -5,7 +5,7 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <form action="reunion" class="col s12 card-panel" style="padding:20px;" method="post">
+                <form action="reunion" class="col s12 card-panel" method="post" style="padding:40px 30px">
                     <div class="row">
                         <div class="col s12">
                             <h5>Nueva reunión
@@ -24,22 +24,22 @@
                     </div>
                     <div class="row">
                         <div class="input-field col m6 s12">
-                            <input id="fecha" name="fecha" type="date" class="datepicker" value="${modelo.fecha}" required>
-                            <label for="fecha">Fecha</label>
-                        </div>
-                        <div class="input-field col m3 s12" >
-                            <input id="hora" name="hora" type="time" value="${modelo.hora}" required>
-                        </div>
-                        <div class="input-field col m3 s12">
-                            <input id="duracion" name="duracion" type="number" value="${modelo.duracion}" required>
-                            <label for="duracion">Duración (m)</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
                             <input id="lugar" name="lugar" type="text" value="${modelo.lugar}" required>
                             <label for="lugar">Lugar</label>
                         </div>
+                        <div class="input-field col m2 s12">
+                            <input id="fecha" name="fecha" type="date" class="datepicker" value="${modelo.fecha}" required>
+                            <label for="fecha">Fecha</label>
+                        </div>
+                        <div class="input-field col m2 s12" >
+                            <input id="hora" name="hora" type="time" value="${modelo.hora}" required>
+                            <label for="hora" class="active">Hora</label>
+                        </div>
+                        <div class="input-field col m2 s12">
+                            <input id="duracion" name="duracion" type="number" value="${modelo.duracion}" required>
+                            <label for="duracion">Duración (m)</label>
+                        </div>
+                            
                     </div>
                     <div class="row">
                         <div class="input-field col s12">

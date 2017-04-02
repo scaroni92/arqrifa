@@ -54,16 +54,16 @@
             <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
             <ul>
                 <c:if test="${usuario.rol eq 'Encargado'}">
-                    <li class="waves-effect waves-light"><a data-tooltip="Eliminar" href="#modal" class="tooltipped"><i class="material-icons">delete</i></a></li>
-                    <li class="waves-effect waves-light"><a data-tooltip="Modificar" href="reunion?accion=modificar&id=${modelo.reunion.id}"><i class="material-icons">edit</i></a></li>
-                    <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.reunion.id}"><i class="material-icons">people</i></a></li>
-                    <li class="waves-effect waves-light"><a data-tooltip="Panel" href="panel?id=${modelo.reunion.id}"><i class="material-icons">record_voice_over</i></a></li>
+                    <li class="waves-effect waves-light"><a href="#modal"  data-tooltip="Eliminar"><i class="material-icons">delete</i></a></li>
+                    <li class="waves-effect waves-light"><a href="reunion?accion=modificar&id=${modelo.reunion.id}" data-tooltip="Modificar"><i class="material-icons">edit</i></a></li>
+                    <li class="waves-effect waves-light"><a href="reunion?accion=ver-lista&id=${modelo.reunion.id}" data-tooltip="Asistencias"><i class="material-icons">people</i></a></li>
+                    <li class="waves-effect waves-light"><a href="panel?id=${modelo.reunion.id}" data-tooltip="Panel"><i class="material-icons">record_voice_over</i></a></li>
                         <c:if test="${modelo.reunion.encuesta == null}">
-                        <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}"><i class="material-icons">playlist_add</i></a></li>
+                        <li class="waves-effect waves-light"><a href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}" data-tooltip="Agregar encuesta"><i class="material-icons">playlist_add</i></a></li>
                         </c:if>
                     </c:if>
                     <c:if test="${modelo.reunion.encuesta != null}">
-                    <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}"><i class="material-icons">dvr</i></a></li>
+                    <li class="waves-effect waves-light"><a href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}" data-tooltip="Encuesta"><i class="material-icons">dvr</i></a></li>
                     </c:if>
             </ul>
         </div>
