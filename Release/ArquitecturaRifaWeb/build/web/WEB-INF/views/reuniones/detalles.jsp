@@ -57,7 +57,6 @@
                     <li class="waves-effect waves-light"><a href="#modal"  data-tooltip="Eliminar"><i class="material-icons">delete</i></a></li>
                     <li class="waves-effect waves-light"><a href="reunion?accion=modificar&id=${modelo.reunion.id}" data-tooltip="Modificar"><i class="material-icons">edit</i></a></li>
                     <li class="waves-effect waves-light"><a href="reunion?accion=ver-lista&id=${modelo.reunion.id}" data-tooltip="Asistencias"><i class="material-icons">people</i></a></li>
-                    <li class="waves-effect waves-light"><a href="panel?id=${modelo.reunion.id}" data-tooltip="Panel"><i class="material-icons">record_voice_over</i></a></li>
                         <c:if test="${modelo.reunion.encuesta == null}">
                         <li class="waves-effect waves-light"><a href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}" data-tooltip="Agregar encuesta"><i class="material-icons">playlist_add</i></a></li>
                         </c:if>

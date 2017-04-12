@@ -171,7 +171,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.setInt(1, reunion.getId());
             stmt.setString(2, reunion.getObservaciones());
             if (stmt.executeUpdate() == 0) {
-                throw new Exception("La reunión que desea finalizar no ha sido iniciada aún.");
+                 throw new Exception("No se pudo finalizar la reunión, error de base de datos.");
             }
             for (String resolucion : reunion.getResoluciones()) {
                 this.agregarResolucion(reunion.getId(), resolucion, con);

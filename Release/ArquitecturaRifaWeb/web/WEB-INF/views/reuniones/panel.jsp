@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:masterpage titulo="Panel">
@@ -7,56 +8,35 @@
         <form action="panel" id="panel-form" method="post">
             <div class="card-panel">
                 <div class="panel-header"> 
-                    <span class="chip right">${modelo.estado}</span>
-                    <c:if test="${modelo.estado eq 'Pendiente'}">                    
+                    <span class="chip right green white-text" style="margin-left:10px">${reunionActiva.estado}</span>
+                    <c:if test="${reunionActiva.estado eq 'Pendiente'}">                    
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="iniciar">iniciar <i class="material-icons right">play_circle_outline</i> </button>
                     </c:if>
-                    <c:if test="${modelo.estado eq 'Iniciada'}">
+                    <c:if test="${reunionActiva.estado != 'Pendiente'}">
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="finalizar">finalizar <i class="material-icons right">stop</i> </button>
                     </c:if>
                 </div>
-                <h5>${modelo.titulo} </h5>
-                <p>Fecha y hora planificada: ${modelo.fecha} ${modelo.hora}</p>
+                <h5>Reunión para el día <fmt:formatDate pattern="dd MMMM 'de' yyyy, hh:mm a" value="${reunionActiva.fecha}" /></h5>
             </div>
-            <ul class="collapsible" data-collapsible="expandable">
-                <li>
-                    <div class="collapsible-header green lighten-1 white-text active"><i class="material-icons">assignment</i>Temas a tratar</div>
-                    <div class="collapsible-body white">
-                        <c:forEach var="tema" items="${modelo.temas}">
-                            <input type="hidden" name="temas" value="${tema}" />
-                            <p>${tema}</p>
-                        </c:forEach>
-                    </div>
-                </li>
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Temas</h4></li>
+                <c:forEach var="tema" items="${reunionActiva.temas}">
+                    <li class="collection-item">${tema}</li>
+                </c:forEach>
             </ul>
-            <c:if test="${modelo.estado != 'Pendiente' && modelo.estado != 'Finalizada'}">
-                <div class="card-panel">
-                    <h6 class="center">Recapitulación</h6>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <textarea id="observaciones" name="observaciones" class="materialize-textarea"></textarea>
-                            <label for="observaciones">Observaciones</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="chips"></div>
-                        </div>
+            <div class="card-panel">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="observaciones" name="observaciones" class="materialize-textarea">${reunionActiva.observaciones}</textarea>
+                        <label for="observaciones">Observaciones</label>
                     </div>
                 </div>
-            </c:if>
-
-            <input type="hidden" name="id" value="${modelo.id}" >
-            <input type="hidden" name="generacion" value="${modelo.generacion}" >
-            <input type="hidden" name="titulo" value="${modelo.titulo}">
-            <input type="hidden" name="descripcion" value="${modelo.descripcion}">
-            <input type="hidden" name="fecha" value="${modelo.fecha}">
-            <input type="hidden" name="hora" value="${modelo.hora}">
-            <input type="hidden" name="duracion" value="${modelo.duracion}">
-            <input type="hidden" name="obligatoria" value="${modelo.obligatoria}">
-            <input type="hidden" name="lugar" value="${modelo.lugar}"> 
-            <input type="hidden" name="observaciones" value="${modelo.observaciones}">
-            <input type="hidden" name="estado" value="${modelo.estado}">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="chips"></div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 
@@ -64,12 +44,19 @@
     <div class="fixed-action-btn toolbar">
         <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
         <ul>
-            <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reunion?accion=detalles&id=${modelo.id}"><i class="material-icons">info_outline</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${modelo.id}"><i class="material-icons">assignment</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Habilitar lista" href="panel?accion=habilitar-lista&id=${modelo.id}"><i class="material-icons">assignment_turned_in</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Deshabilitar lista" href="panel?accion=deshabilitar-lista&id=${modelo.id}"><i class="material-icons">assignment_late</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Agregar encuesta" href="encuesta?accion=agregar&reunionId=${modelo.id}"><i class="material-icons">playlist_add</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Encuesta" href="encuesta?accion=detalles&reunionId=${modelo.id}"><i class="material-icons">dvr</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reunion?accion=detalles&id=${reunionActiva.id}"><i class="material-icons">info_outline</i></a></li>
+
+            <c:choose>
+                <c:when test="${reunionActiva.estado eq 'Listado'}">
+                    <li class="waves-effect waves-light"><a data-tooltip="Deshabilitar lista" href="panel?accion=deshabilitar-lista&id=${reunionActiva.id}"><i class="material-icons">assignment_late</i></a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li class="waves-effect waves-light"><a data-tooltip="Habilitar lista" href="panel?accion=habilitar-lista&id=${reunionActiva.id}"><i class="material-icons">assignment_turned_in</i></a></li>
+                    </c:otherwise>
+                </c:choose>
+            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${reunionActiva.id}"><i class="material-icons">assignment</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Iniciar Votación" href="panel?accion=iniciar_votacion"><i class="material-icons">play_circle_outline</i></a></li>
+
         </ul>
     </div>
     <script>
@@ -80,10 +67,10 @@
         });
 
         $('.chips').material_chip({
-            data: [<c:forEach var="tema" items="${modelo.resoluciones}">{tag: '${tema}'},</c:forEach>],
+            data: [<c:forEach var="resolucion" items="${reunionActiva.resoluciones}">{tag: '${resolucion}'},</c:forEach>],
             placeholder: 'Agregar resolucion',
             secondaryPlaceholder: '+Resolución'
         });
-    </script>
+        </script>
 </t:masterpage>
 

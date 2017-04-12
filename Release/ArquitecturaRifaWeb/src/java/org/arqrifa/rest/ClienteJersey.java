@@ -188,6 +188,12 @@ public class ClienteJersey {
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }
+    
+     public DTReunion buscarReunionDelDia(int id_gen) throws Exception {
+        Response respuesta = TARGET.path("reunion/activa").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
+        comprobarError(respuesta);
+        return respuesta.readEntity(DTReunion.class);
+    }
 
     public List<DTReunion> listarReunionesTodas() throws Exception {
         Response respuesta = TARGET.path("reunion/listar").request(JSON_TYPE).get();

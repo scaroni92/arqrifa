@@ -112,7 +112,7 @@ class ControladorReunion implements IControladorReunion {
     public void iniciar(DTReunion reunion) {
         try {
             if (reunion == null) {
-                throw new Exception("No se puede iniciar una reunión nula.");
+                throw new Exception("No se puede iniciar una reunión nula");
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,11 +121,11 @@ class ControladorReunion implements IControladorReunion {
             Date fechaActual = new Date();
 
             if (fechaReunion.compareTo(sdf.parse(sdf.format(fechaActual))) != 0) {
-                throw new Exception("No se puede iniciar una reunión fuera de fecha.");
+                throw new Exception("No se puede iniciar una reunión fuera de fecha");
             }
 
-            if (reunion.getFecha().before(fechaActual)) {
-                throw new Exception("No se puede iniciar la reunión antes de la fecha y hora prevista.");
+            if (reunion.getFecha().after(fechaActual)) {
+                throw new Exception("No se puede iniciar la reunión antes de la fecha y hora prevista");
             }
 
             FabricaPersistencia.getPersistenciaReunion().iniciar(reunion);
@@ -144,6 +144,9 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("Ingrese alguna resolución de la reunión");
             }
 
+            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
+                throw new Exception("No se puede finalizar una reunión con estado " + reunion.getEstado());
+            }
             FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

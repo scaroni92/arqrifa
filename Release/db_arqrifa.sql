@@ -123,7 +123,7 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
 (2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Iniciada'),
+(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
 (2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
 (2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
 
@@ -300,7 +300,7 @@ $$
 
 CREATE PROCEDURE FinalizarReunion(pId int, pObservaciones varchar(100))
 BEGIN
-	UPDATE reuniones SET estado = 'Finalizada', observaciones = pObservaciones WHERE id = pId AND estado = 'Iniciada';
+	UPDATE reuniones SET estado = 'Finalizada', observaciones = pObservaciones WHERE id = pId;
 END
 $$
 

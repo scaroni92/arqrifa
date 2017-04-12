@@ -47,10 +47,10 @@
                 
             <!-- Acciones de encargado -->
             <c:if test="${usuario.rol eq 'Encargado'}">
-                <li><a class="waves-effect" href="reunion?accion=agendar"><i class="material-icons">event_note</i>Agendar</a></li>
+                <li><a class="waves-effect" href="panel"><i class="material-icons">dashboard</i>Panel</a></li>
                 <li><a class="waves-effect" href="encargado?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="encargado?accion=listar-solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-estudiantes"><i class="material-icons">group</i>Estudiantes</a></li>
+                <li><a class="waves-effect" href="encargado?accion=listar-estudiantes"><i class="material-icons">school</i>Estudiantes</a></li>
             </c:if>
                 
             <!-- Acciones de administrador -->
