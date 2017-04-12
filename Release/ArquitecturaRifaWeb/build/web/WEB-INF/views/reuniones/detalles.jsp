@@ -7,65 +7,64 @@
     <jsp:body>
         <div class="container">
             <div class="card-panel">
-                <div class="panel-header"> 
-                    <span class="chip right">${modelo.reunion.estado}</span>
-                </div>
+                <span class="chip right">${modelo.reunion.estado}</span>
                 <h4>${modelo.reunion.titulo}</h4>
                 <p class="flow-text">${modelo.reunion.descripcion}</p>
-                <div class="divider"></div>
-                <p>Fecha y hora: <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></p>
-                <p>Carácter: ${modelo.reunion.obligatoria? "obligatorio" : "no obligatorio"}</p>
-                <p>Duración: ${modelo.reunion.duracion} minutos</p>
-                <p>Lugar: ${modelo.reunion.lugar}</p>
-                <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
-                    <p>Participantes: ${fn:length(modelo.reunion.participantes)}</p>    
-                </c:if>
-                <p>
-                    Temas
-                <ul>
-                    <c:forEach var="tema" items="${modelo.reunion.temas}">
-                        <li>${tema}</li>
+               
+                
+                <div class="row center grey-text text-darken-2" >
+                    <div class="col s3"><i class="material-icons tiny">event_seat</i> ${modelo.reunion.obligatoria? "Obligatoria" : "Opcional"}</div>
+                    <div class="col s3"><i class="material-icons tiny">today</i> <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></div>
+                    <div class="col s3"><i class="material-icons tiny">location_on</i> ${modelo.reunion.lugar}</div>
+                    <div class="col s3"><i class="material-icons tiny">timer</i> ${modelo.reunion.duracion} minutos</div>
+                </div>
+                
+                
+                <ul class="collection with-header">
+                    <li class="collection-header"><h5>Temas</h5></li>
+                        <c:forEach var="tema" items="${modelo.reunion.temas}">
+                        <li class="collection-item">${tema}</li>
                         </c:forEach>
                 </ul>
-                </p>
 
                 <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
-                    <ul class="collapsible" data-collapsible="expandable">
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons grey-text text-darken-1 ">rate_review</i>Resoluciones</div>
-                            <div class="collapsible-body">
-                                <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
-                                    <p>${resolucion}</p>
-                                </c:forEach>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons grey-text text-darken-1">find_in_page</i>Observaciones</div>
-                            <div class="collapsible-body"><span>${modelo.reunion.observaciones}</span></div>
-                        </li>
+
+
+                    <ul class="collection with-header">
+                        <li class="collection-header"><h5>Resoluciones</h5></li>
+                            <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
+                            <li class="collection-item">${resolucion}</li>
+                            </c:forEach>
                     </ul>
+
+                    <ul class="collection with-header">
+                        <li class="collection-header"><h5>Observaciones</h5></li>
+                        <li class="collection-item">${modelo.reunion.observaciones}</li>
+                    </ul>
+
                 </c:if>
+                <ul class="collection">
+                    <li class="collection-item"><div>Encuesta<a href="encuesta?reunionId=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                    <li class="collection-item"><div>Participantes<a href="reunion?accion=ver-lista&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+
+                </ul>
             </div>
 
         </div>
 
         <!-- TOOLBAR -->
-        <div class="fixed-action-btn toolbar">
-            <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
+
+        <div class="fixed-action-btn horizontal">
+            <a class="btn-floating btn-large red">
+                <i class="large material-icons">mode_edit</i>
+            </a>
             <ul>
-                <c:if test="${usuario.rol eq 'Encargado'}">
-                    <li class="waves-effect waves-light"><a href="#modal"  data-tooltip="Eliminar"><i class="material-icons">delete</i></a></li>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=modificar&id=${modelo.reunion.id}" data-tooltip="Modificar"><i class="material-icons">edit</i></a></li>
-                    <li class="waves-effect waves-light"><a href="reunion?accion=ver-lista&id=${modelo.reunion.id}" data-tooltip="Asistencias"><i class="material-icons">people</i></a></li>
-                        <c:if test="${modelo.reunion.encuesta == null}">
-                        <li class="waves-effect waves-light"><a href="encuesta?accion=agregar&reunionId=${modelo.reunion.id}" data-tooltip="Agregar encuesta"><i class="material-icons">playlist_add</i></a></li>
-                        </c:if>
-                    </c:if>
-                    <c:if test="${modelo.reunion.encuesta != null}">
-                    <li class="waves-effect waves-light"><a href="encuesta?accion=detalles&reunionId=${modelo.reunion.id}" data-tooltip="Encuesta"><i class="material-icons">dvr</i></a></li>
-                    </c:if>
+                <li><a href="reunion?accion=modificar&id=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
+                <li><a href="#modal" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
             </ul>
         </div>
+
+
 
         <!-- MODAL-->
         <div id="modal" class="modal">

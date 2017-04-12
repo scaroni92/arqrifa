@@ -15,6 +15,20 @@ import org.arqrifa.viewmodels.ViewModel;
 @WebServlet(name = "ControladorEncuesta", urlPatterns = {"/encuesta"})
 public class ControladorEncuesta extends Controlador {
 
+    public void index_get() {
+        try {
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            if (reunion.getEncuesta() == null) {
+                this.agregar_get();
+            } else {
+                this.detalles_get();
+            }
+
+        } catch (Exception e) {
+            mostrarVista("reunion/detalles.jsp");
+        }
+    }
+
     public void agregar_get() {
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
@@ -38,7 +52,7 @@ public class ControladorEncuesta extends Controlador {
             reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
             reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
             reunion.getEncuesta().setPropuestas(getPropuestas());
-            
+
             cliente.agregarEncuesta(reunion);
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta agregada exitosamente");
@@ -52,11 +66,11 @@ public class ControladorEncuesta extends Controlador {
         List<DTPropuesta> propuestas = new ArrayList<>();
         String[] preguntas = request.getParameterValues("preguntas");
         DTPropuesta propuesta;
-        
+
         if (preguntas == null) {
             throw new Exception("Ingrese alguna propuesta");
         }
-        
+
         for (int i = 0; i < preguntas.length; i++) {
             propuesta = new DTPropuesta();
             propuesta.setPregunta(preguntas[i]);
