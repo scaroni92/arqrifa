@@ -10,6 +10,12 @@ public class DTRespuesta {
         this(0, "", 0);
     }
 
+    public DTRespuesta(String respuesta) {
+        this(0, respuesta, 0);
+    }
+    
+    
+
     public DTRespuesta(int id, String respuesta, int cantidadVotos) {
         this.id = id;
         this.respuesta = respuesta;

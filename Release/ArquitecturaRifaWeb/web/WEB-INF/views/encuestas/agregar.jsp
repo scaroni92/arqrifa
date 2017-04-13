@@ -36,47 +36,12 @@
             </div>
         </div>
 
-
+        <script src="js/layouts/encuesta.js"></script>
         <script>
-            var $propuestasWrapper = $('#propuestas-wrapper');
-            var $form = $('form');
-
-            $('#agregar-propuesta').on('click focus', function () {
-                var indiceProp = $propuestasWrapper.children().length;
-
-                var $propuestaContainer = $('<div></div>').addClass('row propuesta-container');
-                var $preguntaContainer = $('<div></div>').addClass('input-field col s12').append($('<span class="icon-btn right"><i class="material-icons">delete</i></span>'),
-                        $('<input id="pregunta' + indiceProp + '" name="preguntas" type="text" required ></input><label for="pregunta' + indiceProp + '">Propuesta ' + (+indiceProp + 1) + '</label>'));
-                var $chips = $('<div class="chips chips-placeholder"></div>');
-
-                $propuestaContainer.append($preguntaContainer, $('<div class="col s12"></div>').append($chips));
-                $propuestasWrapper.append($propuestaContainer);
-
-                $chips.material_chip({placeholder: '+Respuestas', secondaryPlaceholder: '+Respuestas'});
-                $propuestaContainer.trigger('click');
-            });
-
-            $propuestasWrapper.on('click', 'span', function () {
-                $(this).parent().parent().remove();
-            });
-
-            $propuestasWrapper.on('click focus', '.propuesta-container', function () {
-                $(this).addClass('card');
-                $(this).siblings().removeClass('card');
-            });
-
-            $('.general-container').on('click', function () {
-                $('.propuesta-container').removeClass('card');
-            });
-
-            $form.on('submit', function () {
-                // Se crean los parametros de las respuestas
-                $.each($propuestasWrapper.children(), function (i, value) {
-                    $.each($(value).find('.chips').material_chip('data'), function (j, val) {
-                        $form.append('<input type="hidden" name="respuestas' + i + '" value="' + val.tag + '"></input>');
-                    });
-                });
-            });
+            <c:forEach var="propuesta" items="${reunion.encuesta.propuestas}">
+                var respuestas = [<c:forEach var="respuesta" items="${propuesta.respuestas}">{tag: '${respuesta.respuesta}'},</c:forEach>];
+                agregarPropuesta('${propuesta.pregunta}', respuestas);
+            </c:forEach>
         </script>
     </jsp:body>
 </t:masterpage>

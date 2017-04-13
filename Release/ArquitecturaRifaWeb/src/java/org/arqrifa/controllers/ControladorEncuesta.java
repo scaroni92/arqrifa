@@ -50,7 +50,8 @@ public class ControladorEncuesta extends Controlador {
             reunion.setEncuesta(new DTEncuesta());
             reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
             reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
-            reunion.getEncuesta().setPropuestas(getPropuestas());
+
+            cargarPropuestas(reunion.getEncuesta());
 
             cliente.agregarEncuesta(reunion);
             sesion.removeAttribute("reunion");
@@ -61,33 +62,31 @@ public class ControladorEncuesta extends Controlador {
         }
     }
 
-    private List<DTPropuesta> getPropuestas() throws Exception {
-        List<DTPropuesta> propuestas = new ArrayList<>();
+    // Esta operación crea los objetos DTPropuesta con la info que viene en el request
+    private void cargarPropuestas(DTEncuesta encuesta) throws Exception {
+        encuesta.setPropuestas(new ArrayList<>());
+
         String[] preguntas = request.getParameterValues("preguntas");
-        DTPropuesta propuesta;
 
         if (preguntas == null) {
             throw new Exception("Ingrese alguna propuesta");
         }
 
         for (int i = 0; i < preguntas.length; i++) {
-            propuesta = new DTPropuesta();
-            propuesta.setPregunta(preguntas[i]);
-            String[] respuestas = request.getParameterValues("respuestas" + i);
 
-            //TODO: verificar esto en JS para conservar el div
+            String pregunta = preguntas[i];
+            String[] respuestas = request.getParameterValues("respuestas" + i);
+            //TODO: verificar esto en JS 
             if (respuestas == null) {
                 throw new Exception("Todas las propuestas deben tener respuestas");
             }
-            for (String respuesta : respuestas) {
-                if (!respuesta.isEmpty()) {
-                    propuesta.getRespuestas().add(new DTRespuesta(0, respuesta, 0));
-                }
-            }
-            propuestas.add(propuesta);
-        }
 
-        return propuestas;
+            List<DTRespuesta> res = new ArrayList<>();
+            for (String respuesta : respuestas) {
+                res.add(new DTRespuesta(respuesta));
+            }
+            encuesta.getPropuestas().add(new DTPropuesta(0, pregunta, res));
+        }
     }
 
     public void modificar_get() {
@@ -110,7 +109,7 @@ public class ControladorEncuesta extends Controlador {
             reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
             reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
 
-            reunion.getEncuesta().setPropuestas(getPropuestas());
+            cargarPropuestas(reunion.getEncuesta());
 
             cliente.modificarEncuesta(reunion.getEncuesta());
             sesion.removeAttribute("reunion");
