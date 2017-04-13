@@ -34,7 +34,6 @@ public class ControladorEncuesta extends Controlador {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
 
             if (reunion != null) {
-                //Es necesario el uso de session ya que se manejan colecciones de colecciones
                 sesion.setAttribute("reunion", reunion);
                 mostrarVista("encuestas/agregar.jsp");
             }
@@ -76,8 +75,9 @@ public class ControladorEncuesta extends Controlador {
             propuesta.setPregunta(preguntas[i]);
             String[] respuestas = request.getParameterValues("respuestas" + i);
 
+            //TODO: verificar esto en JS para conservar el div
             if (respuestas == null) {
-                throw new Exception("Agregue las respuestas de la propuesta " + (i + 1));
+                throw new Exception("Todas las propuestas deben tener respuestas");
             }
             for (String respuesta : respuestas) {
                 if (!respuesta.isEmpty()) {
@@ -91,27 +91,31 @@ public class ControladorEncuesta extends Controlador {
     }
 
     public void modificar_get() {
-        VMEncuesta vm = new VMEncuesta();
         try {
-            sesion.setAttribute("encuesta", cliente.buscarEncuesta(Integer.parseInt(request.getParameter("id"))));
-        } catch (Exception ex) {
-            vm.setMensaje(ex.getMessage());
+            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+
+            if (reunion != null) {
+                sesion.setAttribute("reunion", reunion);
+                mostrarVista("encuestas/modificar.jsp");
+            }
+
+        } catch (Exception e) {
+            mostrarVista("encuestas/modificar.jsp", new ViewModel(e.getMessage()));
         }
-        mostrarVista("encuestas/modificar.jsp", vm);
     }
 
     public void modificar_post() {
         try {
-            DTEncuesta encuesta = (DTEncuesta) sesion.getAttribute("encuesta");
-            encuesta.setId(Integer.parseInt(request.getParameter("id")));
-            encuesta.setTitulo(request.getParameter("titulo"));
-            encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
-            encuesta.setPropuestas(getPropuestas());
+            DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
+            reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
+            reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
 
-            cliente.modificarEncuesta(encuesta);
-            sesion.removeAttribute("encuesta");
+            reunion.getEncuesta().setPropuestas(getPropuestas());
+
+            cliente.modificarEncuesta(reunion.getEncuesta());
+            sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta modificada exitosamente");
-            response.sendRedirect("usuario");
+            response.sendRedirect("usuario?accion=ver-calendario");
         } catch (Exception e) {
             mostrarVista("encuestas/modificar.jsp", new ViewModel(e.getMessage()));
         }
@@ -147,4 +151,5 @@ public class ControladorEncuesta extends Controlador {
             mostrarVista("Error/500.jsp");
         }
     }
+
 }

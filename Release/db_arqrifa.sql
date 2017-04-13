@@ -452,6 +452,7 @@ BEGIN
 END
 $$
 
+
 CREATE PROCEDURE AltaRespuesta(pPropuestaId int, pRespuesta varchar(100))
 BEGIN
 	INSERT INTO respuestas(id_propuesta, respuesta) VALUES (pPropuestaId, pRespuesta);

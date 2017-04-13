@@ -274,8 +274,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
 
         try (CallableStatement stmt = con.prepareCall("CALL BajaPropuestas(?)")) {
             stmt.setInt(1, id_encuesta);
-            if (stmt.execute()) {
-                throw new Exception("No se pudo eliminar las propuestas.");
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("No se pudo eliminar las propuestas. " + id_encuesta);
             }
         } catch (Exception e) {
             throw e;

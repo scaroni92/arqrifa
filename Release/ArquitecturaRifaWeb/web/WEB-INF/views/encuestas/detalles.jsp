@@ -40,7 +40,7 @@
                 <i class="large material-icons">mode_edit</i>
             </a>
             <ul>
-                <li><a href="encuesta?accion=modificar&id=${encuesta.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
+                <li><a href="encuesta?accion=modificar&reunionId=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
                 <li><a href="#modal" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
             </ul>
         </div>
