@@ -28,7 +28,7 @@
                         <div class="card-content">
                             <c:forEach var="respuesta" items="${propuesta.respuestas}">
                                 <p>
-                                    <input name="${propuesta.id}" type="radio" id="${respuesta.id}" value="${respuesta.id}" />
+                                    <input name="${propuesta.id}" type="radio" id="${respuesta.id}" value="${respuesta.id}"/>
                                     <label for="${respuesta.id}">${respuesta.respuesta}</label>
                                 </p>
                             </c:forEach>

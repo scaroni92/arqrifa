@@ -55,7 +55,9 @@
                     </c:otherwise>
                 </c:choose>
             <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="reunion?accion=ver-lista&id=${reunionActiva.id}"><i class="material-icons">assignment</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Iniciar Votación" href="panel?accion=iniciar_votacion"><i class="material-icons">play_circle_outline</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Iniciar votación" href="panel?accion=iniciar-votacion"><i class="material-icons">play_circle_outline</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Finalizar votación" href="panel?accion=finalizar-votacion"><i class="material-icons">stop</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Cuestionario" href="cuestionario?reunionId=${reunionActiva.id}"><i class="material-icons">speaker_notes</i></a></li>
 
         </ul>
     </div>

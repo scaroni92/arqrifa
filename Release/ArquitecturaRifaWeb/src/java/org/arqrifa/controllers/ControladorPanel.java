@@ -1,8 +1,11 @@
 package org.arqrifa.controllers;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.viewmodels.VMMantenimientoReunion;
@@ -24,7 +27,7 @@ public class ControladorPanel extends Controlador {
 
             mostrarVista("reuniones/panel.jsp");
         } catch (Exception e) {
-            mostrarVista("reuniones/panel.jsp", new ViewModel(e.getMessage()));
+            mostrarVista("encargado/index.jsp", new ViewModel(e.getMessage()));
         }
 
     }
@@ -87,6 +90,33 @@ public class ControladorPanel extends Controlador {
             reunion.setEstado(DTReunion.INICIADA);
 
             vm.setMensaje("Lista de asistencias deshabilitada exitosamente");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("reuniones/panel.jsp", vm);
+    }
+    
+    public void iniciar_votacion_get() {
+        ViewModel vm = new ViewModel();
+        try {
+            DTReunion reunion = (DTReunion)sesion.getAttribute("reunionActiva");
+            cliente.iniciarVotacion(reunion);
+            reunion.getEncuesta().setHabilitada(true);
+            //reunion.setEstado(DTReunion.INICIADA);
+            vm.setMensaje("Votación iniciada exitosamente");
+        } catch (Exception e) {
+            vm.setMensaje(e.getMessage());
+        }
+        mostrarVista("reuniones/panel.jsp", vm);
+    }
+    
+    public void finalizar_votacion_get() {
+        ViewModel vm = new ViewModel();
+        try {
+            DTReunion reunion = (DTReunion)sesion.getAttribute("reunionActiva");
+            cliente.finalizarVotacion(reunion);
+            reunion.getEncuesta().setHabilitada(false);
+            vm.setMensaje("Votación finalizada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

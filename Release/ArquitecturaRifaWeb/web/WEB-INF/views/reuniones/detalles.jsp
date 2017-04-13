@@ -52,7 +52,7 @@
 
         </div>
 
-        <!-- TOOLBAR -->
+        <!-- FAB -->
 
         <div class="fixed-action-btn horizontal">
             <a class="btn-floating btn-large red">
@@ -72,7 +72,7 @@
                 <h4>¿Está segur@ que desea eliminar la reunión actual?</h4>
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-teal btn-flat">Rechazar</a> 
+                <a href="#!" class=" modal-action modal-close waves-teal btn-flat">Cancelar</a> 
                 <form action="reunion" method="post">
                     <button type="submit" name="accion" value="eliminar" class="modal-action modal-close waves-effect waves-teal btn-flat">Eliminar</button>
                     <input type="hidden" name="id" value="${modelo.reunion.id}">

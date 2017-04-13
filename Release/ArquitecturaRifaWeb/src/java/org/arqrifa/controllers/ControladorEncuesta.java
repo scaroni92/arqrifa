@@ -147,24 +147,4 @@ public class ControladorEncuesta extends Controlador {
             mostrarVista("Error/500.jsp");
         }
     }
-
-    public void iniciar_get() {
-        try {
-            cliente.iniciarVotacion(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId"))));
-            sesion.setAttribute("mensaje", "Votación iniciada exitosamente");
-        } catch (Exception e) {
-            sesion.setAttribute("mensaje", e.getMessage());
-        }
-        this.detalles_get();
-    }
-
-    public void finalizar_get() {
-        try {
-            cliente.finalizarVotacion(cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId"))));
-            sesion.setAttribute("mensaje", "Votación finalizada exitosamente");
-        } catch (Exception e) {
-            sesion.setAttribute("mensaje", e.getMessage());
-        }
-        this.detalles_get();
-    }
 }
