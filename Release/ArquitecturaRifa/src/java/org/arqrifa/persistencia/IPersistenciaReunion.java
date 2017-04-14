@@ -28,7 +28,7 @@ public interface IPersistenciaReunion {
     
     DTReunion buscarProximaReunion(int id_gen) throws Exception;
     
-    DTReunion buscarReunionDelDia(int id_gen) throws Exception;
+    DTReunion buscarReunionPorFecha(int id_gen, String fecha) throws Exception;
     
     List<DTReunion> listarTodas() throws Exception;
     

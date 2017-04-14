@@ -1,6 +1,7 @@
 package org.arqrifa.rest;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTMensajeError;
@@ -190,8 +191,8 @@ public class ClienteJersey {
         return respuesta.readEntity(DTReunion.class);
     }
     
-     public DTReunion buscarReunionDelDia(int id_gen) throws Exception {
-        Response respuesta = TARGET.path("reunion/activa").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
+     public DTReunion buscarReunionPorFecha(int id_gen, String fecha) throws Exception {
+        Response respuesta = TARGET.path("reunion/fecha").queryParam("id_gen", id_gen).queryParam("fecha", fecha).request(JSON_TYPE).get();
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }

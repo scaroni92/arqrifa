@@ -29,7 +29,7 @@ public interface IControladorReunion {
 
     DTReunion buscarProximaReunionPorRealizar(int genId);
 
-    DTReunion BuscarReunionDelDia(int genId);
+    DTReunion BuscarReunionPorFecha(int genId, String fecha);
 
     List<DTReunion> listarTodas();
 

@@ -299,18 +299,23 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public DTReunion buscarReunionDelDia(int id_gen) throws Exception {
+    public DTReunion buscarReunionPorFecha(int id_gen, String fecha) throws Exception {
         DTReunion reunion = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
         try {
             con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL BuscarReunionDelDiaPorGeneracion(?)");
+            stmt = con.prepareCall("CALL BuscarReunionPorFecha(?, ?)");
             stmt.setInt(1, id_gen);
+            stmt.setString(2, fecha);
             res = stmt.executeQuery();
             if (res.next()) {
                 reunion = cargarDatosReunion(res, con);
+            }
+            
+            if (reunion == null) {
+                throw new Exception(fecha);
             }
 
         } catch (Exception e) {

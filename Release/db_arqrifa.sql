@@ -520,11 +520,13 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE BuscarReunionDelDiaPorGeneracion(pGenId int)
+CREATE PROCEDURE BuscarReunionPorFecha(pGenId int, pFecha date)
 BEGIN
-	SELECT * FROM reuniones WHERE  id_gen = pGenId AND DATE_FORMAT(fecha,'%Y-%m-%d') =  DATE_FORMAT(NOW(),'%Y-%m-%d');
+	SELECT * FROM reuniones WHERE DATE_FORMAT(fecha, '%Y-%m-%d') = DATE_FORMAT(pFecha, '%Y-%m-%d') AND id_gen = pGenId;
 END
 $$
+
+
 
 CREATE PROCEDURE BuscarEncuesta(pId int)
 BEGIN

@@ -45,8 +45,8 @@ public class JerseyClient {
         }
     }
 
-    public DTReunion buscarReunionDelDia(int generacion) throws Exception {
-        Response respuesta = TARGET.path("reunion/activa").queryParam("id_gen", generacion).request(JSON_TYPE).get();
+    public DTReunion buscarReunionPorFecha(int generacion, String fecha) throws Exception {
+        Response respuesta = TARGET.path("reunion/fecha").queryParam("id_gen", generacion).queryParam("fecha", fecha).request(JSON_TYPE).get();
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }

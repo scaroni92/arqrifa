@@ -1,5 +1,6 @@
 package org.arqrifa.rest.recursos;
 
+import java.util.Date;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.logica.FabricaLogica;
@@ -170,10 +171,11 @@ public class Servicio {
         return FabricaLogica.getControladorReuniones().buscarProximaReunionPorRealizar(id_gen);
     }
 
-    @Path("reunion/activa")
+    // 30-10-12
+    @Path("reunion/fecha")
     @GET
-    public DTReunion buscarReunionDelDia(@QueryParam("id_gen") int id_gen) {
-        return FabricaLogica.getControladorReuniones().BuscarReunionDelDia(id_gen);
+    public DTReunion buscarReunionPorFecha(@QueryParam("id_gen") int id_gen, @QueryParam("fecha") String fecha) {
+        return FabricaLogica.getControladorReuniones().BuscarReunionPorFecha(id_gen, fecha);
     }
     //</editor-fold>
 

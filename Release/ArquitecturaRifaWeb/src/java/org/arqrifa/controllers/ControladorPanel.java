@@ -1,6 +1,8 @@
 package org.arqrifa.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
@@ -15,7 +17,7 @@ public class ControladorPanel extends Controlador {
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            reunionActiva = cliente.buscarReunionDelDia(usuario.getGeneracion());
+            reunionActiva = cliente.buscarReunionPorFecha(usuario.getGeneracion(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             if (reunionActiva == null) {
                 throw new Exception("No hay reuniones para hoy");
             }

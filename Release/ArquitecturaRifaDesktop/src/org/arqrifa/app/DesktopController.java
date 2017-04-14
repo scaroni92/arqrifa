@@ -3,6 +3,8 @@ package org.arqrifa.app;
 import org.arqrifa.rest.JerseyClient;
 import org.arqrifa.datatypes.DTReunion;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.views.Main;
 
@@ -44,7 +46,7 @@ public class DesktopController {
     }
 
     public static DTReunion buscarReunionDelDia() throws Exception {
-        return new JerseyClient().buscarReunionDelDia(usuario.getGeneracion());
+        return new JerseyClient().buscarReunionPorFecha(usuario.getGeneracion(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     }
 
     public static DTReunion getReunionActiva() {
