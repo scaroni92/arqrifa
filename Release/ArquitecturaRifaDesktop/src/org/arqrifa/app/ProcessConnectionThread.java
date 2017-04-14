@@ -62,7 +62,7 @@ public class ProcessConnectionThread implements Runnable {
 
             DTUsuario estudiante = new JerseyClient().buscarUsuario(Integer.parseInt(strCommand));
 
-            new JerseyClient().agregarAsistencia(DesktopController.getReunionActiva(), estudiante);
+            new JerseyClient().agregarAsistencia(DesktopController.getReunion(), estudiante);
             System.out.println("Asistencia marcada");
         } catch (Exception e) {
             System.out.println(e.getMessage());

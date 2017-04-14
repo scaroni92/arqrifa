@@ -141,9 +141,14 @@ public class Login extends javax.swing.JFrame {
 
     private void pnlLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlLoginMouseClicked
         try {
+            int ci = Integer.parseInt(txtCi.getText());
             String pass = String.valueOf(txtPass.getPassword());
-            DesktopController.ingresar(txtCi.getText(), pass);
+
+            DesktopController.ingresar(ci, pass);
+            
             this.setVisible(false);
+        } catch (NumberFormatException e) {
+            new MessagePane().displayPane("Info", "Ingrese una cédula válida", MessagePane.ALERT);
         } catch (Exception e) {
             new MessagePane().displayPane("Info", e.getMessage(), MessagePane.ALERT);
         }

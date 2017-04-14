@@ -10,26 +10,25 @@ import org.arqrifa.views.Main;
 
 public class DesktopController {
 
+    private static final String FECHA_ACTUAL;
+
     private static Thread thread;
     private static WaitThread waitThread;
-    private static DTReunion reunionActiva;
     private static DTUsuario usuario;
+
+    static {
+        FECHA_ACTUAL = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    }
 
     public static void initiateController() {
         waitThread = new WaitThread();
         thread = new Thread(waitThread);
     }
 
-    public static void ingresar(String ci, String pass) throws Exception {
+    public static void ingresar(int ci, String pass) throws Exception {
         try {
-            
-            int cedula;
-            try {
-                cedula = Integer.parseInt(ci);
-            } catch (NumberFormatException e) {
-                throw new Exception("Ingrese una cédula válida");
-            }
-            usuario = new JerseyClient().login(cedula, pass);
+
+            usuario = new JerseyClient().login(ci, pass);
 
             if (usuario == null) {
                 throw new Exception("Usuario y/o contraseña incorrectos.");
@@ -37,7 +36,7 @@ public class DesktopController {
             if (!usuario.getRol().equals(DTUsuario.ENCARGADO)) {
                 throw new Exception("Solo los encargados tienen acceso a la aplicación.");
             }
-            reunionActiva = buscarReunionDelDia();
+
             Main ventanaPrincipal = new Main();
             ventanaPrincipal.setVisible(true);
         } catch (Exception ex) {
@@ -45,21 +44,21 @@ public class DesktopController {
         }
     }
 
-    public static DTReunion buscarReunionDelDia() throws Exception {
-        return new JerseyClient().buscarReunionPorFecha(usuario.getGeneracion(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+    public static DTReunion getReunion() {
+        DTReunion reunion = null;
+        try {
+            reunion = new JerseyClient().buscarReunionPorFecha(usuario.getGeneracion(), FECHA_ACTUAL);
+        } catch (Exception ex) {
+            new MessagePane().displayPane("Error", ex.getMessage(), MessagePane.CONFLICT);
+        }
+        return reunion;
     }
 
-    public static DTReunion getReunionActiva() {
-        return reunionActiva;
-    }
+    public static void iniciarPuenteBluetooth() throws Exception {
 
-    public static DTUsuario getUsuario(){
-        return usuario;
-    }
-        
-    public static void iniciarPuenteBluetooth() {
-        new MessagePane().displayPane("Éxito", "Adaptador Bluetooth activado exitosamente", MessagePane.OK);
-        // TODO comprobar estado de la reunión
+        if (!getReunion().getEstado().equals(DTReunion.LISTADO)) {
+            throw new Exception("El estado de la reunión debe ser 'Listado'");
+        }
         //thread.start();
     }
 

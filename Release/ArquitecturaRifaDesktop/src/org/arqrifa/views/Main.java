@@ -22,8 +22,8 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlLeft = new javax.swing.JPanel();
+        lblReload = new javax.swing.JLabel();
         lblHelp = new javax.swing.JLabel();
-        lblUser = new javax.swing.JLabel();
         pnlTop = new javax.swing.JPanel();
         lblDrag = new javax.swing.JLabel();
         lblMinimize = new javax.swing.JLabel();
@@ -46,10 +46,10 @@ public class Main extends javax.swing.JFrame {
         lblDescripcion = new javax.swing.JLabel();
         lblReunionEstado = new javax.swing.JLabel();
         lblAsistenciasRegistradas = new javax.swing.JLabel();
-        lblReunionFechaHora1 = new javax.swing.JLabel();
+        lbl = new javax.swing.JLabel();
         pnlActivar = new javax.swing.JPanel();
         lblActivar = new javax.swing.JLabel();
-        lblBottomTitle = new javax.swing.JLabel();
+        lblMessage = new javax.swing.JLabel();
         lblLog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,6 +58,18 @@ public class Main extends javax.swing.JFrame {
 
         pnlLeft.setBackground(new java.awt.Color(37, 40, 56));
         pnlLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblReload.setBackground(new java.awt.Color(255, 255, 255));
+        lblReload.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/arqrifa/resources/icons/Refresh.png"))); // NOI18N
+        lblReload.setToolTipText("Ayuda");
+        lblReload.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblReload.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblReloadMouseClicked(evt);
+            }
+        });
+        pnlLeft.add(lblReload, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 50, -1));
 
         lblHelp.setBackground(new java.awt.Color(255, 255, 255));
         lblHelp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -70,18 +82,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
         pnlLeft.add(lblHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 50, -1));
-
-        lblUser.setBackground(new java.awt.Color(255, 255, 255));
-        lblUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/arqrifa/resources/icons/User.png"))); // NOI18N
-        lblUser.setToolTipText("Usuario");
-        lblUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblUser.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblUserMouseClicked(evt);
-            }
-        });
-        pnlLeft.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 73, 30, -1));
 
         getContentPane().add(pnlLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 500));
 
@@ -99,7 +99,7 @@ public class Main extends javax.swing.JFrame {
                 lblDragMousePressed(evt);
             }
         });
-        pnlTop.add(lblDrag, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, 0, 960, 30));
+        pnlTop.add(lblDrag, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, 0, 980, 30));
 
         lblMinimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/arqrifa/resources/icons/Minimize.png"))); // NOI18N
         lblMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -204,8 +204,8 @@ public class Main extends javax.swing.JFrame {
         lblReunionFechaHora.setBackground(new java.awt.Color(255, 255, 255));
         lblReunionFechaHora.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         lblReunionFechaHora.setForeground(new java.awt.Color(255, 255, 255));
-        lblReunionFechaHora.setText("01 de enero de 2017, 00:00 hrs");
-        pnlReunionDetalles.add(lblReunionFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, -1, -1));
+        lblReunionFechaHora.setText("Hora de inicio: 00:00 AM");
+        pnlReunionDetalles.add(lblReunionFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 6, -1, 20));
         pnlReunionDetalles.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 440, -1));
 
         lblReunionTitulo.setBackground(new java.awt.Color(255, 255, 255));
@@ -223,22 +223,22 @@ public class Main extends javax.swing.JFrame {
         lblReunionEstado.setBackground(new java.awt.Color(255, 255, 255));
         lblReunionEstado.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         lblReunionEstado.setForeground(new java.awt.Color(255, 255, 255));
+        lblReunionEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblReunionEstado.setText("Estado: INICIADA");
-        pnlReunionDetalles.add(lblReunionEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, -1, -1));
+        pnlReunionDetalles.add(lblReunionEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 110, -1));
 
         lblAsistenciasRegistradas.setBackground(new java.awt.Color(255, 255, 255));
         lblAsistenciasRegistradas.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         lblAsistenciasRegistradas.setForeground(new java.awt.Color(255, 255, 255));
         lblAsistenciasRegistradas.setText("Asistencias registradas: 0");
-        pnlReunionDetalles.add(lblAsistenciasRegistradas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+        pnlReunionDetalles.add(lblAsistenciasRegistradas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
 
-        lblReunionFechaHora1.setBackground(new java.awt.Color(255, 255, 255));
-        lblReunionFechaHora1.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
-        lblReunionFechaHora1.setForeground(new java.awt.Color(255, 255, 255));
-        lblReunionFechaHora1.setText("Fecha y hora de inicio:");
-        pnlReunionDetalles.add(lblReunionFechaHora1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        lbl.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lbl.setForeground(new java.awt.Color(255, 255, 255));
+        lbl.setText("Reunión activa");
+        pnlReunionDetalles.add(lbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 30));
 
-        pnlBottom.add(pnlReunionDetalles, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 460, 150));
+        pnlBottom.add(pnlReunionDetalles, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 460, 180));
 
         pnlActivar.setBackground(new java.awt.Color(94, 187, 191));
         pnlActivar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -271,10 +271,10 @@ public class Main extends javax.swing.JFrame {
 
         pnlBottom.add(pnlActivar, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, 180, 50));
 
-        lblBottomTitle.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        lblBottomTitle.setForeground(new java.awt.Color(255, 255, 255));
-        lblBottomTitle.setText("Reunión en progreso");
-        pnlBottom.add(lblBottomTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        lblMessage.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lblMessage.setForeground(new java.awt.Color(255, 255, 255));
+        lblMessage.setText("No se encontro ninguna reunión para la fecha actual");
+        pnlBottom.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
 
         lblLog.setBackground(new java.awt.Color(255, 255, 255));
         lblLog.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -305,26 +305,34 @@ public class Main extends javax.swing.JFrame {
 
     private void lblActivarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblActivarMouseClicked
 
-        if (lblActivar.getText().equals("ACTIVAR")) {
-            DesktopController.iniciarPuenteBluetooth();
-            lblActivar.setText("DESACTIVAR");
-            pnlOnline.setVisible(true);
-            pnlOffline.setVisible(false);
-        } else {
-            lblActivar.setText("ACTIVAR");
-            pnlOnline.setVisible(false);
-            pnlOffline.setVisible(true);
-            new MessagePane().displayPane("Éxito", "Adaptador Bluetooth desactivado exitosamente", MessagePane.OK);
+        try {
+            if (lblActivar.getText().equals("ACTIVAR")) {
+                DesktopController.iniciarPuenteBluetooth();
+                lblActivar.setText("DESACTIVAR");
+                pnlOnline.setVisible(true);
+                pnlOffline.setVisible(false);
+                new MessagePane().displayPane("Éxito", "Adaptador Bluetooth activado exitosamente", MessagePane.OK);
+            } else {
+                //DesktopController.finalizarPuenteBluetooth();
+                lblActivar.setText("ACTIVAR");
+                pnlOnline.setVisible(false);
+                pnlOffline.setVisible(true);
+                new MessagePane().displayPane("Éxito", "Adaptador Bluetooth desactivado exitosamente", MessagePane.OK);
+            }
+        } catch (Exception e) {
+            new MessagePane().displayPane("Info", e.getMessage(), MessagePane.OK);
         }
+
+
     }//GEN-LAST:event_lblActivarMouseClicked
 
     private void lblCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCloseMouseClicked
         System.exit(0);
     }//GEN-LAST:event_lblCloseMouseClicked
 
-    private void lblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUserMouseClicked
-        User.getInstance().setVisible(true);
-    }//GEN-LAST:event_lblUserMouseClicked
+    private void lblReloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReloadMouseClicked
+        cargarDatos();
+    }//GEN-LAST:event_lblReloadMouseClicked
 
     private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
         Help.getInstance().setVisible(true);
@@ -333,27 +341,27 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbl;
     private javax.swing.JLabel lblActivar;
     private javax.swing.JLabel lblAsistenciasRegistradas;
-    private javax.swing.JLabel lblBottomTitle;
     private javax.swing.JLabel lblClose;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblDrag;
     private javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblLog;
     private javax.swing.JLabel lblLogo;
+    private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblMinimize;
     private javax.swing.JLabel lblOffline;
     private javax.swing.JLabel lblOfflineIcon;
     private javax.swing.JLabel lblOnline;
     private javax.swing.JLabel lblOnlineIcon;
+    private javax.swing.JLabel lblReload;
     private javax.swing.JLabel lblReunionEstado;
     private javax.swing.JLabel lblReunionFechaHora;
-    private javax.swing.JLabel lblReunionFechaHora1;
     private javax.swing.JLabel lblReunionTitulo;
     private javax.swing.JLabel lblSubtitle;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JLabel lblUser;
     private javax.swing.JPanel pnlActivar;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlLeft;
@@ -365,14 +373,15 @@ public class Main extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarDatos() {
-        DTReunion reunion = DesktopController.getReunionActiva();
+        DTReunion reunion = DesktopController.getReunion();
         if (reunion != null) {
-            lblReunionFechaHora.setText(new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, hh:mm 'hrs'").format(reunion.getFecha()));
+            lblReunionFechaHora.setText(new SimpleDateFormat("'Hora de inico: 'hh:mm a").format(reunion.getFecha()));
             lblReunionTitulo.setText(reunion.getTitulo());
             lblDescripcion.setText(reunion.getDescripcion());
             lblReunionEstado.setText("Estado: " + reunion.getEstado().toUpperCase());
+            lblMessage.setVisible(false);
         } else {
-            lblBottomTitle.setText("No hay ninguna reunión en progreso para el día actual.");
+            lblMessage.setVisible(true);
             pnlReunionDetalles.setVisible(false);
             pnlActivar.setVisible(false);
         }
