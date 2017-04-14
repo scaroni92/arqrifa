@@ -5,7 +5,7 @@
     <jsp:body>
         <div class="container">
             <div class="card-panel grey-text text-darken-2">
-                <h4>${encuesta.titulo}</h4>
+                <h4>${reunionActiva.encuesta.titulo}</h4>
                 <h5>${estudiante != null? 'Votación para el estudiante' : ''} ${estudiante.nombre} ${estudiante.apellido}</h5> 
             </div>
             <nav>
@@ -20,7 +20,7 @@
             </nav>
             <br>
             <form action="cuestionario" method="post">
-                <c:forEach var="propuesta" items="${encuesta.propuestas}">
+                <c:forEach var="propuesta" items="${reunionActiva.encuesta.propuestas}">
                     <div class="card">
                         <div class="card-header green white-text">
                             <h6>${propuesta.pregunta}</h6> 

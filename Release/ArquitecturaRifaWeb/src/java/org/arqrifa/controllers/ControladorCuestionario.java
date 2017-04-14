@@ -17,17 +17,17 @@ import org.arqrifa.viewmodels.ViewModel;
 public class ControladorCuestionario extends Controlador {
 
     public void index_get() {
-        DTReunion reunion = null;
+        ViewModel vm = new ViewModel();
         try {
-            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            DTReunion reunion = (DTReunion)sesion.getAttribute("reunionActiva");
             if (!reunion.getEncuesta().isHabilitada()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
-            sesion.setAttribute("encuesta", reunion.getEncuesta());
             mostrarVista("encuestas/cuestionario.jsp");
         } catch (Exception e) {
-            mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, e.getMessage()));
+            vm.setMensaje(e.getMessage());
         }
+        mostrarVista("reuniones/panel.jsp", vm);
 
     }
 
@@ -58,7 +58,7 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             DTUsuario estudiante = (DTUsuario) sesion.getAttribute("estudiante");
-            DTEncuesta encuesta = (DTEncuesta) sesion.getAttribute("encuesta");
+            DTEncuesta encuesta = ((DTReunion) sesion.getAttribute("reunionActiva")).getEncuesta();
 
             List<DTRespuesta> respuestasEscogidas = new ArrayList();
             for (DTPropuesta propuesta : encuesta.getPropuestas()) {

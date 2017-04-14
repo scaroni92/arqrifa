@@ -26,7 +26,7 @@ $form.on('submit', function (e) {
     $.each($propuestasWrapper.children(), function (i, value) {
         var data = $(value).find('.chips').material_chip('data');
 
-        if (data.length === 0) {
+        if (data.length < 2) {
             enviar = false;
             $(this).find('input').focus();
         } else {
@@ -40,7 +40,7 @@ $form.on('submit', function (e) {
         $form.append(respuestas);
     } else {
         e.preventDefault();
-        Materialize.toast('Ingrese las respuestas de la propuesta', 4000);
+        Materialize.toast('Ingrese almenos dos respuestas a la propuesta', 4000);
     }
 });
 

@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.viewmodels.VMListaAsistencias;
+import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMMantenimientoReunion;
 import org.arqrifa.viewmodels.VMReunion;
 
@@ -160,33 +161,14 @@ public class ControladorReunion extends Controlador {
         }
     }
 
-    public void ver_lista_get() {
-        VMListaAsistencias vm = new VMListaAsistencias();
+    public void ver_participantes_get() {
+        VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
             DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
-
-            if (reunion.getGeneracion() == this.usuario.getGeneracion()) {
-                vm.setReunion(reunion);
-                vm.setAsistencias(cliente.listarAsistencias(reunion));
-            }
-
+            vm.setUsuarios(reunion.getParticipantes());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista("reuniones/lista.jsp", vm);
-    }
-    
-    public void marcar_asistencia_get() {
-        VMListaAsistencias vm = new VMListaAsistencias();
-        try {
-            DTUsuario estudiante = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
-
-            cliente.agregarAsistencia(reunion, estudiante);
-            sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");     
-        } catch (Exception e) {
-            sesion.setAttribute("mensaje", e.getMessage());
-        }
-        this.ver_lista_get();
+        mostrarVista("usuarios/listado.jsp", vm);
     }
 }

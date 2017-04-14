@@ -26,19 +26,7 @@ public class ControladorUsuario extends Controlador {
 
     }
 
-    /* public void ver_calendario_get() {
-        VMListadoReuniones vm = new VMListadoReuniones();
-        try {
-            if (this.usuario.getRol().equals(DTUsuario.ADMIN)) {
-                vm.setReuniones(cliente.listarReunionesTodas());
-            } else {
-                vm.setReuniones(cliente.listarReunionesPorGeneracion(this.usuario.getGeneracion()));
-            }
-        } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
-        }
-        mostrarVista("reuniones/calendario.jsp", vm);
-    }*/
+   
     public void ver_calendario_get() {
         VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
         List<DTReunion> reuniones;

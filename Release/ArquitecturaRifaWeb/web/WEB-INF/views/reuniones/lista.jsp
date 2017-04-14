@@ -26,7 +26,7 @@
                             <td>${asistencia.estado}</td>
                             <td class="icon-btn">
                                 <a href="usuario?accion=detalles&ci=${asistencia.estudiante.ci}"><i class="material-icons ">content_paste</i></a> 
-                                <a href="reunion?accion=marcar-asistencia&ci=${asistencia.estudiante.ci}&id=${modelo.reunion.id}"><i class="material-icons ">add</i></a> 
+                                <a href="panel?accion=marcar-asistencia&ci=${asistencia.estudiante.ci}&id=${modelo.reunion.id}"><i class="material-icons ">add</i></a> 
                             </td>
                         </tr>
                     </c:forEach>

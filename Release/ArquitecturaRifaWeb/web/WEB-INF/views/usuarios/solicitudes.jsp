@@ -22,10 +22,7 @@
                             <td>${solicitud.usuario.apellido}</td>
                             <td><fmt:formatDate pattern="dd/MM/yy" value="${solicitud.fecha}" /></td>
                             <td>
-                                <c:if test="${solicitud.verificada}">
-                                    <i class="material-icons green-text text-lighten-2" style="font-size: 2em">verified_user</i>
-                                </c:if>
-                                
+                                <i class="material-icons ${solicitud.verificada ? 'green-text' : 'grey-text'} text-lighten-2" style="font-size: 2em">verified_user</i>
                             </td>
                             <td class="icon-btn"> 
                                 <a href="solicitud?accion=detalles&ci=${solicitud.usuario.ci}"><i class="material-icons ">info_outline</i></a> 
