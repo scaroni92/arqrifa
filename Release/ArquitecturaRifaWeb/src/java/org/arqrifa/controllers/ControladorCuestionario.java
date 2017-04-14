@@ -58,7 +58,8 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             DTUsuario estudiante = (DTUsuario) sesion.getAttribute("estudiante");
-            DTEncuesta encuesta = ((DTReunion) sesion.getAttribute("reunionActiva")).getEncuesta();
+            DTReunion reunionActiva = (DTReunion) sesion.getAttribute("reunionActiva");
+            DTEncuesta encuesta = reunionActiva.getEncuesta();
 
             List<DTRespuesta> respuestasEscogidas = new ArrayList();
             for (DTPropuesta propuesta : encuesta.getPropuestas()) {
@@ -66,7 +67,7 @@ public class ControladorCuestionario extends Controlador {
                 respuestasEscogidas.add(new DTRespuesta(respuestaId, "", 0));
             }
             //TODO comprobar voto repetido
-            cliente.agregarVoto(new DTVoto(estudiante, respuestasEscogidas));
+            cliente.agregarVoto(new DTVoto(estudiante, reunionActiva, respuestasEscogidas));
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
 

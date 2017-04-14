@@ -11,7 +11,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
-import org.arqrifa.datatypes.DTEstadoAsistencia;
+import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTAsistenciaWrapper;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTReunion;
@@ -59,7 +60,7 @@ public class ClienteJersey {
     }
 
     public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception {
-        Response respuesta = TARGET.path("asistencia/agregar").request(JSON_TYPE).post(Entity.entity(new DTAsistencia(usuario, reunion), JSON_TYPE));
+        Response respuesta = TARGET.path("asistencia/agregar").request(JSON_TYPE).post(Entity.entity(new DTAsistenciaWrapper(usuario, reunion), JSON_TYPE));
         comprobarError(respuesta);
     }
 
@@ -81,10 +82,10 @@ public class ClienteJersey {
         return Arrays.asList(respuesta.readEntity(DTUsuario[].class));
     }
 
-    public List<DTEstadoAsistencia> listarAsistencias(DTReunion reunion) throws Exception {
+    public List<DTAsistencia> listarAsistencias(DTReunion reunion) throws Exception {
         Response respuesta = TARGET.path("reunion/listar_asistencias").request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarError(respuesta);
-        return Arrays.asList(respuesta.readEntity(DTEstadoAsistencia[].class));
+        return Arrays.asList(respuesta.readEntity(DTAsistencia[].class));
     }
     //</editor-fold>
 

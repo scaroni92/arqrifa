@@ -1,6 +1,5 @@
 package org.arqrifa.datatypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DTPropuesta {
@@ -16,7 +15,6 @@ public class DTPropuesta {
     }
 
     public DTPropuesta() {
-        this(0, "", new ArrayList());
     }
 
     public int getId() {

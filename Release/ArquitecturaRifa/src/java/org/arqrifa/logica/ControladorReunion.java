@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
-import org.arqrifa.datatypes.DTEstadoAsistencia;
+import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
@@ -181,8 +181,8 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public List<DTEstadoAsistencia> listarAsistencias(DTReunion reunion) {
-        List<DTEstadoAsistencia> asistencias = new ArrayList();
+    public List<DTAsistencia> listarAsistencias(DTReunion reunion) {
+        List<DTAsistencia> asistencias = new ArrayList();
         try {
             List<DTUsuario> estudiantes = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
 
@@ -194,7 +194,7 @@ class ControladorReunion implements IControladorReunion {
                         break;
                     }
                 }
-                asistencias.add(new DTEstadoAsistencia(estudiante, encontrado ? DTEstadoAsistencia.PRESENTE : DTEstadoAsistencia.AUSENTE));
+                asistencias.add(new DTAsistencia(estudiante, encontrado ? DTAsistencia.PRESENTE : DTAsistencia.AUSENTE));
             }
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

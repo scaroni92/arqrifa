@@ -11,8 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.arqrifa.datatypes.DTAsistenciaWrapper;
 import org.arqrifa.datatypes.DTAsistencia;
-import org.arqrifa.datatypes.DTEstadoAsistencia;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTGeneracion;
 import org.arqrifa.datatypes.DTSolicitud;
@@ -57,7 +57,7 @@ public class Servicio {
 
     @POST
     @Path("/asistencia/agregar")
-    public Response agregarAsistencia(DTAsistencia asistencia) {
+    public Response agregarAsistencia(DTAsistenciaWrapper asistencia) {
         FabricaLogica.getControladorReuniones().agregarAsistencia(asistencia.getUsuario(), asistencia.getReunion());
         return Response.status(Response.Status.OK).build();
     }
@@ -160,7 +160,7 @@ public class Servicio {
 
     @Path("reunion/listar_asistencias")
     @POST
-    public List<DTEstadoAsistencia> listarAsistecnias(DTReunion reunion) {
+    public List<DTAsistencia> listarAsistecnias(DTReunion reunion) {
         return FabricaLogica.getControladorReuniones().listarAsistencias(reunion);
     }
 

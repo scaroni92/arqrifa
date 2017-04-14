@@ -1,7 +1,7 @@
 package org.arqrifa.logica;
 
 import java.util.List;
-import org.arqrifa.datatypes.DTEstadoAsistencia;
+import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 
@@ -37,6 +37,6 @@ public interface IControladorReunion {
 
     List<DTReunion> listarPorGeneracion(int genId);
 
-    List<DTEstadoAsistencia> listarAsistencias(DTReunion reunion);
+    List<DTAsistencia> listarAsistencias(DTReunion reunion);
 
 }

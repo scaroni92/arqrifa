@@ -3,6 +3,7 @@ package org.arqrifa.logica;
 import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
+import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
@@ -111,8 +112,16 @@ public class ControladorEncuesta implements IControladorEncuesta {
 
     @Override
     public void agregarVoto(DTVoto voto) {
+        boolean esParticipante = false;
         try {
-            // checkear si se marcó asistencia
+            for (DTUsuario participante : voto.getReunion().getParticipantes()) {
+                if (participante.getCi() == voto.getUsuario().getCi()) {
+                    esParticipante = true;
+                }
+            }
+            if (!esParticipante) {
+                throw new Exception("Solo los participantes pueden votar");
+            }
             FabricaPersistencia.getPersistenciaEncuesta().votar(voto);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
