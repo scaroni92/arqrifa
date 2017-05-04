@@ -8,7 +8,6 @@ import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.viewmodels.VMEncuesta;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
@@ -16,16 +15,23 @@ import org.arqrifa.viewmodels.ViewModel;
 public class ControladorEncuesta extends Controlador {
 
     public void index_get() {
+        DTReunion reunion = null;
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
-            if (reunion.getEncuesta() == null) {
-                this.agregar_get();
-            } else {
+            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+
+            if (reunion.getEncuesta() != null) {
                 this.detalles_get();
+
+            } else {
+                if (!usuario.getRol().equals(DTUsuario.ENCARGADO)) {
+                    throw new Exception("La reunión no posee una encuesta");
+                }
+                this.agregar_get();
+
             }
 
         } catch (Exception e) {
-            mostrarVista("reunion/detalles.jsp");
+            mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, e.getMessage()));
         }
     }
 

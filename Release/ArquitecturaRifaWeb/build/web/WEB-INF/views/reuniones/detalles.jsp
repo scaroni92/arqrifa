@@ -10,16 +10,16 @@
                 <span class="chip right">${modelo.reunion.estado}</span>
                 <h4>${modelo.reunion.titulo}</h4>
                 <p class="flow-text">${modelo.reunion.descripcion}</p>
-               
-                
+
+
                 <div class="row center grey-text text-darken-2" >
                     <div class="col s3"><i class="material-icons tiny">event_seat</i> ${modelo.reunion.obligatoria? "Obligatoria" : "Opcional"}</div>
                     <div class="col s3"><i class="material-icons tiny">today</i> <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></div>
                     <div class="col s3"><i class="material-icons tiny">location_on</i> ${modelo.reunion.lugar}</div>
                     <div class="col s3"><i class="material-icons tiny">timer</i> ${modelo.reunion.duracion} minutos</div>
                 </div>
-                
-                
+
+
                 <ul class="collection with-header">
                     <li class="collection-header"><h5>Temas</h5></li>
                         <c:forEach var="tema" items="${modelo.reunion.temas}">
@@ -52,32 +52,29 @@
 
         </div>
 
-        <!-- FAB -->
-
-        <div class="fixed-action-btn horizontal">
-            <a class="btn-floating btn-large red">
-                <i class="large material-icons">mode_edit</i>
-            </a>
-            <ul>
-                <li><a href="reunion?accion=modificar&id=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
-                <li><a href="#modal" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
-            </ul>
-        </div>
-
-
-
-        <!-- MODAL-->
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <h4>¿Está segur@ que desea eliminar la reunión actual?</h4>
+        <c:if test="${usuario.rol eq 'Encargado'}">
+            <div class="fixed-action-btn horizontal">
+                <a class="btn-floating btn-large red">
+                    <i class="large material-icons">mode_edit</i>
+                </a>
+                <ul>
+                    <li><a href="reunion?accion=modificar&id=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
+                    <li><a href="#modal" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
+                </ul>
             </div>
-            <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-teal btn-flat">Cancelar</a> 
-                <form action="reunion" method="post">
-                    <button type="submit" name="accion" value="eliminar" class="modal-action modal-close waves-effect waves-teal btn-flat">Eliminar</button>
-                    <input type="hidden" name="id" value="${modelo.reunion.id}">
-                </form>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <h4>¿Está segur@ que desea eliminar la reunión actual?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-teal btn-flat">Cancelar</a> 
+                    <form action="reunion" method="post">
+                        <button type="submit" name="accion" value="eliminar" class="modal-action modal-close waves-effect waves-teal btn-flat">Eliminar</button>
+                        <input type="hidden" name="id" value="${modelo.reunion.id}">
+                    </form>
+                </div>
             </div>
-        </div>
+        </c:if>
     </jsp:body>
 </t:masterpage>
