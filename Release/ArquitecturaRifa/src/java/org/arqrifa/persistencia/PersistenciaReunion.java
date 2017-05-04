@@ -313,10 +313,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
             if (res.next()) {
                 reunion = cargarDatosReunion(res, con);
             }
-            
-            if (reunion == null) {
-                throw new Exception(fecha);
-            }
 
         } catch (Exception e) {
             throw e;

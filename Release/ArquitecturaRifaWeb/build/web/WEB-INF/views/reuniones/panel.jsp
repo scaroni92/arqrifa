@@ -4,11 +4,12 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:masterpage titulo="Panel">
+    <c:if test="${reunionActiva != null}">
     <div class="container">
         <form action="panel" id="panel-form" method="post">
             <div class="card-panel">
                 <div class="panel-header"> 
-                    <span class="chip right green white-text" style="margin-left:10px">${reunionActiva.estado}</span>
+                    <span class="chip right  ${reunionActiva.estado eq 'Pendiente'? '':'green white-text'}" style="margin-left:10px">${reunionActiva.estado}</span>
                     <c:if test="${reunionActiva.estado eq 'Pendiente'}">                    
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="iniciar">iniciar <i class="material-icons right">play_circle_outline</i> </button>
                     </c:if>
@@ -74,5 +75,6 @@
             secondaryPlaceholder: '+Resolución'
         });
         </script>
+    </c:if>
 </t:masterpage>
 

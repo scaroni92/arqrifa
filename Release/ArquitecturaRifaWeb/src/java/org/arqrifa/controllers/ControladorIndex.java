@@ -26,7 +26,7 @@ public class ControladorIndex extends Controlador {
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
-        mostrarVista(this.usuario == null ? "login.jsp" : this.usuario.getRol().toLowerCase() + "/index.jsp", vm);
+        mostrarVista(usuario == null ? "login.jsp" : usuario.getRol().toLowerCase() + "/index.jsp", vm);
     }
     
     public void ingresar_get() {
