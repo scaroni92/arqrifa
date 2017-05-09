@@ -520,9 +520,9 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE BuscarReunionPorFecha(pGenId int, pFecha date)
+CREATE PROCEDURE BuscarReunionActual(pGenId int)
 BEGIN
-	SELECT * FROM reuniones WHERE DATE_FORMAT(fecha, '%Y-%m-%d') = DATE_FORMAT(pFecha, '%Y-%m-%d') AND id_gen = pGenId;
+	SELECT * FROM reuniones WHERE  id_gen = pGenId AND DATE_FORMAT(fecha,'%Y-%m-%d') =  DATE_FORMAT(NOW(),'%Y-%m-%d');
 END
 $$
 

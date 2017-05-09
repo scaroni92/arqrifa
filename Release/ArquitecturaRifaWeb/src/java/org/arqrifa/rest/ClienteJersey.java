@@ -191,8 +191,8 @@ public class ClienteJersey {
         return respuesta.readEntity(DTReunion.class);
     }
     
-     public DTReunion buscarReunionPorFecha(int id_gen, String fecha) throws Exception {
-        Response respuesta = TARGET.path("reunion/fecha").queryParam("id_gen", id_gen).queryParam("fecha", fecha).request(JSON_TYPE).get();
+     public DTReunion buscarReunionActual(int id_gen) throws Exception {
+        Response respuesta = TARGET.path("reunion/actual").queryParam("id_gen", id_gen).request(JSON_TYPE).get();
         comprobarError(respuesta);
         return respuesta.readEntity(DTReunion.class);
     }

@@ -1,6 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 <%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<t:masterpage titulo="Agregar">
+<t:masterpage titulo="Modificar">
     <jsp:body>
         <div class="container">
             <div class="row">

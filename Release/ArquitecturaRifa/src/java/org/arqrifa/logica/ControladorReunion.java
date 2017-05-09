@@ -163,9 +163,9 @@ class ControladorReunion implements IControladorReunion {
     }
 
     @Override
-    public DTReunion BuscarReunionPorFecha(int genId, String fecha) {
+    public DTReunion BuscarReunionActual(int genId) {
         try {
-            return FabricaPersistencia.getPersistenciaReunion().buscarReunionPorFecha(genId, fecha);
+            return FabricaPersistencia.getPersistenciaReunion().buscarReunionActual(genId);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

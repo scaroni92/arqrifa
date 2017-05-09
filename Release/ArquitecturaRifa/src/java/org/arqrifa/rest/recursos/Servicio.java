@@ -172,10 +172,10 @@ public class Servicio {
     }
 
     // 30-10-12
-    @Path("reunion/fecha")
+    @Path("reunion/actual")
     @GET
-    public DTReunion buscarReunionPorFecha(@QueryParam("id_gen") int id_gen, @QueryParam("fecha") String fecha) {
-        return FabricaLogica.getControladorReuniones().BuscarReunionPorFecha(id_gen, fecha);
+    public DTReunion buscarReunionPorFecha(@QueryParam("id_gen") int id_gen) {
+        return FabricaLogica.getControladorReuniones().BuscarReunionActual(id_gen);
     }
     //</editor-fold>
 

@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:masterpage titulo="Panel">
@@ -17,7 +16,7 @@
                         <button class="btn btn-flat waves-effect waves-light right" type="submit" name="accion" value="finalizar">finalizar <i class="material-icons right">stop</i> </button>
                     </c:if>
                 </div>
-                <h5>Reunión para el día <fmt:formatDate pattern="dd MMMM 'de' yyyy, hh:mm a" value="${reunionActiva.fecha}" /></h5>
+                <h5>Reunión actual: ${reunionActiva.titulo}</h5>
             </div>
             <ul class="collection with-header">
                 <li class="collection-header"><h4>Temas</h4></li>

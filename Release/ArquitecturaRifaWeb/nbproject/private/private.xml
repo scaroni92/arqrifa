@@ -2,6 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/viewmodels/VMEncuesta.java</file>
+            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/src/java/org/arqrifa/controllers/ControladorEncuesta.java</file>
+            <file>file:/C:/Users/Ale/Documents/GitHub/arqrifa/Release/ArquitecturaRifaWeb/web/WEB-INF/views/encuestas/detalles.jsp</file>
+        </group>
     </open-files>
 </project-private>
