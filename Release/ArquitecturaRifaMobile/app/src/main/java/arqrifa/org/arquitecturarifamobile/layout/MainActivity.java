@@ -43,10 +43,9 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         usuario = (DTUsuario) getIntent().getExtras().get("usuario");
 
-        new GetReunionesTask(this).execute("gen=" + usuario.getGeneracion());
         new GetProximaReunionTask(this).execute("gen=" + usuario.getGeneracion());
         new GetUltimaReunionTask(this).execute("gen=" + usuario.getGeneracion());
-
+        new GetReunionesTask(this).execute("gen=" + usuario.getGeneracion());
     }
 
     private void init() {
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         spec = tabs.newTabSpec("tab3");
         spec.setContent(R.id.tab3);
-        spec.setIndicator("Calend...");
+        spec.setIndicator("Calendario");
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
                 con.disconnect();
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
             return response;
         }
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
                     rvCalendario.setAdapter(new CalendarioAdapter(Arrays.asList((DTReunion[])response), mainActivity));
                 }
             }catch(Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
 
 
@@ -185,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
                 con.disconnect();
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
             return response;
         }
@@ -200,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
                     fragmentTransaction.commit();
                 }
             }catch(Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
 
 
@@ -236,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
                 con.disconnect();
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
             return response;
         }
@@ -251,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
                     fragmentTransaction.commit();
                 }
             }catch(Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
 
 

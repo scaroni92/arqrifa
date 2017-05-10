@@ -5,6 +5,7 @@
     android:id="@+id/activity_encuesta"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="arqrifa.org.arquitecturarifamobile.layout.EncuestaActivity">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -16,5 +17,43 @@
         android:id="@+id/toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLight">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.CardView style="@style/Card">
+                <LinearLayout style="@style/CardView.Container">
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tvTitulo"
+                        style="@style/TextView.Title"
+                        android:text="[título de la encuesta]"/>
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView"
+                        android:id="@+id/tvDuracion"
+                        android:text="[duracion]"/>
+
+                    <View style="@style/Divider"/>
+
+                    <LinearLayout
+                        android:id="@+id/llPropuestas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

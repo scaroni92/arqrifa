@@ -20,43 +20,45 @@
                 <LinearLayout style="@style/CardView.Container">
 
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/EditText.Subtitle"
+                        style="@style/TextView.Subtitle"
                         android:text="Información general"/>
 
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView"
                         android:id="@+id/tvFecha"
                         android:layout_width="match_parent"
                         android:text="[dd MMMM, yyyy hh:mm]"
                         android:textAlignment="textEnd" />
 
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText.Darken"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView.Darken"
                         android:id="@+id/tvTitulo"
                         android:text="[título]"
                         android:textSize="12dp" />
 
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText.Darken"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView.Darken"
                         android:id="@+id/tvDescripcion"
                         android:text="[descripción]" />
+
+                    <View style="@style/Divider"/>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/tvDuracion"
                         android:text="[duración]"
-                        style="@style/EditText"/>
+                        style="@style/TextView"/>
 
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/tvLugar"
                         android:text="[lugar]"
-                        style="@style/EditText"/>
+                        style="@style/TextView"/>
 
 
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/EditText"
+                        style="@style/TextView"
                         android:id="@+id/tvCaracter"
                         android:text="[carácter]"/>
 
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/EditText"
+                        style="@style/TextView"
                         android:id="@+id/tvEstado"
                         android:text="[estado]"/>
 
@@ -68,7 +70,7 @@
 
                 <LinearLayout style="@style/CardView.Container">
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/EditText.Title"
+                        style="@style/TextView.Title"
                         android:text="Resoluciones alcanzadas"/>
                     <LinearLayout
                         android:id="@+id/llResoluciones"
@@ -79,9 +81,9 @@
                     <View style="@style/Divider"/>
 
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/EditText.Subtitle"
+                        style="@style/TextView.Subtitle"
                         android:text="Observaciones"/>
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView"
                         android:id="@+id/tvObservaciones"
                         android:text="[observaciones]"/>
                 </LinearLayout>
@@ -89,7 +91,7 @@
 
             <android.support.v7.widget.CardView style="@style/Card">
                 <LinearLayout style="@style/CardView.Container">
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText.Darken"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView.Darken"
                         android:text="Temas"
                         android:textSize="12dp" />
                     <LinearLayout
@@ -108,7 +110,7 @@
                 android:clickable="true">
                 <LinearLayout
                     style="@style/CardView.Container">
-                    <android.support.v7.widget.AppCompatTextView style="@style/EditText.Darken"
+                    <android.support.v7.widget.AppCompatTextView style="@style/TextView.Darken"
                         android:text="Encuesta"
                         android:textSize="12dp" />
                     <LinearLayout
@@ -116,8 +118,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"/>
                     <TextView
-                        style="@style/EditText"
-                        android:text="[título encuesta] (agregar icono >)"/>
+                        android:id="@+id/tvTituloEncuesta"
+                        style="@style/TextView"
+                        android:text="[título encuesta]"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

@@ -20,7 +20,7 @@ import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 
 public class ReunionFragment extends Fragment {
-    TextView tvFecha, tvTitulo, tvDescripcion, tvDuracion, tvLugar, tvAsistencia, tvEstado, tvObservaciones;
+    TextView tvFecha, tvTitulo, tvDescripcion, tvDuracion, tvLugar, tvCaracter, tvEstado, tvObservaciones;
     LinearLayout llTemas, llResoluciones;
     CardView cvResoluciones, cvEncuesta;
 
@@ -56,6 +56,7 @@ public class ReunionFragment extends Fragment {
         tvDescripcion = (TextView) view.findViewById(R.id.tvDescripcion);
         tvDuracion = (TextView) view.findViewById(R.id.tvDuracion);
         tvLugar = (TextView) view.findViewById(R.id.tvLugar);
+        tvCaracter = (TextView) view.findViewById(R.id.tvCaracter);
         tvEstado = (TextView) view.findViewById(R.id.tvEstado);
         cvResoluciones = (CardView) view.findViewById(R.id.cvResoluciones);
         llResoluciones = (LinearLayout) view.findViewById(R.id.llResoluciones);
@@ -68,11 +69,12 @@ public class ReunionFragment extends Fragment {
     }
 
     public void setReunion(){
-        tvFecha.setText(new SimpleDateFormat("dd MMMM, yyyy hh:hh ", new Locale("es_ES")).format(reunion.getFecha()));
+        tvFecha.setText(new SimpleDateFormat("dd MMMM, yyyy HH:mm ", new Locale("es_ES")).format(reunion.getFecha()));
         tvTitulo.setText(reunion.getTitulo());
         tvDescripcion.setText(reunion.getDescripcion());
         tvDuracion.setText("Duración estimada: " + reunion.getDuracion());
         tvLugar.setText("Lugar: " + reunion.getLugar());
+        tvCaracter.setText("Obligatoria: " + (reunion.isObligatoria()? "Sí" : "No"));
         tvEstado.setText("Estado: " + reunion.getEstado());
 
         TextView tvTema;
@@ -105,8 +107,14 @@ public class ReunionFragment extends Fragment {
             cvEncuesta.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   //TODO: Intent intent = new Intent(getActivity(), EncuestaActivity.class);
-                    Intent intent = new Intent(getActivity(), CuestionarioActivity.class);
+                    Intent intent = null;
+                    if(reunion.getEncuesta().isHabilitada()){
+                        intent = new Intent(getActivity(), CuestionarioActivity.class);
+                    }
+                    else {
+                        intent = new Intent(getActivity(), EncuestaActivity.class);
+                    }
+
                     intent.putExtra("reunion", reunion);
                     getActivity().startActivity(intent);
                 }

@@ -41,7 +41,7 @@ public class CalendarioAdapter extends RecyclerView.Adapter<CalendarioAdapter.Ca
 
         SimpleDateFormat sdfDia = new SimpleDateFormat("dd");
         SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM",  new Locale("es_ES"));
-        SimpleDateFormat sdfHora = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
 
         CalendarioViewHolder.tvMes.setText(sdfMes.format(reunion.getFecha()));
         CalendarioViewHolder.tvDia.setText(sdfDia.format(reunion.getFecha()));

@@ -31,7 +31,7 @@
     <style name="Card">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:background">@color/md_white_1000</item>
     </style>
 
@@ -42,27 +42,23 @@
         <item name="android:padding">@dimen/card_padding</item>
     </style>
 
-    <style name="EditText" >
+    <style name="TextView" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">11dp</item>
     </style>
 
-    <style name="EditText.Title" >
+    <style name="TextView.Title" >
         <item name="android:textColor">@color/md_black_1000_75</item>
         <item name="android:textSize">14dp</item>
     </style>
 
-    <style name="EditText.Subtitle" >
+    <style name="TextView.Subtitle" >
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="EditText.Darken" >
+    <style name="TextView.Darken" >
         <item name="android:textColor">@color/md_black_1000_75</item>
     </style>
 
 </resources>
-
-<!-- SmallCardText, MediumCardText, LargeCardText, CardTitle1 CardTitle2 CardSubtitle1 CardSubtitle2 CardPaddingX CardPaddingY-->
-
-<!-- TexView a tema-->

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/md_green_50"
+    android:background="@color/colorPrimaryLight"
     android:weightSum="1">
 
     <android.support.v7.widget.Toolbar
@@ -44,8 +44,7 @@
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@color/md_white_1000">
+                    android:orientation="vertical">
 
 
                 </LinearLayout>
@@ -58,18 +57,17 @@
 
                 </LinearLayout>
 
-                <!-- CALENDARIO -->
                 <LinearLayout
                     android:id="@+id/tab3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@color/md_white_1000">
+                    android:orientation="vertical">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvCalendario"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@color/md_white_1000">
                     </android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
