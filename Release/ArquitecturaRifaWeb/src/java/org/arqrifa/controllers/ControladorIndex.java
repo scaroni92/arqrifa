@@ -35,7 +35,7 @@ public class ControladorIndex extends Controlador {
     
     public void ingresar_post() {
         try {
-            usuario = cliente.login(Integer.parseInt(request.getParameter("ci")), request.getParameter("pass"));
+            usuario = cliente.login(request.getParameter("ci"), request.getParameter("pass"));
             if (usuario == null) {
                 throw new Exception("Usuario o contraseña incorrectos");
             }
@@ -79,7 +79,7 @@ public class ControladorIndex extends Controlador {
     public void verificar_get() {
         VMVerificacion vm;
         try {
-            cliente.verificarSolicitud(Integer.parseInt(request.getParameter("codigo")));
+            cliente.verificarSolicitud(request.getParameter("codigo"));
             vm = new VMVerificacion(true, "Ahora solo debes esperar a que sea aprobada por el encargado.", "¡Solicitud verificada exitosamente!");
         } catch (Exception ex) {
             vm = new VMVerificacion(false, "Quizas la solicitud fue rechazada.", "Código de verificación incorrecto");

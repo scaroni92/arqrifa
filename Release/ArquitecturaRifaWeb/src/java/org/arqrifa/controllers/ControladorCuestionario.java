@@ -10,7 +10,6 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
-import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
@@ -35,7 +34,7 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             sesion.setAttribute("estudiante", null);
-            DTUsuario dtUsuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+            DTUsuario dtUsuario = cliente.buscarUsuario(request.getParameter("ci"));
             if (dtUsuario != null) {
                 if (dtUsuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
                     sesion.setAttribute("estudiante", dtUsuario);

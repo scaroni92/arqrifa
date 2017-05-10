@@ -1,65 +1,54 @@
 package org.arqrifa.rest;
 
-import java.net.ConnectException;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import org.arqrifa.datatypes.DTAsistencia;
+import org.arqrifa.datatypes.DTAsistenciaWrapper;
 import org.arqrifa.datatypes.DTMensajeError;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 
 public class JerseyClient {
 
+    private final WebTarget webTarget;
     private static final String BASE_URI = "http://localhost:8080/ArquitecturaRifa/api";
-    private final WebTarget TARGET;
-    private final Client CLIENT;
-    private final String JSON_TYPE = "application/json;charset=utf-8";
+    private static final String JSON_TYPE = "application/json;charset=utf-8";
 
     public JerseyClient() {
-        CLIENT = ClientBuilder.newClient();
-        TARGET = CLIENT.target(BASE_URI).path("servicio");
+        webTarget = ClientBuilder.newClient().target(BASE_URI);
     }
 
-    private void comprobarError(Response respuesta) throws Exception {
-        switch (respuesta.getStatus()) {
+    private void comprobarEstado(Response response) throws Exception {
+        switch (response.getStatus()) {
             case 400:
                 throw new Exception("Solicitud incorrecta");
             case 404:
                 throw new Exception("Recurso no encontrado");
             case 409:
-                throw new Exception(respuesta.readEntity(DTMensajeError.class).getMensaje());
+                throw new Exception(response.readEntity(DTMensajeError.class).getMensaje());
         }
     }
 
-    public DTUsuario login(int ci, String pass) throws Exception {
-        try {
-            Response respuesta = TARGET.path("login").queryParam("ci", ci).queryParam("pass", pass).request(JSON_TYPE).get();
-            comprobarError(respuesta);
-            return respuesta.readEntity(DTUsuario.class);
-        } catch (ProcessingException e) {
-            throw new Exception("No se pudo establecer la conexión con la api");
-        }
+    public DTUsuario login(String ci, String pass) throws Exception {
+        Response response = webTarget.path("usuarios/login").queryParam("ci", ci).queryParam("pass", pass).request(JSON_TYPE).get();
+        return response.readEntity(DTUsuario.class);
     }
 
-    public DTReunion buscarReunionPorFecha(int generacion, String fecha) throws Exception {
-        Response respuesta = TARGET.path("reunion/fecha").queryParam("id_gen", generacion).queryParam("fecha", fecha).request(JSON_TYPE).get();
-        comprobarError(respuesta);
-        return respuesta.readEntity(DTReunion.class);
+    public DTUsuario buscarUsuario(String ci) throws Exception {
+        Response response = webTarget.path("usuarios/" + ci).request(JSON_TYPE).get();
+        return response.readEntity(DTUsuario.class);
     }
 
-    public void agregarAsistencia(DTReunion reunion, DTUsuario usuario) throws Exception {
-        Response respuesta = TARGET.path("asistencia/agregar").request(JSON_TYPE).post(Entity.entity(new DTAsistencia(usuario, reunion), JSON_TYPE));
-        comprobarError(respuesta);
+    public DTReunion buscarReunionActual(int gen) throws Exception {
+        Response response = webTarget.path("reuniones/actual").queryParam("gen", gen).request(JSON_TYPE).get();
+        comprobarEstado(response);
+        return response.readEntity(DTReunion.class);
     }
 
-    public DTUsuario buscarUsuario(int ci) throws Exception {
-        Response respuesta = TARGET.path("usuario/buscar").queryParam("ci", ci).request(JSON_TYPE).get();
-        comprobarError(respuesta);
-        return respuesta.readEntity(DTUsuario.class);
+    public void agregarAsistencia(DTUsuario usuario, DTReunion reunion) throws Exception {
+        Response response = webTarget.path("reuniones/asistencias").request(JSON_TYPE).post(Entity.entity(new DTAsistenciaWrapper(usuario, reunion), JSON_TYPE));
+        comprobarEstado(response);
     }
 
 }

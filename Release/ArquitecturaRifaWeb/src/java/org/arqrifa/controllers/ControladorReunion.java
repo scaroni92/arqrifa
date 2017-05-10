@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.viewmodels.VMListaAsistencias;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMMantenimientoReunion;
 import org.arqrifa.viewmodels.VMReunion;
@@ -49,7 +48,7 @@ public class ControladorReunion extends Controlador {
     public void modificar_get() {
         VMMantenimientoReunion vm = new VMMantenimientoReunion();
         try {
-            cargarReunionEnModelo(vm, cliente.buscarReunion(Integer.parseInt(request.getParameter("id"))));
+            cargarReunionEnModelo(vm, cliente.buscarReunion(request.getParameter("id")));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -67,7 +66,8 @@ public class ControladorReunion extends Controlador {
                 throw new Exception("Ingrese los temas a debatir en la reunión.");
             }
 
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(vm.getId()));
+            DTReunion reunion = cliente.buscarReunion(vm.getId());
+            reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
             reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
@@ -88,8 +88,8 @@ public class ControladorReunion extends Controlador {
     public void eliminar_post() {
         DTReunion reunion = null;
         try {
-            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
-            cliente.eliminarReunion(reunion);
+            reunion = cliente.buscarReunion(request.getParameter("id"));
+            cliente.eliminarReunion(reunion.getId());
 
             sesion.setAttribute("mensaje", "Reunion eliminada exitosamente");
             response.sendRedirect("usuario?accion=ver-calendario");
@@ -101,7 +101,7 @@ public class ControladorReunion extends Controlador {
     public void iniciar_post() {
         VMMantenimientoReunion vm = (VMMantenimientoReunion) cargarModelo(new VMMantenimientoReunion());
         try {
-            cliente.iniciarReunion(cliente.buscarReunion(Integer.parseInt(vm.getId())));
+            cliente.iniciarReunion(cliente.buscarReunion(vm.getId()));
             vm.setEstado("Iniciada");
             vm.setMensaje("Reunión iniciada exitosamente");
         } catch (Exception e) {
@@ -148,23 +148,27 @@ public class ControladorReunion extends Controlador {
 
     public void detalles_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
+            
+            if (reunion == null) {
+                throw new Exception("");
+            }
 
             if (this.usuario.getRol().equals(DTUsuario.ENCARGADO) && this.usuario.getGeneracion() != reunion.getGeneracion()) {
                 mostrarVista("error/403.jsp");
             }
-
+//TODO
             mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, ""));
 
         } catch (Exception e) {
-            mostrarVista("error/500.jsp");
+            mostrarVista("error/404.jsp");
         }
     }
 
     public void ver_participantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("id")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
             vm.setUsuarios(reunion.getParticipantes());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

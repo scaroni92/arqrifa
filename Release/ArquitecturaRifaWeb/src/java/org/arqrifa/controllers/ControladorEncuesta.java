@@ -17,7 +17,7 @@ public class ControladorEncuesta extends Controlador {
     public void index_get() {
         DTReunion reunion = null;
         try {
-            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() != null) {
                 this.detalles_get();
@@ -37,7 +37,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void agregar_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
             if (reunion != null) {
                 sesion.setAttribute("reunion", reunion);
@@ -97,7 +97,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void modificar_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
             if (reunion != null) {
                 sesion.setAttribute("reunion", reunion);
@@ -130,9 +130,9 @@ public class ControladorEncuesta extends Controlador {
         DTReunion reunion = null;
         try {
             //TODO enviar reunión para comprobar estado en lógica
-            reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
-            cliente.eliminarEncuesta(reunion.getEncuesta());
+            cliente.eliminarEncuesta(reunion.getId());
             sesion.setAttribute("mensaje", "Encuesta eliminada exitosamente.");
             response.sendRedirect("usuario?accion=ver-calendario");
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void detalles_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() == null) {
                 mostrarVista("Error/404.jsp");

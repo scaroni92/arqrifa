@@ -1,12 +1,12 @@
 package org.arqrifa.app;
 
-import org.arqrifa.rest.JerseyClient;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.microedition.io.StreamConnection;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.JerseyClient;
 
 public class ProcessConnectionThread implements Runnable {
 
@@ -60,9 +60,9 @@ public class ProcessConnectionThread implements Runnable {
             String strCommand = new String(command);
             System.out.println("Marcar asistencia para el estudiante: " + strCommand);
 
-            DTUsuario estudiante = new JerseyClient().buscarUsuario(Integer.parseInt(strCommand));
+            DTUsuario estudiante = new JerseyClient().buscarUsuario(strCommand);
 
-            new JerseyClient().agregarAsistencia(DesktopController.getReunion(), estudiante);
+            new JerseyClient().agregarAsistencia(estudiante, DesktopController.getReunion());
             System.out.println("Asistencia marcada");
         } catch (Exception e) {
             System.out.println(e.getMessage());

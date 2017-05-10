@@ -141,7 +141,7 @@ public class Login extends javax.swing.JFrame {
 
     private void pnlLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlLoginMouseClicked
         try {
-            int ci = Integer.parseInt(txtCi.getText());
+            String ci = txtCi.getText();
             String pass = String.valueOf(txtPass.getPassword());
 
             DesktopController.ingresar(ci, pass);

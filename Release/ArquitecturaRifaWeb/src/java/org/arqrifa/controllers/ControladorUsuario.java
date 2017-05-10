@@ -1,7 +1,6 @@
 package org.arqrifa.controllers;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
@@ -32,9 +31,9 @@ public class ControladorUsuario extends Controlador {
         List<DTReunion> reuniones;
         try {
             if (usuario.getRol().equals(DTUsuario.ADMIN)) {
-                reuniones = cliente.listarReunionesTodas();
+                reuniones = cliente.listarReuniones(0);
             } else {
-                reuniones = cliente.listarReunionesPorGeneracion(usuario.getGeneracion());
+                reuniones = cliente.listarReuniones(usuario.getGeneracion());
             }
 
             if (vm.getFiltro().equalsIgnoreCase(DTReunion.PENDIENTE) || vm.getFiltro().equalsIgnoreCase(DTReunion.FINALIZADA)) {
@@ -49,7 +48,7 @@ public class ControladorUsuario extends Controlador {
 
     public void ver_encuesta_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(Integer.parseInt(request.getParameter("reunionId")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() == null || reunion.getGeneracion() != this.usuario.getGeneracion()) {
                 throw new Exception("Recurso no encontrado");
@@ -68,7 +67,7 @@ public class ControladorUsuario extends Controlador {
     public void detalles_get() {
         VMUsuario vm = new VMUsuario();
         try {
-            DTUsuario dtUsuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+            DTUsuario dtUsuario = cliente.buscarUsuario(request.getParameter("ci"));
 
             if (this.usuario.getRol().equals(DTUsuario.ADMIN) || this.usuario.getRol().equals(DTUsuario.ENCARGADO) && this.usuario.getGeneracion() == dtUsuario.getGeneracion()) {
                 vm.setUsuario(dtUsuario);

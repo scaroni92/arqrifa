@@ -17,9 +17,9 @@ public class ControladorAdmin extends Controlador {
             //TODO hacer busqueda con criterio
 
             if (request.getParameter("ci").isEmpty()) {
-                vm.setUsuarios(cliente.listarUsuarios());
+                vm.setUsuarios(cliente.listarUsuarios(0));
             } else {
-                vm.getUsuarios().add(cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci"))));
+                vm.getUsuarios().add(cliente.buscarUsuario(request.getParameter("ci")));
             }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -60,7 +60,7 @@ public class ControladorAdmin extends Controlador {
     public void modificar_usuario_get() {
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {
-            DTUsuario dtUsuario = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+            DTUsuario dtUsuario = cliente.buscarUsuario(request.getParameter("ci"));
             vm.setCi(String.valueOf(dtUsuario.getCi()));
             vm.setNombre(dtUsuario.getNombre());
             vm.setApellido(dtUsuario.getApellido());
@@ -95,7 +95,7 @@ public class ControladorAdmin extends Controlador {
     public void listar_usuarios_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            vm.setUsuarios(cliente.listarUsuarios());
+            vm.setUsuarios(cliente.listarUsuarios(0));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -105,7 +105,7 @@ public class ControladorAdmin extends Controlador {
     public void listar_reuniones_get() {
         VMListadoReuniones vm = new VMListadoReuniones();
         try {
-            vm.setReuniones(cliente.listarReunionesTodas());
+            vm.setReuniones(cliente.listarReuniones(0));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

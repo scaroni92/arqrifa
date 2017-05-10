@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.rest.ClienteJersey;
+import org.arqrifa.rest.JerseyClient;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
@@ -24,7 +24,7 @@ public class Controlador extends HttpServlet {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected DTUsuario usuario;
-    protected ClienteJersey cliente;
+    protected JerseyClient cliente;
 
 
     protected void despacharMetodoAccion()
@@ -113,7 +113,7 @@ public class Controlador extends HttpServlet {
         this.request = request;
         this.response = response;
         this.usuario = (DTUsuario)sesion.getAttribute("usuario");
-        this.cliente = new ClienteJersey();
+        this.cliente = new JerseyClient();
 
         try {
             despacharMetodoAccion();

@@ -37,7 +37,7 @@ public class ControladorGeneraciones extends Controlador {
     public void listar_estudiantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            vm.setUsuarios(cliente.listarEstudiantesPorGeneracion(Integer.parseInt(request.getParameter("id"))));
+            vm.setUsuarios(cliente.listarUsuarios(Integer.parseInt(request.getParameter("id"))));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

@@ -68,7 +68,7 @@ public class ControladorPanel extends Controlador {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
             vm.setReunion(reunionActiva);
-            vm.setAsistencias(cliente.listarAsistencias(reunionActiva));
+            vm.setAsistencias(cliente.listarAsistencias(reunionActiva.getId()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -79,7 +79,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
 
-            cliente.habilitarLista(reunionActiva);
+            cliente.hablitarLista(reunionActiva);
             reunionActiva.setEstado(DTReunion.LISTADO);
 
             vm.setMensaje("Lista de asistencias habilitada exitosamente");
@@ -93,7 +93,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
 
-            cliente.deshabilitarLista(reunionActiva);
+            cliente.deshablitarLista(reunionActiva);
             reunionActiva.setEstado(DTReunion.INICIADA);
 
             vm.setMensaje("Lista de asistencias deshabilitada exitosamente");
@@ -133,8 +133,8 @@ public class ControladorPanel extends Controlador {
     public void marcar_asistencia_get() {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
-            DTUsuario estudiante = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
-            cliente.agregarAsistencia(reunionActiva, estudiante);
+            DTUsuario estudiante = cliente.buscarUsuario(request.getParameter("ci"));
+            cliente.agregarAsistencia(estudiante, reunionActiva);
             sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");
         } catch (Exception e) {
             sesion.setAttribute("mensaje", e.getMessage());

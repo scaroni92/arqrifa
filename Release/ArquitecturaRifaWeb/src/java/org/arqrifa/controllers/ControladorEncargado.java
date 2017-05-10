@@ -12,7 +12,7 @@ public class ControladorEncargado extends Controlador {
     public void listar_estudiantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            vm.setUsuarios(cliente.listarEstudiantesPorGeneracion(this.usuario.getGeneracion()));
+            vm.setUsuarios(cliente.listarUsuarios(usuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -32,7 +32,7 @@ public class ControladorEncargado extends Controlador {
     public void listar_reuniones_get() {
         VMListadoReuniones vm = new VMListadoReuniones();
         try {
-            vm.setReuniones(cliente.listarReunionesPorGeneracion(usuario.getGeneracion()));
+            vm.setReuniones(cliente.listarReuniones(usuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -45,9 +45,9 @@ public class ControladorEncargado extends Controlador {
             //TODO hacer busqueda con criterio
 
             if (request.getParameter("ci").isEmpty()) {
-                vm.setUsuarios(cliente.listarEstudiantesPorGeneracion(usuario.getGeneracion()));
+                vm.setUsuarios(cliente.listarUsuarios(usuario.getGeneracion()));
             } else {
-                DTUsuario estudiante = cliente.buscarUsuario(Integer.parseInt(request.getParameter("ci")));
+                DTUsuario estudiante = cliente.buscarUsuario(request.getParameter("ci"));
                 if (estudiante.getRol().equals(DTUsuario.ESTUDIANTE) && estudiante.getGeneracion() == usuario.getGeneracion()) {
                     vm.getUsuarios().add(estudiante);
                 }

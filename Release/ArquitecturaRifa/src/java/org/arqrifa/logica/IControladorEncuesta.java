@@ -8,9 +8,9 @@ public interface IControladorEncuesta {
 
     void agregarEncuesta(DTReunion reunion);
 
-    void eliminarEncuesta(DTEncuesta encuesta);
+    void eliminarEncuesta(DTReunion encuesta);
 
-    void modificarEncuesta(DTEncuesta encuesta);
+    void modificarEncuesta(DTReunion encuesta);
 
     void habilitarVotacion(DTReunion reunion);
     

@@ -52,34 +52,39 @@ public class ControladorEncuesta implements IControladorEncuesta {
     }
 
     @Override
-    public void eliminarEncuesta(DTEncuesta encuesta) {
+    public void eliminarEncuesta(DTReunion reunion) {
         try {
-
-            if (encuesta.isHabilitada()) {
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
+                throw new Exception("No se puede eliminar la encuesta de una reunión finalizada");
+            }
+            if (reunion.getEncuesta().isHabilitada()) {
                 throw new Exception("No se puede eliminar una encuesta que ya fue habilitada.");
             }
-            FabricaPersistencia.getPersistenciaEncuesta().eliminar(encuesta);
+            FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public void modificarEncuesta(DTEncuesta encuesta) {
+    public void modificarEncuesta(DTReunion reunion) {
         try {
-            if (encuesta.isHabilitada()) {
+            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
+                throw new Exception("No se puede modificar la encuesta de una reunión finalizada");
+            }
+            if (reunion.getEncuesta().isHabilitada()) {
                 throw new Exception("No se puede modificar una encuesta que ya fue habilitada.");
             }
-            if (encuesta.getPropuestas().isEmpty()) {
+            if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("Agregue almenos una propuesta a la encuesta.");
             }
 
-            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
+            for (DTPropuesta propuesta : reunion.getEncuesta().getPropuestas()) {
                 if (propuesta.getRespuestas().size() < 2) {
                     throw new Exception("Todas las propuestas deben tener almenos dos respuestas");
                 }
             }
-            FabricaPersistencia.getPersistenciaEncuesta().modificar(encuesta);
+            FabricaPersistencia.getPersistenciaEncuesta().modificar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

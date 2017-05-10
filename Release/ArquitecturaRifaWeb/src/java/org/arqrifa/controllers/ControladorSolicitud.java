@@ -12,7 +12,7 @@ public class ControladorSolicitud extends Controlador {
     public void detalles_get() {
         VMUsuario vm = new VMUsuario();
         try {
-            DTUsuario dtUsuario = cliente.buscarSolicitud(Integer.parseInt(request.getParameter("ci"))).getUsuario();
+            DTUsuario dtUsuario = cliente.buscarSolicitud(request.getParameter("ci")).getUsuario();
 
             if (this.usuario.getGeneracion() == dtUsuario.getGeneracion()) {
                 vm.setUsuario(dtUsuario);
@@ -26,7 +26,7 @@ public class ControladorSolicitud extends Controlador {
 
     public void confirmar_get() {
         try {
-            cliente.confirmarSolicitud(cliente.buscarSolicitud(Integer.parseInt(request.getParameter("ci"))));
+            cliente.confirmarSolicitud(cliente.buscarSolicitud(request.getParameter("ci")));
             mostrarVista("usuarios/solicitudes.jsp", new VMListaSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud confirmada exitosamente."));
         } catch (Exception e) {
             try {
@@ -41,7 +41,7 @@ public class ControladorSolicitud extends Controlador {
     public void rechazar_get() {
         VMListaSolicitudes vm = new VMListaSolicitudes();
         try {
-            cliente.rechazarSolicitud(cliente.buscarSolicitud(Integer.parseInt(request.getParameter("ci"))));
+            cliente.eliminarSolicitud(request.getParameter("ci"));
             vm = new VMListaSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud rechazada exitosamente.");
         } catch (NumberFormatException e) {
             vm.setMensaje("Ingrese una cédula válida.");
