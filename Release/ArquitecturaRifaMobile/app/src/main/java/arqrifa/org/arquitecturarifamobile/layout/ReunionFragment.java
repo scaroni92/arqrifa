@@ -105,7 +105,7 @@ public class ReunionFragment extends Fragment {
             cvEncuesta.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // Intent intent = new Intent(getActivity(), EncuestaActivity.class);
+                   //TODO: Intent intent = new Intent(getActivity(), EncuestaActivity.class);
                     Intent intent = new Intent(getActivity(), CuestionarioActivity.class);
                     intent.putExtra("reunion", reunion);
                     getActivity().startActivity(intent);

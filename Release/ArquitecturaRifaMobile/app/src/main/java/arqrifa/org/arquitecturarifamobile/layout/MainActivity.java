@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         usuario = (DTUsuario) getIntent().getExtras().get("usuario");
 
-        new GetReunionesTask(this).execute("id_gen=" + usuario.getGeneracion());
-        new GetProximaReunionTask(this).execute("id_gen=" + usuario.getGeneracion());
-        new GetUltimaReunionTask(this).execute("id_gen=" + usuario.getGeneracion());
+        new GetReunionesTask(this).execute("gen=" + usuario.getGeneracion());
+        new GetProximaReunionTask(this).execute("gen=" + usuario.getGeneracion());
+        new GetUltimaReunionTask(this).execute("gen=" + usuario.getGeneracion());
 
     }
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/reunion/listar_por_generacion?"+ params[0]);
+                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/reunion/siguiente?"+ params[0]);
+                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones/siguiente?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/reunion/ultima_finalizada?"+ params[0]);
+                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones/ultima?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 

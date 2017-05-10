@@ -122,13 +122,13 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
             HttpURLConnection con = null;
 
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/reunion/votar");
+                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/encuestas/voto");
                 con = (HttpURLConnection)url.openConnection();
                 con.setDoOutput(true);
                 con.setDoInput(true);
                 con.setRequestProperty("Content-Type", "application/json");
                 con.setRequestProperty("Accept", "application/json");
-                con.setRequestMethod("POST");
+                con.setRequestMethod("PUT");
                 con.connect();
 
                 OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());

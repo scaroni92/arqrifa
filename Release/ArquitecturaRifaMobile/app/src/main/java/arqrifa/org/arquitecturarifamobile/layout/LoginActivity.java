@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/servicio/login?" + params[0]);
+                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/usuarios/login?" + params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 con.disconnect();
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
             return response;
         }
