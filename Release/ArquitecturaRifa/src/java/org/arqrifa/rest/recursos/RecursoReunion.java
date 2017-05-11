@@ -39,14 +39,14 @@ public class RecursoReunion {
     
     @Path("actual")
     @GET
-    public DTReunion buscarReunionActiva(@QueryParam("gen") int generacion) {
+    public DTReunion buscarActiva(@QueryParam("gen") int generacion) {
         return FabricaLogica.getControladorReuniones().BuscarReunionActual(generacion);
     }
 
     //Última reunión finalizada
     @Path("ultima")
     @GET
-    public DTReunion buscarUltimaReunionFinalizada(@QueryParam("gen") int generacion) {
+    public DTReunion buscarUltimaFinalizada(@QueryParam("gen") int generacion) {
         return CONTROLADOR.buscarUltimaReunionFinalizada(generacion);
     }
 
@@ -64,7 +64,6 @@ public class RecursoReunion {
         return CONTROLADOR.listarTodas();
     }
 
-    //TODO retornar reunion
     @POST
     public Response agregar(DTReunion reunion) {
         CONTROLADOR.agregar(reunion);
@@ -74,7 +73,7 @@ public class RecursoReunion {
     @Path("{id}")
     @DELETE
     public Response eliminar(@PathParam("id") int id) {
-        //El método DELETE no permite usar entidades
+        //Se solicita el id ya que el método DELETE no permite el uso entidad
         CONTROLADOR.eliminar(CONTROLADOR.buscar(id));
         return Response.status(Response.Status.OK).build();
     }
@@ -115,7 +114,7 @@ public class RecursoReunion {
     
     @Path("asistencias")
     @POST
-    public void getLista(DTAsistenciaWrapper asistencia) {
+    public void agregarAsistencia(DTAsistenciaWrapper asistencia) {
         CONTROLADOR.agregarAsistencia(asistencia.getUsuario(), asistencia.getReunion());
     }
 
