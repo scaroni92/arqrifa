@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//Acceso: ENCARGADO
 
 import java.util.ArrayList;
 import java.util.List;

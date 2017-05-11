@@ -1,6 +1,8 @@
 package org.arqrifa.controllers;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
@@ -26,9 +28,10 @@ public class ControladorReunion extends Controlador {
             }
 
             DTReunion reunion = new DTReunion();
+
             reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
-            reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
+            reunion.setFecha(formatearFecha(vm.getFecha() + " " + vm.getHora()));
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
             reunion.setObligatoria(vm.isObligatoria());
             reunion.setLugar(vm.getLugar());
@@ -45,10 +48,24 @@ public class ControladorReunion extends Controlador {
         }
     }
 
+    private static Date formatearFecha(String fecha) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(fecha);
+    }
+
     public void modificar_get() {
         VMMantenimientoReunion vm = new VMMantenimientoReunion();
         try {
-            cargarReunionEnModelo(vm, cliente.buscarReunion(request.getParameter("id")));
+            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
+            vm.setId(String.valueOf(reunion.getId()));
+            vm.setTitulo(reunion.getTitulo());
+            vm.setDescripcion(reunion.getDescripcion());
+            vm.setFecha(new SimpleDateFormat("yyyy-MM-dd").format(reunion.getFecha()));
+            vm.setHora(new SimpleDateFormat("HH:mm").format(reunion.getFecha()));
+            vm.setDuracion(String.valueOf(reunion.getDuracion()));
+            vm.setObligatoria(reunion.isObligatoria());
+            vm.setLugar(reunion.getLugar());
+            vm.setEstado(reunion.getEstado());
+            vm.setTemas(reunion.getTemas());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -69,7 +86,7 @@ public class ControladorReunion extends Controlador {
             DTReunion reunion = cliente.buscarReunion(vm.getId());
             reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
-            reunion.setFecha(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(vm.getFecha() + " " + vm.getHora()));
+            reunion.setFecha(formatearFecha(vm.getFecha() + " " + vm.getHora()));
             reunion.setDuracion(Integer.parseInt(vm.getDuracion()));
             reunion.setObligatoria(vm.isObligatoria());
             reunion.setLugar(vm.getLugar());
@@ -133,23 +150,10 @@ public class ControladorReunion extends Controlador {
         }
     }
 
-    private void cargarReunionEnModelo(VMMantenimientoReunion vm, DTReunion reunion) throws Exception {
-        vm.setId(String.valueOf(reunion.getId()));
-        vm.setTitulo(reunion.getTitulo());
-        vm.setDescripcion(reunion.getDescripcion());
-        vm.setFecha(new SimpleDateFormat("yyyy-MM-dd").format(reunion.getFecha()));
-        vm.setHora(new SimpleDateFormat("HH:mm").format(reunion.getFecha()));
-        vm.setDuracion(String.valueOf(reunion.getDuracion()));
-        vm.setObligatoria(reunion.isObligatoria());
-        vm.setLugar(reunion.getLugar());
-        vm.setEstado(reunion.getEstado());
-        vm.setTemas(reunion.getTemas());
-    }
-
     public void detalles_get() {
         try {
             DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
-            
+
             if (reunion == null) {
                 throw new Exception("");
             }

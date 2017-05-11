@@ -1,5 +1,4 @@
 package org.arqrifa.controllers;
-//Acceso: ADMIN
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTUsuario;
@@ -14,8 +13,6 @@ public class ControladorAdmin extends Controlador {
     public void buscar_usuario_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            //TODO hacer busqueda con criterio
-
             if (request.getParameter("ci").isEmpty()) {
                 vm.setUsuarios(cliente.listarUsuarios(0));
             } else {

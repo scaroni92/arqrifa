@@ -1,11 +1,9 @@
 package org.arqrifa.logica;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
@@ -60,43 +58,25 @@ class ControladorReunion implements IControladorReunion {
             if (reunion == null) {
                 throw new Exception("No se puede agendar una reunión nula.");
             }
-            if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) <= 0) {
+
+            if (Util.compararFechas(reunion.getFecha(), new Date()) <= 0) {
                 throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación.");
             }
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
-            notificarEstudiantesMail(reunion);
+
+            List<DTMensaje> mensajes = new ArrayList();
+            String asunto = "Nueva reunión agendada";
+            String mensaje = " te informamos que se ha agendado una nueva reunión para el día "
+                    + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
+
+            for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
+                mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola " + usuario.getNombre() + mensaje));
+            }
+
+            Util.notificarMail(mensajes);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-    }
-
-    private Date formatearFecha(Date fecha) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.parse(sdf.format(fecha));
-    }
-
-    private void notificarEstudiantesMail(DTReunion reunion) throws MessagingException {
-        String asunto = "¡Nueva reunión agendada!";
-        String mensaje = "Hola te informamos que se ha agendado una nueva reunión para el día "
-                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
-
-        Mensajeria mensajeria = new Mensajeria();
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-                        mensajeria.enviar(new DTMensaje(usuario.getEmail(), asunto, mensaje));
-                    }
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-        };
-
-        Thread hilo = new Thread(runnable);
-        hilo.start();
     }
 
     @Override
@@ -115,17 +95,14 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede iniciar una reunión nula");
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date fechaReunion = sdf.parse(sdf.format(reunion.getFecha()));
             Date fechaActual = new Date();
 
-            if (fechaReunion.compareTo(sdf.parse(sdf.format(fechaActual))) != 0) {
+            if (Util.compararFechas(reunion.getFecha(), fechaActual) != 0) {
                 throw new Exception("No se puede iniciar una reunión fuera de fecha");
             }
 
             if (reunion.getFecha().after(fechaActual)) {
-                throw new Exception("No se puede iniciar la reunión antes de la fecha y hora prevista");
+                throw new Exception("No se puede iniciar una reunión antes de la hora prevista");
             }
 
             FabricaPersistencia.getPersistenciaReunion().iniciar(reunion);
@@ -233,7 +210,7 @@ class ControladorReunion implements IControladorReunion {
             if (!reunion.getEstado().equals(DTReunion.PENDIENTE)) {
                 throw new Exception("No se puede modificar una reunión " + reunion.getEstado().toLowerCase());
             }
-            if (formatearFecha(reunion.getFecha()).compareTo(formatearFecha(new Date())) < 0) {
+            if (Util.compararFechas(reunion.getFecha(), new Date()) < 0) {
                 throw new Exception("No se puede asignar una fehca menor a la actual.");
             }
 

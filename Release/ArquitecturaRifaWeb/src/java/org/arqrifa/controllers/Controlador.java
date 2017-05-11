@@ -82,7 +82,7 @@ public class Controlador extends HttpServlet {
                         }
                     }
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    System.out.println("¡ERROR! No se pudo invocar al setter " + nombreSetter + " al cargar el modelo.");
+                    System.out.println("Error - No se pudo invocar al setter " + nombreSetter + " al cargar el modelo.");
                 }
             }
         }

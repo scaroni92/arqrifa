@@ -119,6 +119,10 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void agregarVoto(DTVoto voto) {
         boolean esParticipante = false;
         try {
+            if (!voto.getReunion().getEncuesta().isHabilitada()) {
+                throw new Exception("No se puede votar una encuesta inhabilitada");
+            }
+            //TODO: verificar funcionamiento
             for (DTUsuario participante : voto.getReunion().getParticipantes()) {
                 if (participante.getCi() == voto.getUsuario().getCi()) {
                     esParticipante = true;
