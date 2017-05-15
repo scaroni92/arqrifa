@@ -30,9 +30,10 @@ public class ControladorEncargado extends Controlador {
     }
 
     public void listar_reuniones_get() {
-        VMListadoReuniones vm = new VMListadoReuniones();
+        VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
         try {
             vm.setReuniones(cliente.listarReuniones(usuario.getGeneracion()));
+
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

@@ -98,7 +98,7 @@
 
 
         <script type="text/javascript" src="js/main.js"></script>
-        <script>
+        <script type="text/javascript">
             Materialize.toast('${modelo.mensaje}', 4000);
             $('.toolbar ul li a').tooltip({delay: 50, position: 'top'});
         </script>

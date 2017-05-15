@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="reunion" items="${modelo.reuniones}">
+                    <c:forEach var="reunion" items="${modelo.paginacion.elementos}">
                         <tr>
                             <td>${reunion.id}</td>
                             <td>${reunion.titulo}</td>
@@ -34,14 +34,25 @@
                 </tbody>
             </table>
             <ul class="pagination right">
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                <li class="active "><a href="#!">1</a></li>
-                <li class="waves-effect"><a href="#!">2</a></li>
-                <li class="waves-effect"><a href="#!">3</a></li>
-                <li class="waves-effect"><a href="#!">4</a></li>
-                <li class="waves-effect"><a href="#!">5</a></li>
-                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                <li class="${modelo.paginacion.paginaSolicitada == 1? 'disabled' : 'waves-effect'}">
+                    <a href="encargado?accion=listar-reuniones&pg=${modelo.paginacion.paginaSolicitada - 1}"><i class="material-icons">chevron_left</i></a>
+                </li>
+                <c:forEach var = "i" begin = "1" end = "${modelo.paginacion.cantidadPaginas}">
+                    <li class="waves-effect pg-index ${i eq modelo.paginacion.paginaSolicitada? 'active' : ''} ">
+                        <a href="encargado?accion=listar-reuniones&pg=${i}">${i}</a>
+                    </li>
+                </c:forEach>
+                <li class="${modelo.paginacion.paginaSolicitada >= modelo.paginacion.cantidadPaginas? 'disabled' : 'waves-effect'}">
+                    <a href="encargado?accion=listar-reuniones&pg=${modelo.paginacion.paginaSolicitada + 1}"><i class="material-icons">chevron_right</i></a>
+                </li>
             </ul>
         </div>
+
+        <style type="text/css">
+            /* TODO: Mover estilo a styles.css */
+            .pagination li.disabled a{
+                pointer-events: none;
+            }
+        </style>
     </jsp:body>
 </t:masterpage>
