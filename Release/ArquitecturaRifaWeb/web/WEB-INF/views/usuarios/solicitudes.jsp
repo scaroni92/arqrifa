@@ -25,9 +25,9 @@
                                 <i class="material-icons ${solicitud.verificada ? 'green-text' : 'grey-text'} text-lighten-2" style="font-size: 2em">verified_user</i>
                             </td>
                             <td class="icon-btn"> 
-                                <a href="solicitud?accion=detalles&ci=${solicitud.usuario.ci}"><i class="material-icons ">info_outline</i></a> 
-                                <a href="solicitud?accion=confirmar&ci=${solicitud.usuario.ci}"><i class="material-icons">done</i></a>     
-                                <a href="solicitud?accion=rechazar&ci=${solicitud.usuario.ci}"><i class="material-icons">clear</i></a> 
+                                <a href="solicitudes?accion=detalles&ci=${solicitud.usuario.ci}"><i class="material-icons ">info_outline</i></a> 
+                                <a href="solicitudes?accion=confirmar&ci=${solicitud.usuario.ci}"><i class="material-icons">done</i></a>     
+                                <a href="solicitudes?accion=rechazar&ci=${solicitud.usuario.ci}"><i class="material-icons">clear</i></a> 
                             </td>
                         </tr>
                     </c:forEach>
