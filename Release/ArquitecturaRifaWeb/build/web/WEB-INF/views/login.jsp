@@ -20,7 +20,7 @@
     <body onload="Materialize.toast('${modelo.mensaje}', 4000)">
         <main class="row">
             <div class="col s12 z-depth-4 card-panel grey-text text-darken-2">
-                <form action="index" method="post">
+                <form action="login" method="post">
                     <div class="row">
                         <div class="input-field col s12 ">
                             <h5 class="text-darken-3">Login</h5> </div>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="center">
-                        <button class="btn waves-effect waves-light green" type="submit" name="accion" value="ingresar">INGRESAR</button>
+                        <button class="btn waves-effect waves-light green" type="submit">ingresar</button>
                     </div>
                     <div class="divider"></div>
                     <div class="row section-register">

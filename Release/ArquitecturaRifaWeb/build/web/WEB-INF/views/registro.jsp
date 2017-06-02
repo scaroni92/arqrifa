@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s6"> <a href="index?accion=ingresar">Ingresar</a> </div>
+                        <div class="input-field col s6"> <a href="login">Ingresar</a> </div>
                     </div>
                 </form>
             </div>

@@ -7,7 +7,6 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoGeneraciones;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.rest.RecursoSolicitudes;
-import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMIndex;
 import org.arqrifa.viewmodels.VMMantenimientoUsuario;
 import org.arqrifa.viewmodels.VMVerificacion;
@@ -33,24 +32,7 @@ public class ControladorIndex extends Controlador {
         mostrarVista(usuario == null ? "login.jsp" : usuario.getRol().toLowerCase() + "/index.jsp", vm);
     }
     
-    public void ingresar_get() {
-        mostrarVista("login.jsp");
-    }
-    
-    public void ingresar_post() {
-        try {
-            usuario = new RecursoUsuarios().login(request.getParameter("ci"), request.getParameter("pass"));
-            if (usuario == null) {
-                throw new Exception("Usuario o contraseña incorrectos");
-            }
-            sesion.setAttribute("usuario", usuario);
-            //mostrarVista(usuario.getRol().toLowerCase() + "/index.jsp");
-            index_get();
-        } catch (Exception ex) {
-            mostrarVista("login.jsp", new ViewModel(ex.getMessage()));
-        }
-    }
-    
+
     public void registro_get() {
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {

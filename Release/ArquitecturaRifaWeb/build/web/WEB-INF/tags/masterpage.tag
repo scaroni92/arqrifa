@@ -66,7 +66,7 @@
             <li><a href="usuario?accion=perfil">Perfil</a></li>
             <li><a href="#!">Información</a></li>
             <li class="divider"></li>
-            <li><a href="usuario?accion=salir">Salir</a></li>
+            <li><a href="login?accion=logout">Salir</a></li>
         </ul>
 
         <c:if test="${footer}">

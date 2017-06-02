@@ -11,21 +11,9 @@ import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMUsuario;
-import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorUsuario", urlPatterns = {"/usuario"})
 public class ControladorUsuario extends Controlador {
-
-    public void salir_get() {
-        ViewModel vm = new ViewModel();
-        try {
-            sesion.removeAttribute("usuario");
-            response.sendRedirect("");
-        } catch (IOException e) {
-            vm.setMensaje(e.getMessage());
-        }
-
-    }
 
     public void ver_calendario_get() {
         VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
