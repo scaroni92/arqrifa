@@ -2,6 +2,9 @@ package org.arqrifa.controllers;
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoReuniones;
+import org.arqrifa.rest.RecursoSolicitudes;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 import org.arqrifa.viewmodels.VMListadoSolicitudes;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
@@ -12,7 +15,7 @@ public class ControladorEncargado extends Controlador {
     public void listar_estudiantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            vm.setUsuarios(cliente.listarUsuarios(usuario.getGeneracion()));
+            vm.setUsuarios(new RecursoUsuarios().listar(usuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -22,7 +25,7 @@ public class ControladorEncargado extends Controlador {
     public void listar_solicitudes_get() {
         VMListadoSolicitudes vm = new VMListadoSolicitudes();
         try {
-            vm.setSolicitudes(cliente.listarSolicitudes(this.usuario.getGeneracion()));
+            vm.setSolicitudes(new RecursoSolicitudes().listar(this.usuario.getGeneracion()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -32,7 +35,7 @@ public class ControladorEncargado extends Controlador {
     public void listar_reuniones_get() {
         VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
         try {
-            vm.setReuniones(cliente.listarReuniones(usuario.getGeneracion()));
+            vm.setReuniones(new RecursoReuniones().listar(usuario.getGeneracion()));
 
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -46,9 +49,9 @@ public class ControladorEncargado extends Controlador {
             //TODO hacer busqueda con criterio
 
             if (request.getParameter("ci").isEmpty()) {
-                vm.setUsuarios(cliente.listarUsuarios(usuario.getGeneracion()));
+                vm.setUsuarios(new RecursoUsuarios().listar(usuario.getGeneracion()));
             } else {
-                DTUsuario estudiante = cliente.buscarUsuario(request.getParameter("ci"));
+                DTUsuario estudiante = new RecursoUsuarios().buscar(request.getParameter("ci"));
                 if (estudiante.getRol().equals(DTUsuario.ESTUDIANTE) && estudiante.getGeneracion() == usuario.getGeneracion()) {
                     vm.getUsuarios().add(estudiante);
                 }

@@ -9,6 +9,8 @@ import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.rest.RecursoEncuestas;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
@@ -33,7 +35,7 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             sesion.setAttribute("estudiante", null);
-            DTUsuario dtUsuario = cliente.buscarUsuario(request.getParameter("ci"));
+            DTUsuario dtUsuario = new RecursoUsuarios().buscar(request.getParameter("ci"));
             if (dtUsuario != null) {
                 if (dtUsuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
                     sesion.setAttribute("estudiante", dtUsuario);
@@ -65,7 +67,7 @@ public class ControladorCuestionario extends Controlador {
                 respuestasEscogidas.add(new DTRespuesta(respuestaId, "", 0));
             }
             //TODO comprobar voto repetido
-            cliente.agregarVoto(new DTVoto(estudiante, reunionActiva, respuestasEscogidas));
+            new RecursoEncuestas().agregarVoto(new DTVoto(estudiante, reunionActiva, respuestasEscogidas));
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
 

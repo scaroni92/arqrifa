@@ -4,6 +4,9 @@ import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoEncuestas;
+import org.arqrifa.rest.RecursoReuniones;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListaAsistencias;
 import org.arqrifa.viewmodels.ViewModel;
 
@@ -15,7 +18,7 @@ public class ControladorPanel extends Controlador {
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            reunionActiva = cliente.buscarReunionActual(usuario.getGeneracion());
+            reunionActiva = new RecursoReuniones().buscarActual(usuario.getGeneracion());
             if (reunionActiva == null) {
                 throw new Exception("No hay reuniones para hoy");
             }
@@ -34,7 +37,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunionActiva");
-            cliente.iniciarReunion(reunion);
+            new RecursoReuniones().iniciar(reunion);
             reunion.setEstado(DTReunion.INICIADA);
             vm.setMensaje("Reunión iniciada exitosamente");
         } catch (Exception e) {
@@ -56,7 +59,7 @@ public class ControladorPanel extends Controlador {
             }
 
             reunion.setResoluciones(Arrays.asList(resoluciones));
-            cliente.finalizarReunion(reunion);
+            new RecursoReuniones().finalizar(reunion);
             sesion.setAttribute("mensaje", "Reunión finalizada exitosamente.");
             response.sendRedirect("reunion?accion=detalles&id=" + reunion.getId());
         } catch (Exception e) {
@@ -68,7 +71,7 @@ public class ControladorPanel extends Controlador {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
             vm.setReunion(reunionActiva);
-            vm.setAsistencias(cliente.listarAsistencias(reunionActiva.getId()));
+            vm.setAsistencias(new RecursoReuniones().listarAsistencias(reunionActiva.getId()));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -79,7 +82,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
 
-            cliente.hablitarLista(reunionActiva);
+            new RecursoReuniones().hablitarLista(reunionActiva);
             reunionActiva.setEstado(DTReunion.LISTADO);
 
             vm.setMensaje("Lista de asistencias habilitada exitosamente");
@@ -93,7 +96,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
 
-            cliente.deshablitarLista(reunionActiva);
+            new RecursoReuniones().deshablitarLista(reunionActiva);
             reunionActiva.setEstado(DTReunion.INICIADA);
 
             vm.setMensaje("Lista de asistencias deshabilitada exitosamente");
@@ -107,7 +110,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunionActiva");
-            cliente.iniciarVotacion(reunion);
+            new RecursoEncuestas().iniciarVotacion(reunion);
             reunion.getEncuesta().setHabilitada(true);
             //reunion.setEstado(DTReunion.INICIADA);
             vm.setMensaje("Votación iniciada exitosamente");
@@ -121,7 +124,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             DTReunion reunion = (DTReunion) sesion.getAttribute("reunionActiva");
-            cliente.finalizarVotacion(reunion);
+            new RecursoEncuestas().finalizarVotacion(reunion);
             reunion.getEncuesta().setHabilitada(false);
             vm.setMensaje("Votación finalizada exitosamente");
         } catch (Exception e) {
@@ -133,8 +136,8 @@ public class ControladorPanel extends Controlador {
     public void marcar_asistencia_get() {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
-            DTUsuario estudiante = cliente.buscarUsuario(request.getParameter("ci"));
-            cliente.agregarAsistencia(estudiante, reunionActiva);
+            DTUsuario estudiante = new RecursoUsuarios().buscar(request.getParameter("ci"));
+            new RecursoReuniones().agregarAsistencia(estudiante, reunionActiva);
             sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");
         } catch (Exception e) {
             sesion.setAttribute("mensaje", e.getMessage());

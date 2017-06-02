@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoReuniones;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMMantenimientoReunion;
 import org.arqrifa.viewmodels.VMReunion;
@@ -38,7 +40,7 @@ public class ControladorReunion extends Controlador {
             reunion.setTemas(vm.getTemas());
             reunion.setGeneracion(usuario.getGeneracion());
 
-            cliente.agregarReunion(reunion);
+            new RecursoReuniones().agregar(reunion);
 
             sesion.setAttribute("mensaje", "Reunión agendada exitosamente");
             response.sendRedirect("usuario?accion=ver-calendario");
@@ -55,7 +57,7 @@ public class ControladorReunion extends Controlador {
     public void modificar_get() {
         VMMantenimientoReunion vm = new VMMantenimientoReunion();
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
+            DTReunion reunion =  new RecursoReuniones().buscar(request.getParameter("id"));
             vm.setId(String.valueOf(reunion.getId()));
             vm.setTitulo(reunion.getTitulo());
             vm.setDescripcion(reunion.getDescripcion());
@@ -83,7 +85,7 @@ public class ControladorReunion extends Controlador {
                 throw new Exception("Ingrese los temas a debatir en la reunión.");
             }
 
-            DTReunion reunion = cliente.buscarReunion(vm.getId());
+            DTReunion reunion =  new RecursoReuniones().buscar(vm.getId());
             reunion.setTitulo(vm.getTitulo());
             reunion.setDescripcion(vm.getDescripcion());
             reunion.setFecha(formatearFecha(vm.getFecha() + " " + vm.getHora()));
@@ -92,7 +94,7 @@ public class ControladorReunion extends Controlador {
             reunion.setLugar(vm.getLugar());
             reunion.setTemas(vm.getTemas());
 
-            cliente.modificarReunion(reunion);
+             new RecursoReuniones().modificar(reunion);
             sesion.setAttribute("mensaje", "Reunión modificada exitosamente");
             this.detalles_get();
         } catch (Exception e) {
@@ -105,8 +107,8 @@ public class ControladorReunion extends Controlador {
     public void eliminar_post() {
         DTReunion reunion = null;
         try {
-            reunion = cliente.buscarReunion(request.getParameter("id"));
-            cliente.eliminarReunion(reunion.getId());
+            reunion =  new RecursoReuniones().buscar(request.getParameter("id"));
+             new RecursoReuniones().eliminar(reunion.getId());
 
             sesion.setAttribute("mensaje", "Reunion eliminada exitosamente");
             response.sendRedirect("usuario?accion=ver-calendario");
@@ -118,7 +120,7 @@ public class ControladorReunion extends Controlador {
     public void iniciar_post() {
         VMMantenimientoReunion vm = (VMMantenimientoReunion) cargarModelo(new VMMantenimientoReunion());
         try {
-            cliente.iniciarReunion(cliente.buscarReunion(vm.getId()));
+             new RecursoReuniones().iniciar( new RecursoReuniones().buscar(vm.getId()));
             vm.setEstado("Iniciada");
             vm.setMensaje("Reunión iniciada exitosamente");
         } catch (Exception e) {
@@ -140,7 +142,7 @@ public class ControladorReunion extends Controlador {
             reunion.setObservaciones(vm.getObservaciones());
             reunion.setResoluciones(vm.getResoluciones());
 
-            cliente.finalizarReunion(reunion);
+             new RecursoReuniones().finalizar(reunion);
             sesion.setAttribute("mensaje", "Reunión finalizada exitosamente.");
             response.sendRedirect("Reuniones");
 
@@ -152,7 +154,7 @@ public class ControladorReunion extends Controlador {
 
     public void detalles_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
+            DTReunion reunion =  new RecursoReuniones().buscar(request.getParameter("id"));
 
             if (reunion == null) {
                 throw new Exception("");
@@ -172,7 +174,7 @@ public class ControladorReunion extends Controlador {
     public void ver_participantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("id"));
+            DTReunion reunion =  new RecursoReuniones().buscar(request.getParameter("id"));
             vm.setUsuarios(reunion.getParticipantes());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

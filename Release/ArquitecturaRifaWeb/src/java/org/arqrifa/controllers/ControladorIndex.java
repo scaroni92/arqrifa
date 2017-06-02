@@ -4,6 +4,10 @@ import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoGeneraciones;
+import org.arqrifa.rest.RecursoReuniones;
+import org.arqrifa.rest.RecursoSolicitudes;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMIndex;
 import org.arqrifa.viewmodels.VMMantenimientoUsuario;
 import org.arqrifa.viewmodels.VMVerificacion;
@@ -16,12 +20,12 @@ public class ControladorIndex extends Controlador {
         VMIndex vm = new VMIndex();
         try {
             if (!usuario.getRol().equals(DTUsuario.ADMIN)) {
-                vm.setProximaReunion(cliente.buscarSiguienteReunion(usuario.getGeneracion()));
-                vm.setUltimaReunion(cliente.buscarUltimaReunionFinalizada(usuario.getGeneracion()));
+                vm.setProximaReunion(new RecursoReuniones().siguiente(usuario.getGeneracion()));
+                vm.setUltimaReunion(new RecursoReuniones().ultimaFinalizada(usuario.getGeneracion()));
             }
             
             if (usuario.getRol().equals(DTUsuario.ENCARGADO)) {
-                vm.setSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()));
+                vm.setSolicitudes(new RecursoSolicitudes().listar(usuario.getGeneracion()));
             }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -35,7 +39,7 @@ public class ControladorIndex extends Controlador {
     
     public void ingresar_post() {
         try {
-            usuario = cliente.login(request.getParameter("ci"), request.getParameter("pass"));
+            usuario = new RecursoUsuarios().login(request.getParameter("ci"), request.getParameter("pass"));
             if (usuario == null) {
                 throw new Exception("Usuario o contraseña incorrectos");
             }
@@ -50,7 +54,7 @@ public class ControladorIndex extends Controlador {
     public void registro_get() {
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {
-            vm.setGeneraciones(cliente.listarGeneraciones());
+            vm.setGeneraciones(new RecursoGeneraciones().listar());
         } catch (Exception e) {
             vm.setMensaje("Error al cargar las generaciones");
         }
@@ -61,14 +65,14 @@ public class ControladorIndex extends Controlador {
     public void registro_post() {
         VMMantenimientoUsuario vm = (VMMantenimientoUsuario) cargarModelo(new VMMantenimientoUsuario());
         try {
-            vm.setGeneraciones(cliente.listarGeneraciones());
+            vm.setGeneraciones(new RecursoGeneraciones().listar());
             
             if (vm.getCi().isEmpty() || vm.getNombre().isEmpty() || vm.getApellido().isEmpty() || vm.getEmail().isEmpty() || vm.getContrasena().isEmpty() || vm.getGeneracion().isEmpty()) {
                 throw new Exception("Completa todos los campos obligatorios.");
             }
             
             DTUsuario dtUsuario = new DTUsuario(Integer.parseInt(vm.getCi()), vm.getNombre(), vm.getApellido(), vm.getContrasena(), vm.getEmail(), "", Integer.parseInt(vm.getGeneracion()), 0);
-            cliente.agregarSolicitud(new DTSolicitud(0, new Date(), false, dtUsuario));
+            new RecursoSolicitudes().agregar(new DTSolicitud(0, new Date(), false, dtUsuario));
             mostrarVista("login.jsp", new ViewModel("Registro exitoso! <br>Se ha enviado un mail de verificación a tu correo electrónico."));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -79,7 +83,7 @@ public class ControladorIndex extends Controlador {
     public void verificar_get() {
         VMVerificacion vm;
         try {
-            cliente.verificarSolicitud(request.getParameter("codigo"));
+            new RecursoSolicitudes().verificar(request.getParameter("codigo"));
             vm = new VMVerificacion(true, "Ahora solo debes esperar a que sea aprobada por el encargado.", "¡Solicitud verificada exitosamente!");
         } catch (Exception ex) {
             vm = new VMVerificacion(false, "Quizas la solicitud fue rechazada.", "Código de verificación incorrecto");

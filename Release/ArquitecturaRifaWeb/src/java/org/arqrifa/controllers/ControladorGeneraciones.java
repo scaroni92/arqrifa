@@ -2,6 +2,8 @@ package org.arqrifa.controllers;
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTGeneracion;
+import org.arqrifa.rest.RecursoGeneraciones;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoGeneraciones;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
 
@@ -11,7 +13,7 @@ public class ControladorGeneraciones extends Controlador {
     public void index_get() {
         VMListadoGeneraciones vm = new VMListadoGeneraciones();
         try {
-            vm.setGeneraciones(cliente.listarGeneraciones());
+            vm.setGeneraciones(new RecursoGeneraciones().listar());
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -21,12 +23,12 @@ public class ControladorGeneraciones extends Controlador {
     public void agregar_post() {
         VMListadoGeneraciones vm = new VMListadoGeneraciones();
         try {
-            vm.setGeneraciones(cliente.listarGeneraciones());
+            vm.setGeneraciones(new RecursoGeneraciones().listar());
 
             DTGeneracion generacion = new DTGeneracion(Integer.parseInt(request.getParameter("anio")));
-            cliente.agregarGeneracion(generacion);
+            new RecursoGeneraciones().agregar(generacion);
             
-            vm.setGeneraciones(cliente.listarGeneraciones());
+            vm.setGeneraciones(new RecursoGeneraciones().listar());
             vm.setMensaje("Generación agregada exitosamente.");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -37,7 +39,7 @@ public class ControladorGeneraciones extends Controlador {
     public void listar_estudiantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
-            vm.setUsuarios(cliente.listarUsuarios(Integer.parseInt(request.getParameter("id"))));
+            vm.setUsuarios(new RecursoUsuarios().listar(Integer.parseInt(request.getParameter("id"))));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }

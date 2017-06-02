@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoReuniones;
+import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.VMUsuario;
@@ -25,15 +27,14 @@ public class ControladorUsuario extends Controlador {
 
     }
 
-   
     public void ver_calendario_get() {
         VMListadoReuniones vm = (VMListadoReuniones) cargarModelo(new VMListadoReuniones());
         List<DTReunion> reuniones;
         try {
             if (usuario.getRol().equals(DTUsuario.ADMIN)) {
-                reuniones = cliente.listarReuniones(0);
+                reuniones = new RecursoReuniones().listar(0);
             } else {
-                reuniones = cliente.listarReuniones(usuario.getGeneracion());
+                reuniones = new RecursoReuniones().listar(usuario.getGeneracion());
             }
 
             if (vm.getFiltro().equalsIgnoreCase(DTReunion.PENDIENTE) || vm.getFiltro().equalsIgnoreCase(DTReunion.FINALIZADA)) {
@@ -48,7 +49,7 @@ public class ControladorUsuario extends Controlador {
 
     public void ver_encuesta_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() == null || reunion.getGeneracion() != this.usuario.getGeneracion()) {
                 throw new Exception("Recurso no encontrado");
@@ -67,7 +68,7 @@ public class ControladorUsuario extends Controlador {
     public void detalles_get() {
         VMUsuario vm = new VMUsuario();
         try {
-            DTUsuario dtUsuario = cliente.buscarUsuario(request.getParameter("ci"));
+            DTUsuario dtUsuario = new RecursoUsuarios().buscar(request.getParameter("ci"));
 
             if (this.usuario.getRol().equals(DTUsuario.ADMIN) || this.usuario.getRol().equals(DTUsuario.ENCARGADO) && this.usuario.getGeneracion() == dtUsuario.getGeneracion()) {
                 vm.setUsuario(dtUsuario);

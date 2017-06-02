@@ -8,6 +8,8 @@ import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoEncuestas;
+import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
@@ -17,7 +19,7 @@ public class ControladorEncuesta extends Controlador {
     public void index_get() {
         DTReunion reunion = null;
         try {
-            reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() != null) {
                 this.detalles_get();
@@ -37,7 +39,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void agregar_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
             if (reunion != null) {
                 sesion.setAttribute("reunion", reunion);
@@ -59,7 +61,7 @@ public class ControladorEncuesta extends Controlador {
 
             cargarPropuestas(reunion.getEncuesta());
 
-            cliente.agregarEncuesta(reunion);
+            new RecursoEncuestas().agregar(reunion);
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta agregada exitosamente");
             response.sendRedirect("usuario?accion=ver-calendario");
@@ -97,7 +99,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void modificar_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
             if (reunion != null) {
                 sesion.setAttribute("reunion", reunion);
@@ -117,7 +119,7 @@ public class ControladorEncuesta extends Controlador {
 
             cargarPropuestas(reunion.getEncuesta());
 
-            cliente.modificarEncuesta(reunion.getEncuesta());
+            new RecursoEncuestas().modificar(reunion.getEncuesta());
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta modificada exitosamente");
             response.sendRedirect("usuario?accion=ver-calendario");
@@ -130,9 +132,9 @@ public class ControladorEncuesta extends Controlador {
         DTReunion reunion = null;
         try {
             //TODO enviar reunión para comprobar estado en lógica
-            reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
-            cliente.eliminarEncuesta(reunion.getId());
+            new RecursoEncuestas().eliminar(reunion.getId());
             sesion.setAttribute("mensaje", "Encuesta eliminada exitosamente.");
             response.sendRedirect("usuario?accion=ver-calendario");
         } catch (Exception e) {
@@ -143,7 +145,7 @@ public class ControladorEncuesta extends Controlador {
 
     public void detalles_get() {
         try {
-            DTReunion reunion = cliente.buscarReunion(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
 
             if (reunion.getEncuesta() == null) {
                 mostrarVista("Error/404.jsp");

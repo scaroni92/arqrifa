@@ -2,6 +2,7 @@ package org.arqrifa.controllers;
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTUsuario;
+import org.arqrifa.rest.RecursoSolicitudes;
 import org.arqrifa.viewmodels.VMListaSolicitudes;
 import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.ViewModel;
@@ -12,7 +13,7 @@ public class ControladorSolicitud extends Controlador {
     public void detalles_get() {
         VMUsuario vm = new VMUsuario();
         try {
-            DTUsuario dtUsuario = cliente.buscarSolicitud(request.getParameter("ci")).getUsuario();
+            DTUsuario dtUsuario =  new RecursoSolicitudes().buscar(request.getParameter("ci")).getUsuario();
 
             if (this.usuario.getGeneracion() == dtUsuario.getGeneracion()) {
                 vm.setUsuario(dtUsuario);
@@ -26,11 +27,11 @@ public class ControladorSolicitud extends Controlador {
 
     public void confirmar_get() {
         try {
-            cliente.confirmarSolicitud(cliente.buscarSolicitud(request.getParameter("ci")));
-            mostrarVista("usuarios/solicitudes.jsp", new VMListaSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud confirmada exitosamente."));
+            new RecursoSolicitudes().confirmar(new RecursoSolicitudes().buscar(request.getParameter("ci")));
+            mostrarVista("usuarios/solicitudes.jsp", new VMListaSolicitudes(new RecursoSolicitudes().listar(usuario.getGeneracion()), "Solicitud confirmada exitosamente."));
         } catch (Exception e) {
             try {
-                mostrarVista("usuarios/solicitudes.jsp", new VMListaSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), e.getMessage()));
+                mostrarVista("usuarios/solicitudes.jsp", new VMListaSolicitudes(new RecursoSolicitudes().listar(usuario.getGeneracion()), e.getMessage()));
             } catch (Exception ex) {
                 mostrarVista("encargado/index.jsp", new ViewModel(e.getMessage()));
             }
@@ -41,8 +42,8 @@ public class ControladorSolicitud extends Controlador {
     public void rechazar_get() {
         VMListaSolicitudes vm = new VMListaSolicitudes();
         try {
-            cliente.eliminarSolicitud(request.getParameter("ci"));
-            vm = new VMListaSolicitudes(cliente.listarSolicitudes(usuario.getGeneracion()), "Solicitud rechazada exitosamente.");
+            new RecursoSolicitudes().eliminar(request.getParameter("ci"));
+            vm = new VMListaSolicitudes(new RecursoSolicitudes().listar(usuario.getGeneracion()), "Solicitud rechazada exitosamente.");
         } catch (NumberFormatException e) {
             vm.setMensaje("Ingrese una cédula válida.");
         } catch (Exception e) {
