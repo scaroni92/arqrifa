@@ -44,7 +44,7 @@
 
                 </c:if>
                 <ul class="collection">
-                    <li class="collection-item"><div>Encuesta<a href="encuesta?reunionId=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                    <li class="collection-item"><div>Encuesta<a href="reuniones?accion=encuesta&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
                     <c:if test="${modelo.reunion.estado != 'Pendiente' and usuario.rol eq 'Encargado'}">
                         <li class="collection-item"><div>Participantes<a href="reunion?accion=ver-participantes&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
                     </c:if>

@@ -27,7 +27,7 @@
                             <td>${reunion.estado}</td>
                             <td>${reunion.lugar}</td>
                             <td class="icon-btn">
-                                <a href="reunion?accion=detalles&id=${reunion.id}"><i class="material-icons ">info_outline</i></a>
+                                <a href="reuniones?accion=detalles&id=${reunion.id}"><i class="material-icons ">info_outline</i></a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -35,15 +35,15 @@
             </table>
             <ul class="pagination right">
                 <li class="${modelo.paginacion.paginaSolicitada == 1? 'disabled' : 'waves-effect'}">
-                    <a href="encargado?accion=listar-reuniones&pg=${modelo.paginacion.paginaSolicitada - 1}"><i class="material-icons">chevron_left</i></a>
+                    <a href="reuniones?pg=${modelo.paginacion.paginaSolicitada - 1}"><i class="material-icons">chevron_left</i></a>
                 </li>
                 <c:forEach var = "i" begin = "1" end = "${modelo.paginacion.cantidadPaginas}">
                     <li class="waves-effect pg-index ${i eq modelo.paginacion.paginaSolicitada? 'active' : ''} ">
-                        <a href="encargado?accion=listar-reuniones&pg=${i}">${i}</a>
+                        <a href="reuniones?pg=${i}">${i}</a>
                     </li>
                 </c:forEach>
                 <li class="${modelo.paginacion.paginaSolicitada >= modelo.paginacion.cantidadPaginas? 'disabled' : 'waves-effect'}">
-                    <a href="encargado?accion=listar-reuniones&pg=${modelo.paginacion.paginaSolicitada + 1}"><i class="material-icons">chevron_right</i></a>
+                    <a href="reuniones?pg=${modelo.paginacion.paginaSolicitada + 1}"><i class="material-icons">chevron_right</i></a>
                 </li>
             </ul>
         </div>

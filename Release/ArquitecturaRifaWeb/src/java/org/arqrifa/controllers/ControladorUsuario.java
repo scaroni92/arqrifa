@@ -35,20 +35,6 @@ public class ControladorUsuario extends Controlador {
         mostrarVista("reuniones/calendario.jsp", vm);
     }
 
-    public void ver_encuesta_get() {
-        try {
-            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
-
-            if (reunion.getEncuesta() == null || reunion.getGeneracion() != this.usuario.getGeneracion()) {
-                throw new Exception("Recurso no encontrado");
-            }
-
-            mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, ""));
-        } catch (Exception e) {
-            mostrarVista("error/404.jsp");
-        }
-    }
-
     public void perfil_get() {
         mostrarVista("usuarios/detalles.jsp", new VMUsuario(this.usuario, ""));
     }

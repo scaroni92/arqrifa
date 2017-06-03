@@ -48,13 +48,13 @@
             <!-- Acciones de encargado -->
             <c:if test="${usuario.rol eq 'Encargado'}">
                 <li><a class="waves-effect" href="panel"><i class="material-icons">dashboard</i>Panel</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
+                <li><a class="waves-effect" href="reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
                 </c:if>
 
             <!-- Acciones de administrador -->
             <c:if test="${usuario.rol eq 'Admin'}">
-                <li><a class="waves-effect" href="admin?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
+                <li><a class="waves-effect" href="reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="generaciones"><i class="material-icons">wc</i>Generaciones</a></li>
 
             </c:if>

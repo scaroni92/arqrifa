@@ -30,7 +30,7 @@
                         <div class="card-content white grey-text text-darken-2">
                             ${reunion.titulo}
                         </div>
-                        <div class="card-action white center"> <a href="reunion?accion=detalles&id=${reunion.id}">detalles</a> </div>
+                        <div class="card-action white center"> <a href="reuniones?accion=detalles&id=${reunion.id}">detalles</a> </div>
                     </div>
                 </div>
 
