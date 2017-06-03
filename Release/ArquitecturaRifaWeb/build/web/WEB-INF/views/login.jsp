@@ -43,7 +43,7 @@
                     <div class="divider"></div>
                     <div class="row section-register">
                         <div class="input-field  center">
-                            <a href="index?accion=registro" class="btn white black-text ">registrarse</a>
+                            <a href="registro" class="btn white black-text ">registrarse</a>
                         </div>
                     </div>
                 </form>

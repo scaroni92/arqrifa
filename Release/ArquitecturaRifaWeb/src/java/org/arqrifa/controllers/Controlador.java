@@ -36,7 +36,7 @@ public class Controlador extends HttpServlet {
     }
 
     protected void mostrarVista(String vista) {
-        mostrarVista(vista, null);
+        mostrarVista(vista, new ViewModel());
     }
 
     protected void mostrarVista(String vista, ViewModel modelo) {
