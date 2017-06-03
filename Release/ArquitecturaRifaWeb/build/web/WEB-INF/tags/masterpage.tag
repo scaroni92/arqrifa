@@ -23,7 +23,7 @@
                 </nav>
             </div>
         </header>
-                        
+
         <main>
             <jsp:doBody />
         </main>
@@ -43,22 +43,22 @@
             <c:if test="${!(usuario.rol eq 'Estudiante')}">
                 <li><div class="divider"></div></li>
                 <li><a class="subheader">Tareas</a></li>
-            </c:if>
-                
+                </c:if>
+
             <!-- Acciones de encargado -->
             <c:if test="${usuario.rol eq 'Encargado'}">
                 <li><a class="waves-effect" href="panel"><i class="material-icons">dashboard</i>Panel</a></li>
                 <li><a class="waves-effect" href="encargado?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
-                <li><a class="waves-effect" href="encargado?accion=listar-estudiantes"><i class="material-icons">school</i>Estudiantes</a></li>
-            </c:if>
-                
+                </c:if>
+
             <!-- Acciones de administrador -->
             <c:if test="${usuario.rol eq 'Admin'}">
                 <li><a class="waves-effect" href="admin?accion=listar-reuniones"><i class="material-icons">date_range</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="generaciones"><i class="material-icons">wc</i>Generaciones</a></li>
-                <li><a class="waves-effect" href="admin?accion=listar-usuarios"><i class="material-icons">people</i>Usuarios</a></li>
+
             </c:if>
+            <li><a class="waves-effect" href="usuarios"><i class="material-icons">people</i>Integrantes</a></li>
         </ul>
 
         <!-- Menú desplegable -->

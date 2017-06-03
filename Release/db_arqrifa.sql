@@ -108,7 +108,7 @@ CREATE TABLE votos (
 
 -- -------------------REGISTROS DE PRUEBA-------------------
 
-INSERT INTO generaciones VALUES (0),(2010),(2012);
+INSERT INTO generaciones VALUES (0),(2015),(2016);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),

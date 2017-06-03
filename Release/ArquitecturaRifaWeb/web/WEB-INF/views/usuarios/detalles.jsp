@@ -10,9 +10,7 @@
                 <p>Contraseña: ${modelo.usuario.contrasena}</p>
                 <p>Generación: ${modelo.usuario.generacion}</p>
                 <p>${modelo.usuario.rol}</p>
-                <c:if test="${modelo.usuario.rol eq 'Estudiante'}">
-                    <p>Inasitencias: ${modelo.usuario.inasistencias}</p>    
-                </c:if>
+                <p>Inasitencias: ${modelo.usuario.inasistencias}</p>    
             </div>
         </div>
     </jsp:body>

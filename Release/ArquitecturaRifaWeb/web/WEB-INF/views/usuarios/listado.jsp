@@ -1,18 +1,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 
-<t:masterpage titulo="${usuario.rol eq 'Admin'? 'Usuarios' : 'Estudiantes' }">
+<t:masterpage titulo="Usuarios">
     <jsp:body>
         <div class="container">
             <div class="row">
                 <div class="col s12">
                     <div class=" center">
-                        <form action="${usuario.rol eq 'Admin'? 'admin' : 'encargado'}">
+                        <form action="usuarios">
                             <div class="input-field inline">
                                 <input id="ci" name="ci" type="number">
                                 <label for="ci">Cédula</label>
                             </div>
-                            <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="buscar-usuario">Buscar <i class="material-icons left">search</i> </button>
+                            <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="buscar">Buscar <i class="material-icons left">search</i> </button>
                         </form>
                     </div>
                 </div>
@@ -37,9 +37,9 @@
                             <td>${user.generacion}</td>
                             <td>${user.rol}</td>
                             <td class="icon-btn">
-                                <a href="usuario?accion=detalles&ci=${user.ci}"><i class="material-icons ">info_outline</i></a> 
+                                <a href="usuarios?accion=detalles&ci=${user.ci}"><i class="material-icons ">info_outline</i></a> 
                                 <c:if test="${usuario.rol eq 'Admin'}">
-                                    <a href="admin?accion=modificar-usuario&ci=${user.ci}"><i class="material-icons ">edit</i></a>
+                                    <a href="usuarios?accion=modificar&ci=${user.ci}"><i class="material-icons ">edit</i></a>
                                 </c:if>
                             </td>
                         </tr>
@@ -58,7 +58,7 @@
         </div>
         <c:if test="${usuario.rol eq 'Admin'}"> 
             <div class="fixed-action-btn">
-                <a href="admin?accion=agregar-usuario" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
+                <a href="usuarios?accion=agregar" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
             </div>    
         </c:if>
     </jsp:body>

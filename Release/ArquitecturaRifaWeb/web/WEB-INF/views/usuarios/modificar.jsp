@@ -4,7 +4,7 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <form action="admin" method="post" class="col s12">
+                <form action="usuarios" method="post" class="col s12">
                     <div class="wrapper card-panel formulario">
                         <div class="row">
                             <div class="col s12">
@@ -49,7 +49,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12 center">
-                                <button class="btn waves-effect waves-light" type="submit" name="accion" value="modificar-usuario">guardar<i class="material-icons right">save</i> </button>
+                                <button class="btn waves-effect waves-light" type="submit" name="accion" value="modificar">guardar<i class="material-icons right">save</i> </button>
                             </div>
                         </div>
                     </div>
