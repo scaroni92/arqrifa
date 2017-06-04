@@ -5,8 +5,7 @@
 <t:masterpage titulo="Calendario">
     <div class="container">
         <div class="section center">
-            <form action="usuario">
-                <input type="hidden" name="accion" value="ver-calendario" />
+            <form action="calendario">
                 <input class="with-gap" name="filtro" type="radio" id="todas" value="todas" />
                 <label for="todas">Todas</label>
                 <input class="with-gap" name="filtro" type="radio" id="pendiente" value="pendiente" />

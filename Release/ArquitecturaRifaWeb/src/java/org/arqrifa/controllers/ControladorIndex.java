@@ -5,6 +5,7 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.rest.RecursoSolicitudes;
 import org.arqrifa.viewmodels.VMIndex;
+import org.arqrifa.viewmodels.VMUsuario;
 import org.arqrifa.viewmodels.VMVerificacion;
 
 @WebServlet(name = "ControladorIndex", urlPatterns = {"/index"})
@@ -38,4 +39,7 @@ public class ControladorIndex extends Controlador {
         mostrarVista("verificar.jsp", vm);
     }
     
+     public void perfil_get() {
+        mostrarVista("usuarios/detalles.jsp", new VMUsuario(usuario, ""));
+    }
 }

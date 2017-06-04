@@ -32,13 +32,13 @@
         <ul id="slide-out" class="side-nav fixed">
             <li>
                 <div class="userView">
-                    <a href="usuario?accion=perfil"><img class="circle" src="img/male-icon.png"></a> 
+                    <a href="index?accion=perfil"><img class="circle" src="img/male-icon.png"></a> 
                     <a data-activates="profile-dropdown" class="profile-dropdown"><span class="white-text name"><i class="material-icons right">arrow_drop_down</i>${usuario.nombre} ${usuario.apellido}</span></a> 
                     <a ><span class="white-text email">${usuario.rol}</span> </a> 
                 </div>
             </li>
             <li><a href="index"><i class="material-icons">home</i>INICIO</a></li>
-            <li><a href="usuario?accion=ver-calendario"><i class="material-icons">event</i>Calendario</a></li>
+            <li><a href="calendario"><i class="material-icons">event</i>Calendario</a></li>
 
             <c:if test="${!(usuario.rol eq 'Estudiante')}">
                 <li><div class="divider"></div></li>
@@ -63,7 +63,7 @@
 
         <!-- Menú desplegable -->
         <ul id='profile-dropdown' class='dropdown-content'>
-            <li><a href="usuario?accion=perfil">Perfil</a></li>
+            <li><a href="index?accion=perfil">Perfil</a></li>
             <li><a href="#!">Información</a></li>
             <li class="divider"></li>
             <li><a href="login?accion=logout">Salir</a></li>
