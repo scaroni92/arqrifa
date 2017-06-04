@@ -40,21 +40,21 @@
                 <i class="large material-icons">mode_edit</i>
             </a>
             <ul>
-                <li><a href="encuesta?accion=modificar&reunionId=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
-                <li><a href="#modal" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
+                <li><a href="encuesta?accion=modificar&id=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
+                <li><a href="#eliminar" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
             </ul>
         </div>
 
         <!-- Cuadro de dialogo -->                
-        <div id="modal" class="modal">
+        <div id="eliminar" class="modal">
             <div class="modal-content">
                 <h4>¿Está segur@ que desea eliminar la encuesta actual?</h4>
             </div>
             <div class="modal-footer">
-                <a href="#" class=" modal-action modal-close waves-teal btn-flat">Cancelar</a>
+                <a class=" modal-action modal-close waves-teal btn-flat">Cancelar</a>
                 <form action="encuesta" method="post">
                     <button type="submit" name="accion" value="eliminar" class="modal-action modal-close waves-effect waves-teal btn-flat">Eliminar</button>
-                    <input type="hidden" name="reunionId" value="${modelo.reunion.id}">
+                    <input type="hidden" name="id" value="${modelo.reunion.id}">
                 </form>
             </div>
         </div>

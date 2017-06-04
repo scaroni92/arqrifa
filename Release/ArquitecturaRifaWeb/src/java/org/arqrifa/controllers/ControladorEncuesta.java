@@ -13,38 +13,34 @@ import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
 
+//Acceso: Encargado
+
 @WebServlet(name = "ControladorEncuesta", urlPatterns = {"/encuesta"})
 public class ControladorEncuesta extends Controlador {
 
-    public void index_get() {
-        DTReunion reunion = null;
-        try {
-            reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
-
-            if (reunion.getEncuesta() != null) {
-                this.detalles_get();
-
-            } else {
-                if (!usuario.getRol().equals(DTUsuario.ENCARGADO)) {
-                    throw new Exception("La reunión no posee una encuesta");
-                }
-                this.agregar_get();
-
-            }
-
-        } catch (Exception e) {
-            mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, e.getMessage()));
-        }
-    }
+    private final RecursoEncuestas recurso = new RecursoEncuestas();
 
     public void agregar_get() {
         try {
-            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("id"));
 
-            if (reunion != null) {
-                sesion.setAttribute("reunion", reunion);
-                mostrarVista("encuestas/agregar.jsp");
+            if (reunion == null) {
+                response.sendError(404);
+                return;
             }
+
+            if (reunion.getGeneracion() != usuario.getGeneracion()) {
+                response.sendError(403);
+                return;
+            }
+
+            if (reunion.getEncuesta() != null) {
+                response.sendRedirect("reuniones?accion=detalles&&id=" + reunion.getId());
+                return;
+            }
+
+            sesion.setAttribute("reunion", reunion);
+            mostrarVista("encuestas/agregar.jsp");
 
         } catch (Exception e) {
             mostrarVista("encuestas/agregar.jsp", new ViewModel(e.getMessage()));
@@ -53,26 +49,28 @@ public class ControladorEncuesta extends Controlador {
     }
 
     public void agregar_post() {
+        DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
+        DTEncuesta encuesta = new DTEncuesta();
+
         try {
-            DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
-            reunion.setEncuesta(new DTEncuesta());
-            reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
-            reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
 
-            cargarPropuestas(reunion.getEncuesta());
+            encuesta.setTitulo(request.getParameter("titulo"));
+            encuesta.setDuracion(Integer.parseInt(request.getParameter("duracion")));
+            encuesta.setPropuestas(getPropuestas());
 
-            new RecursoEncuestas().agregar(reunion);
+            reunion.setEncuesta(encuesta);
+
+            recurso.agregar(reunion);
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta agregada exitosamente");
-            response.sendRedirect("usuario?accion=ver-calendario");
+            response.sendRedirect("reuniones?accion=detalles&&id=" + reunion.getId());
         } catch (Exception e) {
             mostrarVista("encuestas/agregar.jsp", new ViewModel(e.getMessage()));
         }
     }
 
-    // Esta operación crea los objetos DTPropuesta con la info que viene en el request
-    private void cargarPropuestas(DTEncuesta encuesta) throws Exception {
-        encuesta.setPropuestas(new ArrayList<>());
+    private List<DTPropuesta> getPropuestas() throws Exception {
+        List<DTPropuesta> propuestas = new ArrayList<>();
 
         String[] preguntas = request.getParameterValues("preguntas");
 
@@ -81,48 +79,55 @@ public class ControladorEncuesta extends Controlador {
         }
 
         for (int i = 0; i < preguntas.length; i++) {
-
-            String pregunta = preguntas[i];
-            String[] respuestas = request.getParameterValues("respuestas" + i);
-            //TODO: verificar esto en JS 
-            if (respuestas == null) {
-                throw new Exception("Todas las propuestas deben tener respuestas");
-            }
-
-            List<DTRespuesta> res = new ArrayList<>();
-            for (String respuesta : respuestas) {
-                res.add(new DTRespuesta(respuesta));
-            }
-            encuesta.getPropuestas().add(new DTPropuesta(0, pregunta, res));
+            propuestas.add(getPropuesta(preguntas[i], request.getParameterValues("respuestas" + i)));
         }
+
+        return propuestas;
+    }
+
+    private DTPropuesta getPropuesta(String pregunta, String[] respuestas) throws Exception {
+
+        if (respuestas == null) {
+            throw new Exception("Todas las propuestas deben tener respuestas");
+        }
+
+        List<DTRespuesta> respuestasArray = new ArrayList<>();
+        for (String respuesta : respuestas) {
+            respuestasArray.add(new DTRespuesta(respuesta));
+        }
+
+        return new DTPropuesta(0, pregunta, respuestasArray);
     }
 
     public void modificar_get() {
+        ViewModel vm = new ViewModel();
         try {
-            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
+            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("id"));
 
-            if (reunion != null) {
-                sesion.setAttribute("reunion", reunion);
-                mostrarVista("encuestas/modificar.jsp");
+            if (reunion == null) {
+                response.sendError(404);
+                return;
             }
 
+            sesion.setAttribute("reunion", reunion);
         } catch (Exception e) {
-            mostrarVista("encuestas/modificar.jsp", new ViewModel(e.getMessage()));
+            vm.setMensaje(e.getMessage());
         }
+        mostrarVista("encuestas/modificar.jsp", vm);
     }
 
     public void modificar_post() {
+        DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
         try {
-            DTReunion reunion = (DTReunion) sesion.getAttribute("reunion");
             reunion.getEncuesta().setTitulo(request.getParameter("titulo"));
             reunion.getEncuesta().setDuracion(Integer.parseInt(request.getParameter("duracion")));
+            reunion.getEncuesta().setPropuestas(getPropuestas());
 
-            cargarPropuestas(reunion.getEncuesta());
+            recurso.modificar(reunion);
 
-            new RecursoEncuestas().modificar(reunion.getEncuesta());
             sesion.removeAttribute("reunion");
             sesion.setAttribute("mensaje", "Encuesta modificada exitosamente");
-            response.sendRedirect("usuario?accion=ver-calendario");
+            response.sendRedirect("reuniones?accion=detalles&&id=" + reunion.getId());
         } catch (Exception e) {
             mostrarVista("encuestas/modificar.jsp", new ViewModel(e.getMessage()));
         }
@@ -131,31 +136,12 @@ public class ControladorEncuesta extends Controlador {
     public void eliminar_post() {
         DTReunion reunion = null;
         try {
-            //TODO enviar reunión para comprobar estado en lógica
-            reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
-
-            new RecursoEncuestas().eliminar(reunion.getId());
-            sesion.setAttribute("mensaje", "Encuesta eliminada exitosamente.");
-            response.sendRedirect("usuario?accion=ver-calendario");
+            reunion = new RecursoReuniones().buscar(request.getParameter("id"));
+            recurso.eliminar(reunion.getId());
+            sesion.setAttribute("mensaje", "Encuesta eliminada exitosamente");
+            response.sendRedirect("reuniones?accion=detalles&&id=" + reunion.getId());
         } catch (Exception e) {
             mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, e.getMessage()));
-        }
-
-    }
-
-    public void detalles_get() {
-        try {
-            DTReunion reunion = new RecursoReuniones().buscar(request.getParameter("reunionId"));
-
-            if (reunion.getEncuesta() == null) {
-                mostrarVista("Error/404.jsp");
-            } else if (usuario.getGeneracion() != reunion.getGeneracion() && !usuario.getRol().equals(DTUsuario.ADMIN)) {
-                mostrarVista("Error/403.jsp");
-            }
-
-            mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, ""));
-        } catch (Exception e) {
-            mostrarVista("Error/500.jsp");
         }
     }
 

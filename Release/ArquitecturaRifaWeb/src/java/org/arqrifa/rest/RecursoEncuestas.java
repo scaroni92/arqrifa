@@ -2,7 +2,6 @@ package org.arqrifa.rest;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
-import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTVoto;
 
@@ -17,9 +16,8 @@ public class RecursoEncuestas extends ClienteJersey {
         comprobarEstado(response);
     }
 
-    //TODO: enviar reunión para comprobar estado
-    public void modificar(DTEncuesta encuesta) throws Exception {
-        Response response = webTarget.request(JSON_TYPE).put(Entity.entity(encuesta, JSON_TYPE));
+    public void modificar(DTReunion reunion) throws Exception {
+        Response response = webTarget.request(JSON_TYPE).put(Entity.entity(reunion, JSON_TYPE));
         comprobarEstado(response);
     }
 
