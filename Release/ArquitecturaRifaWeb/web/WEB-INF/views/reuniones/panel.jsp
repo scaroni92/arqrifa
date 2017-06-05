@@ -3,8 +3,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:masterpage titulo="Panel">
-    <c:if test="${reunionActiva != null}">
     <div class="container">
+        <h4 class="grey-text text-darken-2 light">${reunionActiva.titulo}</h4>
         <form action="panel" id="panel-form" method="post">
             <div class="card-panel">
                 <div class="panel-header"> 
@@ -74,6 +74,5 @@
             secondaryPlaceholder: '+Resolución'
         });
         </script>
-    </c:if>
 </t:masterpage>
 

@@ -19,7 +19,3 @@ $('.profile-dropdown').dropdown({
     , alignment: 'right'
     , stopPropagation: false
 });
-
-// TODO solucionar funcionamiento de tooltips
-/*$('.toolbar ul a').addClass('tooltipped');
-$('.toolbar .tooltipped').tooltip({delay: 50, position: 'right'});*/

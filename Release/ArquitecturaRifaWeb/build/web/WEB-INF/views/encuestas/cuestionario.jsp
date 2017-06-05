@@ -4,10 +4,8 @@
 <t:masterpage titulo="Cuestionario">
     <jsp:body>
         <div class="container">
-            <div class="card-panel grey-text text-darken-2">
-                <h4>${reunionActiva.encuesta.titulo}</h4>
-                <h5>${estudiante != null? 'Votación para el estudiante' : ''} ${estudiante.nombre} ${estudiante.apellido}</h5> 
-            </div>
+            <h4 class="grey-text text-darken-2 light center truncate">${reunionActiva.encuesta.titulo}</h4>
+            
             <nav>
                 <div class="nav-wrapper">
                     <form action="cuestionario">
@@ -19,7 +17,7 @@
                     </form>
                 </div>
             </nav>
-            <br>
+            <h6 class="grey-text text-darken-2 light">${estudiante != null? 'Estudiante encontrado:' : ''} ${estudiante.nombre} ${estudiante.apellido}</h6> 
             <form action="cuestionario" method="post">
                 <c:forEach var="propuesta" items="${reunionActiva.encuesta.propuestas}">
                     <div class="card">
@@ -29,7 +27,7 @@
                         <div class="card-content">
                             <c:forEach var="respuesta" items="${propuesta.respuestas}">
                                 <p>
-                                    <input name="${propuesta.id}" type="radio" id="${respuesta.id}" value="${respuesta.id}"/>
+                                    <input name="${propuesta.id}" type="radio" id="${respuesta.id}" value="${respuesta.id}" required/>
                                     <label for="${respuesta.id}">${respuesta.respuesta}</label>
                                 </p>
                             </c:forEach>
