@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 // SOLO ENCARGADOS
 
-@WebFilter(filterName = "filtroAutenticarEncargado", urlPatterns = {"/encargado", "/solicitud", "/panel", "/cuestionario"})
-public class FiltroAutenticarEncargado implements Filter {
+@WebFilter(filterName = "filtroAutenticarEncargado", urlPatterns = {"/solicitudes", "/reunion", "/encuesta", "/panel", "/cuestionario"})
+public class FiltroAccesoEncargado implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

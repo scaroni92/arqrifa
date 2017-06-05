@@ -5,7 +5,7 @@
         <main>
             <div class="container">
                 <div class="row">
-                    <form action="usuarios" method="post" class="col s12">
+                    <form action="usuario" method="post" class="col s12">
                         <div class="wrapper card-panel formulario">
                             <div class="row">
                                 <div class="col s12">

@@ -1,6 +1,5 @@
 package org.arqrifa.controllers;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;

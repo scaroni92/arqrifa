@@ -7,7 +7,6 @@ import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 
-//Acceso: Todos
 @WebServlet(name = "ControladorReuniones", urlPatterns = {"/reuniones"})
 public class ControladorReuniones extends Controlador {
     

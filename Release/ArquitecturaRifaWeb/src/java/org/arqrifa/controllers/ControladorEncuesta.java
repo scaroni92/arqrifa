@@ -7,13 +7,10 @@ import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoEncuestas;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.viewmodels.VMReunion;
 import org.arqrifa.viewmodels.ViewModel;
-
-//Acceso: Encargado
 
 @WebServlet(name = "ControladorEncuesta", urlPatterns = {"/encuesta"})
 public class ControladorEncuesta extends Controlador {

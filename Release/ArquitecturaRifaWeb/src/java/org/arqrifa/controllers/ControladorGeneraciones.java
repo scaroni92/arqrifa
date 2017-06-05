@@ -27,7 +27,7 @@ public class ControladorGeneraciones extends Controlador {
 
             DTGeneracion generacion = new DTGeneracion(Integer.parseInt(request.getParameter("anio")));
             new RecursoGeneraciones().agregar(generacion);
-            
+
             vm.setGeneraciones(new RecursoGeneraciones().listar());
             vm.setMensaje("Generación agregada exitosamente.");
         } catch (Exception e) {

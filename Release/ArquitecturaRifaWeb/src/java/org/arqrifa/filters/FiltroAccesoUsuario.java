@@ -1,19 +1,19 @@
 package org.arqrifa.filters;
 
 import java.io.IOException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-@WebFilter(filterName = "filtroAutenticarAdmin", urlPatterns = {"/admin", "/generaciones"})
-public class FiltroAutenticarAdmin implements Filter {
+@WebFilter(filterName = "filtroAccesoUsuario", urlPatterns = {"/reuniones", "/calendario"})
+public class FiltroAccesoUsuario implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -28,8 +28,6 @@ public class FiltroAutenticarAdmin implements Filter {
         try {
             if (usuario == null) {
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
-            } else if (!usuario.getRol().equals(DTUsuario.ADMIN)) {
-                request.getRequestDispatcher("/WEB-INF/views/" + usuario.getRol().toLowerCase() + "/index.jsp").forward(request, response);
             } else {
                 chain.doFilter(request, response);
             }
@@ -43,5 +41,4 @@ public class FiltroAutenticarAdmin implements Filter {
     public void destroy() {
         //
     }
-
 }

@@ -39,7 +39,7 @@
                             <td class="icon-btn">
                                 <a href="usuarios?accion=detalles&ci=${user.ci}"><i class="material-icons ">info_outline</i></a> 
                                 <c:if test="${usuario.rol eq 'Admin'}">
-                                    <a href="usuarios?accion=modificar&ci=${user.ci}"><i class="material-icons ">edit</i></a>
+                                    <a href="usuario?accion=modificar&ci=${user.ci}"><i class="material-icons ">edit</i></a>
                                 </c:if>
                             </td>
                         </tr>
@@ -50,7 +50,7 @@
         </div>
         <c:if test="${usuario.rol eq 'Admin'}"> 
             <div class="fixed-action-btn">
-                <a href="usuarios?accion=agregar" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
+                <a href="usuario?accion=agregar" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
             </div>    
         </c:if>
     </jsp:body>
