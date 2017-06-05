@@ -75,7 +75,7 @@ public class ControladorEncuesta extends Controlador {
         String[] preguntas = request.getParameterValues("preguntas");
 
         if (preguntas == null) {
-            throw new Exception("Ingrese alguna propuesta");
+            throw new Exception("No se permiten encuestas sin propuestas");
         }
 
         for (int i = 0; i < preguntas.length; i++) {
