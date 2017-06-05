@@ -15,12 +15,15 @@ import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
 public class ControladorCuestionario extends Controlador {
+    
+    //private final RecursoReuniones recurso = new RecursoReuniones();
+    DTReunion reunionActiva;
 
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            DTReunion reunion = (DTReunion)sesion.getAttribute("reunionActiva");
-            if (!reunion.getEncuesta().isHabilitada()) {
+            reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
+            if (!reunionActiva.getEncuesta().isHabilitada()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
             mostrarVista("encuestas/cuestionario.jsp");
@@ -28,18 +31,18 @@ public class ControladorCuestionario extends Controlador {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("reuniones/panel.jsp", vm);
-
     }
 
-    public void buscar_estudiante_get() {
+    public void buscar_get() {
         ViewModel vm = new ViewModel();
+        sesion.setAttribute("estudiante", null);
         try {
-            sesion.setAttribute("estudiante", null);
+            
             DTUsuario dtUsuario = new RecursoUsuarios().buscar(request.getParameter("ci"));
             if (dtUsuario != null) {
-                if (dtUsuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
+                //Verificar ROL en lógica
+                if (dtUsuario.getGeneracion() == usuario.getGeneracion()) {
                     sesion.setAttribute("estudiante", dtUsuario);
-                    vm.setMensaje("Estudiante encontrado");
                 }
                 else {
                     vm.setMensaje("Estudiante no encontrado");
@@ -52,30 +55,38 @@ public class ControladorCuestionario extends Controlador {
         mostrarVista("encuestas/cuestionario.jsp", vm);
     }
 
-    public void confirmar_voto_post() {
+    public void confirmar_post() {
         //TODO comprobar estado de reunión en lógica
 
         ViewModel vm = new ViewModel();
         try {
-            DTUsuario estudiante = (DTUsuario) sesion.getAttribute("estudiante");
-            DTReunion reunionActiva = (DTReunion) sesion.getAttribute("reunionActiva");
-            DTEncuesta encuesta = reunionActiva.getEncuesta();
-
-            List<DTRespuesta> respuestasEscogidas = new ArrayList();
-            for (DTPropuesta propuesta : encuesta.getPropuestas()) {
-                int respuestaId = Integer.parseInt(request.getParameter(String.valueOf(propuesta.getId())));
-                respuestasEscogidas.add(new DTRespuesta(respuestaId, "", 0));
-            }
+            DTVoto votacion = new DTVoto();
+            votacion.setUsuario((DTUsuario) sesion.getAttribute("estudiante"));
+            votacion.setReunion(reunionActiva);            
+            votacion.setRespuestasEscogidas(getRespuestasEscogidas());
+            
             //TODO comprobar voto repetido
-            new RecursoEncuestas().agregarVoto(new DTVoto(estudiante, reunionActiva, respuestasEscogidas));
+            new RecursoEncuestas().agregarVoto(votacion);
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
-
         } catch (NumberFormatException e) {
+            //validar en JS
             vm.setMensaje("Seleccione una opción de cada respuesta");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("encuestas/cuestionario.jsp", vm);
+    }
+
+    private List<DTRespuesta> getRespuestasEscogidas() throws NumberFormatException {
+        List<DTRespuesta> respuestasEscogidas = new ArrayList();
+        
+        for (DTPropuesta propuesta : reunionActiva.getEncuesta().getPropuestas()) {
+            int id = Integer.parseInt(request.getParameter(String.valueOf(propuesta.getId())));
+            
+            respuestasEscogidas.add(new DTRespuesta(id, "", 0));
+        }
+        
+        return respuestasEscogidas;
     }
 }

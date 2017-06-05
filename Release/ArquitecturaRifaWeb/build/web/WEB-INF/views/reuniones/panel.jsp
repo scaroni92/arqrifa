@@ -44,7 +44,7 @@
     <div class="fixed-action-btn toolbar">
         <a class="btn-floating btn-large red"> <i class="large material-icons">menu</i> </a>
         <ul>
-            <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reunion?accion=detalles&id=${reunionActiva.id}"><i class="material-icons">info_outline</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Detalles de reunión" href="reuniones?accion=detalles&id=${reunionActiva.id}"><i class="material-icons">info_outline</i></a></li>
 
             <c:choose>
                 <c:when test="${reunionActiva.estado eq 'Listado'}">
@@ -57,7 +57,7 @@
             <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="panel?accion=lista&id=${reunionActiva.id}"><i class="material-icons">assignment</i></a></li>
             <li class="waves-effect waves-light"><a data-tooltip="Iniciar votación" href="panel?accion=iniciar_votacion"><i class="material-icons">play_circle_outline</i></a></li>
             <li class="waves-effect waves-light"><a data-tooltip="Finalizar votación" href="panel?accion=finalizar_votacion"><i class="material-icons">stop</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Cuestionario" href="cuestionario?reunionId=${reunionActiva.id}"><i class="material-icons">speaker_notes</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Cuestionario" href="cuestionario"><i class="material-icons">speaker_notes</i></a></li>
 
         </ul>
     </div>

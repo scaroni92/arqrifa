@@ -13,8 +13,9 @@
                     <form action="cuestionario">
                         <div class="input-field">
                             <input id="search" type="search" name="ci" placeholder="Buscar estudiante" required>
-                            <label class="label-icon" for="search"><i class="material-icons">search</i></label> <i class="material-icons">close</i> </div>
-                        <input type="hidden" name="accion" value="buscar-estudiante">
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label> <i class="material-icons">close</i> 
+                        </div>
+                        <input type="hidden" name="accion" value="buscar">
                     </form>
                 </div>
             </nav>
@@ -38,7 +39,7 @@
 
                 <div class="row">
                     <div class="input-field col s12 center">
-                        <button class="btn green waves-effect waves-light" type="submit" id="confirmar-voto" name="accion" value="confirmar-voto" ${estudiante == null? 'disabled' : ''}>confirmar votación </button>
+                        <button class="btn green waves-effect waves-light" type="submit" id="confirmar-voto" name="accion" value="confirmar" ${estudiante == null? 'disabled' : ''}>confirmar votación </button>
                     </div>
                 </div>
             </form>
