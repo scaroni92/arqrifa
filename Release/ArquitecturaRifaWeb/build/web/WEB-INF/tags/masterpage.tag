@@ -2,6 +2,7 @@
 
 <%@attribute name="titulo" %>
 <%@attribute name="footer" %>
+<%@attribute name="href" %>
 
 <!DOCTYPE html>
 <html class="grey lighten-3">
@@ -17,7 +18,7 @@
         <header>
             <div class="navbar-fixed">
                 <nav>
-                    <div class="nav-wrapper"> <a id="titulo" href="#!" class="brand-logo white-text text-darken-1">${titulo}</a>
+                    <div class="nav-wrapper"> <a id="titulo" href="${href}" class="brand-logo white-text text-darken-1">${titulo}</a>
                         <ul class="right"> <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a> </ul>
                     </div>
                 </nav>

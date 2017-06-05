@@ -2,18 +2,21 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 
-<t:masterpage titulo="Calendario">
+<t:masterpage titulo="Calendario" href="calendario">
     <div class="container">
-        <div class="section center">
-            <form action="calendario">
-                <input class="with-gap" name="filtro" type="radio" id="todas" value="todas" />
-                <label for="todas">Todas</label>
-                <input class="with-gap" name="filtro" type="radio" id="pendiente" value="Pendiente" />
-                <label for="pendiente">Pendientes</label>
-                <input class="with-gap" name="filtro" type="radio" id="finalizada" value="Finalizada" />
-                <label for="finalizada">Finalizadas</label>
-            </form>
-        </div>
+        <form action="calendario" >
+            <div class="row">
+                <div class="col s12">
+                    <div class="input-field inline right">
+                        <select name="filtro" onchange="this.form.submit()">
+                            <option value="Todas" selected>Escoga un estado</option>
+                            <option value="Pendiente" ${modelo.filtro eq 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="Finalizada" ${modelo.filtro eq 'Finalizada' ? 'selected' : ''}>Finalizada</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="row">
             <c:forEach var="reunion" items="${modelo.reuniones}" varStatus="status">
                 <c:set var="color" value="${reunion.estado eq 'Finalizada'? 'grey' : 'teal'}" scope="page"/>
@@ -43,13 +46,7 @@
         </div>    
     </c:if>
 
-    <script>
-        $('form').on('change', 'input', function(){
-            this.form.submit();
-        });
-        
-        $('#' + '${modelo.filtro}').attr('checked', true);
-    </script>
+    <!-- AGREGAR PAGINACIÓN-->
 </t:masterpage>
 
 

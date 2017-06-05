@@ -2,7 +2,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 
-<t:masterpage titulo="Solicitudes">
+<t:masterpage titulo="Solicitudes" href="solicitudes">
     <jsp:body>
         <div class="container">
             <table class="bordered responsive-table centered white">
