@@ -30,7 +30,7 @@
                         <tr>
                             <td>${generacion.id}</td>
                             <td class="icon-btn">
-                                <a href="generaciones?accion=listar-estudiantes&id=${generacion.id}"><i class="material-icons icon-btn">group</i></a> 
+                                <a href="generaciones?accion=integrantes&id=${generacion.id}"><i class="material-icons icon-btn">group</i></a> 
                                 <a href="#"><i class="material-icons icon-btn">delete</i></a> 
                             </td>
                         </tr>

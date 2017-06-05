@@ -36,7 +36,7 @@ public class ControladorGeneraciones extends Controlador {
         mostrarVista("generaciones/index.jsp", vm);
     }
 
-    public void listar_estudiantes_get() {
+    public void integrantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {
             vm.setUsuarios(new RecursoUsuarios().listar(Integer.parseInt(request.getParameter("id"))));

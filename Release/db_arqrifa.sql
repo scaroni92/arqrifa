@@ -112,20 +112,24 @@ INSERT INTO generaciones VALUES (0),(2015),(2016);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),
-(5555555,2012, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
-(6666666,2012, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
-(7777777,2012, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado'),
-(8888888,2012, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante');
+(5555555,2015, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
+(6666666,2015, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
+(7777777,2015, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado'),
+(8888888,2015, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante');
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
-(4444444, 2012, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
-(3333333, 2012, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
+(4444444, 2015, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
+(3333333, 2015, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
-(2012,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2012,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
-(2010,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2012,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
+(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
+(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
+(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
+(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente'),
+(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
+(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
+(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
+(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
 
 
 INSERT INTO temas(id_reunion, tema) VALUES 

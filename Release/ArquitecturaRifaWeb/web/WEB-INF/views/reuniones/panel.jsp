@@ -48,15 +48,15 @@
 
             <c:choose>
                 <c:when test="${reunionActiva.estado eq 'Listado'}">
-                    <li class="waves-effect waves-light"><a data-tooltip="Deshabilitar lista" href="panel?accion=deshabilitar-lista&id=${reunionActiva.id}"><i class="material-icons">assignment_late</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Deshabilitar lista" href="panel?accion=deshabilitar_lista&id=${reunionActiva.id}"><i class="material-icons">assignment_late</i></a></li>
                     </c:when>
                     <c:otherwise>
-                    <li class="waves-effect waves-light"><a data-tooltip="Habilitar lista" href="panel?accion=habilitar-lista&id=${reunionActiva.id}"><i class="material-icons">assignment_turned_in</i></a></li>
+                    <li class="waves-effect waves-light"><a data-tooltip="Habilitar lista" href="panel?accion=habilitar_lista&id=${reunionActiva.id}"><i class="material-icons">assignment_turned_in</i></a></li>
                     </c:otherwise>
                 </c:choose>
-            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="panel?accion=ver-lista&id=${reunionActiva.id}"><i class="material-icons">assignment</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Iniciar votación" href="panel?accion=iniciar-votacion"><i class="material-icons">play_circle_outline</i></a></li>
-            <li class="waves-effect waves-light"><a data-tooltip="Finalizar votación" href="panel?accion=finalizar-votacion"><i class="material-icons">stop</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Lista de asistencias" href="panel?accion=lista&id=${reunionActiva.id}"><i class="material-icons">assignment</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Iniciar votación" href="panel?accion=iniciar_votacion"><i class="material-icons">play_circle_outline</i></a></li>
+            <li class="waves-effect waves-light"><a data-tooltip="Finalizar votación" href="panel?accion=finalizar_votacion"><i class="material-icons">stop</i></a></li>
             <li class="waves-effect waves-light"><a data-tooltip="Cuestionario" href="cuestionario?reunionId=${reunionActiva.id}"><i class="material-icons">speaker_notes</i></a></li>
 
         </ul>

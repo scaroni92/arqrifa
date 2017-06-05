@@ -27,7 +27,7 @@
                     <div class="caption center-align">
                         <h3 >Calendario</h3>
                         <h5 class="light grey-text text-lighten-3">Visite el calendario de reuniones</h5>
-                        <a href="usuario?accion=ver-calendario" class="btn-flat white-text waves-effect waves-red">consultar</a>
+                        <a href="calendario" class="btn-flat white-text waves-effect waves-red">consultar</a>
                     </div>
                 </li>
             </ul>

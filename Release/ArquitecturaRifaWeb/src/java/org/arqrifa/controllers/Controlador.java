@@ -24,12 +24,11 @@ public class Controlador extends HttpServlet {
     protected HttpServletResponse response;
     protected DTUsuario usuario;
 
-
     protected void despacharMetodoAccion()
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String accion = request.getParameter("accion") != null ? request.getParameter("accion").toLowerCase() : "index";
         String metodoRequest = request.getMethod().toLowerCase();
-        String nombreMetodoAccion = accion.replace("-", "_") + "_" + metodoRequest;
+        String nombreMetodoAccion = accion + "_" + metodoRequest;
 
         Method metodoAccion = this.getClass().getMethod(nombreMetodoAccion);
         metodoAccion.invoke(this);
@@ -110,7 +109,7 @@ public class Controlador extends HttpServlet {
         this.sesion = request.getSession();
         this.request = request;
         this.response = response;
-        this.usuario = (DTUsuario)sesion.getAttribute("usuario");
+        this.usuario = (DTUsuario) sesion.getAttribute("usuario");
 
         try {
             despacharMetodoAccion();

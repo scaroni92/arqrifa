@@ -8,9 +8,9 @@
             <form action="calendario">
                 <input class="with-gap" name="filtro" type="radio" id="todas" value="todas" />
                 <label for="todas">Todas</label>
-                <input class="with-gap" name="filtro" type="radio" id="pendiente" value="pendiente" />
+                <input class="with-gap" name="filtro" type="radio" id="pendiente" value="Pendiente" />
                 <label for="pendiente">Pendientes</label>
-                <input class="with-gap" name="filtro" type="radio" id="finalizada" value="finalizada" />
+                <input class="with-gap" name="filtro" type="radio" id="finalizada" value="Finalizada" />
                 <label for="finalizada">Finalizadas</label>
             </form>
         </div>

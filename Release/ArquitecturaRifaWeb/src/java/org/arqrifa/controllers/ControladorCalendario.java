@@ -17,7 +17,7 @@ public class ControladorCalendario extends Controlador {
         try {
             reuniones = new RecursoReuniones().listar(usuario.getGeneracion());
 
-            //TODO filtro en api y explicar
+            //TODO
             if (vm.getFiltro().equals(DTReunion.PENDIENTE) || vm.getFiltro().equals(DTReunion.FINALIZADA)) {
                 vm.setReuniones(reuniones.stream().filter(reunion -> reunion.getEstado().equalsIgnoreCase(vm.getFiltro())).collect(Collectors.toList()));
             }else {
