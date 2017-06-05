@@ -17,7 +17,7 @@ public class ControladorUsuarios extends Controlador {
     private final RecursoUsuarios recurso = new RecursoUsuarios();
 
     public void index_get() {
-        VMListadoUsuarios vm = new VMListadoUsuarios();
+        VMListadoUsuarios vm = (VMListadoUsuarios)cargarModelo(new VMListadoUsuarios());
         try {
             vm.setUsuarios(recurso.listar(usuario.getGeneracion()));
         } catch (Exception e) {
