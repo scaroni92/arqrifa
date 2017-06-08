@@ -51,7 +51,7 @@ public class DesktopController {
         if (!getReunion().getEstado().equals(DTReunion.LISTADO)) {
             throw new Exception("El estado de la reunión debe ser 'Listado'");
         }
-        //thread.start();
+        thread.start();
     }
 
     public static void cerrarPuenteBluetooth() throws IOException, InterruptedException {

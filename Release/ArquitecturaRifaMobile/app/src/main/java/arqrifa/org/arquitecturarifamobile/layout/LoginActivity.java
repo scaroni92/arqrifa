@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/usuarios/login?" + params[0]);
+                URL url = new URL(getResources().getString(R.string.net_services_address)+"usuarios/login?" + params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 

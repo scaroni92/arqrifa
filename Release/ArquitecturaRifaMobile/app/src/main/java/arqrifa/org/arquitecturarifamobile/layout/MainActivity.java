@@ -31,7 +31,7 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 
 public class MainActivity extends AppCompatActivity implements ReunionFragment.OnFragmentInteractionListener {
-    private DTUsuario usuario;
+    public static DTUsuario usuario;
     private RecyclerView rvCalendario;
 
     @Override
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones?"+ params[0]);
+                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones/siguiente?"+ params[0]);
+                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/siguiente?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         protected Object doInBackground(String... params) {
             Object response = null;
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/reuniones/ultima?"+ params[0]);
+                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/ultima?"+ params[0]);
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
                 con.connect();
 

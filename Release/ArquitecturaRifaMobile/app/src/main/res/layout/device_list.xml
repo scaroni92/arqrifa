@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_asistencia"
+    android:id="@+id/device_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="arqrifa.org.arquitecturarifamobile.layout.AsistenciaActivity"
+    tools:context="arqrifa.org.arquitecturarifamobile.layout.DeviceListActivity"
     android:weightSum="1">
 
     <android.support.v7.widget.Toolbar
@@ -20,16 +20,32 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
+    <TextView
+        android:id="@+id/textViewPaired"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reunión activa" />
+        android:text="@string/bt_paired_devices" />
+
+    <ListView
+        android:id="@+id/PairedDevicesList"
+        android:layout_width="match_parent"
+        android:layout_height="290dp" />
+
+    <TextView
+        android:id="@+id/textViewOthers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_other_devices" />
+
+    <ListView
+        android:id="@+id/OtherDevicesList"
+        android:layout_width="match_parent"
+        android:layout_height="201dp" />
 
     <Button
-        android:id="@+id/btnMarcarAsistencia"
+        android:id="@+id/buttonBtSearch"
         style="@style/Button.Large"
-        android:text="@string/confirm_assistance_button" />
+        android:layout_width="match_parent"
+        android:text="@string/search_button" />
 
 </LinearLayout>

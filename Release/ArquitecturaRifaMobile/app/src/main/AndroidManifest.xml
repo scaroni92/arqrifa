@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="arqrifa.org.arquitecturarifamobile">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +27,7 @@
         <activity android:name=".layout.EncuestaActivity" android:label="@string/title_encuesta_activity" />
         <activity android:name=".layout.CuestionarioActivity" android:label="@string/title_cuestionario_activity"></activity>
         <activity android:name=".layout.AsistenciaActivity" android:label="@string/title_marcar_asistencia_activity"/>
+        <activity android:name=".layout.DeviceListActivity" android:label="Dispositivos Bluetooth"/>
     </application>
 
 </manifest>

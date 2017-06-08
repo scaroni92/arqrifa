@@ -11,5 +11,19 @@
     <string name="title_cuestionario_activity">Cuestionario</string>
     <string name="title_marcar_asistencia_activity">Marcar Asistencia</string>
     <string name="confirm_button">Confirmar</string>
+    <string name="confirm_assistance_button">Confirmar mi asistencia</string>
     <string name="login_button">Login</string>
+    <string name="search_button">Buscar</string>
+
+    <string name="bt_scanning">Escaneando</string>
+    <string name="bt_no_devices">No hay dispositivos</string>
+    <string name="bt_paired_devices">Dispositivos emparejados</string>
+    <string name="bt_other_devices">Otros dispositivos</string>
+    <string name="bt_enable_ok">Bluetooth habilitado</string>
+    <string name="bt_enable_error">Hubo un error al habilitar el bluetooth</string>
+    <string name="bt_select_device">Seleccione el dispositivo</string>
+    <string name="bt_connect_error">Hubo un error al conectarse al dispositivo</string>
+
+
+    <string name="net_services_address">http://192.168.1.2:8080/ArquitecturaRifa/api/servicio/</string>
 </resources>

@@ -15,6 +15,7 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         cargarDatos();
+        DesktopController.initiateController();
     }
 
     @SuppressWarnings("unchecked")
@@ -313,7 +314,7 @@ public class Main extends javax.swing.JFrame {
                 pnlOffline.setVisible(false);
                 new MessagePane().displayPane("Éxito", "Adaptador Bluetooth activado exitosamente", MessagePane.OK);
             } else {
-                //DesktopController.finalizarPuenteBluetooth();
+                DesktopController.cerrarPuenteBluetooth();
                 lblActivar.setText("ACTIVAR");
                 pnlOnline.setVisible(false);
                 pnlOffline.setVisible(true);
