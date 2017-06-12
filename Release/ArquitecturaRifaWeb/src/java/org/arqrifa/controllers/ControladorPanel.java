@@ -1,5 +1,6 @@
 package org.arqrifa.controllers;
 
+import java.io.IOException;
 import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
@@ -34,7 +35,7 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void iniciar_post() {
+    public void iniciar_reunion_post() {
         ViewModel vm = new ViewModel();
         try {
             recurso.iniciar(reunionActiva);
@@ -46,7 +47,7 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void finalizar_post() {
+    public void finalizar_reunion_post() {
         try {
             reunionActiva.setObservaciones(request.getParameter("observaciones"));
             reunionActiva.setResoluciones(Arrays.asList(request.getParameterValues("resoluciones")));
@@ -58,7 +59,7 @@ public class ControladorPanel extends Controlador {
         }
     }
 
-    public void lista_get() {
+    public void lista_post() {
         VMListaAsistencias vm = new VMListaAsistencias();
         try {
             vm.setReunion(reunionActiva);
@@ -69,7 +70,7 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/lista.jsp", vm);
     }
 
-    public void habilitar_lista_get() {
+    public void habilitar_lista_post() {
         ViewModel vm = new ViewModel();
         try {
 
@@ -83,7 +84,7 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void deshabilitar_lista_get() {
+    public void deshabilitar_lista_post() {
         ViewModel vm = new ViewModel();
         try {
             recurso.deshablitarLista(reunionActiva);
@@ -95,25 +96,26 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void iniciar_votacion_get() {
+    public void habilitar_encuesta_post() {
         ViewModel vm = new ViewModel();
         try {
             new RecursoEncuestas().iniciarVotacion(reunionActiva);
             reunionActiva.getEncuesta().setHabilitada(true);
-            //reunion.setEstado(DTReunion.VOTACION);
-            vm.setMensaje("Votación iniciada exitosamente");
+            reunionActiva.setEstado("Votacion");
+            vm.setMensaje("Encuesta habilitada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void finalizar_votacion_get() {
+    public void deshabilitar_encuesta_post() {
         ViewModel vm = new ViewModel();
         try {
             new RecursoEncuestas().finalizarVotacion(reunionActiva);
             reunionActiva.getEncuesta().setHabilitada(false);
-            vm.setMensaje("Votación finalizada exitosamente");
+            reunionActiva.setEstado(DTReunion.INICIADA);
+            vm.setMensaje("Encuesta deshabilitada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -128,6 +130,14 @@ public class ControladorPanel extends Controlador {
         } catch (Exception e) {
             sesion.setAttribute("mensaje", e.getMessage());
         }
-        lista_get();
+        lista_post();
+    }
+    
+    public void cuestionario_post(){
+        try {
+            response.sendRedirect("cuestionario");
+        } catch (IOException ex) {
+            mostrarVista("reuniones/panel.jsp", new ViewModel(ex.getMessage()) );
+        }
     }
 }

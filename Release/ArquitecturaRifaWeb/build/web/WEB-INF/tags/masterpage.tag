@@ -8,6 +8,7 @@
 <html class="grey lighten-3">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <title>Arquitectura Rifa | ${titulo}</title>
         <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" >
         <link type="text/css" rel="stylesheet" href="css/materialize.css">
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
@@ -92,7 +93,7 @@
                     </div>
                 </div>
                 <div class="footer-copyright">
-                    <div class="container"> © 2017 Arquitectura Rifa </div>
+                    <div class="container">Arquitectura Rifa </div>
                 </div>
             </footer>
         </c:if>
@@ -101,7 +102,6 @@
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             Materialize.toast('${modelo.mensaje}', 4000);
-            $('.toolbar ul li a').tooltip({delay: 50, position: 'top'});
         </script>
     </body>
 

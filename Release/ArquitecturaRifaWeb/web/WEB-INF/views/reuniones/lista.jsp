@@ -3,11 +3,11 @@
 
 
 
-<t:masterpage titulo="Lista">
+<t:masterpage titulo="Asistencias">
     <jsp:body>
         <div class="container">
             <table class="bordered responsive-table centered white">
-                <thead>
+                <thead class="cyan white-text">
                     <tr>
                         <th>Cédula</th>
                         <th>Nombre</th>

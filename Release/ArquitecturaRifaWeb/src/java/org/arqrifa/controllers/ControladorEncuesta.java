@@ -35,7 +35,6 @@ public class ControladorEncuesta extends Controlador {
                 response.sendRedirect("reuniones?accion=detalles&&id=" + reunion.getId());
                 return;
             }
-
             sesion.setAttribute("reunion", reunion);
             mostrarVista("encuestas/agregar.jsp");
 

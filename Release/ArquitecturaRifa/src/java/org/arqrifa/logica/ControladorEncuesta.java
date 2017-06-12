@@ -58,7 +58,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
                 throw new Exception("No se puede eliminar la encuesta de una reunión finalizada");
             }
             if (reunion.getEncuesta().isHabilitada()) {
-                throw new Exception("No se puede eliminar una encuesta que ya fue habilitada.");
+                throw new Exception("No se puede eliminar una encuesta habilitada.");
             }
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
         } catch (Exception e) {

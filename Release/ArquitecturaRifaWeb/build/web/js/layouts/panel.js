@@ -1,10 +1,49 @@
-$('#panel-form').submit(function () {
-    var datos = $('.chips').material_chip('data');
-    for (i = 0; i < datos.length; i++) {
-        $('#panel-form').append(" <input type='hidden' name='resoluciones' value='" + datos[i].tag + "'/>");
+var $form = $('form:eq(1)');
+var $actions = $('#actions');
+var $btnIniciarReunion = $('#iniciar-reunion');
+var $btnFinalizarReunion = $('#finalizar-reunion');
+var $btnIniciarLista = $('#habilitar-lista');
+var $btnFinalizarLista = $('#deshabilitar-lista');
+var $btnAsistencias = $('#asistencias');
+var $btnIniciarEncuesta = $('#habilitar-encuesta');
+var $btnFinalizarEncuesta = $('#deshabilitar-encuesta');
+var $btnCuestionario = $('#cuestionario');
+
+
+function mostrarBotones(estado) {
+
+    $actions.children().hide();
+
+    switch (estado) {
+        case 'Pendiente':
+            $btnIniciarReunion.show();
+            break;
+        case 'Iniciada':
+            $btnIniciarLista.show();
+            $btnIniciarEncuesta.show();
+            $btnFinalizarReunion.show();
+            break;
+        case 'Listado':
+            $btnFinalizarLista.show();
+            $btnAsistencias.show();
+            break;
+        case 'Votacion':
+            $btnFinalizarEncuesta.show();
+            $btnCuestionario.show();
+            break;
     }
-});
-$('#resoluciones-chips').material_chip({
-    placeholder: '+Resolucion'
-    , secondaryPlaceholder: 'Resoluciones'
+}
+
+$form.on('submit', function (e) {
+    var data = $('.chips').material_chip('data');
+    if (data.length === 0) {
+        e.preventDefault();
+        Materialize.toast('Debe agregar las resoluciones alcanzadas', 4000);
+        $('.chips input').focus();
+        return;
+    }
+    $.each(data, function (i, val) {
+        $form.append('<input type="hidden" name="resoluciones" value="' + val.tag + '" />');
+    });
+    $form.append('<input type="hidden" name="observaciones" value="' + $('textarea').val() + '" />');
 });

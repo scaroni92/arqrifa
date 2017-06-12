@@ -98,14 +98,14 @@ public class RecursoReunion {
         return Response.status(Response.Status.OK).build();
     }
 
-    @Path("hablitarLista")
+    @Path("habilitarLista")
     @PUT
     public Response habilitarLista(DTReunion reunion) {
         CONTROLADOR.habilitarLista(reunion);
         return Response.status(Response.Status.OK).build();
     }
     
-    @Path("deshablitarLista")
+    @Path("deshabilitarLista")
     @PUT
     public Response deshabilitarLista(DTReunion reunion) {
         CONTROLADOR.deshabilitarLista(reunion);
