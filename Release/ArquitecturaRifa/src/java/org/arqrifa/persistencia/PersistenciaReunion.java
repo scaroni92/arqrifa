@@ -100,7 +100,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         try {
             con = Persistencia.getConexion();
             con.setAutoCommit(false);
-            stmt = con.prepareCall("CALL ModificarReunion(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareCall("CALL ModificarReunion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setInt(1, reunion.getId());
             stmt.setInt(2, reunion.getGeneracion());
             stmt.setString(3, reunion.getTitulo());
@@ -109,15 +109,21 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.setInt(6, reunion.getDuracion());
             stmt.setBoolean(7, reunion.isObligatoria());
             stmt.setString(8, reunion.getLugar());
-            stmt.registerOutParameter(9, Types.INTEGER);
+            stmt.setString(9, reunion.getEstado());
+            stmt.setString(10, reunion.getObservaciones());
+            stmt.registerOutParameter(11, Types.INTEGER);
             stmt.execute();
-            if (stmt.getInt(9) == -1) {
+            if (stmt.getInt(11) == -1) {
                 throw new Exception("Ya hay agendada una reunión para la fecha ingresada.");
             }
             this.eliminarTemas(reunion.getId(), con);
 
             for (String tema : reunion.getTemas()) {
                 this.agregarTema(reunion.getId(), tema, con);
+            }
+
+            for (String resolucion : reunion.getResoluciones()) {
+                this.agregarResolucion(reunion.getId(), resolucion, con);
             }
 
             con.commit();
@@ -133,61 +139,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
             throw e;
         } finally {
             Persistencia.cerrarConexiones(null, stmt, con);
-        }
-    }
-
-    @Override
-    public void iniciar(DTReunion reunion) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL IniciarReunion(?)");
-            stmt.setInt(1, reunion.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("Reunión no encontrada");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo iniciar la reunión, error de base datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-    }
-
-    @Override
-    public void finalizar(DTReunion reunion) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL finalizarReunion(?, ?)");
-            stmt.setInt(1, reunion.getId());
-            stmt.setString(2, reunion.getObservaciones());
-            if (stmt.executeUpdate() == 0) {
-                 throw new Exception("No se pudo finalizar la reunión, error de base de datos.");
-            }
-            for (String resolucion : reunion.getResoluciones()) {
-                this.agregarResolucion(reunion.getId(), resolucion, con);
-            }
-
-        } catch (SQLException e) {
-            throw new Exception("No se pudo finalizar la reunión, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
         }
     }
 
@@ -518,56 +469,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 this.listarTemas(res.getInt("id"), con),
                 this.listarResoluciones(res.getInt("id"), con),
                 this.listarParticipantes(res.getInt("id"), con));
-    }
-
-    @Override
-    public void habilitarLista(DTReunion reunion) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL HabilitarLista(?)");
-            stmt.setInt(1, reunion.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("Reunión no encontrada");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo habilitar la lista de asistencias, error de base datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-    }
-
-    @Override
-    public void deshabilitarLista(DTReunion reunion) throws Exception {
-             Connection con = null;
-        CallableStatement stmt = null;
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL DeshabilitarLista(?)");
-            stmt.setInt(1, reunion.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("Reunión no encontrada");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo deshabilitar la lista de asistencias, error de base datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
     }
 
 }

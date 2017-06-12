@@ -104,8 +104,9 @@ class ControladorReunion implements IControladorReunion {
             if (reunion.getFecha().after(fechaActual)) {
                 throw new Exception("No se puede iniciar una reunión antes de la hora prevista");
             }
-
-            FabricaPersistencia.getPersistenciaReunion().iniciar(reunion);
+            
+            reunion.setEstado(DTReunion.INICIADA);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -124,7 +125,8 @@ class ControladorReunion implements IControladorReunion {
             if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
                 throw new Exception("No se puede finalizar una reunión con estado " + reunion.getEstado());
             }
-            FabricaPersistencia.getPersistenciaReunion().finalizar(reunion);
+            reunion.setEstado(DTReunion.FINALIZADA);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -238,8 +240,8 @@ class ControladorReunion implements IControladorReunion {
             if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
                 throw new Exception("Para habilitar la lista, el estado de la reunión debe ser iniciada.");
             }
-
-            FabricaPersistencia.getPersistenciaReunion().habilitarLista(reunion);
+            reunion.setEstado(DTReunion.LISTADO);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -254,8 +256,8 @@ class ControladorReunion implements IControladorReunion {
             if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
                 throw new Exception("No se puede deshabilitar una lista que no fue habilitada aún.");
             }
-
-            FabricaPersistencia.getPersistenciaReunion().deshabilitarLista(reunion);
+            reunion.setEstado(DTReunion.INICIADA);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

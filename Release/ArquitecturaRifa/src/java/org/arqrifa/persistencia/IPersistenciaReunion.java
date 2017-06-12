@@ -12,14 +12,6 @@ public interface IPersistenciaReunion {
     
     void modificar(DTReunion reunion) throws Exception;
     
-    void iniciar(DTReunion reunion) throws Exception;
-    
-    void habilitarLista(DTReunion reunion) throws Exception;
-    
-    void deshabilitarLista(DTReunion reunion) throws Exception;
-    
-    void finalizar(DTReunion reunion) throws Exception;
-    
     void agregarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
     
     DTReunion buscar(int id) throws Exception;

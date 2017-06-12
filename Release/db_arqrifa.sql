@@ -148,8 +148,8 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion, habilitada) VALUES
 (1, 'Encuesta ...', 5, false),
-(2, 'Encuesta del 20/6/16', 5, false),
-(3, 'Encuesta de la reunion ID: 3', 5, false);
+(3, 'Encuesta del 20/6/16', 5, false),
+(4, 'Encuesta de la reunion ID: 3', 5, false);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Cuál de estos premios deberíamos incorporar?'),
@@ -251,17 +251,17 @@ END
 $$
 
 -- retorno: -1 si ya existe una reunión para el mismo día
-CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
+CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50), pEstado varchar(15), pObservaciones varchar(200), out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha AS DATE) = CAST(pFecha AS DATE) AND id_gen = pGeneracion AND id != pId) THEN
 		SET retorno = -1;
 	ELSE
-		UPDATE reuniones SET titulo = pTitulo, descripcion = pDescripcion, fecha = pFecha, duracion = pDuracion, obligatoria = pObligatoria, lugar = pLugar WHERE id = pId;
+		UPDATE reuniones SET titulo = pTitulo, descripcion = pDescripcion, fecha = pFecha, duracion = pDuracion, obligatoria = pObligatoria, lugar = pLugar, estado = pEstado, observaciones = pObservaciones WHERE id = pId;
 	END IF;
 END
 $$
 
--- retorno 1 baja exitosa, -1 la reunión no existe o está en progreso
+-- retorno 1 baja exitosa, -1 la reunión no existe o está en progreso todo: estos checkeos en lógica
 CREATE PROCEDURE BajaReunion(pId int, out retorno int)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
@@ -296,18 +296,6 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE IniciarReunion(pId int)
-BEGIN
-	UPDATE reuniones SET estado = 'Iniciada' WHERE id = pId;
-END
-$$
-
-CREATE PROCEDURE FinalizarReunion(pId int, pObservaciones varchar(100))
-BEGIN
-	UPDATE reuniones SET estado = 'Finalizada', observaciones = pObservaciones WHERE id = pId;
-END
-$$
-
 CREATE PROCEDURE AltaTema(pReunionId int, pTema varchar(50))
 BEGIN
 	INSERT INTO temas(id_reunion, tema) VALUES(pReunionId, pTema);
@@ -326,17 +314,6 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE HabilitarLista(pId int)
-BEGIN
-	UPDATE reuniones SET estado = 'Listado' WHERE id = pId;
-END
-$$
-
-CREATE PROCEDURE DeshabilitarLista(pId int)
-BEGIN
-	UPDATE reuniones SET estado = 'Iniciada' WHERE id = pId;
-END
-$$
 
 -- --------------------------------------------------------
 
