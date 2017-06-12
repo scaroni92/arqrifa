@@ -57,7 +57,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
             if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
                 throw new Exception("No se puede eliminar la encuesta de una reunión finalizada");
             }
-            if (reunion.getEncuesta().isHabilitada()) {
+            if (reunion.getEstado().equals(DTReunion.VOTACION)) {
                 throw new Exception("No se puede eliminar una encuesta habilitada.");
             }
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
@@ -69,12 +69,10 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void modificarEncuesta(DTReunion reunion) {
         try {
-            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
-                throw new Exception("No se puede modificar la encuesta de una reunión finalizada");
+            if (reunion.getEstado().equals(DTReunion.INICIADA)) {
+                throw new Exception("No se puede modificar la encuesta si la reunión ya fue iniciada");
             }
-            if (reunion.getEncuesta().isHabilitada()) {
-                throw new Exception("No se puede modificar una encuesta que ya fue habilitada.");
-            }
+
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("Agregue almenos una propuesta a la encuesta.");
             }
@@ -94,11 +92,11 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void habilitarVotacion(DTReunion reunion) {
         try {
             if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No se puede habilitar la votación si el estado de la reunión es " + reunion.getEstado().toLowerCase());
+                throw new Exception("El estado de la reunión debe ser iniciada");
             }
-            if (!reunion.getEncuesta().isHabilitada()) {
-                FabricaPersistencia.getPersistenciaEncuesta().habilitar(reunion.getEncuesta());
-            }
+            reunion.setEstado(DTReunion.VOTACION);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -107,9 +105,11 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void deshabilitarVotacion(DTReunion reunion) {
         try {
-            if (reunion.getEncuesta().isHabilitada()) {
-                FabricaPersistencia.getPersistenciaEncuesta().deshabilitar(reunion.getEncuesta());
+            if (!reunion.getEstado().equals(DTReunion.VOTACION)) {
+                throw new Exception("La encuesta no ha sido habilitada aún");
             }
+            reunion.setEstado(DTReunion.INICIADA);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -119,8 +119,8 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void agregarVoto(DTVoto voto) {
         boolean esParticipante = false;
         try {
-            if (!voto.getReunion().getEncuesta().isHabilitada()) {
-                throw new Exception("No se puede votar una encuesta inhabilitada");
+            if (!voto.getReunion().getEstado().equals(DTReunion.VOTACION)) {
+                throw new Exception("La encuesta no está habilitada para votaciones");
             }
             //TODO: verificar funcionamiento
             for (DTUsuario participante : voto.getReunion().getParticipantes()) {
@@ -131,7 +131,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
             if (!esParticipante) {
                 throw new Exception("Solo los participantes pueden votar");
             }
-            FabricaPersistencia.getPersistenciaEncuesta().votar(voto);
+            FabricaPersistencia.getPersistenciaEncuesta().agregarVoto(voto);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

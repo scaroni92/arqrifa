@@ -3,7 +3,6 @@ package org.arqrifa.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
-import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
@@ -23,7 +22,7 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
-            if (!reunionActiva.getEncuesta().isHabilitada()) {
+            if (!reunionActiva.getEstado().equals(DTReunion.VOTACION)) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
             mostrarVista("encuestas/cuestionario.jsp");

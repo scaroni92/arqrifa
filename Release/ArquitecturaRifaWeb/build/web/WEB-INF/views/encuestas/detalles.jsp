@@ -9,7 +9,6 @@
             <div class="card-panel">
                 <h5>${encuesta.titulo}</h5>
                 <p>Duración: ${encuesta.duracion}</p>
-                <p>Estado: ${encuesta.habilitada? 'HABILITADA' : 'DESHABILITADA'}</p>
             </div>
             <ul class="collapsible" data-collapsible="expandable">
                 <c:forEach var="propuesta" items="${encuesta.propuestas}">

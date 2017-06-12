@@ -121,50 +121,9 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         }
     }
 
-    @Override
-    public void habilitar(DTEncuesta encuesta) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL habilitarVotacion(?)");
-            stmt.setInt(1, encuesta.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("La encuesta que desea iniciar no existe");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo habilitar la votación, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(null, stmt, con);
-        }
-    }
 
     @Override
-    public void deshabilitar(DTEncuesta encuesta) throws Exception {
-        Connection con = null;
-        CallableStatement stmt = null;
-
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL deshabilitarVotacion(?)");
-            stmt.setInt(1, encuesta.getId());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("La encuesta que desea finalizar no existe");
-            }
-        } catch (SQLException e) {
-            throw new Exception("No se pudo deshabilitar la votación, error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(null, stmt, con);
-        }
-    }
-
-    @Override
-    public void votar(DTVoto voto) throws Exception {
+    public void agregarVoto(DTVoto voto) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -207,7 +166,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.setInt(1, id);
             res = stmt.executeQuery();
             if (res.next()) {
-                encuesta = new DTEncuesta(id, res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
+                encuesta = new DTEncuesta(id, res.getString("titulo"), res.getInt("duracion"), this.listarPropuestas(res.getInt("id"), con));
             }
         } catch (SQLException e) {
             throw new Exception(e.getMessage());
@@ -233,7 +192,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.setInt(1, reunionId);
             res = stmt.executeQuery();
             if (res.next()) {
-                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"), res.getInt("duracion"), res.getBoolean("habilitada"), this.listarPropuestas(res.getInt("id"), con));
+                encuesta = new DTEncuesta(res.getInt("id"), res.getString("titulo"), res.getInt("duracion"), this.listarPropuestas(res.getInt("id"), con));
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo buscar la encuesta de la reunión, error de base de datos.");
@@ -315,7 +274,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
                 respuestas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta"), res.getInt("votos")));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new Exception("No se pudieron listar las respuestas de la propuesta, error de base de datos.");
         } finally {
             Persistencia.cerrarConexiones(res, stmt, null);

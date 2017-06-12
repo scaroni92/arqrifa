@@ -77,7 +77,6 @@ CREATE TABLE encuestas (
     id_reunion INT NOT NULL UNIQUE,
     titulo VARCHAR(30) NOT NULL,
     duracion INT NOT NULL,
-    habilitada BIT NOT NULL DEFAULT 0,
     FOREIGN KEY (id_reunion) REFERENCES reuniones(id)
 );
 
@@ -146,10 +145,10 @@ INSERT INTO temas(id_reunion, tema) VALUES
 (4, 'Nuevos premios'),
 (4, 'Fijación de nuevos precios');
 
-INSERT INTO encuestas(id_reunion, titulo, duracion, habilitada) VALUES
-(1, 'Encuesta ...', 5, false),
-(3, 'Encuesta del 20/6/16', 5, false),
-(4, 'Encuesta de la reunion ID: 3', 5, false);
+INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
+(1, 'Encuesta ...', 5),
+(3, 'Encuesta del 20/6/16', 5),
+(4, 'Encuesta de la reunion ID: 3', 5);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Cuál de estos premios deberíamos incorporar?'),
@@ -407,7 +406,7 @@ BEGIN
 END
 $$
 
--- retorno -1 si la reunión está finalizada
+-- retorno -1 si la reunión está finalizada : verificar en lógica
 CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int, out retorno int)
 BEGIN
 	IF EXISTS (SELECT r.* FROM reuniones AS r INNER JOIN encuestas AS e on(r.id = e.id_reunion) WHERE e.id = pId AND r.estado = 'Finalizada') THEN
@@ -440,17 +439,6 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE HabilitarVotacion(pEncuestaId int)
-BEGIN
-	UPDATE encuestas SET habilitada = 1 WHERE id = pEncuestaId;
-END
-$$
-
-CREATE PROCEDURE DeshabilitarVotacion(pEncuestaId int)
-BEGIN
-	UPDATE encuestas SET habilitada = 0 WHERE id = pEncuestaId;
-END
-$$
 
 CREATE PROCEDURE AltaVoto(pCi int, pRespuestaId int)
 BEGIN

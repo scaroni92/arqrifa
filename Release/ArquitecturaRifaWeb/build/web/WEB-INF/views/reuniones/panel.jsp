@@ -29,19 +29,19 @@
             </div>
             <div class="section-links row">
                 <div class="col s12">
-                    <ul class="collection grey-text text-darken-1">
+                    <ul class="collection white-text">
                         <c:if test="${reunionActiva.encuesta != null}">
-                            <li class="collection-item">
-                                <div>La reunión contiene una encuesta<a href="reuniones?accion=encuesta&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons">send</i></a></div>
+                            <li class="collection-item cyan">
+                                <div>La reunión contiene una encuesta<a href="reuniones?accion=encuesta&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">send</i></a></div>
                             </li>
                         </c:if>
                         <c:if test="${reunionActiva.encuesta == null}">
-                            <li class="collection-item">
-                                <div>Agregar una encuesta a la reunión<a href="encuesta?accion=agregar&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons">add_circle</i></a></div>
+                            <li class="collection-item cyan">
+                                <div>Agregar una encuesta a la reunión<a href="encuesta?accion=agregar&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">add_circle</i></a></div>
                             </li>
                         </c:if>
-                        <li class="collection-item">
-                            <div>Listado de estudiantes presentes<a href="reunion?accion=ver_participantes&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons">send</i></a></div>
+                        <li class="collection-item cyan">
+                            <div>Listado de estudiantes presentes<a href="reunion?accion=ver_participantes&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">send</i></a></div>
                         </li>
                     </ul>
                 </div>

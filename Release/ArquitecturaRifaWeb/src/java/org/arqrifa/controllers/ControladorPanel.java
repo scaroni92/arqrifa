@@ -100,7 +100,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             new RecursoEncuestas().iniciarVotacion(reunionActiva);
-            reunionActiva.getEncuesta().setHabilitada(true);
+            reunionActiva.setEstado(DTReunion.VOTACION);
             reunionActiva.setEstado("Votacion");
             vm.setMensaje("Encuesta habilitada exitosamente");
         } catch (Exception e) {
@@ -113,7 +113,6 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             new RecursoEncuestas().finalizarVotacion(reunionActiva);
-            reunionActiva.getEncuesta().setHabilitada(false);
             reunionActiva.setEstado(DTReunion.INICIADA);
             vm.setMensaje("Encuesta deshabilitada exitosamente");
         } catch (Exception e) {
