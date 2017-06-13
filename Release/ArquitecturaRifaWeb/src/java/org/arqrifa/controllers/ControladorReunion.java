@@ -101,7 +101,6 @@ public class ControladorReunion extends Controlador {
             sesion.setAttribute("mensaje", "Reunion eliminada exitosamente");
             response.sendRedirect("reuniones");
         } catch (Exception e) {
-            sesion.setAttribute("mensaje", e.getMessage());
             mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, e.getMessage()));
         }
     }

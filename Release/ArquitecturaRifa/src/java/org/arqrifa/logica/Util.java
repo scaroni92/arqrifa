@@ -25,7 +25,7 @@ public class Util {
     public static void notificarMail(DTMensaje mensaje) throws MessagingException {
         notificar(mensaje);
     }
-
+//todo: mejorar código
     private static void notificar(Object mensajes) throws MessagingException {
         Mensajeria mensajeria = new Mensajeria();
 

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
@@ -31,10 +32,10 @@ class ControladorReunion implements IControladorReunion {
     public void agregarAsistencia(DTUsuario usuario, DTReunion reunion) {
         try {
             if (!usuario.getRol().equals("Estudiante")) {
-                throw new Exception("El usuario CI: " + usuario.getCi() + " desea marcar asistencia pero no es estudiante.");
+                throw new Exception("Solo los estudiantes pueden marcar asistencia");
             }
-            if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
-                throw new Exception("La lista no se ha sido habilitada aún.");
+            if (!reunion.isListado()) {
+                throw new Exception("La lista no ha sido habilitada aún");
             }
 
             FabricaPersistencia.getPersistenciaReunion().agregarAsistencia(usuario, reunion);
@@ -55,27 +56,35 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void agregar(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede agendar una reunión nula.");
-            }
+            verificarReunionNula(reunion);
 
             if (Util.compararFechas(reunion.getFecha(), new Date()) <= 0) {
                 throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación.");
             }
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
-            List<DTMensaje> mensajes = new ArrayList();
-            String asunto = "Nueva reunión agendada";
-            String mensaje = " te informamos que se ha agendado una nueva reunión para el día "
-                    + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
-
-            for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-                mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola " + usuario.getNombre() + mensaje));
-            }
-
-            Util.notificarMail(mensajes);
+            notificarMailEstudiantes(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    private void notificarMailEstudiantes(DTReunion reunion) throws MessagingException, Exception {
+        List<DTMensaje> mensajes = new ArrayList();
+        String asunto = "Nueva reunión agendada";
+        String mensaje = " te informamos que se ha agendado una nueva reunión para el día "
+                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
+
+        for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
+            mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola " + usuario.getNombre() + mensaje));
+        }
+
+        Util.notificarMail(mensajes);
+    }
+
+    private static void verificarReunionNula(DTReunion reunion) throws Exception {
+        if (reunion == null) {
+            throw new Exception("No se puede modificar una reunión nula");
         }
     }
 
@@ -91,8 +100,10 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void iniciar(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede iniciar una reunión nula");
+            verificarReunionNula(reunion);
+
+            if (!reunion.isPendiente()) {
+                throw new Exception("No se puede volver a iniciar una reunión");
             }
 
             Date fechaActual = new Date();
@@ -104,7 +115,7 @@ class ControladorReunion implements IControladorReunion {
             if (reunion.getFecha().after(fechaActual)) {
                 throw new Exception("No se puede iniciar una reunión antes de la hora prevista");
             }
-            
+
             reunion.setEstado(DTReunion.INICIADA);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
@@ -115,16 +126,14 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void finalizar(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede finalizar una reunión nula");
+            verificarReunionNula(reunion);
+            if (!reunion.isIniciada()) {
+                throw new Exception("El estado de la reunión debe ser iniciada");
             }
             if (reunion.getResoluciones().isEmpty()) {
                 throw new Exception("Ingrese alguna resolución de la reunión");
             }
 
-            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No se puede finalizar una reunión con estado " + reunion.getEstado());
-            }
             reunion.setEstado(DTReunion.FINALIZADA);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
@@ -193,8 +202,8 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void eliminar(DTReunion reunion) {
         try {
-            if (reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("No se puede eliminar una reunión en progreso.");
+            if (!reunion.isPendiente()) {
+                throw new Exception("No se puede eliminar la reunión porque ya fue iniciada");
             }
             FabricaPersistencia.getPersistenciaReunion().eliminar(reunion);
 
@@ -206,14 +215,9 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void modificar(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede modificar uan reunión nula.");
-            }
-            if (!reunion.getEstado().equals(DTReunion.PENDIENTE)) {
-                throw new Exception("No se puede modificar una reunión " + reunion.getEstado().toLowerCase());
-            }
-            if (Util.compararFechas(reunion.getFecha(), new Date()) < 0) {
-                throw new Exception("No se puede asignar una fehca menor a la actual.");
+            verificarReunionNula(reunion);
+            if (!reunion.isPendiente()) {
+                throw new Exception("No se puede modificar la reunión porque ya fue iniciada");
             }
 
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
@@ -234,11 +238,9 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void habilitarLista(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede finalizar una reunión nula");
-            }
-            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("Para habilitar la lista, el estado de la reunión debe ser iniciada.");
+            verificarReunionNula(reunion);
+            if (!reunion.isIniciada()) {
+                throw new Exception("El estado de la reunión deber ser iniciada");
             }
             reunion.setEstado(DTReunion.LISTADO);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
@@ -250,11 +252,9 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void deshabilitarLista(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("No se puede finalizar una reunión nula");
-            }
-            if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
-                throw new Exception("No se puede deshabilitar una lista que no fue habilitada aún.");
+            verificarReunionNula(reunion);
+            if (!reunion.isListado()) {
+                throw new Exception("No se puede deshabilitar la lista porque ya está deshabilitada");
             }
             reunion.setEstado(DTReunion.INICIADA);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
