@@ -2,6 +2,7 @@ package org.arqrifa.logica;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
@@ -13,7 +14,7 @@ public class Util {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(sdf.format(fecha));
     }
-    
+
     public static int compararFechas(Date fecha1, Date fecha2) throws ParseException {
         return formatearFecha(fecha1).compareTo(formatearFecha(fecha2));
     }
@@ -23,24 +24,21 @@ public class Util {
     }
 
     public static void notificarMail(DTMensaje mensaje) throws MessagingException {
-        notificar(mensaje);
+        List<DTMensaje> mensajes = new ArrayList<>();
+        mensajes.add(mensaje);
+        notificar(mensajes);
     }
-//todo: mejorar código
-    private static void notificar(Object mensajes) throws MessagingException {
-        Mensajeria mensajeria = new Mensajeria();
+
+    private static void notificar(List<DTMensaje> mensajes) throws MessagingException {
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
 
                 try {
-
-                    if (mensajes instanceof DTMensaje) {
-                        mensajeria.enviar((DTMensaje) mensajes);
-                    } else {
-                        for (DTMensaje mensaje : (List<DTMensaje>) mensajes) {
-                            mensajeria.enviar(mensaje);
-                        }
+                    Mensajeria mensajeria = new Mensajeria();
+                    for (DTMensaje mensaje : mensajes) {
+                        mensajeria.enviar(mensaje);
                     }
 
                 } catch (MessagingException ex) {

@@ -114,7 +114,8 @@ INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUE
 (5555555,2015, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
 (6666666,2015, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
 (7777777,2015, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado'),
-(8888888,2015, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante');
+(8888888,2015, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante'),
+(5555556,2016, 'Miguel', 'Gonzales', '1234', 'miguelxxxx@gmail.com', 'Encargado');
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
 (4444444, 2015, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
