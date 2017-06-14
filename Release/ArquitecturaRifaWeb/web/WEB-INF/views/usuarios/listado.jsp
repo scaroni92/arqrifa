@@ -46,7 +46,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <t:pagination controlador="usuarios" />
+            <t:paginacion controlador="usuarios" />
         </div>
         <c:if test="${usuario.rol eq 'Admin'}"> 
             <div class="fixed-action-btn">

@@ -27,7 +27,7 @@ class ControladorGeneracion implements IControladorGeneracion {
         try {
 
             if (generacion.getId() < 2009) {
-                throw new Exception("El año ingresado es inferior al permitido.");
+                throw new Exception("El año ingresado es inferior al permitido");
             }
             if (generacion.getId() > Calendar.getInstance().get(Calendar.YEAR)) {
                 throw new Exception("No se puede agregar una generación cuyo año supere al actual");

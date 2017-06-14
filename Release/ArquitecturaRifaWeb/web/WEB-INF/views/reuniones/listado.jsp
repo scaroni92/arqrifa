@@ -33,7 +33,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <t:pagination controlador="reuniones" />
+            <t:paginacion controlador="reuniones" />
         </div>
     </jsp:body>
 </t:masterpage>
