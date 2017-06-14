@@ -29,13 +29,6 @@ public class RecursoUsuario {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    @Path("{ci}")
-    @DELETE
-    public Response eliminar(@PathParam("ci") int ci) {
-        CONTROLADOR.eliminar(CONTROLADOR.buscar(ci));
-        return Response.status(Response.Status.OK).build();
-    }
-
     @PUT
     public Response modificar(DTUsuario usuario) {
         CONTROLADOR.modificar(usuario);

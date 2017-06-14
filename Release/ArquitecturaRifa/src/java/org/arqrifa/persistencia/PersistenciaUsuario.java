@@ -202,11 +202,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     }
 
     @Override
-    public void eliminar(DTUsuario usuario) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void modificar(DTUsuario usuario) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;

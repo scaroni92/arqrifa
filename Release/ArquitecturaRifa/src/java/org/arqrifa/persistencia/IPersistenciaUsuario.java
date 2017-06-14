@@ -6,9 +6,7 @@ import org.arqrifa.datatypes.DTUsuario;
 public interface IPersistenciaUsuario {
 
     void agregar(DTUsuario usuario) throws Exception;
-    
-    void eliminar(DTUsuario usuario) throws Exception;
-    
+        
     void modificar(DTUsuario usuario) throws Exception;
 
     DTUsuario autenticar(int ci, String contrasena) throws Exception;

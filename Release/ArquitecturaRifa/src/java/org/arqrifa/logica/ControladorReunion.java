@@ -103,7 +103,7 @@ class ControladorReunion implements IControladorReunion {
             verificarReunionNula(reunion);
 
             if (!reunion.isPendiente()) {
-                throw new Exception("No se puede volver a iniciar una reunión");
+                throw new Exception("No se puede volver a iniciar la reunión");
             }
 
             Date fechaActual = new Date();
@@ -266,7 +266,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void habilitarVotacion(DTReunion reunion) {
         try {
-            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
+            if (!reunion.isIniciada()) {
                 throw new Exception("El estado de la reunión debe ser iniciada");
             }
             reunion.setEstado(DTReunion.VOTACION);
@@ -280,7 +280,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void deshabilitarVotacion(DTReunion reunion) {
         try {
-            if (!reunion.getEstado().equals(DTReunion.VOTACION)) {
+            if (!reunion.isVotacion()) {
                 throw new Exception("La encuesta no ha sido habilitada aún");
             }
             reunion.setEstado(DTReunion.INICIADA);

@@ -26,9 +26,9 @@ class ControladorUsuario implements IControladorUsuario {
     public void agregar(DTUsuario usuario) {
         try {
             if (usuario == null) {
-                throw new Exception("No se puede dar de alta un usuario nula.");
+                throw new Exception("No se puede agregar un usuario nulo");
             }
-            if (usuario.getCi() < 4000000) {
+            if (usuario.getCi() < 5000000) {
                 throw new Exception("Ingrese una cédula válida.");
             }
 
@@ -72,7 +72,7 @@ class ControladorUsuario implements IControladorUsuario {
         for (DTReunion reunion : reuniones) {
             esParticipante = false;
 
-            if (DTReunion.FINALIZADA.equals(reunion.getEstado())) {
+            if (reunion.isFinalizada()) {
                 for (DTUsuario participante : reunion.getParticipantes()) {
                     if (participante.getCi() == estudiante.getCi()) {
                         esParticipante = true;
@@ -105,11 +105,6 @@ class ControladorUsuario implements IControladorUsuario {
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-    }
-
-    @Override
-    public void eliminar(DTUsuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

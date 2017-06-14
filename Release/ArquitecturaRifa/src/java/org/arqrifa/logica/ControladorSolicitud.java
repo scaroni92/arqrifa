@@ -44,7 +44,7 @@ class ControladorSolicitud implements IControladorSolicitud {
                     + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
                     + "http://localhost:8080/ArquitecturaRifaWeb/index?accion=verificar&codigo=" + solicitud.getCodigo();
             
-            //enviarNotificacionMail(new DTMensaje(destinatario, asunto, mensaje));
+            
             Util.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
 
         } catch (Exception e) {
