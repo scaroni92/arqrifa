@@ -440,12 +440,6 @@ $$
 -- BÚSQUEDAS
 --
 
-CREATE PROCEDURE BuscarEstudiante(pCi int)
-BEGIN
-	SELECT * FROM usuarios WHERE ci = pCi AND rol = 'Estudiante';
-END
-$$
-
 CREATE PROCEDURE BuscarUsuario(pCi int)
 BEGIN
 	SELECT * FROM usuarios WHERE ci = pCi;
@@ -481,14 +475,6 @@ $$
 CREATE PROCEDURE BuscarReunionActual(pGenId int)
 BEGIN
 	SELECT * FROM reuniones WHERE  id_gen = pGenId AND DATE_FORMAT(fecha,'%Y-%m-%d') =  DATE_FORMAT(NOW(),'%Y-%m-%d');
-END
-$$
-
-
-
-CREATE PROCEDURE BuscarEncuesta(pId int)
-BEGIN
-	SELECT * FROM encuestas WHERE id = pId;
 END
 $$
 
@@ -549,19 +535,6 @@ BEGIN
 END
 $$
 
--- necesario?
-CREATE PROCEDURE ListarReunionesDelDia()
-BEGIN
-	SELECT * FROM reuniones WHERE CAST(fecha AS DATE) >= CAST(CURDATE() AS DATE) AND eliminada = 0;
-END
-$$
-
--- necesario?
-CREATE PROCEDURE ListarReunionesIniciadas()
-BEGIN
-	SELECT * FROM reuniones WHERE estado = 'Iniciada' AND eliminada = 0;
-END
-$$
 
 CREATE PROCEDURE ListarReunionesPorGeneracion(pGen int)
 BEGIN

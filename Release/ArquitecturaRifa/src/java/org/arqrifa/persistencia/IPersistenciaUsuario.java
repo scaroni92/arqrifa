@@ -13,8 +13,6 @@ public interface IPersistenciaUsuario {
 
     DTUsuario buscar(int ci) throws Exception;
 
-    DTUsuario buscarEstudiante(int ci) throws Exception;
-
     List<DTUsuario> listarTodos() throws Exception;
 
     List<DTUsuario> listarEstudiantes(int generacion) throws Exception;

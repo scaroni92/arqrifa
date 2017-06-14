@@ -24,7 +24,6 @@ public interface IPersistenciaReunion {
     
     List<DTReunion> listarTodas() throws Exception;
     
-    List<DTReunion> listarIniciadas() throws Exception;
     
     List<DTReunion> listarPorGeneracion(int id_gen) throws Exception;
 }

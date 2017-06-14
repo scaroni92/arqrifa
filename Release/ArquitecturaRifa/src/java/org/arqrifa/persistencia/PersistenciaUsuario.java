@@ -118,33 +118,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
     }
 
     @Override
-    public DTUsuario buscarEstudiante(int ci) throws Exception {
-        DTUsuario estudiante = null;
-        Connection con = null;
-        CallableStatement stmt = null;
-        ResultSet res = null;
-
-        try {
-            con = getConexion();
-            stmt = con.prepareCall("CALL BuscarEstudiante(?)");
-            stmt.setInt(1, ci);
-            res = stmt.executeQuery();
-
-            if (res.next()) {
-                estudiante = cargarUsuario(res);
-            }
-
-        } catch (SQLException e) {
-            throw new Exception("No se pudo encontrar al estudiante - Error de base de datos.");
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            Persistencia.cerrarConexiones(res, stmt, con);
-        }
-        return estudiante;
-    }
-
-    @Override
     public List<DTUsuario> listarTodos() throws Exception {
         List<DTUsuario> usuarios = new ArrayList();
         Connection con = null;

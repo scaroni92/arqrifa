@@ -9,7 +9,6 @@ public interface IPersistenciaEncuesta {
     public void eliminar(DTEncuesta encuesta) throws Exception;
     public void modificar(DTEncuesta encuesta) throws Exception;
     public void agregarVoto(DTVoto voto) throws Exception;
-    public DTEncuesta buscar(int id) throws Exception;
     public DTEncuesta buscarPorReunion(int reunionId) throws Exception;
     
 }

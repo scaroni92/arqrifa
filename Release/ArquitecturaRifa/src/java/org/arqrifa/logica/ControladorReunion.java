@@ -34,6 +34,9 @@ class ControladorReunion implements IControladorReunion {
             if (!usuario.getRol().equals("Estudiante")) {
                 throw new Exception("Solo los estudiantes pueden marcar asistencia");
             }
+
+            reunion = buscar(reunion.getId());
+
             if (!reunion.isListado()) {
                 throw new Exception("La lista no ha sido habilitada aún");
             }
@@ -44,14 +47,6 @@ class ControladorReunion implements IControladorReunion {
         }
     }
 
-    @Override
-    public List<DTReunion> listarIniciadas() {
-        try {
-            return FabricaPersistencia.getPersistenciaReunion().listarIniciadas();
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
 
     @Override
     public void agregar(DTReunion reunion) {

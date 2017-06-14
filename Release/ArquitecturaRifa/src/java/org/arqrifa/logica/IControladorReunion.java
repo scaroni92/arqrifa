@@ -37,8 +37,6 @@ public interface IControladorReunion {
 
     List<DTReunion> listarTodas();
 
-    List<DTReunion> listarIniciadas();
-
     List<DTReunion> listarPorGeneracion(int genId);
 
     List<DTAsistencia> listarAsistencias(DTReunion reunion);

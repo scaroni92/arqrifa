@@ -106,15 +106,4 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
-    @Override
-    public DTEncuesta buscarEncuesta(int encuestaId) {
-        DTEncuesta encuesta = null;
-        try {
-            encuesta = FabricaPersistencia.getPersistenciaEncuesta().buscar(encuestaId);
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-        return encuesta;
-    }
-
 }
