@@ -11,7 +11,7 @@ public class DTReunion {
     public static String PENDIENTE = "Pendiente";
     public static String INICIADA = "Iniciada";
     public static String LISTADO = "Listado";
-    public static String VOTACION = "Votacion"; 
+    public static String VOTACION = "Votacion";
     public static String FINALIZADA = "Finalizada";
 
     private int id;
@@ -30,7 +30,7 @@ public class DTReunion {
     private List<DTUsuario> participantes;
 
     public DTReunion() {
-        this(0, 0, "", "", null, 0, false, "","", "", null, new ArrayList(), new ArrayList(), new ArrayList());
+        this(0, 0, "", "", null, 0, false, "", "", "", null, new ArrayList(), new ArrayList(), new ArrayList());
     }
 
     public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, DTEncuesta encuesta, List<String> temas, List<String> resoluciones, List<DTUsuario> participantes) {
@@ -164,4 +164,23 @@ public class DTReunion {
     }
     //</editor-fold>
 
+    public boolean isPendiente() {
+        return estado.equals(DTReunion.PENDIENTE);
+    }
+
+    public boolean isIniciada() {
+        return estado.equals(DTReunion.INICIADA);
+    }
+
+    public boolean isListado() {
+        return estado.equals(DTReunion.LISTADO);
+    }
+
+    public boolean isVotacion() {
+        return estado.equals(DTReunion.VOTACION);
+    }
+
+    public boolean isFinalizada() {
+        return estado.equals(DTReunion.FINALIZADA);
+    }
 }

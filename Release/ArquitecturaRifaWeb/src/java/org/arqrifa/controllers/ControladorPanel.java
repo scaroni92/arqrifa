@@ -96,10 +96,10 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void habilitar_encuesta_post() {
+    public void habilitar_votacion_post() {
         ViewModel vm = new ViewModel();
         try {
-            new RecursoEncuestas().iniciarVotacion(reunionActiva);
+            new RecursoReuniones().habilitarVotacion(reunionActiva);
             reunionActiva.setEstado(DTReunion.VOTACION);
             reunionActiva.setEstado("Votacion");
             vm.setMensaje("Encuesta habilitada exitosamente");
@@ -109,10 +109,10 @@ public class ControladorPanel extends Controlador {
         mostrarVista("reuniones/panel.jsp", vm);
     }
 
-    public void deshabilitar_encuesta_post() {
+    public void deshabilitar_votacion_post() {
         ViewModel vm = new ViewModel();
         try {
-            new RecursoEncuestas().finalizarVotacion(reunionActiva);
+            new RecursoReuniones().deshabilitarVotacion(reunionActiva);
             reunionActiva.setEstado(DTReunion.INICIADA);
             vm.setMensaje("Encuesta deshabilitada exitosamente");
         } catch (Exception e) {

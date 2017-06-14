@@ -12,10 +12,6 @@ public interface IControladorEncuesta {
 
     void modificarEncuesta(DTReunion encuesta);
 
-    void habilitarVotacion(DTReunion reunion);
-    
-    void deshabilitarVotacion(DTReunion reunion);
-
     void agregarVoto(DTVoto voto);
 
     DTEncuesta buscarEncuesta(int id);

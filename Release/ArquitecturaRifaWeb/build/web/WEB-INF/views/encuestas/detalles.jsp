@@ -49,7 +49,7 @@
         <!-- Cuadro de dialogo -->                
         <div id="eliminar" class="modal">
             <div class="modal-content">
-                <h4>¿Está segur@ que desea eliminar la encuesta actual?</h4>
+                <h4>¿Está seguro/a que desea eliminar la encuesta actual?</h4>
             </div>
             <div class="modal-footer">
                 <a class=" modal-action modal-close waves-teal btn-flat">Cancelar</a>

@@ -11,7 +11,6 @@
                 <h4>${modelo.reunion.titulo}</h4>
                 <p class="flow-text">${modelo.reunion.descripcion}</p>
 
-
                 <div class="row center grey-text text-darken-2" >
                     <div class="col s3"><i class="material-icons tiny">event_seat</i> ${modelo.reunion.obligatoria? "Obligatoria" : "Opcional"}</div>
                     <div class="col s3"><i class="material-icons tiny">today</i> <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></div>
@@ -19,17 +18,12 @@
                     <div class="col s3"><i class="material-icons tiny">timer</i> ${modelo.reunion.duracion} minutos</div>
                 </div>
 
-
                 <ul class="collection with-header">
                     <li class="collection-header"><h5>Temas</h5></li>
-                        <c:forEach var="tema" items="${modelo.reunion.temas}">
-                        <li class="collection-item">${tema}</li>
-                        </c:forEach>
+                    <c:forEach var="tema" items="${modelo.reunion.temas}"><li class="collection-item">${tema}</li></c:forEach>
                 </ul>
 
-                <c:if test="${modelo.reunion.estado eq 'Finalizada'}">
-
-
+                <c:if test="${modelo.reunion.finalizada}">
                     <ul class="collection with-header">
                         <li class="collection-header"><h5>Resoluciones</h5></li>
                             <c:forEach var="resolucion" items="${modelo.reunion.resoluciones}">
@@ -41,21 +35,18 @@
                         <li class="collection-header"><h5>Observaciones</h5></li>
                         <li class="collection-item">${modelo.reunion.observaciones}</li>
                     </ul>
-
                 </c:if>
-                
+
                 <ul class="collection">
                     <c:if test="${modelo.reunion.encuesta == null and usuario.rol eq 'Encargado' }">
                         <li class="collection-item"><div>Encuesta<a href="encuesta?accion=agregar&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">add_circle</i></a></div></li>
-                   </c:if>
-                   <c:if test="${modelo.reunion.encuesta != null}">
+                        </c:if>
+                        <c:if test="${modelo.reunion.encuesta != null}">
                         <li class="collection-item"><div>Encuesta<a href="reuniones?accion=encuesta&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-                   </c:if>
-                   <c:if test="${modelo.reunion.estado != 'Pendiente' and usuario.rol eq 'Encargado'}">
-                        <li class="collection-item"><div>Participantes<a href="reunion?accion=ver-participantes&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
-                    </c:if>
-
-
+                        </c:if>
+                        <c:if test="${!(modelo.reunion.pendiente) and usuario.rol eq 'Encargado'}">
+                        <li class="collection-item"><div>Participantes<a href="reunion?accion=ver_participantes&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                        </c:if>
                 </ul>
             </div>
 

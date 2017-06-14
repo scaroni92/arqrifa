@@ -19,7 +19,7 @@
         </form>
         <div class="row">
             <c:forEach var="reunion" items="${modelo.reuniones}" varStatus="status">
-                <c:set var="color" value="${reunion.estado eq 'Finalizada'? 'grey' : 'teal'}" scope="page"/>
+                <c:set var="color" value="${reunion.finalizada? 'grey' : 'teal'}" scope="page"/>
 
                 <div class="col l4 m6 s12">
                     <div class="card calendario ${color}">

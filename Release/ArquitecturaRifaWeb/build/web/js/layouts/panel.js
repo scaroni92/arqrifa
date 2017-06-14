@@ -5,8 +5,8 @@ var $btnFinalizarReunion = $('#finalizar-reunion');
 var $btnIniciarLista = $('#habilitar-lista');
 var $btnFinalizarLista = $('#deshabilitar-lista');
 var $btnAsistencias = $('#asistencias');
-var $btnIniciarEncuesta = $('#habilitar-encuesta');
-var $btnFinalizarEncuesta = $('#deshabilitar-encuesta');
+var $btnIniciarEncuesta = $('#habilitar-votacion');
+var $btnFinalizarEncuesta = $('#deshabilitar-votacion');
 var $btnCuestionario = $('#cuestionario');
 
 

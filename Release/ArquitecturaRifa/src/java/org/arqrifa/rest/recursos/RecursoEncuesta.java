@@ -36,21 +36,6 @@ public class RecursoEncuesta {
         return Response.status(Response.Status.OK).build();
     }
     
-    //TODO: Sustituir por DTReunion.VOTACION?
-    @Path("iniciar")
-    @PUT
-    public Response iniciar(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().habilitarVotacion(reunion);
-        return Response.status(Response.Status.OK).build();
-    }
-    
-    @Path("finalizar")
-    @PUT
-    public Response finalizar(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().deshabilitarVotacion(reunion);
-        return Response.status(Response.Status.OK).build();
-    }
-    
     @Path("voto")
     @POST
     public Response agregarVoto(DTVoto voto) {

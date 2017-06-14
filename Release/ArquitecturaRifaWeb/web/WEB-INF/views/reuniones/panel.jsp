@@ -64,12 +64,12 @@
                         <div id="actions" class="section-actions center" style="margin-top:20px"> 
                             <button id="iniciar-reunion" name="accion" value="iniciar_reunion" class="btn waves-effect"><i class="material-icons right">record_voice_over</i>Iniciar reunión</button>
                             <a href="#finalizar" id="finalizar-reunion" name="accion" value="finalizar_reunion" class="btn waves-effect"> <i class="material-icons right">done</i>Finalizar reunión</a> 
-                            <button href="" id="habilitar-encuesta" name="accion" value="habilitar_encuesta" class="${reunionActiva.encuesta == null? 'disabled' : ''} btn waves-effect"><i class="material-icons right">speaker_notes</i>habilitar encuesta</button>
-                            <button href="" id="deshabilitar-encuesta" name="accion" value="deshabilitar_encuesta" class="btn waves-effect"><i class="material-icons right">speaker_notes_off</i>deshabilitar encuesta</button>
-                            <button href="" id="habilitar-lista" name="accion" value="habilitar_lista" class="btn waves-effect"><i class="material-icons right">phonelink</i>habilitar lista</button>
-                            <button href="" id="deshabilitar-lista" name="accion" value="deshabilitar_lista" class="btn waves-effect"> <i class="material-icons right">phonelink_off</i>deshabilitar lista</button>
-                            <button href="" id="cuestionario" name="accion" value="cuestionario" class="btn waves-effect"><i class="material-icons right">question_answer</i>cuestionario</button>
-                            <button href="" id="asistencias" name="accion" value="lista" class="btn waves-effect"><i class="material-icons right">person_add</i>agregar asistencias</button></div>
+                            <button id="habilitar-votacion" name="accion" value="habilitar_votacion" class="${reunionActiva.encuesta == null? 'disabled' : ''} btn waves-effect"><i class="material-icons right">speaker_notes</i>habilitar votacion</button>
+                            <button id="deshabilitar-votacion" name="accion" value="deshabilitar_votacion" class="btn waves-effect"><i class="material-icons right">speaker_notes_off</i>deshabilitar votacion</button>
+                            <button id="habilitar-lista" name="accion" value="habilitar_lista" class="btn waves-effect"><i class="material-icons right">phonelink</i>habilitar lista</button>
+                            <button id="deshabilitar-lista" name="accion" value="deshabilitar_lista" class="btn waves-effect"> <i class="material-icons right">phonelink_off</i>deshabilitar lista</button>
+                            <button id="cuestionario" name="accion" value="cuestionario" class="btn waves-effect"><i class="material-icons right">question_answer</i>cuestionario</button>
+                            <button id="asistencias" name="accion" value="lista" class="btn waves-effect"><i class="material-icons right">person_add</i>agregar asistencias</button></div>
                     </form>
                 </div>
             </div>

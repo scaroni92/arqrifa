@@ -263,4 +263,31 @@ class ControladorReunion implements IControladorReunion {
         }
     }
 
+    @Override
+    public void habilitarVotacion(DTReunion reunion) {
+        try {
+            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
+                throw new Exception("El estado de la reunión debe ser iniciada");
+            }
+            reunion.setEstado(DTReunion.VOTACION);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deshabilitarVotacion(DTReunion reunion) {
+        try {
+            if (!reunion.getEstado().equals(DTReunion.VOTACION)) {
+                throw new Exception("La encuesta no ha sido habilitada aún");
+            }
+            reunion.setEstado(DTReunion.INICIADA);
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
 }

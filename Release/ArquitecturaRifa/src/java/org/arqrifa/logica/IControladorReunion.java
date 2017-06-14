@@ -18,6 +18,10 @@ public interface IControladorReunion {
     void habilitarLista(DTReunion reunion);
 
     void deshabilitarLista(DTReunion reunion);
+    
+     void habilitarVotacion(DTReunion reunion);
+    
+    void deshabilitarVotacion(DTReunion reunion);
 
     void finalizar(DTReunion reunion);
 

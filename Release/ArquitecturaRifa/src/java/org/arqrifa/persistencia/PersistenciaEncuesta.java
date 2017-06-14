@@ -72,11 +72,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             stmt.setInt(1, encuesta.getId());
             stmt.registerOutParameter(2, Types.INTEGER);
             stmt.execute();
-            if (stmt.getInt(2) == -1) {
-                throw new Exception("No se puede eliminar la encuesta de una reunión finalizada.");
-
-            } else if (stmt.getInt(2) != 1) {
-                throw new Exception("No se pudo eliminar la encuesta, problema en la base de datos.");
+            if (stmt.getInt(2) != 1) {
+                throw new Exception("No se pudo eliminar la encuesta, error en la base de datos.");
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo eliminar la encuesta, error de base de datos.");
@@ -94,15 +91,13 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
         try {
             con = Persistencia.getConexion();
             con.setAutoCommit(false);
-            stmt = con.prepareCall("CALL ModificarEncuesta(?, ?, ?, ?)");
+            stmt = con.prepareCall("CALL ModificarEncuesta(?, ?, ?)");
             stmt.setInt(1, encuesta.getId());
             stmt.setString(2, encuesta.getTitulo());
             stmt.setInt(3, encuesta.getDuracion());
-            stmt.registerOutParameter(4, Types.INTEGER);
-            stmt.execute();
-
-            if (stmt.getInt(4) == -1) {
-                throw new Exception("No se puede modificar la encuesta de una reunión finalizada.");
+            
+            if (stmt.executeUpdate() != 1) {
+                throw new Exception("No se pudo modificar la encuesta, error de base de datos");
             }
 
             this.eliminarPropuestas(encuesta.getId(), con);

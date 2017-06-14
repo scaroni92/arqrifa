@@ -14,7 +14,7 @@ public class RecursoReuniones extends ClienteJersey {
     public RecursoReuniones() {
         super("reuniones");
     }
-    
+
     public DTReunion buscar(String id) throws Exception {
         Response response = webTarget.path(id).request(JSON_TYPE).get();
         comprobarEstado(response);
@@ -39,7 +39,6 @@ public class RecursoReuniones extends ClienteJersey {
         return response.readEntity(DTReunion.class);
     }
 
-    
     public void agregar(DTReunion reunion) throws Exception {
         Response response = webTarget.request(JSON_TYPE).post(Entity.entity(reunion, JSON_TYPE));
         comprobarEstado(response);
@@ -79,6 +78,16 @@ public class RecursoReuniones extends ClienteJersey {
     public void deshablitarLista(DTReunion reunion) throws Exception {
         Response response = webTarget.path("deshabilitarLista").request(JSON_TYPE).put(Entity.entity(reunion, JSON_TYPE));
         comprobarEstado(response);
+    }
+
+    public void habilitarVotacion(DTReunion reunion) throws Exception {
+        Response respuesta = webTarget.path("votacion/habilitar").request(JSON_TYPE).put(Entity.entity(reunion, JSON_TYPE));
+        comprobarEstado(respuesta);
+    }
+
+    public void deshabilitarVotacion(DTReunion reunion) throws Exception {
+        Response respuesta = webTarget.path("votacion/deshabilitar").request(JSON_TYPE).put(Entity.entity(reunion, JSON_TYPE));
+        comprobarEstado(respuesta);
     }
 
     public List<DTAsistencia> listarAsistencias(int reunionId) throws Exception {

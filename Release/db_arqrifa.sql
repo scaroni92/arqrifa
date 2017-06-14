@@ -261,13 +261,11 @@ BEGIN
 END
 $$
 
--- retorno 1 baja exitosa, -1 la reunión no existe o está en progreso todo: estos checkeos en lógica
+-- retorno 1 baja exitosa
 CREATE PROCEDURE BajaReunion(pId int, out retorno int)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-	IF NOT EXISTS (SELECT * FROM reuniones WHERE reuniones.id = pId AND reuniones.estado != 'Iniciada') THEN
-		SET retorno = -1;
-	ELSEIF EXISTS (SELECT * FROM reuniones WHERE reuniones.id = pId AND reuniones.estado = 'Pendiente') THEN
+	IF EXISTS (SELECT * FROM reuniones WHERE reuniones.id = pId AND reuniones.estado = 'Pendiente') THEN
 		START TRANSACTION;
         
         DELETE re.* FROM respuestas AS re 
@@ -284,7 +282,6 @@ BEGIN
 
 		DELETE FROM encuestas WHERE encuestas.id_reunion = pId;
         DELETE FROM temas WHERE temas.id_reunion = pId;
-		DELETE FROM asistencias WHERE asistencias.id_reunion = pId;
 		DELETE FROM reuniones WHERE reuniones.id = pId;
         
         SET retorno = 1;
@@ -385,36 +382,27 @@ BEGIN
 END
 $$
 
--- retorna 1 si la baja es exitosa
 CREATE PROCEDURE BajaEncuesta(pId int, out retorno int)
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-	IF EXISTS (SELECT r.* FROM reuniones AS r INNER JOIN encuestas AS e on(r.id = e.id_reunion) WHERE e.id = pId AND r.estado = 'Finalizada') THEN
-		SET retorno = -1;
-	ELSE
-		START TRANSACTION;
-		DELETE r.* FROM respuestas AS r 
-				INNER JOIN propuestas AS p ON(r.id_propuesta = p.id)
-				INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
-				WHERE e.id = pId;
+	START TRANSACTION;
+	
+    DELETE r.* FROM respuestas AS r 
+			INNER JOIN propuestas AS p ON(r.id_propuesta = p.id)
+			INNER JOIN encuestas AS e ON(p.id_encuesta = e.id)
+			WHERE e.id = pId;
 		
-		DELETE FROM propuestas WHERE id_encuesta = pId;
-		DELETE FROM encuestas WHERE id = pId;
+	DELETE FROM propuestas WHERE id_encuesta = pId;
+	DELETE FROM encuestas WHERE id = pId;
 		
-		SET retorno = 1;
-		COMMIT;
-    END IF;
+	SET retorno = 1;
+	COMMIT;
 END
 $$
 
--- retorno -1 si la reunión está finalizada : verificar en lógica
-CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int, out retorno int)
+CREATE PROCEDURE ModificarEncuesta(pId int, pTitulo varchar(30), pDuracion int)
 BEGIN
-	IF EXISTS (SELECT r.* FROM reuniones AS r INNER JOIN encuestas AS e on(r.id = e.id_reunion) WHERE e.id = pId AND r.estado = 'Finalizada') THEN
-		SET retorno = -1;
-	ELSE
-		UPDATE Encuestas SET titulo = pTitulo, duracion = pDuracion WHERE id = pId;
-	END IF;
+	UPDATE Encuestas SET titulo = pTitulo, duracion = pDuracion WHERE id = pId;
 END
 $$
 

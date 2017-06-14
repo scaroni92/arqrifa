@@ -30,13 +30,12 @@ public class RecursoReunion {
         return CONTROLADOR.buscar(id);
     }
 
-  
     @Path("siguiente")
     @GET
     public DTReunion buscarSiguiente(@QueryParam("gen") int generacion) {
         return CONTROLADOR.buscarProximaReunionPorRealizar(generacion);
     }
-    
+
     @Path("actual")
     @GET
     public DTReunion buscarActiva(@QueryParam("gen") int generacion) {
@@ -73,7 +72,7 @@ public class RecursoReunion {
     @Path("{id}")
     @DELETE
     public Response eliminar(@PathParam("id") int id) {
-        //Se solicita el id ya que el método DELETE no permite el uso entidad
+        //Se recibe el id porque que el método DELETE no permite el uso de Entity
         CONTROLADOR.eliminar(CONTROLADOR.buscar(id));
         return Response.status(Response.Status.OK).build();
     }
@@ -104,18 +103,32 @@ public class RecursoReunion {
         CONTROLADOR.habilitarLista(reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("deshabilitarLista")
     @PUT
     public Response deshabilitarLista(DTReunion reunion) {
         CONTROLADOR.deshabilitarLista(reunion);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     @Path("asistencias")
     @POST
     public void agregarAsistencia(DTAsistenciaWrapper asistencia) {
         CONTROLADOR.agregarAsistencia(asistencia.getUsuario(), asistencia.getReunion());
+    }
+
+    @Path("votacion/habilitar")
+    @PUT
+    public Response habilitarVotacion(DTReunion reunion) {
+        CONTROLADOR.habilitarVotacion(reunion);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @Path("votacion/deshabilitar")
+    @PUT
+    public Response deshabilitarVotacion(DTReunion reunion) {
+        CONTROLADOR.deshabilitarVotacion(reunion);
+        return Response.status(Response.Status.OK).build();
     }
 
 }

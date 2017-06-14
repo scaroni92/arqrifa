@@ -40,6 +40,7 @@ public class RecursoUsuarios extends ClienteJersey{
 
     public DTUsuario login(String ci, String pass) throws Exception {
         Response response = webTarget.path("login").queryParam("ci", ci).queryParam("pass", pass).request(JSON_TYPE).get();
+        comprobarEstado(response);
         return response.readEntity(DTUsuario.class);
     }
     

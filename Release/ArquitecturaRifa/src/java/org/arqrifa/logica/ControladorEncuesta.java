@@ -28,13 +28,10 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void agregarEncuesta(DTReunion reunion) {
         try {
             if (reunion == null) {
-                throw new Exception("La reunión no puede ser nula.");
+                throw new Exception("La reunión no puede ser nula");
             }
-            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
-                throw new Exception("No se puede crear encuestas para reuniones finalizadas.");
-            }
-            if (reunion.getEncuesta() == null) {
-                throw new Exception("La encuesta no puede ser nula.");
+            if (reunion.isFinalizada()) {
+                throw new Exception("No se puede crear encuestas para reuniones finalizadas");
             }
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("No se puede crear una encuesta sin propuestas.");
@@ -54,11 +51,8 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void eliminarEncuesta(DTReunion reunion) {
         try {
-            if (reunion.getEstado().equals(DTReunion.FINALIZADA)) {
-                throw new Exception("No se puede eliminar la encuesta de una reunión finalizada");
-            }
-            if (reunion.getEstado().equals(DTReunion.VOTACION)) {
-                throw new Exception("No se puede eliminar una encuesta habilitada.");
+            if (!reunion.isPendiente()) {
+                throw new Exception("No se puede eliminar la encuesta si la reunión ya fue iniciada");
             }
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
         } catch (Exception e) {
@@ -69,7 +63,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void modificarEncuesta(DTReunion reunion) {
         try {
-            if (reunion.getEstado().equals(DTReunion.INICIADA)) {
+            if (!reunion.isPendiente()) {
                 throw new Exception("No se puede modificar la encuesta si la reunión ya fue iniciada");
             }
 
@@ -88,38 +82,13 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
-    @Override
-    public void habilitarVotacion(DTReunion reunion) {
-        try {
-            if (!reunion.getEstado().equals(DTReunion.INICIADA)) {
-                throw new Exception("El estado de la reunión debe ser iniciada");
-            }
-            reunion.setEstado(DTReunion.VOTACION);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
 
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void deshabilitarVotacion(DTReunion reunion) {
-        try {
-            if (!reunion.getEstado().equals(DTReunion.VOTACION)) {
-                throw new Exception("La encuesta no ha sido habilitada aún");
-            }
-            reunion.setEstado(DTReunion.INICIADA);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
-        } catch (Exception e) {
-            throw new ArquitecturaRifaException(e.getMessage());
-        }
-    }
 
     @Override
     public void agregarVoto(DTVoto voto) {
         boolean esParticipante = false;
         try {
-            if (!voto.getReunion().getEstado().equals(DTReunion.VOTACION)) {
+            if (!voto.getReunion().isVotacion()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
             //TODO: verificar funcionamiento
