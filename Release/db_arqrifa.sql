@@ -31,7 +31,7 @@ CREATE TABLE reuniones (
     duracion INT NOT NULL,
     obligatoria BIT NOT NULL,
     lugar VARCHAR(50) NOT NULL,
-    observaciones VARCHAR(200) DEFAULT '',
+    observaciones TEXT,
     estado VARCHAR(15) DEFAULT 'Pendiente',
     eliminada BIT DEFAULT 0,
     FOREIGN KEY (id_gen) REFERENCES generaciones(id)
@@ -47,7 +47,7 @@ CREATE TABLE temas (
 CREATE TABLE resoluciones (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_reunion INT NOT NULL,
-    resolucion VARCHAR(100) NOT NULL,
+    resolucion TEXT NOT NULL,
     FOREIGN KEY (id_reunion) REFERENCES reuniones(id)
 );
 
@@ -182,9 +182,8 @@ INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (6, '$3990'),
 (6, '$3400');
 
-INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 1');
-INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 2');
-INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'RESOLUCION 3');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor ipsum, quis maximus enim. Proin a ligula sem. Pellentesque luctus nisl sit amet erat euismod, rutrum sagittis elit scelerisque. Donec sapien sapien, sollicitudin eu malesuada ut, viverra vel lacus. Nunc semper pulvinar mi sed facilisis. Fusce facilisis e');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'd, rutrum sagittis elit scelerisque. Donec sapien sapien, sollicitudin eu malesuada ut, v sollicitudin eu malesuada ut, v sollicitudin eu malesuada ut, v');
 
 INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666);
 
@@ -251,7 +250,7 @@ END
 $$
 
 -- retorno: -1 si ya existe una reunión para el mismo día
-CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50), pEstado varchar(15), pObservaciones varchar(200), out retorno int)
+CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50), pEstado varchar(15), pObservaciones text, out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha AS DATE) = CAST(pFecha AS DATE) AND id_gen = pGeneracion AND id != pId) THEN
 		SET retorno = -1;
@@ -305,7 +304,7 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE AltaResolucion(pReunionId int, pResolucion varchar(50))
+CREATE PROCEDURE AltaResolucion(pReunionId int, pResolucion text)
 BEGIN
 	INSERT INTO resoluciones (id_reunion, resolucion) VALUES(pReunionId, pResolucion);
 END
