@@ -23,7 +23,7 @@ class ControladorGeneracion implements IControladorGeneracion {
     //</editor-fold>
 
     @Override
-    public void agregarGeneracion(DTGeneracion generacion) {
+    public void agregar(DTGeneracion generacion) {
         try {
 
             if (generacion.getId() < 2009) {
@@ -41,7 +41,7 @@ class ControladorGeneracion implements IControladorGeneracion {
     }
 
     @Override
-    public List<DTGeneracion> listarGeneraciones() {
+    public List<DTGeneracion> listar() {
         try {
             
             return FabricaPersistencia.getPersistenciaGeneracion().listar();

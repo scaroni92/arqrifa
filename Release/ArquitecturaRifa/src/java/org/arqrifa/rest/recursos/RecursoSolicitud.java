@@ -24,39 +24,39 @@ public class RecursoSolicitud {
 
     @POST
     public Response agregar(DTSolicitud solicitud) {
-        CONTROLADOR.agregarSolicitud(solicitud);
+        CONTROLADOR.agregar(solicitud);
         return Response.status(Response.Status.CREATED).build();
     }
 
     @Path("{ci}")
     @DELETE
     public Response eliminar(@PathParam("ci") int ci) {
-        CONTROLADOR.rechazarSolicitud(CONTROLADOR.buscarSolicitud(ci));
+        CONTROLADOR.rechazar(CONTROLADOR.buscar(ci));
         return Response.status(Response.Status.OK).build();
     }
 
     @GET
     public List<DTSolicitud> listar(@QueryParam("gen") int generacion) {
-        return CONTROLADOR.listarSolicitudes(generacion);
+        return CONTROLADOR.listar(generacion);
     }
 
     @Path("{ci}")
     @GET
     public DTSolicitud buscar(@PathParam("ci") int ci) {
-        return CONTROLADOR.buscarSolicitud(ci);
+        return CONTROLADOR.buscar(ci);
     }
 
     @Path("verificar")
     @GET
     public Response verificar(@QueryParam("codigo") int codigo) {
-        CONTROLADOR.verificarSolicitud(codigo);
+        CONTROLADOR.verificar(codigo);
         return Response.status(Response.Status.OK).build();
     }
 
     @Path("confirmar")
     @PUT
     public Response confirmar(DTSolicitud solicitud) {
-        CONTROLADOR.confirmarSolicitud(solicitud);
+        CONTROLADOR.confirmar(solicitud);
         return Response.status(Response.Status.OK).build();
     }
 

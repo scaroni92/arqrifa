@@ -5,15 +5,15 @@ import org.arqrifa.datatypes.DTSolicitud;
 
 public interface IControladorSolicitud {
 
-    void agregarSolicitud(DTSolicitud solicitud);
+    void agregar(DTSolicitud solicitud);
 
-    void verificarSolicitud(int ci);
+    void verificar(int ci);
 
-    void confirmarSolicitud(DTSolicitud solicitud);
+    void confirmar(DTSolicitud solicitud);
 
-    void rechazarSolicitud(DTSolicitud solicitud);
+    void rechazar(DTSolicitud solicitud);
 
-    DTSolicitud buscarSolicitud(int ci);
+    DTSolicitud buscar(int ci);
     
-    List<DTSolicitud> listarSolicitudes(int generacion);
+    List<DTSolicitud> listar(int generacion);
 }

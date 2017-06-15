@@ -1,6 +1,5 @@
 package org.arqrifa.logica;
 
-import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
@@ -25,14 +24,15 @@ public class ControladorEncuesta implements IControladorEncuesta {
     //</editor-fold>
 
     @Override
-    public void agregarEncuesta(DTReunion reunion) {
+    public void agregar(DTReunion reunion) {
         try {
-            if (reunion == null) {
-                throw new Exception("La reunión no puede ser nula");
-            }
+            verificarReunionNula(reunion);
+            verificarEncuestaNula(reunion);
+            
             if (reunion.isFinalizada()) {
                 throw new Exception("No se puede crear encuestas para reuniones finalizadas");
             }
+            
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("No se puede crear una encuesta sin propuestas.");
             }
@@ -48,12 +48,25 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
+    private void verificarEncuestaNula(DTReunion reunion) throws Exception {
+        if (reunion.getEncuesta() == null) {
+            throw new Exception("La encuesta no puede ser nula");
+        }
+    }
+
+    private void verificarReunionNula(DTReunion reunion) throws Exception {
+        if (reunion == null) {
+            throw new Exception("La reunión no puede ser nula");
+        }
+    }
+
     @Override
-    public void eliminarEncuesta(DTReunion reunion) {
+    public void eliminar(DTReunion reunion) {
         try {
             if (!reunion.isPendiente()) {
                 throw new Exception("No se puede eliminar la encuesta si la reunión ya fue iniciada");
             }
+            verificarEncuestaNula(reunion);
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -61,12 +74,12 @@ public class ControladorEncuesta implements IControladorEncuesta {
     }
 
     @Override
-    public void modificarEncuesta(DTReunion reunion) {
+    public void modificar(DTReunion reunion) {
         try {
             if (!reunion.isPendiente()) {
                 throw new Exception("No se puede modificar la encuesta si la reunión ya fue iniciada");
             }
-
+            verificarEncuestaNula(reunion);
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("Agregue almenos una propuesta a la encuesta.");
             }

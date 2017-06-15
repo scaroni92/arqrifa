@@ -22,7 +22,7 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
-            if (!reunionActiva.getEstado().equals(DTReunion.VOTACION)) {
+            if (!reunionActiva.isVotacion()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
             mostrarVista("encuestas/cuestionario.jsp");

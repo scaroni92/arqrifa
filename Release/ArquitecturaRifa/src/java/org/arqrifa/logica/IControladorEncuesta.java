@@ -5,11 +5,11 @@ import org.arqrifa.datatypes.DTVoto;
 
 public interface IControladorEncuesta {
 
-    void agregarEncuesta(DTReunion reunion);
+    void agregar(DTReunion reunion);
 
-    void eliminarEncuesta(DTReunion encuesta);
+    void eliminar(DTReunion encuesta);
 
-    void modificarEncuesta(DTReunion encuesta);
+    void modificar(DTReunion encuesta);
 
     void agregarVoto(DTVoto voto);
 }

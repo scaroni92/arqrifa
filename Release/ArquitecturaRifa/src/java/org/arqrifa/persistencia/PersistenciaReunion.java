@@ -204,7 +204,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public DTReunion buscarProximaReunion(int id_gen) throws Exception {
+    public DTReunion buscarProxima(int id_gen) throws Exception {
         DTReunion reunion = null;
         Connection con = null;
         CallableStatement stmt = null;
@@ -227,7 +227,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception {
+    public DTReunion buscarUltimaFinalizada(int id_gen) throws Exception {
         DTReunion reunion = null;
         Connection con = null;
         CallableStatement stmt = null;
@@ -250,7 +250,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
     }
 
     @Override
-    public DTReunion buscarReunionActual(int id_gen) throws Exception {
+    public DTReunion buscarActual(int id_gen) throws Exception {
         DTReunion reunion = null;
         Connection con = null;
         CallableStatement stmt = null;

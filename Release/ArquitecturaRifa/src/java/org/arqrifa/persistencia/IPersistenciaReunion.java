@@ -16,11 +16,11 @@ public interface IPersistenciaReunion {
     
     DTReunion buscar(int id) throws Exception;
     
-    DTReunion buscarUltimaReunionFinalizada(int id_gen) throws Exception;
+    DTReunion buscarUltimaFinalizada(int id_gen) throws Exception;
     
-    DTReunion buscarProximaReunion(int id_gen) throws Exception;
+    DTReunion buscarProxima(int id_gen) throws Exception;
     
-    DTReunion buscarReunionActual(int id_gen) throws Exception;
+    DTReunion buscarActual(int id_gen) throws Exception;
     
     List<DTReunion> listarTodas() throws Exception;
     

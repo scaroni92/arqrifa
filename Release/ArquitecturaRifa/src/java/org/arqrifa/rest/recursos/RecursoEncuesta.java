@@ -19,20 +19,20 @@ public class RecursoEncuesta {
 
     @POST
     public Response agregar(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().agregarEncuesta(reunion);
+        FabricaLogica.getControladorEncuesta().agregar(reunion);
         return Response.status(Response.Status.CREATED).build();
     }
 
     @Path("{reunionId}")
     @DELETE
     public Response eliminar(@PathParam("reunionId") int id) {
-        FabricaLogica.getControladorEncuesta().eliminarEncuesta(FabricaLogica.getControladorReuniones().buscar(id));
+        FabricaLogica.getControladorEncuesta().eliminar(FabricaLogica.getControladorReuniones().buscar(id));
         return Response.status(Response.Status.OK).build();
     }
 
     @PUT
     public Response modificar(DTReunion reunion) {
-        FabricaLogica.getControladorEncuesta().modificarEncuesta(reunion);
+        FabricaLogica.getControladorEncuesta().modificar(reunion);
         return Response.status(Response.Status.OK).build();
     }
     

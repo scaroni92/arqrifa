@@ -29,11 +29,11 @@ public interface IControladorReunion {
 
     DTReunion buscar(int id);
 
-    DTReunion buscarUltimaReunionFinalizada(int genId);
+    DTReunion buscarUltimaFinalizada(int genId);
 
-    DTReunion buscarProximaReunionPorRealizar(int genId);
+    DTReunion buscarProximaPorRealizar(int genId);
 
-    DTReunion BuscarReunionActual(int genId);
+    DTReunion BuscarActual(int genId);
 
     List<DTReunion> listarTodas();
 

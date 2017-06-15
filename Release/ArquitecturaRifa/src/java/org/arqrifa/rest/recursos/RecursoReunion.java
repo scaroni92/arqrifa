@@ -33,20 +33,20 @@ public class RecursoReunion {
     @Path("siguiente")
     @GET
     public DTReunion buscarSiguiente(@QueryParam("gen") int generacion) {
-        return CONTROLADOR.buscarProximaReunionPorRealizar(generacion);
+        return CONTROLADOR.buscarProximaPorRealizar(generacion);
     }
 
     @Path("actual")
     @GET
     public DTReunion buscarActiva(@QueryParam("gen") int generacion) {
-        return FabricaLogica.getControladorReuniones().BuscarReunionActual(generacion);
+        return FabricaLogica.getControladorReuniones().BuscarActual(generacion);
     }
 
     //Última reunión finalizada
     @Path("ultima")
     @GET
     public DTReunion buscarUltimaFinalizada(@QueryParam("gen") int generacion) {
-        return CONTROLADOR.buscarUltimaReunionFinalizada(generacion);
+        return CONTROLADOR.buscarUltimaFinalizada(generacion);
     }
 
     @Path("{id}/asistencias")

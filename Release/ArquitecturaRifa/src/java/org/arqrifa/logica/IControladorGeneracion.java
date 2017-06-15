@@ -5,8 +5,8 @@ import org.arqrifa.datatypes.DTGeneracion;
 
 public interface IControladorGeneracion {
 
-    void agregarGeneracion(DTGeneracion generacion);
+    void agregar(DTGeneracion generacion);
 
-    List<DTGeneracion> listarGeneraciones();
+    List<DTGeneracion> listar();
 
 }

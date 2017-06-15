@@ -5,7 +5,6 @@ import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.rest.RecursoEncuestas;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListaAsistencias;
@@ -39,7 +38,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             recurso.iniciar(reunionActiva);
-            reunionActiva.setEstado(DTReunion.INICIADA);
+            reunionActiva.setEstado(DTReunion.ESTADO_INICIADA);
             vm.setMensaje("Reunión iniciada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -75,7 +74,7 @@ public class ControladorPanel extends Controlador {
         try {
 
             recurso.hablitarLista(reunionActiva);
-            reunionActiva.setEstado(DTReunion.LISTADO);
+            reunionActiva.setEstado(DTReunion.ESTADO_LISTADO);
 
             vm.setMensaje("Lista de asistencias habilitada exitosamente");
         } catch (Exception e) {
@@ -88,7 +87,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             recurso.deshablitarLista(reunionActiva);
-            reunionActiva.setEstado(DTReunion.INICIADA);
+            reunionActiva.setEstado(DTReunion.ESTADO_INICIADA);
             vm.setMensaje("Lista de asistencias deshabilitada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
@@ -100,7 +99,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             new RecursoReuniones().habilitarVotacion(reunionActiva);
-            reunionActiva.setEstado(DTReunion.VOTACION);
+            reunionActiva.setEstado(DTReunion.ESTADO_VOTACION);
             reunionActiva.setEstado("Votacion");
             vm.setMensaje("Encuesta habilitada exitosamente");
         } catch (Exception e) {
@@ -113,7 +112,7 @@ public class ControladorPanel extends Controlador {
         ViewModel vm = new ViewModel();
         try {
             new RecursoReuniones().deshabilitarVotacion(reunionActiva);
-            reunionActiva.setEstado(DTReunion.INICIADA);
+            reunionActiva.setEstado(DTReunion.ESTADO_INICIADA);
             vm.setMensaje("Encuesta deshabilitada exitosamente");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DTReunion {
 
-    public static String PENDIENTE = "Pendiente";
-    public static String INICIADA = "Iniciada";
-    public static String LISTADO = "Listado";
-    public static String VOTACION = "Votacion";
-    public static String FINALIZADA = "Finalizada";
+    public static String ESTADO_PENDIENTE = "Pendiente";
+    public static String ESTADO_INICIADA = "Iniciada";
+    public static String ESTADO_LISTADO = "Listado";
+    public static String ESTADO_VOTACION = "Votacion";
+    public static String ESTADO_FINALIZADA = "Finalizada";
 
     private int id;
     private int generacion;
@@ -165,22 +165,22 @@ public class DTReunion {
     //</editor-fold>
 
     public boolean isPendiente() {
-        return estado.equals(DTReunion.PENDIENTE);
+        return estado.equals(DTReunion.ESTADO_PENDIENTE);
     }
 
     public boolean isIniciada() {
-        return estado.equals(DTReunion.INICIADA);
+        return estado.equals(DTReunion.ESTADO_INICIADA);
     }
 
     public boolean isListado() {
-        return estado.equals(DTReunion.LISTADO);
+        return estado.equals(DTReunion.ESTADO_LISTADO);
     }
 
     public boolean isVotacion() {
-        return estado.equals(DTReunion.VOTACION);
+        return estado.equals(DTReunion.ESTADO_VOTACION);
     }
 
     public boolean isFinalizada() {
-        return estado.equals(DTReunion.FINALIZADA);
+        return estado.equals(DTReunion.ESTADO_FINALIZADA);
     }
 }

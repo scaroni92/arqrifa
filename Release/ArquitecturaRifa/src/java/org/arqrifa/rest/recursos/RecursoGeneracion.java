@@ -17,18 +17,12 @@ public class RecursoGeneracion {
     
     @POST
     public Response agregar(DTGeneracion generacion){
-        FabricaLogica.getControladorGeneracion().agregarGeneracion(generacion);
+        FabricaLogica.getControladorGeneracion().agregar(generacion);
         return Response.status(Response.Status.CREATED).build();
     }
     
-    /*
-    @DELETE
-    public Response eliminar(DTGeneracion generacion){
-        return Response.status(Response.Status.OK).build();
-    }*/
-    
     @GET
     public List<DTGeneracion> listar(){
-        return  FabricaLogica.getControladorGeneracion().listarGeneraciones();
+        return  FabricaLogica.getControladorGeneracion().listar();
     }
 }

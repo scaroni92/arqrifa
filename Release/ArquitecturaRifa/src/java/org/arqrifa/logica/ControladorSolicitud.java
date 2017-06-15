@@ -24,7 +24,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     //</editor-fold>
 
     @Override
-    public void agregarSolicitud(DTSolicitud solicitud) {
+    public void agregar(DTSolicitud solicitud) {
         try {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
@@ -53,7 +53,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public void verificarSolicitud(int codigo) {
+    public void verificar(int codigo) {
         try {
             FabricaPersistencia.getPersistenciaSolicitud().verificar(codigo);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public void confirmarSolicitud(DTSolicitud solicitud) {
+    public void confirmar(DTSolicitud solicitud) {
         try {
             if (solicitud == null) {
                 throw new Exception("No se puede confirmar una solicitud nula.");
@@ -88,7 +88,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public void rechazarSolicitud(DTSolicitud solicitud) {
+    public void rechazar(DTSolicitud solicitud) {
         try {
             if (solicitud == null) {
                 throw new Exception("No se puede rechazar una solicitud nula.");
@@ -109,7 +109,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public DTSolicitud buscarSolicitud(int ci) {
+    public DTSolicitud buscar(int ci) {
         try {
             return FabricaPersistencia.getPersistenciaSolicitud().buscar(ci);
         } catch (Exception e) {
@@ -118,7 +118,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     }
 
     @Override
-    public List<DTSolicitud> listarSolicitudes(int generacion) {
+    public List<DTSolicitud> listar(int generacion) {
         try {
             return FabricaPersistencia.getPersistenciaSolicitud().listar(generacion);
         } catch (Exception e) {
