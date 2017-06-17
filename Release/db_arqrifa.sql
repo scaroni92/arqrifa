@@ -433,6 +433,17 @@ BEGIN
 	INSERT INTO votos VALUES(pCi, pRespuestaId);
 END
 $$
+
+CREATE PROCEDURE BuscarVoto(pCi int, pEncuestaId int)
+BEGIN
+	SELECT r.* FROM votos AS v 
+		INNER JOIN respuestas AS r ON(r.id = v.id_respuesta)
+        INNER JOIN propuestas AS p ON(p.id = r.id_propuesta)
+        INNER JOIN encuestas AS e ON(e.id = p.id_encuesta)
+        WHERE v.ci = pCi AND e.id = pEncuestaId;
+END
+$$
+
 -- --------------------------------------------------------
 
 --

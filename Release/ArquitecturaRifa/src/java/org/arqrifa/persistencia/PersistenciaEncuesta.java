@@ -11,6 +11,7 @@ import org.arqrifa.datatypes.DTEncuesta;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
+import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVoto;
 
 class PersistenciaEncuesta implements IPersistenciaEncuesta {
@@ -249,6 +250,38 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             Persistencia.cerrarConexiones(res, stmt, null);
         }
         return respuestas;
+    }
+
+    @Override
+    public DTVoto buscarVoto(DTUsuario usuario, DTReunion reunion) throws Exception{
+        DTVoto voto = null;
+        Connection con = null;
+        CallableStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con  = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL BuscarVoto(?, ?)");
+            stmt.setInt(1, usuario.getCi());
+            stmt.setInt(2, reunion.getEncuesta().getId());
+            res = stmt.executeQuery();
+            
+            
+            List<DTRespuesta> respuestasEscogidas = new ArrayList<>();
+            while (res.next()) {
+                respuestasEscogidas.add(new DTRespuesta(res.getInt("id"), res.getString("respuesta"), 0));
+            }
+            
+            if (!respuestasEscogidas.isEmpty()) {
+                voto = new DTVoto(usuario, reunion, respuestasEscogidas);
+            }
+            
+        } catch (Exception e) {
+            throw new Exception("Error al buscar el voto del estudiante");
+        }
+        finally {
+            Persistencia.cerrarConexiones(res, stmt, con);
+        }
+        return voto;
     }
 
 }

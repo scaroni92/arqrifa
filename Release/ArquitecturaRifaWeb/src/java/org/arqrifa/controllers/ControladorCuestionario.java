@@ -14,14 +14,14 @@ import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
 public class ControladorCuestionario extends Controlador {
-    
+
     //private final RecursoReuniones recurso = new RecursoReuniones();
     DTReunion reunionActiva;
 
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
+            reunionActiva = (DTReunion) sesion.getAttribute("reunionActiva");
             if (!reunionActiva.isVotacion()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
@@ -36,18 +36,24 @@ public class ControladorCuestionario extends Controlador {
         ViewModel vm = new ViewModel();
         sesion.setAttribute("estudiante", null);
         try {
-            
+
             DTUsuario dtUsuario = new RecursoUsuarios().buscar(request.getParameter("ci"));
-            if (dtUsuario != null) {
-                //Verificar ROL en lógica
-                if (dtUsuario.getGeneracion() == usuario.getGeneracion()) {
-                    sesion.setAttribute("estudiante", dtUsuario);
-                }
-                else {
-                    vm.setMensaje("Estudiante no encontrado");
-                }
+
+            if (dtUsuario == null) {
+                throw new Exception("Estudiante no encontrado");
             }
 
+            if (dtUsuario.getGeneracion() != usuario.getGeneracion()) {
+                throw new Exception("Estudiante no encontrado");
+
+            }
+
+            DTVoto voto = new RecursoEncuestas().buscarVoto(dtUsuario.getCi(), reunionActiva.getId());
+            if (voto != null) {
+                throw new Exception("El estudiante ya voto en la encuesta");
+            }
+
+            sesion.setAttribute("estudiante", dtUsuario);
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -61,9 +67,9 @@ public class ControladorCuestionario extends Controlador {
         try {
             DTVoto votacion = new DTVoto();
             votacion.setUsuario((DTUsuario) sesion.getAttribute("estudiante"));
-            votacion.setReunion(reunionActiva);            
+            votacion.setReunion(reunionActiva);
             votacion.setRespuestasEscogidas(getRespuestasEscogidas());
-            
+
             //TODO comprobar voto repetido
             new RecursoEncuestas().agregarVoto(votacion);
             sesion.removeAttribute("estudiante");
@@ -79,13 +85,13 @@ public class ControladorCuestionario extends Controlador {
 
     private List<DTRespuesta> getRespuestasEscogidas() throws NumberFormatException {
         List<DTRespuesta> respuestasEscogidas = new ArrayList();
-        
+
         for (DTPropuesta propuesta : reunionActiva.getEncuesta().getPropuestas()) {
             int id = Integer.parseInt(request.getParameter(String.valueOf(propuesta.getId())));
-            
+
             respuestasEscogidas.add(new DTRespuesta(id, "", 0));
         }
-        
+
         return respuestasEscogidas;
     }
 }

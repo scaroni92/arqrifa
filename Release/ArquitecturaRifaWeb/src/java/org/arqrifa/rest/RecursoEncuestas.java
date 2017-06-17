@@ -26,11 +26,15 @@ public class RecursoEncuestas extends ClienteJersey {
         comprobarEstado(response);
     }
 
-
-
     public void agregarVoto(DTVoto voto) throws Exception {
         Response respuesta = webTarget.path("voto").request(JSON_TYPE).post(Entity.entity(voto, JSON_TYPE));
         comprobarEstado(respuesta);
+    }
+
+    public DTVoto buscarVoto(int ci, int reunionId) throws Exception {
+        Response respuesta = webTarget.path("voto").queryParam("ci", ci).queryParam("reunionId", reunionId).request(JSON_TYPE).get();
+        comprobarEstado(respuesta);
+        return respuesta.readEntity(DTVoto.class);
     }
 
 }

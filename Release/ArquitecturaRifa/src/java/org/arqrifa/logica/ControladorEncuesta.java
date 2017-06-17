@@ -28,11 +28,11 @@ public class ControladorEncuesta implements IControladorEncuesta {
         try {
             verificarReunionNula(reunion);
             verificarEncuestaNula(reunion);
-            
+
             if (reunion.isFinalizada()) {
                 throw new Exception("No se puede crear encuestas para reuniones finalizadas");
             }
-            
+
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {
                 throw new Exception("No se puede crear una encuesta sin propuestas.");
             }
@@ -95,8 +95,6 @@ public class ControladorEncuesta implements IControladorEncuesta {
         }
     }
 
-
-
     @Override
     public void agregarVoto(DTVoto voto) {
         boolean esParticipante = false;
@@ -114,6 +112,30 @@ public class ControladorEncuesta implements IControladorEncuesta {
                 throw new Exception("Solo los participantes pueden votar");
             }
             FabricaPersistencia.getPersistenciaEncuesta().agregarVoto(voto);
+        } catch (Exception e) {
+            throw new ArquitecturaRifaException(e.getMessage());
+        }
+    }
+
+    @Override
+    public DTVoto buscarVoto(int ci, int reunionId) {
+        try {
+            DTUsuario usuario = FabricaLogica.getLogicaUsuario().buscar(ci);
+            DTReunion reunion = FabricaLogica.getControladorReuniones().buscar(reunionId);
+            
+            if (!reunion.isVotacion()) {
+                throw new Exception("La votación no ha sido habilitada");
+            }
+            
+            if (usuario == null) {
+               throw new Exception("Estudiante no encontrado"); 
+            }
+            
+            if (!usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
+                throw new Exception("Solo estudiantes pueden votar en la encuesta");
+            }
+            
+            return FabricaPersistencia.getPersistenciaEncuesta().buscarVoto(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
