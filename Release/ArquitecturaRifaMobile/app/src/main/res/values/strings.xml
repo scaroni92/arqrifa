@@ -12,6 +12,7 @@
     <string name="title_marcar_asistencia_activity">Marcar Asistencia</string>
     <string name="confirm_button">Confirmar</string>
     <string name="confirm_assistance_button">Confirmar mi asistencia</string>
+    <string name="has_assistance_button">Ya ha marcado su asistencia</string>
     <string name="login_button">Login</string>
     <string name="search_button">Buscar</string>
 
@@ -25,5 +26,5 @@
     <string name="bt_connect_error">Hubo un error al conectarse al dispositivo</string>
 
 
-    <string name="net_services_address">http://192.168.1.2:8080/ArquitecturaRifa/api/servicio/</string>
+    <string name="net_services_address">http://192.168.1.3:8080/ArquitecturaRifa/api/</string>
 </resources>

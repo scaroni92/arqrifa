@@ -2,14 +2,19 @@ package arqrifa.org.arquitecturarifamobile.layout;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +36,22 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Set;
 
 import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.datatypes.BluetoothCommandService;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTAsistencia;
+import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 
-public class AsistenciaActivity extends AppCompatActivity {
+public class AsistenciaActivity extends AppCompatActivity  implements ReunionFragment.OnFragmentInteractionListener{
 
     private static final int REQUEST_CONNECT_DEVICE = 1;
 
@@ -65,9 +78,17 @@ public class AsistenciaActivity extends AppCompatActivity {
 
     public static BluetoothCommandService mCommandService;
 
-    DTUsuario usuario;
-    DTReunion reunion;
-    DTAsistencia asistencia;
+    private DTReunion reunion;
+    private boolean accionMarcar;
+
+    //Layout
+    private Button btnTieneAsistencia;
+    private Button btnMarcarAsistencia;
+    private ProgressBar progressBar;
+
+    public void setReunionActiva (DTReunion pReunion){
+        reunion = pReunion;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,28 +98,71 @@ public class AsistenciaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        btnTieneAsistencia = (Button)findViewById(R.id.btnTieneAsistencia);
+        btnTieneAsistencia.setVisibility(View.GONE);
+        btnMarcarAsistencia = (Button)findViewById(R.id.btnMarcarAsistencia);
+        btnMarcarAsistencia.setVisibility(View.GONE);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        //El dispositivo soporta bluetooth?
+        accionMarcar = false;
+
+        String params = "gen="+ MainActivity.usuario.getGeneracion();
+        new GetReunionTask(this).execute(params);
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    public void controlarAsistencia(){
+        progressBar.setVisibility(View.GONE);
+        boolean found =false;
+        for (DTUsuario part :reunion.getParticipantes()){
+            if(part.getCi() == MainActivity.usuario.getCi()){
+                found=true;
+                break;
+            }
+        }
+
+        if (found){
+            showTieneAsistencia();
+        }else{
+            if(accionMarcar)
+                Toast.makeText(this,"Hubo un error al marcar la asistencia, por favor intentelo nuevamente.",Toast.LENGTH_SHORT).show();
+            else
+                conectarBluetooth();
+        }
+    }
+
+    private void showTieneAsistencia(){
+
+        showReunion();
+        btnTieneAsistencia.setVisibility(View.VISIBLE);
+        btnMarcarAsistencia.setVisibility(View.GONE);
+    }
+
+    private void showReunion(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ReunionFragment fragment = ReunionFragment.newInstance(reunion);
+        fragmentTransaction.add(R.id.activity_asistencia, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void conectarBluetooth(){
+    //El dispositivo soporta bluetooth?
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter != null) { //si soporta
             if(CONNECTED_DEVICE_NAME.equals("")) {
                 Intent intent = new Intent(this, DeviceListActivity.class);
                 startActivityForResult(intent,REQUEST_CONNECT_DEVICE);
             }
-
-
-
-
         }else{
             Toast.makeText(this,"Bluetooth no soportado",Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //todo esto es necesario?
         if (mCommandService != null)
             mCommandService.stop();
     }
@@ -107,7 +171,8 @@ public class AsistenciaActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
-                    showMarcarAsistencia();
+                    showReunion();
+                    btnMarcarAsistencia.setVisibility(View.VISIBLE);
                 }else{
                     finish();
                 }
@@ -118,16 +183,14 @@ public class AsistenciaActivity extends AppCompatActivity {
         }
     }
 
-    private void showMarcarAsistencia(){
-        Button btnMarcarAsistencia = (Button)findViewById(R.id.btnMarcarAsistencia);
-        btnMarcarAsistencia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCommandService = DeviceListActivity.mCommandService;
-                mCommandService.write(String.valueOf(MainActivity.usuario.getCi()));
-            }
-        });
-
+    public void marcarAsistencia(View v){
+        progressBar.setVisibility(View.VISIBLE);
+        mCommandService = DeviceListActivity.mCommandService;
+        mCommandService.write(String.valueOf(MainActivity.usuario.getCi()));
+        accionMarcar = true;
+        SystemClock.sleep(2000);
+        String params = "gen="+ MainActivity.usuario.getGeneracion();
+        new GetReunionTask(this).execute(params);
     }
 
     // The Handler that gets information back from the BluetoothChatService
@@ -165,11 +228,6 @@ public class AsistenciaActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -188,6 +246,74 @@ public class AsistenciaActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
+    private class GetReunionTask extends AsyncTask<String, Void, Object> {
+
+        private AsistenciaActivity asistenciaActivity;
+
+        public GetReunionTask(AsistenciaActivity activity) {
+            asistenciaActivity = activity;
+        }
+
+        @Override
+        protected Object doInBackground(String... params) {
+            Object response = null;
+            try {
+                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/actual?" + params[0]);
+                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                con.connect();
+
+                BufferedReader reader;
+                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
+                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
+                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
+                } else {
+                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                    response = new Gson().fromJson(reader.readLine(),DTReunion.class);
+                }
+                reader.close();
+
+                con.disconnect();
+            } catch (Exception ex) {
+                response = new DTMensajeError("Error de conexión con el servidor");
+            }
+            return response;
+        }
+
+        protected void onPostExecute(Object response) {
+            asistenciaActivity.progressBar.setVisibility(View.GONE);
+            DTReunion reunion;
+            try {
+                if (response == null){
+                    throw new Exception("No se encontró una reunión en progreso.");
+                }
+
+                if (response instanceof DTMensajeError) {
+                    throw new Exception(((DTMensajeError)response).getMensaje());
+                }
+
+                reunion = (DTReunion) response;
+
+                if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
+                    throw new Exception("El pasaje de lista todavia no está habilitado.");
+                }
+
+                asistenciaActivity.setReunionActiva(reunion);
+                asistenciaActivity.controlarAsistencia();
+
+            }catch (Exception ex) {
+                Toast.makeText(asistenciaActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                asistenciaActivity.finish();
+            }
+
+        }
     }
 
 }
