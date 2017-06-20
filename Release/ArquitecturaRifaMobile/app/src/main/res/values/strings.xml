@@ -27,4 +27,5 @@
 
 
     <string name="net_services_address">http://192.168.0.101:8080/ArquitecturaRifa/api/</string>
+    <string name="completar_cuestionario_button">Completar el cuestionario</string>
 </resources>

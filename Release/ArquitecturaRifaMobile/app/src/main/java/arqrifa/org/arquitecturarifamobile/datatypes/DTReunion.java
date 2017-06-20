@@ -10,7 +10,7 @@ public class DTReunion implements Serializable{
     public static String PENDIENTE = "Pendiente";
     public static String INICIADA = "Iniciada";
     public static String LISTADO = "Listado";
-    //public static String VOTACION = "Votacion"; este estado puede ser verificado desde encuesta.habilitada
+    public static String VOTACION = "Votacion";
     public static String FINALIZADA = "Finalizada";
 
     private int id;
@@ -163,4 +163,7 @@ public class DTReunion implements Serializable{
     }
     //</editor-fold>
 
+    public boolean isVotacion(){
+        return estado.equals(VOTACION);
+    }
 }

@@ -57,7 +57,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
 
         encuesta = ((DTReunion) getIntent().getExtras().getSerializable("reunion")).getEncuesta();
         usuario = (DTUsuario) getIntent().getExtras().getSerializable("usuario");
-        voto = new DTVoto(usuario, new ArrayList<DTRespuesta>());
+        voto = new DTVoto(usuario, null, new ArrayList<DTRespuesta>());
 
         mostrarPropuesta();
     }
