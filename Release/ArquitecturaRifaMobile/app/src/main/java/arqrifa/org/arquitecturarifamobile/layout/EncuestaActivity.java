@@ -140,7 +140,7 @@ public class EncuestaActivity extends AppCompatActivity {
 
                 con.disconnect();
             } catch (Exception ex) {
-                return new DTMensajeError(ex.getMessage());
+                response = new DTMensajeError(ex.getMessage());
             }
             return response;
         }

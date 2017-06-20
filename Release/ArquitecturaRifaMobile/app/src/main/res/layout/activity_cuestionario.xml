@@ -26,14 +26,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp">
+
         <TextView
-            android:id="@+id/tvPregunta"
+            android:id="@+id/tvTituloCuestionario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="[pregunta]"
             android:textStyle="normal|italic" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -43,5 +42,12 @@
         android:orientation="vertical"
         android:padding="10dp">
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnConfirmarVotacion"
+        style="@style/Button.Large"
+        android:text="Confirmar Votacion"
+        android:onClick="btnConfirmarVotacionClick"
+        android:visibility="gone"/>
 
 </LinearLayout>

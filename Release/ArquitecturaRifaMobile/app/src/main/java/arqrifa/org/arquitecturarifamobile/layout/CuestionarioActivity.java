@@ -1,12 +1,10 @@
 package arqrifa.org.arquitecturarifamobile.layout;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +22,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import arqrifa.org.arquitecturarifamobile.R;
+import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTEncuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTPropuesta;
@@ -35,13 +35,14 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTVoto;
 
 public class CuestionarioActivity extends AppCompatActivity implements View.OnClickListener {
-    private DTEncuesta encuesta;
-    private DTUsuario usuario;
+
     private DTVoto voto;
-    private int indexPropuesta = 0;
 
     LinearLayout llRespuestas;
-    TextView tvPropuesta;
+    TextView tvTituloCuestionario;
+    Button btnConfirmarVotacion;
+
+    ListIterator<DTPropuesta> iterator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +52,19 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        tvPropuesta = (TextView)findViewById(R.id.tvPregunta);
+        tvTituloCuestionario = (TextView)findViewById(R.id.tvTituloCuestionario);
         llRespuestas = (LinearLayout)findViewById(R.id.llRespuestas);
+        btnConfirmarVotacion = (Button)findViewById(R.id.btnConfirmarVotacion);
 
 
-        encuesta = ((DTReunion) getIntent().getExtras().getSerializable("reunion")).getEncuesta();
-        usuario = (DTUsuario) getIntent().getExtras().getSerializable("usuario");
-        voto = new DTVoto(usuario, null, new ArrayList<DTRespuesta>());
+        DTReunion reunion =  ((DTReunion) getIntent().getExtras().getSerializable("reunion"));
+        ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
+        DTUsuario usuario = application.getUsuario();
+        voto = new DTVoto(usuario, reunion, new ArrayList<DTRespuesta>());
 
-        mostrarPropuesta();
+        iterator = reunion.getEncuesta().getPropuestas().listIterator();
+
+        mostrarSiguientePropuesta();
     }
 
     @Override
@@ -79,40 +84,56 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         }
         return super.onOptionsItemSelected(item);
     }
-    protected void mostrarPropuesta(){
-            tvPropuesta.setText((indexPropuesta + 1) + ". " + encuesta.getPropuestas().get(indexPropuesta).getPregunta());
-
-            llRespuestas.removeAllViews();
-
-            for (DTRespuesta respuesta : encuesta.getPropuestas().get(indexPropuesta).getRespuestas()){
-                final Button bt = new Button(this);
-                bt.setText(respuesta.getRespuesta());
-                bt.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                bt.setOnClickListener(this);
-                llRespuestas.addView(bt);
-            }
-            indexPropuesta++;
-    }
-
 
     @Override
     public void onClick(View v) {
-        if (indexPropuesta < encuesta.getPropuestas().size()) {
-            int indexRespuesta = ((LinearLayout) v.getParent()).indexOfChild(v);
-            DTRespuesta respuestaEscogida = encuesta.getPropuestas().get(indexPropuesta -1).getRespuestas().get(indexRespuesta);
-            voto.getRespuestasEscogidas().add(respuestaEscogida);
-            mostrarPropuesta();
-        }
-        else {
-           // new PostVotoTask(this).execute(voto);
+
+        agregarVoto((DTRespuesta)v.getTag());
+
+        if (iterator.hasNext()) {
+            mostrarSiguientePropuesta();
+        } else {
+            mostrarBtnConfirmarVotacion();
         }
     }
 
-    class PostVotoTask extends AsyncTask<DTVoto, Void, Object> {
+    protected void mostrarSiguientePropuesta(){
+
+        DTPropuesta propuesta = iterator.next();
+        tvTituloCuestionario.setText(propuesta.getPregunta());
+        llRespuestas.removeAllViews();
+
+        for (DTRespuesta respuesta : propuesta.getRespuestas()){
+            Button bt = new Button(this);
+            bt.setTag(respuesta);
+            bt.setText(respuesta.getRespuesta());
+            bt.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            bt.setOnClickListener(this);
+            llRespuestas.addView(bt);
+        }
+    }
+
+
+    private void agregarVoto(DTRespuesta respuesta) {
+        voto.getRespuestasEscogidas().add(respuesta);
+    }
+
+        private void mostrarBtnConfirmarVotacion() {
+        tvTituloCuestionario.setText("Cuestionario completado");
+        llRespuestas.removeAllViews();
+        btnConfirmarVotacion.setVisibility(View.VISIBLE);
+    }
+
+    public void btnConfirmarVotacionClick(View v) {
+        new enviarVotacionTask(this).execute(voto);
+        Toast.makeText(this, "Enviando votación...", Toast.LENGTH_SHORT).show();
+    }
+
+    class enviarVotacionTask extends AsyncTask<DTVoto, Void, Object> {
 
         private CuestionarioActivity cuestionarioActivity;
 
-        public PostVotoTask(CuestionarioActivity activity) {
+        public enviarVotacionTask(CuestionarioActivity activity) {
             cuestionarioActivity = activity;
         }
 
@@ -122,13 +143,13 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
             HttpURLConnection con = null;
 
             try {
-                URL url = new URL("http://10.0.2.2:8080/ArquitecturaRifa/api/encuestas/voto");
+                URL url = new URL(getResources().getString(R.string.net_services_address) + "encuestas/voto");
                 con = (HttpURLConnection)url.openConnection();
                 con.setDoOutput(true);
                 con.setDoInput(true);
                 con.setRequestProperty("Content-Type", "application/json");
                 con.setRequestProperty("Accept", "application/json");
-                con.setRequestMethod("PUT");
+                con.setRequestMethod("POST");
                 con.connect();
 
                 OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
@@ -151,9 +172,12 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         }
 
         protected void onPostExecute(Object response) {
-            Intent intent = new Intent(cuestionarioActivity, MainActivity.class);
-            intent.putExtra("mensaje", "Votación exitosa!");
-            startActivity(intent);
+            if (response instanceof  DTMensajeError) {
+                Toast.makeText(cuestionarioActivity, ((DTMensajeError)response).getMensaje(), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(cuestionarioActivity, "Votación enviada exitosamente!!!", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 }
