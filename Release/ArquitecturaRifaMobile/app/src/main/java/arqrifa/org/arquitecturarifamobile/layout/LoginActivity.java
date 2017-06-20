@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import arqrifa.org.arquitecturarifamobile.R;
+import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 
@@ -94,6 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (!usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
                     throw new Exception("Solo los estudiantes tienen acceso a la aplicación");
                 }
+
+                ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
+                application.setUsuario(usuario);
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("usuario", usuario);

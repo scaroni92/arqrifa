@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 import arqrifa.org.arquitecturarifamobile.R;
+import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         init();
 
-        usuario = (DTUsuario) getIntent().getExtras().get("usuario");
+        ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
+        usuario = application.getUsuario();
 
         new GetProximaReunionTask(this).execute("gen=" + usuario.getGeneracion());
         new GetUltimaReunionTask(this).execute("gen=" + usuario.getGeneracion());
