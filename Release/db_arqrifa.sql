@@ -122,14 +122,14 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 (3333333, 2015, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
-(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
+(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-22 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
 (2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
 (2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente'),
+(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente'),
 (2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
+(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00', 60, 0, 'SALON 2', '', 'Pendiente'),
 (2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-06-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
+(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
 
 
 INSERT INTO temas(id_reunion, tema) VALUES 
@@ -257,6 +257,12 @@ BEGIN
 	ELSE
 		UPDATE reuniones SET titulo = pTitulo, descripcion = pDescripcion, fecha = pFecha, duracion = pDuracion, obligatoria = pObligatoria, lugar = pLugar, estado = pEstado, observaciones = pObservaciones WHERE id = pId;
 	END IF;
+END
+$$
+
+CREATE PROCEDURE CambiarEstadoReunion(pId int, pEstado varchar(15))
+BEGIN
+	UPDATE reuniones SET estado = pEstado WHERE id = pId;
 END
 $$
 

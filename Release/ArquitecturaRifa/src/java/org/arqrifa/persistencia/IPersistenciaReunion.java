@@ -12,6 +12,8 @@ public interface IPersistenciaReunion {
     
     void modificar(DTReunion reunion) throws Exception;
     
+    void cambiarEstado(DTReunion reunion) throws Exception;
+    
     void agregarAsistencia(DTUsuario estudiante, DTReunion reunion) throws Exception;
     
     DTReunion buscar(int id) throws Exception;

@@ -112,7 +112,7 @@ class ControladorReunion implements IControladorReunion {
             }
 
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -130,7 +130,7 @@ class ControladorReunion implements IControladorReunion {
             }
 
             reunion.setEstado(DTReunion.ESTADO_FINALIZADA);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -238,7 +238,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("El estado de la reunión deber ser iniciada");
             }
             reunion.setEstado(DTReunion.ESTADO_LISTADO);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -252,7 +252,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("No se puede deshabilitar la lista porque ya está deshabilitada");
             }
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
@@ -265,7 +265,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("El estado de la reunión debe ser iniciada");
             }
             reunion.setEstado(DTReunion.ESTADO_VOTACION);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -279,7 +279,7 @@ class ControladorReunion implements IControladorReunion {
                 throw new Exception("La encuesta no ha sido habilitada aún");
             }
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
-            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
+            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

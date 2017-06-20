@@ -449,4 +449,25 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return reunion;
     }
 
+    @Override
+    public void cambiarEstado(DTReunion reunion) throws Exception {
+       Connection con = null;
+       CallableStatement stmt = null;
+       
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL CambiarEstadoReunion(?, ?)");
+            stmt.setInt(1, reunion.getId());
+            stmt.setString(2, reunion.getEstado());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("No se pudo cambiar el estado de la reunión, error de base de datos");
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
 }
