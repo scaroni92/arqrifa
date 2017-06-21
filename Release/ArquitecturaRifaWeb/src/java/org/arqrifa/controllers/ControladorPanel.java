@@ -1,6 +1,5 @@
 package org.arqrifa.controllers;
 
-import java.io.IOException;
 import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
@@ -19,15 +18,11 @@ public class ControladorPanel extends Controlador {
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            DTReunion reunion = recurso.buscarActual(usuario.getGeneracion());
-
-            if (reunion == null) {
-                sesion.setAttribute("mensaje", "No hay reuniones para hoy");
+            reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
+            if (reunionActiva == null) {
                 response.sendRedirect("index");
                 return;
             }
-            reunionActiva = reunion;
-            sesion.setAttribute("reunionActiva", reunionActiva);
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
@@ -51,6 +46,7 @@ public class ControladorPanel extends Controlador {
             reunionActiva.setObservaciones(request.getParameter("observaciones"));
             reunionActiva.setResoluciones(Arrays.asList(request.getParameterValues("resoluciones")));
             recurso.finalizar(reunionActiva);
+            sesion.removeAttribute("reunionActiva");
             sesion.setAttribute("mensaje", "Reunión finalizada exitosamente.");
             response.sendRedirect("reuniones?accion=detalles&id=" + reunionActiva.getId());
         } catch (Exception e) {
@@ -131,11 +127,4 @@ public class ControladorPanel extends Controlador {
         lista_post();
     }
     
-    public void cuestionario_post(){
-        try {
-            response.sendRedirect("cuestionario");
-        } catch (IOException ex) {
-            mostrarVista("reuniones/panel.jsp", new ViewModel(ex.getMessage()) );
-        }
-    }
 }

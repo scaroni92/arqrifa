@@ -52,8 +52,8 @@
                 <li><a class="waves-effect" href="usuarios"><i class="material-icons">school</i>Estudiantes</a></li>
                 <li><a class="waves-effect" href="reuniones"><i class="material-icons">event_note</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
-                <li><a class="btn waves-effect cyan white-text" href="panel">Panel de renión</a></li>
-                </c:if>
+                <c:if test="${reunionActiva != null}"><li><a class="btn waves-effect cyan white-text" href="panel">Panel de renión</a></li></c:if>
+            </c:if>
 
             <!-- Acciones de administrador -->
             <c:if test="${usuario.rol eq 'Admin'}">

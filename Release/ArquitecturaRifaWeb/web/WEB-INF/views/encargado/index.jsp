@@ -25,7 +25,7 @@
                 </c:if>
                 <c:if test="${modelo.ultimaReunion != null}">
                     <li> 
-                        <img src="img/slider2.jpg">
+                        <img src="img/slider3.jpg">
                         <div class="caption right-align">
                             <h3>Última reunión efectuada</h3>
                             <h5 class="light hide-on-small-only light">${modelo.ultimaReunion.titulo}</h5>
@@ -46,18 +46,10 @@
             </c:forEach>
         </section>
         <p class="center"><a href="reuniones?accion=detalles&id=${modelo.ultimaReunion.id}" class="btn btn-flat waves-effect waves-green">MAS INFORMACIÓN</a></p>
+        
         <script>
             $('.slider').slider({interval: 10000});
-
-            <c:if test="${!empty modelo.solicitudes}">
-            window.setTimeout(function () {
-                Materialize.toast('<span class="truncate">Se encontraron solicitudes pendientes<a href="solicitudes" class="green-text"> VER</a></span>', 16000);
-            }, 2000);
-            </c:if>
-
         </script>
-
-
     </jsp:body>
 </t:masterpage>
 

@@ -8,7 +8,6 @@ import org.arqrifa.datatypes.DTSolicitud;
 public class VMIndex extends ViewModel {
     private DTReunion proximaReunion;
     private DTReunion ultimaReunion;
-    private List<DTSolicitud> solicitudes;
 
     public VMIndex() {
         this(null, null, new ArrayList(), "");
@@ -20,7 +19,6 @@ public class VMIndex extends ViewModel {
         super(mensaje);
         this.proximaReunion = proximaReunion;
         this.ultimaReunion = ultimaReunion;
-        this.solicitudes = solicitudes;
     }
 
     public DTReunion getProximaReunion() {
@@ -31,9 +29,6 @@ public class VMIndex extends ViewModel {
         return ultimaReunion;
     }
 
-    public List<DTSolicitud> getSolicitudes() {
-        return solicitudes;
-    }
 
     public void setProximaReunion(DTReunion proximaReunion) {
         this.proximaReunion = proximaReunion;
@@ -42,10 +37,5 @@ public class VMIndex extends ViewModel {
     public void setUltimaReunion(DTReunion ultimaReunion) {
         this.ultimaReunion = ultimaReunion;
     }
-
-    public void setSolicitudes(List<DTSolicitud> solicitudes) {
-        this.solicitudes = solicitudes;
-    }
-    
     
 }

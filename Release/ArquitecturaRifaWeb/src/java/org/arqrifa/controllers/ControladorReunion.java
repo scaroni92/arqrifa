@@ -113,7 +113,7 @@ public class ControladorReunion extends Controlador {
                 throw new Exception("");
             }
 
-            if (this.usuario.getRol().equals(DTUsuario.ENCARGADO) && this.usuario.getGeneracion() != reunion.getGeneracion()) {
+            if (this.usuario.getRol().equals(DTUsuario.ROL_ENCARGADO) && this.usuario.getGeneracion() != reunion.getGeneracion()) {
                 mostrarVista("error/403.jsp");
             }
 //TODO

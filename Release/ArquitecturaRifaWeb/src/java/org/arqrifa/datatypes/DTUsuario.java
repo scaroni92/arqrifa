@@ -5,9 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DTUsuario {
 
-    public static String ADMIN = "Admin";
-    public static String ENCARGADO = "Encargado";
-    public static String ESTUDIANTE = "Estudiante";
+    public static String ROL_ADMIN = "Admin";
+    public static String ROL_ENCARGADO = "Encargado";
+    public static String ROL_ESTUDIANTE = "Estudiante";
 
     private int ci;
     private String nombre;
@@ -18,6 +18,21 @@ public class DTUsuario {
     private int generacion;
     private int inasistencias;
 
+    public DTUsuario() {
+        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0, 0);
+    }
+
+    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion, int inasistencias) {
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.contrasena = contrasena;
+        this.email = email;
+        this.rol = rol;
+        this.generacion = generacion;
+    }
+    
+    
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getCi() {
         return ci;
@@ -84,18 +99,15 @@ public class DTUsuario {
     }
     //</editor-fold>
 
-    public DTUsuario() {
-        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0, 0);
+    public boolean isAdmin(){
+        return rol.equals(ROL_ADMIN);
     }
-
-    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion, int inasistencias) {
-        this.ci = ci;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.contrasena = contrasena;
-        this.email = email;
-        this.rol = rol;
-        this.generacion = generacion;
+    
+    public boolean isEncargado(){
+        return rol.equals(ROL_ENCARGADO);
     }
-
+    
+    public boolean isEstudiante(){
+        return rol.equals(ROL_ESTUDIANTE);
+    }
 }

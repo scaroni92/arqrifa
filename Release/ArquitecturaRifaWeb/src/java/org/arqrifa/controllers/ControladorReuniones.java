@@ -32,7 +32,7 @@ public class ControladorReuniones extends Controlador {
                 return;
             }
             
-            if (!usuario.getRol().equals(DTUsuario.ADMIN) && usuario.getGeneracion() != reunion.getGeneracion()) {
+            if (!usuario.getRol().equals(DTUsuario.ROL_ADMIN) && usuario.getGeneracion() != reunion.getGeneracion()) {
                 response.sendError(403);
                 return;
             }

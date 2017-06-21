@@ -128,9 +128,9 @@ class ControladorReunion implements IControladorReunion {
             if (reunion.getResoluciones().isEmpty()) {
                 throw new Exception("Ingrese alguna resolución de la reunión");
             }
-
             reunion.setEstado(DTReunion.ESTADO_FINALIZADA);
-            FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
+            // Se utiliza el método modificar ya que se deben agregar las observaciones y resoluciones
+            FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

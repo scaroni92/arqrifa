@@ -49,7 +49,7 @@ public class ControladorUsuarios extends Controlador {
         try {
             DTUsuario dtUsuario = recurso.buscar(request.getParameter("ci"));
 
-            if (usuario.getRol().equals(DTUsuario.ENCARGADO) && usuario.getGeneracion() != dtUsuario.getGeneracion()) {
+            if (usuario.getRol().equals(DTUsuario.ROL_ENCARGADO) && usuario.getGeneracion() != dtUsuario.getGeneracion()) {
                 response.sendError(403);
                 return;
             }

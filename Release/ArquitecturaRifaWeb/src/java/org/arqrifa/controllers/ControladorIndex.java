@@ -1,6 +1,7 @@
 package org.arqrifa.controllers;
 
 import javax.servlet.annotation.WebServlet;
+import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.rest.RecursoSolicitudes;
@@ -14,13 +15,15 @@ public class ControladorIndex extends Controlador {
     public void index_get() {
         VMIndex vm = new VMIndex();
         try {
-            if (!usuario.getRol().equals(DTUsuario.ADMIN)) {
+            if (!usuario.isAdmin()) {
                 vm.setProximaReunion(new RecursoReuniones().siguiente(usuario.getGeneracion()));
                 vm.setUltimaReunion(new RecursoReuniones().ultimaFinalizada(usuario.getGeneracion()));
             }
-            
-            if (usuario.getRol().equals(DTUsuario.ENCARGADO)) {
-                vm.setSolicitudes(new RecursoSolicitudes().listar(usuario.getGeneracion()));
+            if (usuario.isEncargado()) {
+                DTReunion reunionActiva = new RecursoReuniones().buscarActual(usuario.getGeneracion());
+                if (!reunionActiva.isFinalizada()) {
+                    sesion.setAttribute("reunionActiva", reunionActiva);
+                }
             }
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
