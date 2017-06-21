@@ -7,7 +7,7 @@ import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.datatypes.DTVotacion;
 import org.arqrifa.rest.RecursoEncuestas;
 import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.ViewModel;
@@ -48,8 +48,8 @@ public class ControladorCuestionario extends Controlador {
 
             }
 
-            DTVoto voto = new RecursoEncuestas().buscarVoto(dtUsuario.getCi(), reunionActiva.getId());
-            if (voto != null) {
+            DTVotacion votacion = new RecursoEncuestas().buscarVotacion(dtUsuario.getCi(), reunionActiva.getId());
+            if (votacion != null) {
                 throw new Exception("El estudiante ya voto en la encuesta");
             }
 
@@ -65,13 +65,12 @@ public class ControladorCuestionario extends Controlador {
 
         ViewModel vm = new ViewModel();
         try {
-            DTVoto votacion = new DTVoto();
+            DTVotacion votacion = new DTVotacion();
             votacion.setUsuario((DTUsuario) sesion.getAttribute("estudiante"));
             votacion.setReunion(reunionActiva);
             votacion.setRespuestasEscogidas(getRespuestasEscogidas());
 
-            //TODO comprobar voto repetido
-            new RecursoEncuestas().agregarVoto(votacion);
+            new RecursoEncuestas().agregarVotacion(votacion);
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
         } catch (NumberFormatException e) {

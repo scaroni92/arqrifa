@@ -18,7 +18,9 @@ public class ControladorPanel extends Controlador {
     public void index_get() {
         ViewModel vm = new ViewModel();
         try {
-            reunionActiva = (DTReunion)sesion.getAttribute("reunionActiva");
+            reunionActiva = recurso.buscarActual(usuario.getGeneracion());
+            sesion.setAttribute("reunionActiva", reunionActiva);
+            
             if (reunionActiva == null) {
                 response.sendRedirect("index");
                 return;

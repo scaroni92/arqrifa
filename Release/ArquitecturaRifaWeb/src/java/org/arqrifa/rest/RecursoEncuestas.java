@@ -3,7 +3,7 @@ package org.arqrifa.rest;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.datatypes.DTVotacion;
 
 public class RecursoEncuestas extends ClienteJersey {
 
@@ -26,15 +26,15 @@ public class RecursoEncuestas extends ClienteJersey {
         comprobarEstado(response);
     }
 
-    public void agregarVoto(DTVoto voto) throws Exception {
-        Response respuesta = webTarget.path("voto").request(JSON_TYPE).post(Entity.entity(voto, JSON_TYPE));
+    public void agregarVotacion(DTVotacion votacion) throws Exception {
+        Response respuesta = webTarget.path("votacion").request(JSON_TYPE).post(Entity.entity(votacion, JSON_TYPE));
         comprobarEstado(respuesta);
     }
 
-    public DTVoto buscarVoto(int ci, int reunionId) throws Exception {
-        Response respuesta = webTarget.path("voto").queryParam("ci", ci).queryParam("reunionId", reunionId).request(JSON_TYPE).get();
+    public DTVotacion buscarVotacion(int ci, int reunionId) throws Exception {
+        Response respuesta = webTarget.path("votacion").queryParam("ci", ci).queryParam("reunionId", reunionId).request(JSON_TYPE).get();
         comprobarEstado(respuesta);
-        return respuesta.readEntity(DTVoto.class);
+        return respuesta.readEntity(DTVotacion.class);
     }
 
 }

@@ -96,29 +96,29 @@ public class ControladorEncuesta implements IControladorEncuesta {
     }
 
     @Override
-    public void agregarVoto(DTVotacion voto) {
+    public void agregarVotacion(DTVotacion votacion) {
         boolean esParticipante = false;
         try {
-            if (!voto.getReunion().isVotacion()) {
+            if (!votacion.getReunion().isVotacion()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
             //TODO: verificar funcionamiento
-            for (DTUsuario participante : voto.getReunion().getParticipantes()) {
-                if (participante.getCi() == voto.getUsuario().getCi()) {
+            for (DTUsuario participante : votacion.getReunion().getParticipantes()) {
+                if (participante.getCi() == votacion.getUsuario().getCi()) {
                     esParticipante = true;
                 }
             }
             if (!esParticipante) {
                 throw new Exception("Solo los participantes pueden votar");
             }
-            FabricaPersistencia.getPersistenciaEncuesta().agregarVoto(voto);
+            FabricaPersistencia.getPersistenciaEncuesta().agregarVotacion(votacion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
     @Override
-    public DTVotacion buscarVoto(int ci, int reunionId) {
+    public DTVotacion buscarVotacion(int ci, int reunionId) {
         try {
             DTUsuario usuario = FabricaLogica.getLogicaUsuario().buscar(ci);
             DTReunion reunion = FabricaLogica.getControladorReuniones().buscar(reunionId);
@@ -135,7 +135,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
                 throw new Exception("Solo estudiantes pueden votar en la encuesta");
             }
             
-            return FabricaPersistencia.getPersistenciaEncuesta().buscarVoto(usuario, reunion);
+            return FabricaPersistencia.getPersistenciaEncuesta().buscarVotacion(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

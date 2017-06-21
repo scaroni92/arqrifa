@@ -118,7 +118,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
-    public void agregarVoto(DTVotacion voto) throws Exception {
+    public void agregarVotacion(DTVotacion votacion) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -126,11 +126,11 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             con = Persistencia.getConexion();
             con.setAutoCommit(false);
             stmt = con.prepareCall("CALL AltaVoto(?, ?)");
-            stmt.setInt(1, voto.getUsuario().getCi());
-            for (DTRespuesta respuesta : voto.getRespuestasEscogidas()) {
+            stmt.setInt(1, votacion.getUsuario().getCi());
+            for (DTRespuesta respuesta : votacion.getRespuestasEscogidas()) {
                 stmt.setInt(2, respuesta.getId());
                 if (stmt.executeUpdate() == 0) {
-                    throw new Exception("No se pudo agregar el voto, error de base de datos.");
+                    throw new Exception("No se pudo agregar la votacion, error de base de datos.");
                 }
             }
             con.commit();
@@ -138,7 +138,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             if (con != null) {
                 con.rollback();
             }
-            throw new Exception(e.getErrorCode() == 1062 ? "El estudiante ya voto previamente en la encuesta." : "No se pudo agregar el voto, error de base de datos.");
+            throw new Exception(e.getErrorCode() == 1062 ? "El estudiante ya voto previamente en la encuesta." : "No se pudo agregar la votacion, error de base de datos.");
         } catch (Exception e) {
             if (con != null) {
                 con.rollback();
@@ -253,8 +253,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
-    public DTVotacion buscarVoto(DTUsuario usuario, DTReunion reunion) throws Exception{
-        DTVotacion voto = null;
+    public DTVotacion buscarVotacion(DTUsuario usuario, DTReunion reunion) throws Exception{
+        DTVotacion votacion = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -272,16 +272,16 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             
             if (!respuestasEscogidas.isEmpty()) {
-                voto = new DTVotacion(usuario, reunion, respuestasEscogidas);
+                votacion = new DTVotacion(usuario, reunion, respuestasEscogidas);
             }
             
         } catch (Exception e) {
-            throw new Exception("Error al buscar el voto del estudiante");
+            throw new Exception("Error al buscar la votacion del estudiante");
         }
         finally {
             Persistencia.cerrarConexiones(res, stmt, con);
         }
-        return voto;
+        return votacion;
     }
 
 }
