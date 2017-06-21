@@ -35,6 +35,10 @@
         android:layout_height="wrap_content"
         android:text="Reunión activa" />
 
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
     <Button
         android:id="@+id/btnMarcarAsistencia"
         style="@style/Button.Large"

@@ -123,14 +123,13 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
 (2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-22 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Pendiente'),
+(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Listado'),
 (2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
 (2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente'),
 (2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
 (2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00', 60, 0, 'SALON 2', '', 'Pendiente'),
 (2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
 (2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
-
 
 INSERT INTO temas(id_reunion, tema) VALUES 
 (1, 'Disminución de ventas'),
@@ -148,7 +147,7 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
 (1, 'Encuesta ...', 5),
-(3, 'Encuesta del 20/6/16', 5),
+(2, 'Encuesta del 20/6/16', 5),
 (4, 'Encuesta de la reunion ID: 3', 5);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES

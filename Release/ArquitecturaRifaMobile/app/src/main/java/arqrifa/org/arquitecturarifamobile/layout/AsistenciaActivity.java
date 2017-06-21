@@ -143,7 +143,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ReunionFragment fragment = ReunionFragment.newInstance(reunion);
-        fragmentTransaction.add(R.id.activity_asistencia, fragment);
+        fragmentTransaction.add(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();
     }
 
