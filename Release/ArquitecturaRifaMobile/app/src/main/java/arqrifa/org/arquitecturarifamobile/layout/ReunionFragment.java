@@ -20,7 +20,7 @@ import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 
 public class ReunionFragment extends Fragment {
-    TextView tvFecha, tvTitulo, tvDescripcion, tvDuracion, tvLugar, tvCaracter, tvEstado, tvObservaciones;
+    TextView tvFecha, tvTitulo, tvDescripcion, tvDuracion, tvLugar, tvCaracter, tvEstado, tvObservaciones, tvTituloEncuesta;
     LinearLayout llTemas, llResoluciones;
     CardView cvResoluciones, cvEncuesta;
 
@@ -63,7 +63,7 @@ public class ReunionFragment extends Fragment {
         llTemas = (LinearLayout) view.findViewById(R.id.llTemas);
         cvEncuesta = (CardView) view.findViewById(R.id.cvEncuesta);
         tvObservaciones = (TextView) view.findViewById(R.id.tvObservaciones);
-
+        tvTituloEncuesta = (TextView) view.findViewById(R.id.tvTituloEncuesta);
         setReunion();
         return view;
     }
@@ -119,6 +119,7 @@ public class ReunionFragment extends Fragment {
                     getActivity().startActivity(intent);
                 }
             });
+            tvTituloEncuesta.setText(reunion.getEncuesta().getTitulo());
         }
         else {
             cvEncuesta.setVisibility(View.GONE);

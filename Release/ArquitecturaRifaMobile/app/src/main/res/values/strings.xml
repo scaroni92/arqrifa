@@ -9,10 +9,10 @@
     <string name="title_reunion_activity">Detalles</string>
     <string name="title_encuesta_activity">Encuesta</string>
     <string name="title_cuestionario_activity">Cuestionario</string>
-    <string name="title_marcar_asistencia_activity">Marcar Asistencia</string>
+    <string name="title_marcar_asistencia_activity">Reunión en progreso</string>
     <string name="confirm_button">Confirmar</string>
     <string name="confirm_assistance_button">Confirmar mi asistencia</string>
-    <string name="has_assistance_button">Ya ha marcado su asistencia</string>
+    <string name="has_assistance_button">Asistencia marcada exitosamente</string>
     <string name="login_button">Login</string>
     <string name="search_button">Buscar</string>
 

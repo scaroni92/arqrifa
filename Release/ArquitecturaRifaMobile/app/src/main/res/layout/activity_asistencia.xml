@@ -29,12 +29,6 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reunión activa" />
-
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
@@ -48,6 +42,7 @@
     <Button
         android:id="@+id/btnTieneAsistencia"
         style="@style/Button.Large.Disabled"
-        android:text="@string/has_assistance_button" />
+        android:text="@string/has_assistance_button"
+        android:background="@color/md_cyan_400" />
 
 </LinearLayout>

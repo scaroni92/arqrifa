@@ -189,6 +189,8 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         mCommandService.write(String.valueOf(MainActivity.usuario.getCi()));
         accionMarcar = true;
         SystemClock.sleep(2000);
+        Intent intent = new Intent(AsistenciaActivity.this, SplashAsistenciaActivity.class);
+        startActivity(intent);
         String params = "gen="+ MainActivity.usuario.getGeneracion();
         new GetReunionTask(this).execute(params);
     }
