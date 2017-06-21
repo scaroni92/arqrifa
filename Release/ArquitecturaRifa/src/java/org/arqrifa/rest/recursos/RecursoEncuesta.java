@@ -12,7 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.datatypes.DTVotacion;
 import org.arqrifa.logica.FabricaLogica;
 
 @Path("encuestas")
@@ -41,7 +41,7 @@ public class RecursoEncuesta {
     
     @Path("voto")
     @POST
-    public Response agregarVoto(DTVoto voto) {
+    public Response agregarVoto(DTVotacion voto) {
         FabricaLogica.getControladorEncuesta().agregarVoto(voto);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -49,7 +49,7 @@ public class RecursoEncuesta {
     //todo: reubicar
     @Path("voto")
     @GET
-    public DTVoto buscarVoto(@QueryParam("ci") int ci, @QueryParam("reunionId") int reunionId) {
+    public DTVotacion buscarVoto(@QueryParam("ci") int ci, @QueryParam("reunionId") int reunionId) {
         return FabricaLogica.getControladorEncuesta().buscarVoto(ci, reunionId);
     }
 }

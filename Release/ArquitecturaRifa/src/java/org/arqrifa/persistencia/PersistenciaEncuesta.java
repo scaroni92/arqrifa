@@ -12,7 +12,7 @@ import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTRespuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.datatypes.DTVotacion;
 
 class PersistenciaEncuesta implements IPersistenciaEncuesta {
 
@@ -118,7 +118,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
-    public void agregarVoto(DTVoto voto) throws Exception {
+    public void agregarVoto(DTVotacion voto) throws Exception {
         Connection con = null;
         CallableStatement stmt = null;
 
@@ -253,8 +253,8 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
     }
 
     @Override
-    public DTVoto buscarVoto(DTUsuario usuario, DTReunion reunion) throws Exception{
-        DTVoto voto = null;
+    public DTVotacion buscarVoto(DTUsuario usuario, DTReunion reunion) throws Exception{
+        DTVotacion voto = null;
         Connection con = null;
         CallableStatement stmt = null;
         ResultSet res = null;
@@ -272,7 +272,7 @@ class PersistenciaEncuesta implements IPersistenciaEncuesta {
             }
             
             if (!respuestasEscogidas.isEmpty()) {
-                voto = new DTVoto(usuario, reunion, respuestasEscogidas);
+                voto = new DTVotacion(usuario, reunion, respuestasEscogidas);
             }
             
         } catch (Exception e) {

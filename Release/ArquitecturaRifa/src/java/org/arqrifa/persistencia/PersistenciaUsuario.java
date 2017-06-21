@@ -190,8 +190,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
                 throw new Exception("No se pudo modificar al usuario.");
             }
         } catch (SQLException e) {
-            throw new Exception(e.getMessage());
-            //throw new Exception("No se pudo modificar al usuario, error de base de datos.");
+            throw new Exception("No se pudo modificar al usuario, error de base de datos.");
 
         } catch (Exception e) {
             throw e;

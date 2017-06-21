@@ -3,19 +3,19 @@ package org.arqrifa.datatypes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DTVoto {
+public class DTVotacion {
 
     private DTUsuario usuario;
     private DTReunion reunion;
     private List<DTRespuesta> respuestasEscogidas;
 
-    public DTVoto(DTUsuario usuario, DTReunion reunion, List<DTRespuesta> respuestasEscogidas) {
+    public DTVotacion(DTUsuario usuario, DTReunion reunion, List<DTRespuesta> respuestasEscogidas) {
         this.usuario = usuario;
         this.reunion = reunion;
         this.respuestasEscogidas = respuestasEscogidas;
     }
 
-    public DTVoto() {
+    public DTVotacion() {
         this(null, null, new ArrayList());
     }
 

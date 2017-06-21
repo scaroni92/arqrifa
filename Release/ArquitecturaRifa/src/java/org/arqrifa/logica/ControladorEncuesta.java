@@ -3,7 +3,7 @@ package org.arqrifa.logica;
 import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
-import org.arqrifa.datatypes.DTVoto;
+import org.arqrifa.datatypes.DTVotacion;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
@@ -96,7 +96,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     }
 
     @Override
-    public void agregarVoto(DTVoto voto) {
+    public void agregarVoto(DTVotacion voto) {
         boolean esParticipante = false;
         try {
             if (!voto.getReunion().isVotacion()) {
@@ -118,7 +118,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     }
 
     @Override
-    public DTVoto buscarVoto(int ci, int reunionId) {
+    public DTVotacion buscarVoto(int ci, int reunionId) {
         try {
             DTUsuario usuario = FabricaLogica.getLogicaUsuario().buscar(ci);
             DTReunion reunion = FabricaLogica.getControladorReuniones().buscar(reunionId);

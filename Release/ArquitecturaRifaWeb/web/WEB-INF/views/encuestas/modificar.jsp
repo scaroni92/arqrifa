@@ -40,8 +40,8 @@
         <script type="text/javascript" src="js/layouts/encuesta.js"></script>
         <script type="text/javascript">
             <c:forEach var="propuesta" items="${reunion.encuesta.propuestas}">
-            var respuestas = [<c:forEach var="respuesta" items="${propuesta.respuestas}">{tag: '${respuesta.respuesta}'},</c:forEach>];
-            agregarPropuesta('${propuesta.pregunta}', respuestas);
+                var respuestas = [<c:forEach var="respuesta" items="${propuesta.respuestas}">{tag: '${respuesta.respuesta}'},</c:forEach>];
+                addPropuesta('${propuesta.pregunta}', respuestas);
             </c:forEach>
         </script>
     </jsp:body>
