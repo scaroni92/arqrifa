@@ -36,11 +36,10 @@
         <!-- Barra de herramientas -->    
         <c:if test="${usuario.rol eq 'Encargado'}">
             <div class="fixed-action-btn horizontal">
-                <a class="btn-floating btn-large red">
+                <a href="encuesta?accion=modificar&id=${modelo.reunion.id}" class="btn-floating btn-large red">
                     <i class="large material-icons">mode_edit</i>
                 </a>
                 <ul>
-                    <li><a href="encuesta?accion=modificar&id=${modelo.reunion.id}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
                     <li><a href="#eliminar" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
                 </ul>
             </div>
