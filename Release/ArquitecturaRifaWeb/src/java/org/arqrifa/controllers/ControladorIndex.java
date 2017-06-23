@@ -2,7 +2,6 @@ package org.arqrifa.controllers;
 
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.rest.RecursoSolicitudes;
 import org.arqrifa.viewmodels.VMIndex;

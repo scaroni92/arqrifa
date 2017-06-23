@@ -19,7 +19,6 @@ public class ControladorRegistro extends Controlador {
             vm.setMensaje("Error al cargar las generaciones");
         }
         mostrarVista("registro.jsp", vm);
-
     }
 
     public void index_post() {

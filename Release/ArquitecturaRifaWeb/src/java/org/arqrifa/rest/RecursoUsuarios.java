@@ -30,6 +30,7 @@ public class RecursoUsuarios extends ClienteJersey{
 
     public List<DTUsuario> listar(int generacion) throws Exception {
         Response response = webTarget.queryParam("gen", generacion).request(JSON_TYPE).get();
+        comprobarEstado(response);
         return Arrays.asList(response.readEntity(DTUsuario[].class));
     }
 

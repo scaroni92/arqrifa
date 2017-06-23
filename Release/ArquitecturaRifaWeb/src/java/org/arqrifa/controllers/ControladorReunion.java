@@ -10,7 +10,6 @@ import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMMantenimientoReunion;
 import org.arqrifa.viewmodels.VMReunion;
 
-//Acceso: Encargado
 @WebServlet(name = "ControladorReunion", urlPatterns = {"/reunion"})
 public class ControladorReunion extends Controlador {
 
@@ -96,7 +95,6 @@ public class ControladorReunion extends Controlador {
         DTReunion reunion = null;
         try {
             reunion = recurso.buscar(request.getParameter("id"));
-            //Comprobar estado
             recurso.eliminar(reunion.getId());
             sesion.setAttribute("mensaje", "Reunion eliminada exitosamente");
             response.sendRedirect("reuniones");
@@ -105,26 +103,7 @@ public class ControladorReunion extends Controlador {
         }
     }
 
-    public void index_get() {
-        try {
-            DTReunion reunion = recurso.buscar(request.getParameter("id"));
 
-            if (reunion == null) {
-                throw new Exception("");
-            }
-
-            if (this.usuario.getRol().equals(DTUsuario.ROL_ENCARGADO) && this.usuario.getGeneracion() != reunion.getGeneracion()) {
-                mostrarVista("error/403.jsp");
-            }
-//TODO
-            mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, ""));
-
-        } catch (Exception e) {
-            mostrarVista("error/404.jsp");
-        }
-    }
-
-    //a reuniones
     public void ver_participantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();
         try {

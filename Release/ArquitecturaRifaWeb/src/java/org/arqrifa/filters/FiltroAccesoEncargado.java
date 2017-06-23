@@ -11,14 +11,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
-// SOLO ENCARGADOS
 
-@WebFilter(filterName = "filtroAutenticarEncargado", urlPatterns = {"/solicitudes", "/reunion", "/encuesta", "/panel", "/cuestionario", "/asistencias"})
+@WebFilter(filterName = "filtroAccesoEncargado", urlPatterns = {"/solicitudes", "/reunion", "/encuesta", "/panel", "/cuestionario", "/asistencias"})
 public class FiltroAccesoEncargado implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //
     }
 
     @Override
@@ -34,7 +32,7 @@ public class FiltroAccesoEncargado implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Exception e) {
+        } catch (IOException | ServletException e) {
             System.out.println("Error al ejecutar el filtro");
         }
 
@@ -42,7 +40,6 @@ public class FiltroAccesoEncargado implements Filter {
 
     @Override
     public void destroy() {
-        //
     }
 
 }

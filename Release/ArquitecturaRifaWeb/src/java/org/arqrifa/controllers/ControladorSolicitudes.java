@@ -6,7 +6,6 @@ import org.arqrifa.rest.RecursoSolicitudes;
 import org.arqrifa.viewmodels.VMListadoSolicitudes;
 import org.arqrifa.viewmodels.VMUsuario;
 
-//Acceso: Encargados
 @WebServlet(name = "ControladorSolicitudes", urlPatterns = {"/solicitudes"})
 public class ControladorSolicitudes extends Controlador {
 
@@ -43,7 +42,6 @@ public class ControladorSolicitudes extends Controlador {
 
     public void confirmar_get() {
         try {
-            //pasar id
             recurso.confirmar(recurso.buscar(request.getParameter("ci")));
             sesion.setAttribute("mensaje", "Solicitud confirmada exitosamente");
         } catch (Exception e) {

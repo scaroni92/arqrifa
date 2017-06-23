@@ -28,7 +28,7 @@
             </div>
         </header>
 
-                    <main style="padding-top:<c:out default="50px" value="${padding}"/>">
+        <main style="padding-top:<c:out default="50px" value="${padding}"/>">
             <jsp:doBody />
         </main>
 
@@ -80,17 +80,18 @@
                     <div class="row">
                         <div class="col l6 s12">
                             <h5 class="white-text">Contacto</h5>
-                            <p id="asd" class="grey-text text-lighten-4">Puedes contactar con el administrador al correo xxxx@xxx.com </p>
+                            <p id="asd" class="grey-text text-lighten-4">Puedes contactar con el administrador al correo proyecto.gestion.arqrifa@gmail.com</p>
                         </div>
                         <div class="col l4 offset-l2 s12">
                             <h5 class="white-text">Enlaces</h5>
                             <ul>
-                                <li>
-                                    <a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">phone_android</i> Aplicación móvil</a>
-                                </li>
-                                <li>
-                                    <a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">laptop</i> Apliación de escritorio</a>
-                                </li>
+                                <c:if test="${usuario.encargado}">
+                                    <li><a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">laptop</i> Aplicación PuenteBluetooth</a> </li>
+                                </c:if>
+                                <c:if test="${usuario.estudiante}">
+                                    <li> <a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">phone_android</i> Aplicación móvil</a></li>
+                                </c:if>
+
                             </ul>
                         </div>
                     </div>
@@ -101,11 +102,9 @@
             </footer>
         </c:if>
 
-
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             Materialize.toast('${modelo.mensaje}', 4000);
         </script>
     </body>
-
 </html>

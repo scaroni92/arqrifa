@@ -1,7 +1,5 @@
 package org.arqrifa.datatypes;
 
-// Este DataType es utilizado unicamente como wrapper en el servicio
-
 public class DTAsistenciaWrapper {
     private DTUsuario usuario;
     private DTReunion reunion;

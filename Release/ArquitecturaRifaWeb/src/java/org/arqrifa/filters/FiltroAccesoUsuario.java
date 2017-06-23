@@ -17,7 +17,6 @@ public class FiltroAccesoUsuario implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //
     }
 
     @Override
@@ -31,14 +30,12 @@ public class FiltroAccesoUsuario implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Exception e) {
+        } catch (IOException | ServletException e) {
             System.out.println("Error al ejecutar el filtro");
         }
-
     }
 
     @Override
     public void destroy() {
-        //
     }
 }

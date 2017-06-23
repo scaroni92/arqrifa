@@ -64,8 +64,11 @@
                             <button class="btn waves-effect waves-light col s12" type="submit">registrarse</button>
                         </div>
                     </div>
+                    <div class="divider"></div>
                     <div class="row">
-                        <div class="input-field col s6"> <a href="login">Ingresar</a> </div>
+                        <div class="input-field  center">
+                            <a href="login" class="btn white black-text ">Ingresar</a>
+                        </div>
                     </div>
                 </form>
             </div>

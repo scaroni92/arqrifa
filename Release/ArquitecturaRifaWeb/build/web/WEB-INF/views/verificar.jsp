@@ -1,15 +1,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html class="green darken-1">
-
 <head>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.css">
     <link rel="stylesheet" href="css/layouts/page-center.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 </head>
-
 <body>
     <main class="row">
         <div class="col s12 ">
@@ -26,5 +23,4 @@
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/js/materialize.min.js"></script>
 </body>
-
 </html>

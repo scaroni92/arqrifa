@@ -35,8 +35,6 @@
                 </form>
             </div>
         </div>
-
-
         <script type="text/javascript" src="js/layouts/encuesta.js"></script>
         <script type="text/javascript">
             <c:forEach var="propuesta" items="${reunion.encuesta.propuestas}">

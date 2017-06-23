@@ -15,7 +15,6 @@ import org.arqrifa.viewmodels.ViewModel;
 @WebServlet(name = "ControladorCuestionario", urlPatterns = {"/cuestionario"})
 public class ControladorCuestionario extends Controlador {
 
-    //private final RecursoReuniones recurso = new RecursoReuniones();
     DTReunion reunionActiva;
 
     public void index_get() {
@@ -60,8 +59,6 @@ public class ControladorCuestionario extends Controlador {
     }
 
     public void confirmar_post() {
-        //TODO comprobar estado de reunión en lógica
-
         ViewModel vm = new ViewModel();
         try {
             DTVotacion votacion = new DTVotacion();
@@ -73,7 +70,6 @@ public class ControladorCuestionario extends Controlador {
             sesion.removeAttribute("estudiante");
             vm.setMensaje("Votación exitosa");
         } catch (NumberFormatException e) {
-            //validar en JS
             vm.setMensaje("Seleccione una opción de cada respuesta");
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());

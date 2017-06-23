@@ -36,17 +36,14 @@
                 </c:if>
             </ul>
         </div>
-        <c:if test="${modelo.ultimaReunion != null}">
-
-        </c:if>
-        <section class="container flow-text left-align">
+        <section class="container flow-text left-align" style="margin-top: 50px;">
             <p class="center-align">Resoluciones recientes</p>
             <div class="divider"></div>
             <c:forEach var="resolucion" items="${modelo.ultimaReunion.resoluciones}">
                 <p class="flow-text">${resolucion}</p>
             </c:forEach>
         </section>
-        <p class="center"><a href="reuniones?accion=detalles&id=${modelo.ultimaReunion.id}" class="btn btn-flat waves-effect waves-green">MAS INFORMACIÓN</a></p>
+        <p class="center" style="margin: 50px 0;"><a href="reuniones?accion=detalles&id=${modelo.ultimaReunion.id}" class="btn btn-flat waves-effect waves-green">MAS INFORMACIÓN</a></p>
         
         <script>
             $('.slider').slider({interval: 10000});

@@ -5,7 +5,6 @@
     <jsp:body>
         <div class="container">
             <h4 class="grey-text text-darken-2 light center truncate">${reunionActiva.encuesta.titulo}</h4>
-            
             <nav>
                 <div class="nav-wrapper">
                     <form action="cuestionario">
@@ -34,7 +33,6 @@
                         </div>
                     </div>
                 </c:forEach>
-
                 <div class="row">
                     <div class="input-field col s12 center">
                         <button class="btn green waves-effect waves-light" type="submit" id="confirmar-voto" name="accion" value="confirmar" ${estudiante == null? 'disabled' : ''}>confirmar votación </button>

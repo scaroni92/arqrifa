@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="green darken-1">
+<html class="grey lighten-2">
 
     <head>
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -11,7 +11,7 @@
         <main class="row">
             <div class="col s12 ">
                 <div class="card">
-                    <div class="card-image blue" style="height:100px;"> <h5 class="card-title">Error 403</h5> <a href="index" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
+                    <div class="card-image cyan" style="height:100px;"> <h5 class="card-title">Error 403</h5> <a href="index" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">home</i></a> </div>
                     <div class="card-content">
                         <h5>Acceso denegado</h5>
                         <p>La página a la que deseas acceder no está disponible o quizas no tengas los permisos necesarios.</p>

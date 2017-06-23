@@ -5,7 +5,6 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
 import org.arqrifa.viewmodels.VMUsuario;
-//Acceso: admin y encargado
 
 @WebServlet(name = "ControladorUsuarios", urlPatterns = {"/usuarios"})
 public class ControladorUsuarios extends Controlador {

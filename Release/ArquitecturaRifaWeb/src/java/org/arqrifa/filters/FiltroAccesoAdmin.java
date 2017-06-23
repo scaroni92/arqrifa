@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-@WebFilter(filterName = "filtroAutenticarAdmin", urlPatterns = {"/generaciones", "/usuario"})
+@WebFilter(filterName = "filtroAccesoAdmin", urlPatterns = {"/generaciones", "/usuario"})
 public class FiltroAccesoAdmin implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //
     }
 
     @Override
@@ -33,15 +32,13 @@ public class FiltroAccesoAdmin implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Exception e) {
+        } catch (IOException | ServletException e) {
             System.out.println("Error al ejecutar el filtro");
         }
-
     }
 
     @Override
     public void destroy() {
-        //
     }
 
 }

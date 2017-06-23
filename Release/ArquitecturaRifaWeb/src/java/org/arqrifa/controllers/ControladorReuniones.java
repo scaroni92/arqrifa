@@ -46,19 +46,19 @@ public class ControladorReuniones extends Controlador {
     }
     
     public void encuesta_get() {
-        //todo
         DTReunion reunion = null;
         try {
             reunion = recurso.buscar(request.getParameter("id"));
             if (reunion == null) {
-                throw new Exception("Reunion no encontrada");
+                response.sendError(404);
+            }
+            else if (reunion.getGeneracion() != usuario.getGeneracion()) {
+                response.sendError(403);
+            }
+            else {
+                mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, ""));
             }
             
-            if (reunion.getGeneracion() != usuario.getGeneracion()) {
-                response.sendError(403);
-                return;
-            }
-            mostrarVista("encuestas/detalles.jsp", new VMReunion(reunion, ""));
         } catch (Exception e) {
             mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, e.getMessage()));
         }

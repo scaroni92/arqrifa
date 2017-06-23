@@ -60,7 +60,6 @@
                 </form>
             </div>
         </div>
-
         <script>
             $('form').on('submit', function () {
                 $.each($('.chips').material_chip('data'), function (i, val) {

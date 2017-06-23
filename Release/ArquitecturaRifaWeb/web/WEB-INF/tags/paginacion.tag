@@ -20,7 +20,6 @@
 </c:if>
 
 <style type="text/css">
-    /* TODO: Mover estilo a styles.css */
     .pagination li.disabled a{
         pointer-events: none;
     }

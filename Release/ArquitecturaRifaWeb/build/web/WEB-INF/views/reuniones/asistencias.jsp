@@ -1,8 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 
-
-
 <t:masterpage titulo="Asistencias">
     <jsp:body>
         <div class="container">

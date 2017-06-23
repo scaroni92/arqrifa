@@ -1,6 +1,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <t:masterpage titulo="INICIO" footer="true" padding="0">
     <jsp:body>
         <div class="slider">
@@ -43,10 +44,7 @@
                 </li>
             </ul>
         </div>
-        <br>
-        <br>
-        <br>
-        <section class="container flow-text left-align">
+        <section class="container flow-text left-align" style="margin-top: 50px;">
             <p class="center-align">Resoluciones recientes</p>
             <div class="divider"></div>
             <c:forEach var="resolucion" items="${modelo.ultimaReunion.resoluciones}">

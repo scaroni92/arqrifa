@@ -40,7 +40,6 @@
                         </c:if>
                 </ul>
             </div>
-
             <div class="row">
                 <div class="col s12 m3">
                     <div class="card purple white-text center-align">
@@ -76,7 +75,6 @@
                 </div>
             </div>
         </div>
-
         <c:if test="${usuario.rol eq 'Encargado'}">
             <div class="fixed-action-btn horizontal">
                 <a href="reunion?accion=modificar&id=${modelo.reunion.id}" class="btn-floating btn-large red">

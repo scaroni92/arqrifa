@@ -49,7 +49,7 @@ public class Controlador extends HttpServlet {
                 despachador.forward(request, response);
             }
         } catch (IOException | ServletException ex) {
-            System.out.println("¡ERROR! No se pudo mostrar la vista " + vista + ".");
+            System.out.println("No se pudo mostrar la vista " + vista + ".");
         }
     }
 
@@ -79,7 +79,7 @@ public class Controlador extends HttpServlet {
                         }
                     }
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    System.out.println("Error - No se pudo invocar al setter " + nombreSetter + " al cargar el modelo.");
+                    System.out.println("No se pudo invocar al setter " + nombreSetter + " al cargar el modelo.");
                 }
             }
         }
@@ -114,7 +114,7 @@ public class Controlador extends HttpServlet {
         try {
             despacharMetodoAccion();
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
-            System.out.println("¡ERROR! No se pudo despachar el método de la acción solicitada.");
+            System.out.println("No se pudo despachar el método de la acción solicitada.");
             System.out.println(ex.getMessage());
         }
     }

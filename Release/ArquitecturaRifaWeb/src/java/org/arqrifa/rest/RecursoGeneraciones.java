@@ -12,7 +12,6 @@ public class RecursoGeneraciones extends ClienteJersey{
         super("generaciones");
     }
     
-    //<editor-fold defaultstate="collapsed" desc="Generaciones">
     public List<DTGeneracion> listar() throws Exception {
         Response response = webTarget.request(JSON_TYPE).get();
         comprobarEstado(response);
@@ -23,5 +22,4 @@ public class RecursoGeneraciones extends ClienteJersey{
         Response response = webTarget.request(JSON_TYPE).post(Entity.entity(generacion, JSON_TYPE));
         comprobarEstado(response);
     }
-    //</editor-fold>
 }

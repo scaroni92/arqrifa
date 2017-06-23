@@ -1,13 +1,11 @@
 package org.arqrifa.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.viewmodels.VMListadoReuniones;
 
-//Acceso: Usuarios
 @WebServlet(name = "ControladorCalendario", urlPatterns = {"/calendario"})
 public class ControladorCalendario extends Controlador {
 
@@ -17,9 +15,12 @@ public class ControladorCalendario extends Controlador {
         try {
             reuniones = new RecursoReuniones().listar(usuario.getGeneracion());
 
-            //TODO
-            if (vm.getFiltro().equals(DTReunion.ESTADO_PENDIENTE) || vm.getFiltro().equals(DTReunion.ESTADO_FINALIZADA)) {
-                vm.setReuniones(reuniones.stream().filter(reunion -> reunion.getEstado().equalsIgnoreCase(vm.getFiltro())).collect(Collectors.toList()));
+            if (vm.getFiltro().equalsIgnoreCase(DTReunion.ESTADO_PENDIENTE) || vm.getFiltro().equalsIgnoreCase(DTReunion.ESTADO_FINALIZADA)) {
+                for (DTReunion r : reuniones) {
+                    if (r.getEstado().equalsIgnoreCase(vm.getFiltro())) {
+                        vm.getReuniones().add(r);
+                    }
+                }
             }else {
                 vm.setReuniones(reuniones);
             }

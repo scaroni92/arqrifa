@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-
     <div id="finalizar" class="modal">
         <div class="modal-content">
             <h4>¿Está seguro/a que desea dar por finalizada la reunión?</h4>
@@ -88,8 +87,6 @@
             </form>
         </div>
     </div>
-
-
     <script type="text/javascript" src="js/layouts/panel.js"></script>
     <script>
         mostrarBotones('${reunionActiva.estado}');

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html class="green darken-1">
-
     <head>
         <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="css/materialize.css">
@@ -16,7 +15,6 @@
             }
         </style>
     </head>
-
     <body onload="Materialize.toast('${modelo.mensaje}', 4000)">
         <main class="row">
             <div class="col s12 z-depth-4 card-panel grey-text text-darken-2">
@@ -52,5 +50,4 @@
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
-
 </html>

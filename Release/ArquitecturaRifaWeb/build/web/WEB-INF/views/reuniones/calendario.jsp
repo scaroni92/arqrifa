@@ -9,9 +9,10 @@
                 <div class="col s12">
                     <div class="input-field inline right">
                         <select name="filtro" onchange="this.form.submit()">
-                            <option value="Todas" selected>Escoga un estado</option>
-                            <option value="Pendiente" ${modelo.filtro eq 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                            <option value="Finalizada" ${modelo.filtro eq 'Finalizada' ? 'selected' : ''}>Finalizada</option>
+                            <option value="" disabled selected>Escoga un filtro</option>
+                            <option value="todas" ${modelo.filtro eq 'todas' ? 'selected' : ''}>Todas</option>
+                            <option value="pendiente" ${modelo.filtro eq 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="finalizada" ${modelo.filtro eq 'finalizada' ? 'selected' : ''}>Finalizada</option>
                         </select>
                     </div>
                 </div>
@@ -45,8 +46,6 @@
             <a href="reunion?accion=agendar" class="btn-floating btn-large red"> <i class="large material-icons">add</i></a>
         </div>    
     </c:if>
-
-    <!-- AGREGAR PAGINACIÓN-->
 </t:masterpage>
 
 

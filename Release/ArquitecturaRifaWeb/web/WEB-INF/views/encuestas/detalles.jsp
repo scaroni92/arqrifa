@@ -1,10 +1,8 @@
-<!--ORDENAR RESPUESTAS POR VOTOS EN LÓGICA-->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 <t:masterpage titulo="Encuesta">
     <jsp:body>
         <c:set scope="page" value="${modelo.reunion.encuesta}" var="encuesta" />
-
         <div class="container">
             <h4 class="grey-text text-darken-2 light truncate">${encuesta.titulo}</h4>
             <p class="grey-text text-darken-2">Duración: ${encuesta.duracion} min</p>
@@ -30,8 +28,6 @@
                 </c:forEach>
             </ul>
         </div>
-
-        <!-- Barra de herramientas -->    
         <c:if test="${usuario.rol eq 'Encargado'}">
             <div class="fixed-action-btn horizontal">
                 <a href="encuesta?accion=modificar&id=${modelo.reunion.id}" class="btn-floating btn-large red">
@@ -41,9 +37,7 @@
                     <li><a href="#eliminar" class="btn-floating blue"><i class="material-icons">delete</i></a></li>
                 </ul>
             </div>
-        </c:if>
-
-        <!-- Cuadro de dialogo -->                
+        </c:if>         
         <div id="eliminar" class="modal">
             <div class="modal-content">
                 <h4>¿Está seguro/a que desea eliminar la encuesta actual?</h4>

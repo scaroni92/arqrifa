@@ -5,7 +5,6 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoGeneraciones;
 import org.arqrifa.rest.RecursoUsuarios;
 import org.arqrifa.viewmodels.VMMantenimientoUsuario;
-//accesp admin
 
 @WebServlet(name = "ControladorUsuario", urlPatterns = {"/usuario"})
 public class ControladorUsuario extends Controlador {

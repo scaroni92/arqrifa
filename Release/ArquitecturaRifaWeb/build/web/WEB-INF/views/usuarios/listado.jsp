@@ -13,7 +13,6 @@
                     <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="buscar">Buscar <i class="material-icons left">search</i> </button>
                 </form>
             </div>
-
             <table class="bordered responsive-table centered white">
                 <thead>
                     <tr>

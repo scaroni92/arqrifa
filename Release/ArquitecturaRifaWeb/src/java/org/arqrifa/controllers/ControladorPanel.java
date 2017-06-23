@@ -3,10 +3,7 @@ package org.arqrifa.controllers;
 import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoReuniones;
-import org.arqrifa.rest.RecursoUsuarios;
-import org.arqrifa.viewmodels.VMListaAsistencias;
 import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorPanel", urlPatterns = {"/panel"})
