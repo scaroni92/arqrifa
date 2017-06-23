@@ -50,7 +50,7 @@
                 <div class="col s12">
                     <form action="panel" method="post">
                         <h5 class="white-text light"><i class="material-icons prefix">mode_edit</i> Recapitulación</h5>
-                        <div class="recapitulacion-inputs white" style="padding:10px">
+                        <div class="recapitulacion-inputs white" style="padding:10px 30px; border-radius: 3px;">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <textarea id="textarea1" class="materialize-textarea"></textarea>
@@ -69,7 +69,7 @@
                             <button id="habilitar-lista" name="accion" value="habilitar_lista" class="btn waves-effect"><i class="material-icons right">phonelink</i>habilitar lista</button>
                             <button id="deshabilitar-lista" name="accion" value="deshabilitar_lista" class="btn waves-effect"> <i class="material-icons right">phonelink_off</i>deshabilitar lista</button>
                             <a id="cuestionario" href="cuestionario" class="btn waves-effect"><i class="material-icons right">question_answer</i>cuestionario</a>
-                            <button id="asistencias" name="accion" value="lista" class="btn waves-effect"><i class="material-icons right">person_add</i>agregar asistencias</button></div>
+                            <a id="asistencias" href="asistencias" class="btn waves-effect"><i class="material-icons right">person_add</i>agregar asistencias</a></div>
                     </form>
                 </div>
             </div>

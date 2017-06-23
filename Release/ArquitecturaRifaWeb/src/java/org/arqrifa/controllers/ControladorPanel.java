@@ -56,17 +56,6 @@ public class ControladorPanel extends Controlador {
         }
     }
 
-    public void lista_post() {
-        VMListaAsistencias vm = new VMListaAsistencias();
-        try {
-            vm.setReunion(reunionActiva);
-            vm.setAsistencias(recurso.listarAsistencias(reunionActiva.getId()));
-        } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
-        }
-        mostrarVista("reuniones/lista.jsp", vm);
-    }
-
     public void habilitar_lista_post() {
         ViewModel vm = new ViewModel();
         try {
@@ -116,17 +105,6 @@ public class ControladorPanel extends Controlador {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("reuniones/panel.jsp", vm);
-    }
-
-    public void marcar_asistencia_get() {
-        try {
-            DTUsuario estudiante = new RecursoUsuarios().buscar(request.getParameter("ci"));
-            recurso.agregarAsistencia(estudiante, reunionActiva);
-            sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");
-        } catch (Exception e) {
-            sesion.setAttribute("mensaje", e.getMessage());
-        }
-        lista_post();
     }
     
 }

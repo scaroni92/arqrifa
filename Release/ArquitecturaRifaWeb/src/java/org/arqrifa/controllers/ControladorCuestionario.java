@@ -19,7 +19,6 @@ public class ControladorCuestionario extends Controlador {
     DTReunion reunionActiva;
 
     public void index_get() {
-        ViewModel vm = new ViewModel();
         try {
             reunionActiva = (DTReunion) sesion.getAttribute("reunionActiva");
             if (!reunionActiva.isVotacion()) {
@@ -27,9 +26,9 @@ public class ControladorCuestionario extends Controlador {
             }
             mostrarVista("encuestas/cuestionario.jsp");
         } catch (Exception e) {
-            vm.setMensaje(e.getMessage());
+            mostrarVista("reuniones/panel.jsp", new ViewModel(e.getMessage()));
         }
-        mostrarVista("reuniones/panel.jsp", vm);
+
     }
 
     public void buscar_get() {

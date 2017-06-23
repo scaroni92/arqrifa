@@ -4,19 +4,16 @@
 <t:masterpage titulo="Usuarios">
     <jsp:body>
         <div class="container">
-            <div class="row">
-                <div class="col s12">
-                    <div class=" center">
-                        <form action="usuarios">
-                            <div class="input-field inline">
-                                <input id="ci" name="ci" type="number" required>
-                                <label for="ci">Cédula</label>
-                            </div>
-                            <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="buscar">Buscar <i class="material-icons left">search</i> </button>
-                        </form>
+            <div class=" center">
+                <form action="usuarios">
+                    <div class="input-field inline">
+                        <input id="ci" name="ci" type="number">
+                        <label for="ci">Cédula</label>
                     </div>
-                </div>
+                    <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="buscar">Buscar <i class="material-icons left">search</i> </button>
+                </form>
             </div>
+
             <table class="bordered responsive-table centered white">
                 <thead>
                     <tr>

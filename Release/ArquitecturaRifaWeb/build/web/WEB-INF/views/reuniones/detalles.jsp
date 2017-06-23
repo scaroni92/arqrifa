@@ -15,7 +15,7 @@
                     <div class="col s3"><i class="material-icons tiny">event_seat</i> ${modelo.reunion.obligatoria? "Obligatoria" : "Opcional"}</div>
                     <div class="col s3"><i class="material-icons tiny">today</i> <fmt:formatDate pattern="dd/MM/yy hh:mm" value="${modelo.reunion.fecha}" /></div>
                     <div class="col s3"><i class="material-icons tiny">location_on</i> ${modelo.reunion.lugar}</div>
-                    <div class="col s3"><i class="material-icons tiny">timer</i> ${modelo.reunion.duracion} minutos</div>
+                    <div class="col s3"><i class="material-icons tiny">timer</i> ${modelo.reunion.duracion} min</div>
                 </div>
 
                 <ul class="collection with-header">
