@@ -64,7 +64,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void eliminar(DTReunion reunion) {
         try {
             if (!reunion.isPendiente()) {
-                throw new Exception("No se puede eliminar la encuesta si la reunión ya fue iniciada");
+                throw new Exception("No se puede eliminar la encuesta porque la reunión ya tuvo inico");
             }
             verificarEncuestaNula(reunion);
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
@@ -77,7 +77,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     public void modificar(DTReunion reunion) {
         try {
             if (!reunion.isPendiente()) {
-                throw new Exception("No se puede modificar la encuesta si la reunión ya fue iniciada");
+                throw new Exception("No se puede modificar la encuesta porque la reunión ya tuvo inicio");
             }
             verificarEncuestaNula(reunion);
             if (reunion.getEncuesta().getPropuestas().isEmpty()) {

@@ -74,12 +74,6 @@ input[type=time]::-webkit-clear-button {
 .calendario h6 {
     font-weight: 300;
 }
-
-nav .nav-content {
-    padding-left: 20px;
-}
-
-
 @media only screen and (max-width: 992px) {
     header,
     nav,

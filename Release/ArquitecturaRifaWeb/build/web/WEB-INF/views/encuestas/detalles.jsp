@@ -1,19 +1,17 @@
 <!--ORDENAR RESPUESTAS POR VOTOS EN LÓGICA-->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
-<t:masterpage titulo="Detalles">
+<t:masterpage titulo="Encuesta">
     <jsp:body>
         <c:set scope="page" value="${modelo.reunion.encuesta}" var="encuesta" />
 
         <div class="container">
-            <div class="card-panel">
-                <h5>${encuesta.titulo}</h5>
-                <p>Duración: ${encuesta.duracion}</p>
-            </div>
+            <h4 class="grey-text text-darken-2 light truncate">${encuesta.titulo}</h4>
+            <p class="grey-text text-darken-2">Duración: ${encuesta.duracion} min</p>
             <ul class="collapsible" data-collapsible="expandable">
                 <c:forEach var="propuesta" items="${encuesta.propuestas}">
                     <li>
-                        <div class="collapsible-header green lighten-1 white-text active "><i class="material-icons">question_answer</i>${propuesta.pregunta}</div>
+                        <div class="collapsible-header green lighten-1 white-text active ">${propuesta.pregunta}</div>
                         <div class="collapsible-body white">
                             <table class="highlight">
                                 <tr>

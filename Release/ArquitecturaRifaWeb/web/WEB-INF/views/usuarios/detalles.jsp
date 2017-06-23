@@ -10,7 +10,9 @@
                 <p>Contraseña: ${modelo.usuario.contrasena}</p>
                 <p>Generación: ${modelo.usuario.generacion}</p>
                 <p>${modelo.usuario.rol}</p>
-                <p>Inasitencias: ${modelo.usuario.inasistencias}</p>    
+                <c:if test="${modelo.usuario.estudiante}">
+                    <div class="chip ${modelo.usuario.inasistencias eq 0 ? 'green' : 'red'} white-text">${modelo.usuario.inasistencias} Inasistencias</div>
+                </c:if>
             </div>
         </div>
     </jsp:body>

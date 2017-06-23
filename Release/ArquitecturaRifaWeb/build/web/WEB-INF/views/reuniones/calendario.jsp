@@ -2,7 +2,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 
-<t:masterpage titulo="Calendario" href="calendario">
+<t:masterpage titulo="Calendario" href="calendario" padding="0">
     <div class="container">
         <form action="calendario" >
             <div class="row">

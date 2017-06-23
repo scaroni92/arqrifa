@@ -1,7 +1,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<t:masterpage titulo="INICIO" footer="true">
+<t:masterpage titulo="INICIO" footer="true" padding="0">
     <jsp:body>
         <div class="slider">
             <ul class="slides">

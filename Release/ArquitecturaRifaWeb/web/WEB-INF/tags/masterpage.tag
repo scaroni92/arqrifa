@@ -3,6 +3,7 @@
 <%@attribute name="titulo" %>
 <%@attribute name="footer" %>
 <%@attribute name="href" %>
+<%@attribute name="padding" %>
 
 <!DOCTYPE html>
 <html class="grey lighten-3">
@@ -19,14 +20,15 @@
         <header>
             <div class="navbar-fixed">
                 <nav>
-                    <div class="nav-wrapper"> <a id="titulo" href="${href}" class="brand-logo white-text text-darken-1">${titulo}</a>
+                    <div class="nav-wrapper"> 
+                        <a id="titulo" href="${href}" class="brand-logo white-text text-darken-1">${titulo}</a>
                         <ul class="right"> <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a> </ul>
                     </div>
                 </nav>
             </div>
         </header>
 
-        <main>
+                    <main style="padding-top:<c:out default="50px" value="${padding}"/>">
             <jsp:doBody />
         </main>
 
@@ -53,15 +55,15 @@
                 <li><a class="waves-effect" href="reuniones"><i class="material-icons">event_note</i>Reuniones</a></li>
                 <li><a class="waves-effect" href="solicitudes"><i class="material-icons">group_add</i>Solicitudes</a></li>
                 <c:if test="${reunionActiva != null}"><li><a class="btn waves-effect cyan white-text" href="panel">Panel de renión</a></li></c:if>
-            </c:if>
+                </c:if>
 
             <!-- Acciones de administrador -->
             <c:if test="${usuario.rol eq 'Admin'}">
                 <li><a class="waves-effect" href="generaciones"><i class="material-icons">wc</i>Generaciones</a></li>
                 <li><a class="waves-effect" href="reuniones"><i class="material-icons">event_note</i>Reuniones</a></li>
-                <li><a class="waves-effect" href="usuarios"><i class="material-icons">people</i>Integrantes</a></li>
-            </c:if>
-            
+                <li><a class="waves-effect" href="usuarios"><i class="material-icons">people</i>Usuarios</a></li>
+                </c:if>
+
         </ul>
 
         <!-- Menú desplegable -->
