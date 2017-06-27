@@ -12,10 +12,6 @@
                         <div class="collapsible-header green lighten-1 white-text active ">${propuesta.pregunta}</div>
                         <div class="collapsible-body white">
                             <table class="highlight">
-                                <tr>
-                                    <th >Respuestas</th>
-                                    <th >Votos</th>
-                                </tr>
                                 <c:forEach var="respuesta" items="${propuesta.respuestas}">
                                     <tr>
                                         <td>${respuesta.respuesta}</td>

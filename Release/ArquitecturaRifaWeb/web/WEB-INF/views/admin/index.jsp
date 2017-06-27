@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %>
-<t:masterpage titulo="INICIO">
+<t:masterpage titulo="Inicio">
     <jsp:body>
         <c:redirect url="generaciones" />  
     </jsp:body>

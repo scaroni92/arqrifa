@@ -122,72 +122,64 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 (3333333, 2015, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
-(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-22 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'SALON 2', '', 'Listado'),
-(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente'),
-(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'SALON 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00', 60, 0, 'SALON 2', '', 'Pendiente'),
-(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'SALON 3', '', 'Pendiente'),
-(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'SALON 4', '', 'Pendiente');
+(2015,'ASAMBLEA GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', '2016-06-22 15:00:00', 120, 1, 'Salón 1', 'Se informan los medios oficiales de comunicación de la comisión: proyecto.arquiectura.rifa@gmail.com', 'Finalizada'),
+(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'Salón 2', '', 'Listado'),
+(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'Salón 3', '', 'Pendiente'),
+(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente'),
+(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'Salón 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
+(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00', 60, 0, 'Salón 2', '', 'Pendiente'),
+(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'Salón 3', '', 'Pendiente'),
+(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente');
 
 INSERT INTO temas(id_reunion, tema) VALUES 
-(1, 'Disminución de ventas'),
-(1, 'Nuevos premios'),
-(1, 'Fijación de nuevos precios'),
-(2, 'Disminución de ventas'),
-(2, 'Nuevos premios'),
-(2, 'Fijación de nuevos precios'),
-(3, 'Disminución de ventas'),
-(3, 'Nuevos premios'),
-(3, 'Fijación de nuevos precios'),
-(4, 'Disminución de ventas'),
-(4, 'Nuevos premios'),
-(4, 'Fijación de nuevos precios');
+(1, 'Reglamento'),
+(1, 'Banco'),
+(1, 'Rifas'),
+(2, 'Premios'),
+(2, 'Precio de rifas'),
+(3, 'Bancos'),
+(3, 'Rifas'),
+(4, 'Banco'),
+(4, 'Rifas'),
+(4, 'Premios');
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
-(1, 'Encuesta ...', 5),
+(1, 'Encuesta de reglamento', 5),
 (2, 'Encuesta del 20/6/16', 5),
 (4, 'Encuesta de la reunion ID: 3', 5);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
-(1, '¿Cuál de estos premios deberíamos incorporar?'),
-(1, '¿Qué precio de rifa le parece mejor?'),
+(1, '¿Está a favor del reglamento?'),
 (2, '¿Cuál de estos premios deberíamos incorporar?'),
 (2, '¿Qué precio de rifa le parece mejor?'),
 (3, '¿Cuál de estos premios deberíamos incorporar?'),
 (3, '¿Qué precio de rifa le parece mejor?');
 
 INSERT INTO respuestas (id_propuesta, respuesta) VALUES
-(1, 'Cámara Sony'),
-(1, 'IPhone 6S'),
-(1, 'giftcards en tienda inglesa valor $30.000'),
-(2, '$3960'),
-(2, '$3980'),
-(2, '$3990'),
-(2, '$3400'),
-(3, 'Cámara Sony'),
-(3, 'IPhone 6S'),
-(3, 'Giftcards en tienda inglesa valor $30.000'),
-(4, '$3960'),
-(4, '$3980'),
-(4, '$3990'),
-(4, '$3400'),
-(5, 'Cámara Sony'),
-(5, 'IPhone 6S'),
-(5, 'Giftcards en tienda inglesa valor $30.000'),
-(6, '$3960'),
-(6, '$3980'),
-(6, '$3990'),
-(6, '$3400');
+(1, 'Estoy a favor'),
+(1, 'No estoy a favor'),
+(2, 'Cámara Sony'),
+(2, 'IPhone 6S'),
+(2, 'Giftcards en tienda inglesa valor $30.000'),
+(3, '$3960'),
+(3, '$3980'),
+(3, '$3990'),
+(3, '$3400'),
+(4, 'Cámara Sony'),
+(4, 'IPhone 6S'),
+(4, 'Giftcards en tienda inglesa valor $30.000'),
+(5, '$3960'),
+(5, '$3980'),
+(5, '$3990'),
+(5, '$3400');
 
-INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor ipsum, quis maximus enim. Proin a ligula sem. Pellentesque luctus nisl sit amet erat euismod, rutrum sagittis elit scelerisque. Donec sapien sapien, sollicitudin eu malesuada ut, viverra vel lacus. Nunc semper pulvinar mi sed facilisis. Fusce facilisis e');
-INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'd, rutrum sagittis elit scelerisque. Donec sapien sapien, sollicitudin eu malesuada ut, v sollicitudin eu malesuada ut, v sollicitudin eu malesuada ut, v');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Reglamento: Se da lectura al reglamento por parte de la Coordinadora. Se vota a favor del mismo, sin ningún tipo de objeción, con el 100% de los votos a favor.');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Bancos: Se explica el proceso de selección de banco.');
+INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Rifas: Se habla rápidamente de las rifas, de su valor, la cantidad para cada integrante de la generación, y aproximación de la fecha de entrega de las mismas.');
 
-INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666);
+INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666), (1, 8888888);
 
-INSERT INTO votos(id_respuesta, ci) VALUES(3, 5555555), (3, 6666666), (1, 8888888), (4, 5555555), (5, 6666666), (6, 8888888);
-
+INSERT INTO votos(id_respuesta, ci) VALUES(1, 5555555), (1, 6666666), (1, 8888888);
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
 
@@ -588,5 +580,3 @@ END
 $$
 
 DELIMITER ;
- -- SELECT * FROM reuniones PROCEDURE ANALYSE(); 
-use arqrifa;

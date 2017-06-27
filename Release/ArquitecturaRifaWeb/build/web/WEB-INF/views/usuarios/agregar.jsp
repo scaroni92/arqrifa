@@ -54,9 +54,8 @@
                                 <div class="input-field col  s12">
                                     <select name="rol">
                                         <option value="Encargado">Encargado</option>
-                                        <option value="Estudiante">Estudiante</option>
                                     </select>
-                                    <label>Escoga una generación</label>
+                                    <label>Escoga un rol</label>
                                 </div>
                             </div>
                             <div class="row">

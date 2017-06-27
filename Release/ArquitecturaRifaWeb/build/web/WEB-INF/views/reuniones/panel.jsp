@@ -53,11 +53,11 @@
                         <div class="recapitulacion-inputs white" style="padding:10px 30px; border-radius: 3px;">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                    <label for="textarea1">Observaciones</label>
+                                    <div class="chips chips-placeholder"></div>
                                 </div>
                                 <div class="input-field col s12">
-                                    <div class="chips chips-placeholder"></div>
+                                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                                    <label for="textarea1">Observaciones</label>
                                 </div>
                             </div>
                         </div>

@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<t:masterpage titulo="INICIO" footer="true" padding="0">
+<t:masterpage titulo="Inicio" footer="true" padding="0">
     <jsp:body>
         <div class="slider">
             <ul class="slides">
@@ -51,7 +51,7 @@
                 <p class="flow-text">${resolucion}</p>
             </c:forEach>
         </section>
-        <p class="center"><a href="reuniones?accion=detalles&id=${modelo.ultimaReunion.id}" class="btn btn-flat waves-effect waves-green">MAS INFORMACIÓN</a></p>
+        <p class="center" style="margin: 50px 0;"><a href="reuniones?accion=detalles&id=${modelo.ultimaReunion.id}" class="btn btn-flat waves-effect waves-green">MAS INFORMACIÓN</a></p>
         <script>
             $('.slider').slider({interval: 6000});
         </script>

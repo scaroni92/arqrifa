@@ -52,7 +52,7 @@ public class ControladorReuniones extends Controlador {
             if (reunion == null) {
                 response.sendError(404);
             }
-            else if (reunion.getGeneracion() != usuario.getGeneracion()) {
+            else if (reunion.getGeneracion() != usuario.getGeneracion() && !usuario.isAdmin()) {
                 response.sendError(403);
             }
             else {
