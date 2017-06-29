@@ -118,12 +118,12 @@ INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUE
 (5555556,2016, 'Miguel', 'Gonzales', '1234', 'miguelxxxx@gmail.com', 'Encargado');
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
-(4444444, 2015, '2016-10-20', 'José', 'Artigas', '1234', 'jose@hotmail.com', 11111111, false),
-(3333333, 2015, '2016-10-20', 'Mathias', 'Rodriguez', '1234', 'mathi@hotmail.com', 22222222, true);
+(4444444, 2015, '2016-10-20', 'Tabaré', 'Rivero', '1234', 'latabarr@hotmail.com', 11111111, false),
+(3333333, 2015, '2016-10-20', 'Tabaré', 'Cardozo', '1234', 'tabarecardozo@catalina.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
 (2015,'ASAMBLEA GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', '2016-06-22 15:00:00', 120, 1, 'Salón 1', 'Se informan los medios oficiales de comunicación de la comisión: proyecto.arquiectura.rifa@gmail.com', 'Finalizada'),
-(2015,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', NOW(), 60, 0, 'Salón 2', '', 'Listado'),
+(2015,'REUNIÓN GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', NOW(), 60, 0, 'Salón 2', '', 'Pendiente'),
 (2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'Salón 3', '', 'Pendiente'),
 (2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente'),
 (2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'Salón 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
@@ -135,8 +135,8 @@ INSERT INTO temas(id_reunion, tema) VALUES
 (1, 'Reglamento'),
 (1, 'Banco'),
 (1, 'Rifas'),
-(2, 'Premios'),
-(2, 'Precio de rifas'),
+(2, 'Banco'),
+(2, 'Rifas'),
 (3, 'Bancos'),
 (3, 'Rifas'),
 (4, 'Banco'),
@@ -145,13 +145,13 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
 (1, 'Encuesta de reglamento', 5),
-(2, 'Encuesta del 20/6/16', 5),
+(2, 'Encuesta de rifas', 5),
 (4, 'Encuesta de la reunion ID: 3', 5);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Está a favor del reglamento?'),
-(2, '¿Cuál de estos premios deberíamos incorporar?'),
-(2, '¿Qué precio de rifa le parece mejor?'),
+(2, '¿Cuál de estos premios se debería incorporar?'),
+(2, '¿Cuál precio de rifa cree más adecuado?'),
 (3, '¿Cuál de estos premios deberíamos incorporar?'),
 (3, '¿Qué precio de rifa le parece mejor?');
 

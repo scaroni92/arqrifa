@@ -13,7 +13,7 @@
                                 <input id="anio" name="anio" type="number" required>
                                 <label for="anio">Año</label>
                             </div>
-                            <button class="btn-flat waves-effect waves-light" type="submit" name="accion" value="agregar">agregar <i class="material-icons left">add</i> </button>
+                            <button class="btn green white-text waves-effect waves-light" type="submit" name="accion" value="agregar">agregar</button>
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th>Generación</th>
-                        <th>Acciones</th>
+                        <th>Integrantes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,6 @@
                             <td>${generacion.id}</td>
                             <td class="icon-btn">
                                 <a href="generaciones?accion=integrantes&id=${generacion.id}"><i class="material-icons icon-btn">group</i></a> 
-                                <a href="#"><i class="material-icons icon-btn">delete</i></a> 
                             </td>
                         </tr>
                     </c:forEach>

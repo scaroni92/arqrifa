@@ -34,11 +34,10 @@ public class ControladorReunion extends Controlador {
             reunion.setLugar(vm.getLugar());
             reunion.setTemas(vm.getTemas());
             reunion.setGeneracion(usuario.getGeneracion());
-
+            reunion.setEstado(DTReunion.ESTADO_PENDIENTE);
             recurso.agregar(reunion);
 
-            sesion.setAttribute("mensaje", "Reunión agendada exitosamente");
-            response.sendRedirect("reuniones");
+            mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, "Reunión agendada exitosamente"));
         } catch (Exception e) {
             vm.setMensaje(e.getMessage());
             mostrarVista("reuniones/agendar.jsp", vm);
