@@ -51,7 +51,8 @@ public class MessageFrame extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlTop.setBackground(new java.awt.Color(37, 40, 56));
-        pnlTop.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        pnlTop.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.gray));
+        pnlTop.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         pnlTop.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitle.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -59,7 +60,8 @@ public class MessageFrame extends javax.swing.JFrame {
         lblTitle.setText("Título");
         pnlTop.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 30));
 
-        lblDrag.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        lblDrag.setToolTipText("");
+        lblDrag.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 lblDragMouseDragged(evt);
@@ -96,7 +98,7 @@ public class MessageFrame extends javax.swing.JFrame {
         lblMessage.setText("Nombre de usuario o contraseña incorrectos");
         pnlMessage.add(lblMessage);
 
-        pnlContainer.add(pnlMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 40));
+        pnlContainer.add(pnlMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 570, 30));
 
         pnlConfirm.setBackground(pnlContainer.getBackground());
         pnlConfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(94, 187, 191)));
@@ -110,7 +112,7 @@ public class MessageFrame extends javax.swing.JFrame {
         lblConfirm.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
         lblConfirm.setForeground(new java.awt.Color(94, 187, 191));
         lblConfirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblConfirm.setText("Confirmar");
+        lblConfirm.setText("OK");
 
         javax.swing.GroupLayout pnlConfirmLayout = new javax.swing.GroupLayout(pnlConfirm);
         pnlConfirm.setLayout(pnlConfirmLayout);
@@ -128,7 +130,7 @@ public class MessageFrame extends javax.swing.JFrame {
 
         pnlContainer.add(pnlConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, 90, 30));
 
-        getContentPane().add(pnlContainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 570, 110));
+        getContentPane().add(pnlContainer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 570, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

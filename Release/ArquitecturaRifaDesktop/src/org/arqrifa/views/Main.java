@@ -187,7 +187,7 @@ public class Main extends javax.swing.JFrame {
         lblTitle.setText("Puente Bluetooth V1.0");
         pnlMiddle.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
-        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/arqrifa/resources/img/logo.png"))); // NOI18N
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/arqrifa/resources/icons/logo.png"))); // NOI18N
         pnlMiddle.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 180, 160));
 
         lblSubtitle.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
