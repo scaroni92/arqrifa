@@ -32,7 +32,7 @@
                     <ul class="collection white-text">
                         <c:if test="${reunionActiva.encuesta != null}">
                             <li class="collection-item cyan">
-                                <div>La reunión contiene una encuesta<a href="reuniones?accion=encuesta&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">send</i></a></div>
+                                <div>La reunión contiene una encuesta<a href="reuniones?accion=encuesta&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">poll</i></a></div>
                             </li>
                         </c:if>
                         <c:if test="${reunionActiva.encuesta == null}">
@@ -41,7 +41,7 @@
                             </li>
                         </c:if>
                         <li class="collection-item cyan">
-                            <div>Listado de estudiantes presentes<a href="reunion?accion=ver_participantes&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">send</i></a></div>
+                            <div>Listado de estudiantes presentes<a href="reunion?accion=ver_participantes&id=${reunionActiva.id}" class="secondary-content"><i class="material-icons white-text">assignment_turned_in</i></a></div>
                         </li>
                     </ul>
                 </div>

@@ -4,25 +4,17 @@
     <jsp:body>
         <c:set scope="page" value="${modelo.reunion.encuesta}" var="encuesta" />
         <div class="container">
-            <h4 class="grey-text text-darken-2 light truncate">${encuesta.titulo}</h4>
-            <p class="grey-text text-darken-2">Duración: ${encuesta.duracion} min</p>
-            <ul class="collapsible" data-collapsible="expandable">
+            <div class="card-panel grey-text text-darken-2">
+                <h4 class="light truncate">${encuesta.titulo}<span class="new badge" data-badge-caption="Duración: ${encuesta.duracion}"></span></h4>
                 <c:forEach var="propuesta" items="${encuesta.propuestas}">
-                    <li>
-                        <div class="collapsible-header green lighten-1 white-text active ">${propuesta.pregunta}</div>
-                        <div class="collapsible-body white">
-                            <table class="highlight">
-                                <c:forEach var="respuesta" items="${propuesta.respuestas}">
-                                    <tr>
-                                        <td>${respuesta.respuesta}</td>
-                                        <td>${respuesta.cantidadVotos}</td>
-                                    </tr>
-                                </c:forEach>
-                            </table>
-                        </div>
-                    </li>
+                    <ul class="collection with-header">
+                        <li class="collection-header"><h6 class="text-darken-1">${propuesta.pregunta}</h6></li>
+                        <c:forEach var="respuesta" items="${propuesta.respuestas}">
+                            <li class="collection-item">${respuesta.respuesta}<span class="badge" data-badge-caption="Votos">${respuesta.cantidadVotos}</span></li>
+                        </c:forEach>
+                    </ul>
                 </c:forEach>
-            </ul>
+            </div>
         </div>
         <c:if test="${usuario.rol eq 'Encargado'}">
             <div class="fixed-action-btn horizontal">

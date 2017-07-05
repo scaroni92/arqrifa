@@ -33,10 +33,11 @@
                         <li class="collection-item"><div>Encuesta<a href="encuesta?accion=agregar&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">add_circle</i></a></div></li>
                         </c:if>
                         <c:if test="${modelo.reunion.encuesta != null}">
-                        <li class="collection-item"><div>Encuesta<a href="reuniones?accion=encuesta&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                        <li class="collection-item"><div>Encuesta<a href="reuniones?accion=encuesta&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">poll</i></a></div></li>
                         </c:if>
                         <c:if test="${!(modelo.reunion.pendiente) and usuario.rol eq 'Encargado'}">
-                        <li class="collection-item"><div>Participantes<a href="reunion?accion=ver_participantes&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                        <li class="collection-item"><div>Participantes<a href="reunion?accion=ver_participantes&id=${modelo.reunion.id}" class="secondary-content"><i class="material-icons">assignment_turned_in
+</i></a></div></li>
                         </c:if>
                 </ul>
                 <div class="divider"></div>

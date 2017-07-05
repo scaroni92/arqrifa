@@ -14,7 +14,7 @@ public class VMListadoReuniones extends ViewModel {
         super(mensaje);
         this.reuniones = reuniones;
         this.filtro = filtro;
-        paginacion = new Paginacion(reuniones, 3);
+        paginacion = new Paginacion(reuniones, 5);
     }
 
     public VMListadoReuniones() {

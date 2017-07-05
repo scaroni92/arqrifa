@@ -18,7 +18,7 @@
                         <img src="img/slider2.jpeg">
                         <div class="caption left-align">
                             <h3>Próxima reunión</h3>
-                            <h5><fmt:formatDate pattern="d 'de' MMMM HH:mm'h'" value="${modelo.proximaReunion.fecha}" /></h5>
+                            <h5><fmt:formatDate pattern="d 'de' MMMM 'a las' HH:mm" value="${modelo.proximaReunion.fecha}" /></h5>
                             <h5 class="light hide-on-small-only light">${modelo.proximaReunion.titulo}</h5>
                             <a href="reuniones?accion=detalles&id=${modelo.proximaReunion.id}" class="btn white-text waves-effect yellow darken-2 ">detalles</a> 
                         </div>

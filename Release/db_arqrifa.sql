@@ -107,29 +107,34 @@ CREATE TABLE votos (
 
 -- -------------------REGISTROS DE PRUEBA-------------------
 
-INSERT INTO generaciones VALUES (0),(2015),(2016);
+INSERT INTO generaciones VALUES (0),(2015);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
-(4444444, 0, 'Luis', 'Pérez', '1234', 'luis@gmail.com', 'Admin'),
-(5555555,2015, 'Juan', 'García', '1234', 'juanxxxxxxx@gmail.com', 'Estudiante'),
-(6666666,2015, 'Mathías', 'Cabrera', '1234', 'mathixxxxxxx@gmail.com', 'Estudiante'),
-(7777777,2015, 'Ana', 'Pérez', '1234', 'anaxxxxxxxxx@gmail.com', 'Encargado'),
-(8888888,2015, 'Mathías', 'Gonzales', '1234', 'mathixxxx@gmail.com', 'Estudiante'),
-(5555556,2016, 'Miguel', 'Gonzales', '1234', 'miguelxxxx@gmail.com', 'Encargado');
+(4444444, 0, 'Luis', 'Pérez', '1234', 'luis.perez.adminx@gmail.com', 'Admin'),
+(7777777, 2015, 'Ana', 'Pérez', '1234', 'anaperezxxxxxxx@gmail.com', 'Encargado'),
+(5555551, 2015, 'Facundo', 'García', '1234', 'facundoxxx@gmail.com', 'Estudiante'),
+(5555552, 2015, 'Melanie', 'García', '1234', 'melaniexxx@gmail.com', 'Estudiante'),
+(5555553, 2015, 'Alejandro', 'Correa', '1234', 'alejaxxx@gmail.com', 'Estudiante'),
+(5555554, 2015, 'Nicolas', 'García', '1234', 'nicolasxxx@gmail.com', 'Estudiante'),
+(5555555, 2015, 'Luis', 'Gonzales', '1234', 'lugonzalexx@gmail.com', 'Estudiante'),
+(5555556, 2015, 'Juan', 'García', '1234', 'juanxxxxxxxxx@gmail.com', 'Estudiante'),
+(5555557, 2015, 'Ezquiel', 'Pérez', '1234', 'ezquielxxxx@gmail.com', 'Estudiante'),
+(5555558, 2015, 'Raúl', 'Gomez', '1234', 'raulgomezxxxxx@gmail.com', 'Estudiante'),
+(5555559, 2015, 'Mathías', 'Gonzales', '1234', 'mathxxsx@gmail.com', 'Estudiante'),
+(5555550, 2015, 'Miguel', 'Cabrera', '1234', 'miguelxxxx@gmail.com', 'Estudiante');
+
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES
-(4444444, 2015, '2016-10-20', 'Tabaré', 'Rivero', '1234', 'latabarr@hotmail.com', 11111111, false),
-(3333333, 2015, '2016-10-20', 'Tabaré', 'Cardozo', '1234', 'tabarecardozo@catalina.com', 22222222, true);
+(4444444, 2015, '2016-10-20', 'Tabaré', 'Rivero', '1234', 'latabarr@taba.com', 11111111, false),
+(3333333, 2015, '2016-10-20', 'Tabaré', 'Cardozo', '1234', 'tabarecardozo@taba.com', 22222222, true);
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
-(2015,'ASAMBLEA GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', '2016-06-22 15:00:00', 120, 1, 'Salón 1', 'Se informan los medios oficiales de comunicación de la comisión: proyecto.arquiectura.rifa@gmail.com', 'Finalizada'),
-(2015,'REUNIÓN GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', NOW(), 60, 0, 'Salón 2', '', 'Pendiente'),
-(2015,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'Salón 3', '', 'Pendiente'),
-(2015,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente'),
-(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-06-20 15:00:00', 120, 1, 'Salón 1', 'INGRESAR OBSERVACIÓN', 'Finalizada'),
-(2016,'Bajar precio de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00', 60, 0, 'Salón 2', '', 'Pendiente'),
-(2016,'Aumentar venta de rifas', 'En esta reunión se discutiran alternativas para aumentar la venta de rifas.', '2016-12-20 15:00:00', 30, 0, 'Salón 3', '', 'Pendiente'),
-(2016,'Fijación de precios de rifas', 'En esta reunión se discutirá el nuevo precio de algunas rifas.', '2017-12-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente');
+(2015,'ASAMBLEA GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', '2016-05-22 15:00:00', 120, 1, 'Salón de Actos', 'Se informan los medios oficiales de comunicación de la comisión: proyecto.arquiectura.rifa@gmail.com', 'Finalizada'),
+(2015,'REUNIÓN GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', NOW(), 60, 1, 'Salón 2', '', 'Listado'),
+(2015,'ASAMBLEA OBLIGATORIA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-10-20 15:00:00', 30, 1, 'Salón 3', '', 'Pendiente'),
+(2015,'ASAMBLEA OBLIGATORIA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-11-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente'),
+(2015,'ASAMBLEA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-12-20 15:00:00', 60, 0, 'Salón 2', '', 'Pendiente'),
+(2015,'REUNIÓN OBLIGATORIA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2018-01-20 15:00:00', 120, 1, 'Salón 1', '', 'Pendiente');
 
 INSERT INTO temas(id_reunion, tema) VALUES 
 (1, 'Reglamento'),
@@ -141,19 +146,21 @@ INSERT INTO temas(id_reunion, tema) VALUES
 (3, 'Rifas'),
 (4, 'Banco'),
 (4, 'Rifas'),
-(4, 'Premios');
+(4, 'Premios'),
+(5, 'Rifas'),
+(6, 'Rifas');
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
-(1, 'Encuesta de reglamento', 5),
-(2, 'Encuesta de rifas', 5),
-(4, 'Encuesta de la reunion ID: 3', 5);
+(1, 'Encuesta de reglamento', 15),
+(2, 'Encuesta de rifas', 15),
+(4, 'Encuesta de rifas', 15);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES
 (1, '¿Está a favor del reglamento?'),
-(2, '¿Cuál de estos premios se debería incorporar?'),
+(2, '¿Cuál de estos premios deberíamos incorporar?'),
 (2, '¿Cuál precio de rifa cree más adecuado?'),
 (3, '¿Cuál de estos premios deberíamos incorporar?'),
-(3, '¿Qué precio de rifa le parece mejor?');
+(3, '¿Cuál precio de rifa cree más adecuado?');
 
 INSERT INTO respuestas (id_propuesta, respuesta) VALUES
 (1, 'Estoy a favor'),
@@ -177,9 +184,9 @@ INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Reglamento: Se da le
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Bancos: Se explica el proceso de selección de banco.');
 INSERT INTO resoluciones(id_reunion, resolucion) VALUES(1, 'Rifas: Se habla rápidamente de las rifas, de su valor, la cantidad para cada integrante de la generación, y aproximación de la fecha de entrega de las mismas.');
 
-INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555555), (1, 6666666), (1, 8888888);
+INSERT INTO asistencias (id_reunion, ci) VALUES (1, 5555551), (1, 5555552), (1, 5555553), (1, 5555554), (1, 5555555), (1, 5555556), (1, 5555557), (1, 5555558), (1, 5555559);
 
-INSERT INTO votos(id_respuesta, ci) VALUES(1, 5555555), (1, 6666666), (1, 8888888);
+INSERT INTO votos(id_respuesta, ci) VALUES (1, 5555551), (1, 5555552), (1, 5555553), (1, 5555554), (1, 5555555), (1, 5555556), (1, 5555557), (1, 5555558), (1, 5555559), (1, 5555550);
 
 -- -------------------PROCEDIMIENTOS ALMACENADOS-------------------
 
