@@ -15,10 +15,17 @@ public class ControladorLogin extends Controlador {
     
     public void index_post() {
         try {
-            usuario = new RecursoUsuarios().login(request.getParameter("ci"), request.getParameter("pass"));
+            usuario = new RecursoUsuarios().login(Integer.parseInt(request.getParameter("ci")), request.getParameter("pass"));
+            if (usuario == null) {
+                throw new Exception("La cédula y la contraseña no coinciden");
+            }
             sesion.setAttribute("usuario", usuario);
             response.sendRedirect("index");
-        } catch (Exception ex) {
+        }
+        catch(NumberFormatException e){
+            mostrarVista("login.jsp", new ViewModel("La cédula debe ser numérica"));
+        }
+        catch (Exception ex) {
             mostrarVista("login.jsp", new ViewModel(ex.getMessage()));
         }
     }

@@ -31,13 +31,15 @@ public class ControladorUsuarios extends Controlador {
             if (ci.isEmpty()) {
                 vm.setUsuarios(recurso.listar(usuario.getGeneracion()));
             } else {
-                dtu = recurso.buscar(ci);
+                dtu = recurso.buscar(Integer.parseInt(ci));
                 if (usuario.getGeneracion() == dtu.getGeneracion()) {
                     vm.getUsuarios().add(dtu);
                 }
             }
             
-        } catch (Exception e) {
+        } catch(NumberFormatException e){
+            vm.setMensaje("La cédula debe ser numérica");
+        }catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("usuarios/listado.jsp", vm);
@@ -46,7 +48,7 @@ public class ControladorUsuarios extends Controlador {
     public void detalles_get() {
         VMUsuario vm = new VMUsuario();
         try {
-            DTUsuario dtUsuario = recurso.buscar(request.getParameter("ci"));
+            DTUsuario dtUsuario = recurso.buscar(Integer.parseInt(request.getParameter("ci")));
 
             if (usuario.getRol().equals(DTUsuario.ROL_ENCARGADO) && usuario.getGeneracion() != dtUsuario.getGeneracion()) {
                 response.sendError(403);
@@ -54,7 +56,11 @@ public class ControladorUsuarios extends Controlador {
             }
 
             vm.setUsuario(dtUsuario);
-        } catch (Exception e) {
+        } 
+        catch(NumberFormatException e){
+            vm.setMensaje("La cédula debe ser numérica");
+        }
+        catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("usuarios/detalles.jsp", vm);

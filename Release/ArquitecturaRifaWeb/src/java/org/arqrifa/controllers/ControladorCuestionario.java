@@ -35,7 +35,7 @@ public class ControladorCuestionario extends Controlador {
         sesion.setAttribute("estudiante", null);
         try {
 
-            DTUsuario dtUsuario = new RecursoUsuarios().buscar(request.getParameter("ci"));
+            DTUsuario dtUsuario = new RecursoUsuarios().buscar(Integer.parseInt(request.getParameter("ci")));
 
             if (dtUsuario == null) {
                 throw new Exception("Estudiante no encontrado");
@@ -52,7 +52,11 @@ public class ControladorCuestionario extends Controlador {
             }
 
             sesion.setAttribute("estudiante", dtUsuario);
-        } catch (Exception e) {
+        }
+        catch (NumberFormatException e) {
+            vm.setMensaje("La cédula debe ser numérica");
+        }
+        catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("encuestas/cuestionario.jsp", vm);

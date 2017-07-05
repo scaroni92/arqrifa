@@ -37,7 +37,7 @@ public class ControladorUsuario extends Controlador {
     public void modificar_get() {
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {
-            DTUsuario dtUsuario = recurso.buscar(request.getParameter("ci"));
+            DTUsuario dtUsuario = recurso.buscar(Integer.parseInt(request.getParameter("ci")));
             vm.setCi(String.valueOf(dtUsuario.getCi()));
             vm.setNombre(dtUsuario.getNombre());
             vm.setApellido(dtUsuario.getApellido());
@@ -45,7 +45,11 @@ public class ControladorUsuario extends Controlador {
             vm.setContrasena(dtUsuario.getContrasena());
             vm.setRol(dtUsuario.getRol());
             vm.setGeneracion(String.valueOf(dtUsuario.getGeneracion()));
-        } catch (Exception e) {
+        }
+        catch(NumberFormatException e){
+            vm.setMensaje("La cédula debe ser numérica");
+        }
+        catch (Exception e) {
             vm.setMensaje(e.getMessage());
         }
         mostrarVista("usuarios/modificar.jsp", vm);

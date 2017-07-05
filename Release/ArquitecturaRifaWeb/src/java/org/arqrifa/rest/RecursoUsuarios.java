@@ -13,8 +13,8 @@ public class RecursoUsuarios extends ClienteJersey{
         super("usuarios");
     }
     
-    public DTUsuario buscar(String ci) throws Exception {
-        Response response = webTarget.path(ci).request(JSON_TYPE).get();
+    public DTUsuario buscar(int ci) throws Exception {
+        Response response = webTarget.path(String.valueOf(ci)).request(JSON_TYPE).get();
         return response.readEntity(DTUsuario.class);
     }
 
@@ -39,7 +39,7 @@ public class RecursoUsuarios extends ClienteJersey{
         comprobarEstado(response);
     }
 
-    public DTUsuario login(String ci, String pass) throws Exception {
+    public DTUsuario login(int ci, String pass) throws Exception {
         Response response = webTarget.path("login").queryParam("ci", ci).queryParam("pass", pass).request(JSON_TYPE).get();
         comprobarEstado(response);
         return response.readEntity(DTUsuario.class);
