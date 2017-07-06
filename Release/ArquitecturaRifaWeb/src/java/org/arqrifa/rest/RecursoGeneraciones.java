@@ -6,12 +6,12 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTGeneracion;
 
-public class RecursoGeneraciones extends ClienteJersey{
+public class RecursoGeneraciones extends ClienteJersey {
 
     public RecursoGeneraciones() {
         super("generaciones");
     }
-    
+
     public List<DTGeneracion> listar() throws Exception {
         Response response = webTarget.request(JSON_TYPE).get();
         comprobarEstado(response);

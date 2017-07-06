@@ -9,7 +9,6 @@ public class FormatoFecha {
     private static final String HOUR_FORMAT = "HH:mm";
     private static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + HOUR_FORMAT;
     
-    
     public static Date convertirFecha(String fecha) throws ParseException{
         return new SimpleDateFormat(DATE_TIME_FORMAT).parse(fecha);
     }

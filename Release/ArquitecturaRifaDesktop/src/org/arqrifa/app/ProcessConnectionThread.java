@@ -60,9 +60,9 @@ public class ProcessConnectionThread implements Runnable {
             String strCommand = new String(command);
             System.out.println("Marcar asistencia para el estudiante: " + strCommand);
             DesktopController.log("Marcando asistencia para el estudiante: " + strCommand);
-            
+
             DTUsuario estudiante = new JerseyClient().buscarUsuario(strCommand);
-            
+
             new JerseyClient().agregarAsistencia(estudiante, DesktopController.getReunion());
             System.out.println("Asistencia marcada");
             DesktopController.increment();

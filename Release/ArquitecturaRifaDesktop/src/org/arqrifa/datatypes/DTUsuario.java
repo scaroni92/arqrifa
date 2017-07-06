@@ -18,6 +18,20 @@ public class DTUsuario {
     private int generacion;
     private int inasistencias;
 
+    public DTUsuario() {
+        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0, 0);
+    }
+
+    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion, int inasistencias) {
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.contrasena = contrasena;
+        this.email = email;
+        this.rol = rol;
+        this.generacion = generacion;
+    }
+
     //<editor-fold defaultstate="collapsed" desc="Getters&Setters">
     public int getCi() {
         return ci;
@@ -83,19 +97,5 @@ public class DTUsuario {
         this.inasistencias = inasistencias;
     }
     //</editor-fold>
-
-    public DTUsuario() {
-        this(0, "n/d", "n/d", "n/d", "n/d", "n/d", 0, 0);
-    }
-
-    public DTUsuario(int ci, String nombre, String apellido, String contrasena, String email, String rol, int generacion, int inasistencias) {
-        this.ci = ci;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.contrasena = contrasena;
-        this.email = email;
-        this.rol = rol;
-        this.generacion = generacion;
-    }
 
 }

@@ -59,12 +59,10 @@ public class Paginacion<T> {
     }
 
     public void setPaginaSolicitada(String paginaSolicitada) {
-
         try {
             this.paginaSolicitada = Integer.parseInt(paginaSolicitada);
         } catch (NumberFormatException e) {
         }
-
     }
 
     public boolean isPrimera() {

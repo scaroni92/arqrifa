@@ -7,12 +7,12 @@ import javax.ws.rs.core.Response;
 import org.arqrifa.datatypes.DTAsistencia;
 import org.arqrifa.datatypes.DTUsuario;
 
-public class RecursoUsuarios extends ClienteJersey{
-    
+public class RecursoUsuarios extends ClienteJersey {
+
     public RecursoUsuarios() {
         super("usuarios");
     }
-    
+
     public DTUsuario buscar(int ci) throws Exception {
         Response response = webTarget.path(String.valueOf(ci)).request(JSON_TYPE).get();
         return response.readEntity(DTUsuario.class);
@@ -44,5 +44,5 @@ public class RecursoUsuarios extends ClienteJersey{
         comprobarEstado(response);
         return response.readEntity(DTUsuario.class);
     }
-    
+
 }

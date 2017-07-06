@@ -8,19 +8,17 @@ public class DTEncuesta {
     private int id;
     private String titulo;
     private int duracion;
-    private boolean habilitada;
     private List<DTPropuesta> propuestas;
 
-    public DTEncuesta(int id, String titulo, int duracion, boolean habilitada, List<DTPropuesta> propuestas) {
+    public DTEncuesta(int id, String titulo, int duracion, List<DTPropuesta> propuestas) {
         this.id = id;
         this.titulo = titulo;
         this.duracion = duracion;
-        this.habilitada = habilitada;
         this.propuestas = propuestas;
     }
 
     public DTEncuesta() {
-        this(0, "", 0, false, new ArrayList());
+        this(0, "", 0, new ArrayList());
     }
 
     public int getId() {
@@ -33,10 +31,6 @@ public class DTEncuesta {
 
     public int getDuracion() {
         return duracion;
-    }
-
-    public boolean isHabilitada() {
-        return habilitada;
     }
 
     public List<DTPropuesta> getPropuestas() {
@@ -53,10 +47,6 @@ public class DTEncuesta {
 
     public void setDuracion(int duracion) {
         this.duracion = duracion;
-    }
-
-    public void setHabilitada(boolean habilitada) {
-        this.habilitada = habilitada;
     }
 
     public void setPropuestas(List<DTPropuesta> propuestas) {

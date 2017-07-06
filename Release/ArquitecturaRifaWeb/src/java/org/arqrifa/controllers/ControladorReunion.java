@@ -3,7 +3,6 @@ package org.arqrifa.controllers;
 import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.RecursoReuniones;
 import org.arqrifa.util.FormatoFecha;
 import org.arqrifa.viewmodels.VMListadoUsuarios;
@@ -101,7 +100,6 @@ public class ControladorReunion extends Controlador {
             mostrarVista("reuniones/detalles.jsp", new VMReunion(reunion, e.getMessage()));
         }
     }
-
 
     public void ver_participantes_get() {
         VMListadoUsuarios vm = new VMListadoUsuarios();

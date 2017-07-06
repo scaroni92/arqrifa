@@ -10,7 +10,7 @@ import org.arqrifa.viewmodels.VMVerificacion;
 
 @WebServlet(name = "ControladorIndex", urlPatterns = {"/index"})
 public class ControladorIndex extends Controlador {
-    
+
     public void index_get() {
         VMIndex vm = new VMIndex();
         try {
@@ -29,7 +29,7 @@ public class ControladorIndex extends Controlador {
         }
         mostrarVista(usuario == null ? "login.jsp" : usuario.getRol().toLowerCase() + "/index.jsp", vm);
     }
-    
+
     public void verificar_get() {
         VMVerificacion vm;
         try {
@@ -40,8 +40,8 @@ public class ControladorIndex extends Controlador {
         }
         mostrarVista("verificar.jsp", vm);
     }
-    
-     public void perfil_get() {
+
+    public void perfil_get() {
         mostrarVista("usuarios/detalles.jsp", new VMUsuario(usuario, ""));
     }
 }

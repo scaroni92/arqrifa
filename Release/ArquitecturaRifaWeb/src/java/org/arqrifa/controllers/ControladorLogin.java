@@ -7,12 +7,12 @@ import org.arqrifa.viewmodels.ViewModel;
 
 @WebServlet(name = "ControladorLogin", urlPatterns = {"/login"})
 public class ControladorLogin extends Controlador {
-    
+
     public void index_get() {
         sesion.removeAttribute("usuario");
         mostrarVista("login.jsp");
     }
-    
+
     public void index_post() {
         try {
             usuario = new RecursoUsuarios().login(Integer.parseInt(request.getParameter("ci")), request.getParameter("pass"));
@@ -21,15 +21,13 @@ public class ControladorLogin extends Controlador {
             }
             sesion.setAttribute("usuario", usuario);
             response.sendRedirect("index");
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             mostrarVista("login.jsp", new ViewModel("La cédula debe ser numérica"));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             mostrarVista("login.jsp", new ViewModel(ex.getMessage()));
         }
     }
-    
+
     public void logout_get() {
         try {
             response.sendRedirect("login");

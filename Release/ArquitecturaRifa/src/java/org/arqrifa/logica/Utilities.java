@@ -9,8 +9,9 @@ import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTMensaje;
 
 public class Utilities {
-    public static final String URL_ARQUITECTURA_RIFA_WEB = "http://localhost:8080/ArquitecturaRifaWeb";
-    public static final String URL_VERIFICAR_SOLICITUD = "http://localhost:8080/ArquitecturaRifaWeb/index?accion=verificar&codigo=";
+
+    public static final String URL_ARQUITECTURA_RIFA_WEB = "http://localhost:8080/ArquitecturaRifaWeb/";
+    public static final String URL_VERIFICAR_SOLICITUD = URL_ARQUITECTURA_RIFA_WEB + "index?accion=verificar&codigo=";
     public static final String URL_PLAYSTORE_DOWNLOAD = "http://.........................";
 
     public static Date formatearFecha(Date fecha) throws ParseException {

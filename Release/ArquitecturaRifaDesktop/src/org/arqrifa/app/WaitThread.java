@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.arqrifa.app;
+
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
 import javax.bluetooth.UUID;
@@ -12,7 +9,9 @@ import javax.microedition.io.StreamConnectionNotifier;
 
 public class WaitThread implements Runnable {
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     public WaitThread() {
     }
 
@@ -20,11 +19,13 @@ public class WaitThread implements Runnable {
     public void run() {
         waitForConnection();
     }
-    
-    /** Permite que el server sea detectado por otros equipos 
-        y se queda a la espera de una conexion*/
+
+    /**
+     * Permite que el server sea detectado por otros equipos y se queda a la
+     * espera de una conexion
+     */
     private void waitForConnection() {
-        
+
         LocalDevice local = null;
         StreamConnectionNotifier notifier;
         StreamConnection connection = null;
@@ -38,13 +39,13 @@ public class WaitThread implements Runnable {
             //Crea la conexion
             UUID uuid = new UUID(88888L);
             String url = "btspp://localhost:" + uuid.toString() + ";name=RemoteBluetooth";
-            notifier = (StreamConnectionNotifier)Connector.open(url);
+            notifier = (StreamConnectionNotifier) Connector.open(url);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
         // Esperando conexion
-        while(true) {
+        while (true) {
             try {
                 System.out.println("esperando conexion");
                 //Conexion encontrada y aceptada

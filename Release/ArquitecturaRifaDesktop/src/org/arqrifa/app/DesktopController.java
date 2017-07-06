@@ -51,7 +51,7 @@ public class DesktopController {
 
     public static void iniciarPuenteBluetooth() throws Exception {
 
-        if (!getReunion().getEstado().equals(DTReunion.LISTADO)) {
+        if (!getReunion().isListado()) {
             throw new Exception("El estado de la reunión debe ser 'Listado'");
         }
         thread.start();

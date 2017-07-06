@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DTReunion {
 
-    public static String PENDIENTE = "Pendiente";
-    public static String INICIADA = "Iniciada";
-    public static String LISTADO = "Listado";
-    //public static String ACTIVA = "Activa"; es necesario este estado?
-    public static String FINALIZADA = "Finalizada";
+    public static String ESTADO_PENDIENTE = "Pendiente";
+    public static String ESTADO_INICIADA = "Iniciada";
+    public static String ESTADO_LISTADO = "Listado";
+    public static String ESTADO_VOTACION = "Votacion";
+    public static String ESTADO_FINALIZADA = "Finalizada";
 
     private int id;
     private int generacion;
@@ -30,7 +30,7 @@ public class DTReunion {
     private List<DTUsuario> participantes;
 
     public DTReunion() {
-        this(0, 0, "", "", null, 0, false, "","", "", null, new ArrayList(), new ArrayList(), new ArrayList());
+        this(0, 0, "", "", null, 0, false, "", "", "", null, new ArrayList(), new ArrayList(), new ArrayList());
     }
 
     public DTReunion(int id, int generacion, String titulo, String descripcion, Date fecha, int duracion, boolean obligatoria, String lugar, String observaciones, String estado, DTEncuesta encuesta, List<String> temas, List<String> resoluciones, List<DTUsuario> participantes) {
@@ -164,4 +164,23 @@ public class DTReunion {
     }
     //</editor-fold>
 
+    public boolean isPendiente() {
+        return estado.equals(DTReunion.ESTADO_PENDIENTE);
+    }
+
+    public boolean isIniciada() {
+        return estado.equals(DTReunion.ESTADO_INICIADA);
+    }
+
+    public boolean isListado() {
+        return estado.equals(DTReunion.ESTADO_LISTADO);
+    }
+
+    public boolean isVotacion() {
+        return estado.equals(DTReunion.ESTADO_VOTACION);
+    }
+
+    public boolean isFinalizada() {
+        return estado.equals(DTReunion.ESTADO_FINALIZADA);
+    }
 }

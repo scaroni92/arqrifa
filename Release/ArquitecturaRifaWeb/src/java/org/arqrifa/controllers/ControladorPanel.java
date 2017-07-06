@@ -17,7 +17,7 @@ public class ControladorPanel extends Controlador {
         try {
             reunionActiva = recurso.buscarActual(usuario.getGeneracion());
             sesion.setAttribute("reunionActiva", reunionActiva);
-            
+
             if (reunionActiva == null) {
                 response.sendRedirect("index");
                 return;
@@ -103,5 +103,5 @@ public class ControladorPanel extends Controlador {
         }
         mostrarVista("reuniones/panel.jsp", vm);
     }
-    
+
 }

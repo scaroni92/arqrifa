@@ -392,8 +392,8 @@ public class Main extends javax.swing.JFrame {
             lblReunionTitulo.setText(reunion.getTitulo());
             lblDescripcion.setText(reunion.getDescripcion());
             lblReunionEstado.setText("Estado: " + reunion.getEstado().toUpperCase());
-            lblMessage.setText("No se encontró ninguna reunión para la fecha actual");
         } else {
+            lblMessage.setText("No se encontró ninguna reunión para la fecha actual");
             pnlReunionDetalles.setVisible(false);
             pnlActivar.setVisible(false);
         }

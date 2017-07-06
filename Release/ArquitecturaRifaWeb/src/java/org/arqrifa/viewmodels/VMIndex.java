@@ -13,8 +13,6 @@ public class VMIndex extends ViewModel {
         this(null, null, new ArrayList(), "");
     }
 
-    
-
     public VMIndex(DTReunion proximaReunion, DTReunion ultimaReunion, List<DTSolicitud> solicitudes, String mensaje) {
         super(mensaje);
         this.proximaReunion = proximaReunion;
@@ -28,7 +26,6 @@ public class VMIndex extends ViewModel {
     public DTReunion getUltimaReunion() {
         return ultimaReunion;
     }
-
 
     public void setProximaReunion(DTReunion proximaReunion) {
         this.proximaReunion = proximaReunion;

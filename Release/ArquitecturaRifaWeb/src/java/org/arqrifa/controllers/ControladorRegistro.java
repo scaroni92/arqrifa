@@ -10,7 +10,7 @@ import org.arqrifa.viewmodels.VMMantenimientoUsuario;
 
 @WebServlet(name = "ControladorRegistro", urlPatterns = {"/registro"})
 public class ControladorRegistro extends Controlador {
-    
+
     public void index_get() {
         VMMantenimientoUsuario vm = new VMMantenimientoUsuario();
         try {
@@ -27,7 +27,7 @@ public class ControladorRegistro extends Controlador {
             vm.setGeneraciones(new RecursoGeneraciones().listar());
 
             verificarViewModel(vm);
-            
+
             new RecursoSolicitudes().agregar(getSolicitudFromViewModel(vm));
 
             sesion.setAttribute("mensaje", "Registro exitoso! <br>Se ha enviado un mail de verificación a tu correo electrónico.");
