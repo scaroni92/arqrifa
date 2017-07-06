@@ -3,7 +3,7 @@
     <string name="ci_label">Cédula</string>
     <string name="pass_label">Contraseña</string>
 
-    <string name="menu_action_asistencia">Marcar Asistencia</string>
+    <string name="menu_action_asistencia">Asistir a Reunión</string>
     <string name="menu_action_cerrar_sesion">Cerrar Sesión</string>
 
     <string name="title_reunion_activity">Detalles</string>
@@ -26,4 +26,5 @@
     <string name="bt_connect_error">Hubo un error al conectarse al dispositivo</string>
 
     <string name="completar_cuestionario_button">Completar el cuestionario</string>
+    <string name="bt_select_server">Seleccione un servidor</string>
 </resources>

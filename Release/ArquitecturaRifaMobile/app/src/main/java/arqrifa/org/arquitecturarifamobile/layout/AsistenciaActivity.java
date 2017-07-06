@@ -87,7 +87,6 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
     //Layout
     private Button btnTieneAsistencia;
     private Button btnMarcarAsistencia;
-    private ProgressBar progressBar;
 
     public void setReunionActiva (DTReunion pReunion){
         reunion = pReunion;
@@ -108,29 +107,23 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         btnTieneAsistencia.setVisibility(View.GONE);
         btnMarcarAsistencia = (Button)findViewById(R.id.btnMarcarAsistencia);
         btnMarcarAsistencia.setVisibility(View.GONE);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         accionMarcar = false;
 
-        String params = "gen="+ usuario.getGeneracion();
         new ReunionActualTask(this).execute(usuario.getGeneracion());
-        progressBar.setVisibility(View.VISIBLE);
-
     }
 
     public void controlarAsistencia(){
-        progressBar.setVisibility(View.GONE);
-        boolean found =false;
-        for (DTUsuario part :reunion.getParticipantes()){
+        boolean isParticipante =false;
+        for (DTUsuario part : reunion.getParticipantes()){
             if(part.getCi() == usuario.getCi()){
-                found=true;
+                isParticipante = true;
                 break;
             }
         }
 
-        if (found){
-            showTieneAsistencia();
-        }else{
+        if (isParticipante) {
+            showActionMarcarAsistencia(isParticipante);
+        } else {
             if(accionMarcar)
                 Toast.makeText(this,"Hubo un error al marcar la asistencia, por favor intentelo nuevamente.",Toast.LENGTH_SHORT).show();
             else
@@ -138,11 +131,14 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         }
     }
 
-    private void showTieneAsistencia(){
-
-        showReunion();
-        btnTieneAsistencia.setVisibility(View.VISIBLE);
-        btnMarcarAsistencia.setVisibility(View.GONE);
+    private void showActionMarcarAsistencia(boolean isParticipante){
+        if(isParticipante){
+            btnTieneAsistencia.setVisibility(View.VISIBLE);
+            btnMarcarAsistencia.setVisibility(View.GONE);
+        } else {
+            btnMarcarAsistencia.setVisibility(View.VISIBLE);
+            btnTieneAsistencia.setVisibility(View.GONE);
+        }
     }
 
     private void showReunion(){
@@ -190,7 +186,12 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
     }
 
     public void marcarAsistencia(View v){
-        progressBar.setVisibility(View.VISIBLE);
+
+        if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
+            Toast.makeText(this, "La lista no ha sido habilitada aún", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mCommandService = DeviceListActivity.mCommandService;
         mCommandService.write(String.valueOf(usuario.getCi()));
         accionMarcar = true;
@@ -286,22 +287,24 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         }
 
         protected void onPostExecute(DTReunion reunion) {
-            asistenciaActivity.progressBar.setVisibility(View.GONE);
             try {
                 if (reunion == null){
-                    throw new Exception("No se encontró una reunión en progreso");
-                }
-
-                if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
-                    throw new Exception("El pasaje de lista todavia no está habilitado");
+                    throw new Exception("No hay reunión para el día actual");
                 }
 
                 asistenciaActivity.setReunionActiva(reunion);
-                asistenciaActivity.controlarAsistencia();
+                asistenciaActivity.showReunion();
+
+
+                if(!(reunion.getEstado().equals("Pendiente") || reunion.getEstado().equals("Finalizada"))){
+                    asistenciaActivity.controlarAsistencia();
+                    getSupportActionBar().setTitle("Reunión en progreso");
+                } else {
+                    getSupportActionBar().setTitle("Reunión actual");
+                }
 
             }catch (Exception ex) {
                 Toast.makeText(asistenciaActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
-                asistenciaActivity.finish();
             }
 
         }

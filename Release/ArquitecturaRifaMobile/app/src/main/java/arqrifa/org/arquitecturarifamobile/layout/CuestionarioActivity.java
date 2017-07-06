@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,10 +128,9 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
 
     public void btnConfirmarVotacionClick(View v) {
         new enviarVotacionTask(this).execute(voto);
-        Toast.makeText(this, "Enviando votación...", Toast.LENGTH_SHORT).show();
     }
 
-    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Void> {
+    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Object> {
 
         private CuestionarioActivity cuestionarioActivity;
 
@@ -142,14 +142,17 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         protected Void doInBackground(DTVotacion... params) {
             try {
                 new HttpUrlConnectionClient().postVotacion(params[0]);
-                Toast.makeText(cuestionarioActivity, "Votación enviada exitosamente!", Toast.LENGTH_SHORT).show();
             } catch (Exception ex) {
-                Toast.makeText(cuestionarioActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                //TODO: esta linea da error
+                // Toast.makeText(cuestionarioActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
             return null;
         }
 
-        protected void onPostExecute() {
+        protected void onPostExecute(Object resp) {
+            Intent intent = new Intent(CuestionarioActivity.this, EncuestaActivity.class);
+            intent.putExtra("reunion", voto.getReunion());
+            startActivity(intent);
             finish();
         }
     }

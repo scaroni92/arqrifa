@@ -49,6 +49,11 @@
                 android:id="@+id/btnCompletarCuestionario"
                 android:text="@string/completar_cuestionario_button"
                 android:onClick="btnCompletarCuestionarioClick"/>
+            <Button
+                android:id="@+id/btnVotacionExitosa"
+                style="@style/Button.Large.Disabled"
+                android:text="Votación enviada exitosamente"
+                android:background="@color/md_cyan_400"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

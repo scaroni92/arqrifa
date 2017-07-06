@@ -146,7 +146,6 @@ public class DeviceListActivity extends AppCompatActivity {
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
         if (mCommandService != null) {
             if (mCommandService.getState() == BluetoothCommandService.STATE_NONE) {
-                Toast.makeText(this,"Bluetooth is now on",Toast.LENGTH_LONG).show();
                 mCommandService.start();
             }
         }
@@ -155,13 +154,12 @@ public class DeviceListActivity extends AppCompatActivity {
 
     private void doDiscovery() {
 
-        //TODO agregar "escaneando"
-
         if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
 
         mBluetoothAdapter.startDiscovery();
+        Toast.makeText(this, "Escaneando...", Toast.LENGTH_LONG).show();
     }
 
     private void setupCommand() {

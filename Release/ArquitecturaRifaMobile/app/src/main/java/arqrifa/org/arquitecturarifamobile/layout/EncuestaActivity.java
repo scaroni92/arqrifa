@@ -2,6 +2,7 @@ package arqrifa.org.arquitecturarifamobile.layout;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class EncuestaActivity extends AppCompatActivity {
 
     private TextView textViewTitulo, textViewDuracion;
     private LinearLayout linearLayoutPropuestas;
-    private Button buttonCompletarCuestionario;
+    private Button buttonCompletarCuestionario, btnVotacionExitosa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class EncuestaActivity extends AppCompatActivity {
 
         initialize();
         showEncuestaInfo();
-        toggleCompletarCuestionario();
+        new VerificarVotacionTask(this).execute();
+
     }
 
     @Override
@@ -80,6 +82,9 @@ public class EncuestaActivity extends AppCompatActivity {
         textViewDuracion = (TextView)findViewById(R.id.tvDuracion);
         linearLayoutPropuestas = (LinearLayout)findViewById(R.id.llPropuestas);
         buttonCompletarCuestionario = (Button)findViewById(R.id.btnCompletarCuestionario);
+        buttonCompletarCuestionario.setVisibility(View.GONE);
+        btnVotacionExitosa = (Button)findViewById(R.id.btnVotacionExitosa);
+        btnVotacionExitosa.setVisibility(View.GONE);
     }
 
     private void showEncuestaInfo() {
@@ -95,23 +100,19 @@ public class EncuestaActivity extends AppCompatActivity {
 
             for(DTRespuesta respuesta : propuesta.getRespuestas() ){
                 tvRespuesta = new TextView(this);
-                tvRespuesta.setText(" - " + respuesta.getRespuesta());
+                tvRespuesta.setText("  " + respuesta.getRespuesta());
                 linearLayoutPropuestas.addView(tvRespuesta);
             }
         }
     }
 
-    private void toggleCompletarCuestionario() {
-        if(reunion.isVotacion()){
-            buttonCompletarCuestionario.setVisibility(View.VISIBLE);
-        } else {
-            buttonCompletarCuestionario.setVisibility(View.INVISIBLE);
-        }
-    }
 
 
     public void btnCompletarCuestionarioClick(View v) {
-       new VerificarVotacionTask(this).execute("");
+        Intent intent = new Intent(EncuestaActivity.this, CuestionarioActivity.class);
+        intent.putExtra("reunion", reunion);
+        startActivity(intent);
+        finish();
     }
 
     private class VerificarVotacionTask extends AsyncTask<String, Void, DTVotacion> {
@@ -135,12 +136,14 @@ public class EncuestaActivity extends AppCompatActivity {
 
         protected void onPostExecute(DTVotacion votacion) {
             try {
-                if (votacion != null) {
-                    throw new Exception("Tu votación ya ha sido enviada");
+                if (votacion == null){
+                    if (reunion.isVotacion()){
+                        buttonCompletarCuestionario.setVisibility(View.VISIBLE);
+                    }
                 }
-                Intent intent = new Intent(EncuestaActivity.this, CuestionarioActivity.class);
-                intent.putExtra("reunion", reunion);
-                startActivity(intent);
+                else {
+                    btnVotacionExitosa.setVisibility(View.VISIBLE);
+                }
             } catch (Exception ex) {
                 Toast.makeText(encuestaActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
