@@ -185,6 +185,7 @@ public class DeviceListActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
                 finish();
             }catch(Exception ex){
+                Toast.makeText(v.getContext(), R.string.bt_connect_error, Toast.LENGTH_SHORT).show();
             }
         }
     };
