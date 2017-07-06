@@ -47,12 +47,12 @@
             </android.support.v7.widget.CardView>
             <Button style="@style/Button.Large"
                 android:id="@+id/btnCompletarCuestionario"
-                android:text="@string/completar_cuestionario_button"
+                android:text="@string/qe_complete_questionnaire"
                 android:onClick="btnCompletarCuestionarioClick"/>
             <Button
                 android:id="@+id/btnVotacionExitosa"
                 style="@style/Button.Large.Disabled"
-                android:text="Votación enviada exitosamente"
+                android:text="@string/qe_successfully_voted"
                 android:background="@color/md_cyan_400"/>
         </LinearLayout>
     </ScrollView>

@@ -121,7 +121,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
     }
 
         private void mostrarBtnConfirmarVotacion() {
-        tvTituloCuestionario.setText("Cuestionario completado");
+        tvTituloCuestionario.setText(R.string.qe_completed_questionnaire);
         llRespuestas.removeAllViews();
         btnConfirmarVotacion.setVisibility(View.VISIBLE);
     }

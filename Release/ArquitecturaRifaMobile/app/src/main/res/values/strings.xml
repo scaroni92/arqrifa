@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Arquitectura Rifa</string>
-    <string name="ci_label">Cédula</string>
-    <string name="pass_label">Contraseña</string>
 
-    <string name="menu_action_asistencia">Asistir a Reunión</string>
-    <string name="menu_action_cerrar_sesion">Cerrar Sesión</string>
+    <string name="menu_action_assistance">Asistir a Reunión</string>
+    <string name="menu_action_logout">Cerrar Sesión</string>
 
     <string name="title_reunion_activity">Detalles</string>
     <string name="title_encuesta_activity">Encuesta</string>
@@ -13,7 +11,13 @@
     <string name="confirm_button">Confirmar</string>
     <string name="confirm_assistance_button">Confirmar mi asistencia</string>
     <string name="has_assistance_button">Asistencia marcada exitosamente</string>
+
+    <string name="login_ci_label">Cédula</string>
+    <string name="login_pass_label">Contraseña</string>
+    <string name="login_invalid_credentials">Usuario o contraseña incorrectos</string>
+    <string name="login_user_not_authorized">Solo los estudiantes tienen acceso a la aplicación</string>
     <string name="login_button">Login</string>
+
     <string name="search_button">Buscar</string>
 
     <string name="bt_scanning">Escaneando</string>
@@ -21,10 +25,16 @@
     <string name="bt_paired_devices">Dispositivos emparejados</string>
     <string name="bt_other_devices">Otros dispositivos</string>
     <string name="bt_enable_ok">Bluetooth habilitado</string>
-    <string name="bt_enable_error">Hubo un error al habilitar el bluetooth</string>
+    <string name="bt_enable_error">Error al habilitar el bluetooth</string>
     <string name="bt_select_device">Seleccione el dispositivo</string>
-    <string name="bt_connect_error">Hubo un error al conectarse al dispositivo</string>
-
-    <string name="completar_cuestionario_button">Completar el cuestionario</string>
+    <string name="bt_connect_error">Error al intentar establecer la conexión</string>
     <string name="bt_select_server">Seleccione un servidor</string>
+
+    <string name="qe_complete_questionnaire">Completar el cuestionario</string>
+    <string name="qe_completed_questionnaire">Cuestionario completado</string>
+    <string name="qe_confirm_vote">Confirmar Votacion</string>
+    <string name="qe_successfully_voted">Votación enviada exitosamente</string>
+    <string name="tab_soon">Próxima</string>
+    <string name="tab_recent">Reciente</string>
+    <string name="tab_calendar">Calendario</string>
 </resources>

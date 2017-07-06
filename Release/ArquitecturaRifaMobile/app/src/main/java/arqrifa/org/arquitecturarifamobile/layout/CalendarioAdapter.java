@@ -40,7 +40,7 @@ public class CalendarioAdapter extends RecyclerView.Adapter<CalendarioAdapter.Ca
         DTReunion reunion = reuniones.get(position);
 
         SimpleDateFormat sdfDia = new SimpleDateFormat("dd");
-        SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM",  new Locale("es_ES"));
+        SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM",  new Locale("es", "ES", "ES"));
         SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
 
         CalendarioViewHolder.tvMes.setText(sdfMes.format(reunion.getFecha()));

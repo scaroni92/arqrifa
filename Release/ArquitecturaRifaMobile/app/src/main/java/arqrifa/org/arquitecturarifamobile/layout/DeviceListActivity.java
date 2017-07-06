@@ -110,7 +110,6 @@ public class DeviceListActivity extends AppCompatActivity {
             }
         }else{
             pairedAdapter.add(R.string.bt_no_devices);
-            //TODO hacer que no se pueda clickear
         }
 
         // Adaptador para dispositivos sin emparejar, nuevos descubrimientos
@@ -170,25 +169,22 @@ public class DeviceListActivity extends AppCompatActivity {
 
     private OnItemClickListener DeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            // Cancelar la busqueda
-            mBluetoothAdapter.cancelDiscovery();
-
-            // Obtiene la MAC, ultimos 17 digitos del texto
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
-
-
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-            //Intenta conectarse, si lo logra, guarda el dispositivo y devuelve CONNECTED
             try {
+                // Cancelar la busqueda
+                mBluetoothAdapter.cancelDiscovery();
+
+                // Obtiene la MAC, ultimos 17 digitos del texto
+                String info = ((TextView) v).getText().toString();
+                String address = info.substring(info.length() - 17);
+
+                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                //Intenta conectarse, si lo logra, guarda el dispositivo y devuelve CONNECTED
                 mCommandService.connect(device);
                 CONNECTED_DEVICE_ADDRESS = device.getAddress();
                 CONNECTED_DEVICE_NAME = device.getName();
                 setResult(Activity.RESULT_OK);
                 finish();
             }catch(Exception ex){
-                //todo mostrar mensaje de error
-                Toast.makeText(v.getContext(),"da",Toast.LENGTH_SHORT).show();
             }
         }
     };

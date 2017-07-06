@@ -54,17 +54,17 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         TabHost.TabSpec spec = tabs.newTabSpec("tab_proxima");
         spec.setContent(R.id.tab_proxima);
-        spec.setIndicator("Próxima");
+        spec.setIndicator(getString(R.string.tab_soon));
         tabs.addTab(spec);
 
         spec = tabs.newTabSpec("tab_reciente");
         spec.setContent(R.id.tab_reciente);
-        spec.setIndicator("Reciente");
+        spec.setIndicator(getString(R.string.tab_recent));
         tabs.addTab(spec);
 
         spec = tabs.newTabSpec("tab_calendario");
         spec.setContent(R.id.tab_calendario);
-        spec.setIndicator("Calendario");
+        spec.setIndicator(getString(R.string.tab_calendar));
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);

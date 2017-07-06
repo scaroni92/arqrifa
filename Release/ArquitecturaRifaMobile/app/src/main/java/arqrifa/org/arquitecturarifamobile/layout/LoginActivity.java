@@ -60,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
             mainActivity.progressBar.setVisibility(View.GONE);
             try {
                 if (usuario == null){
-                    throw new Exception("Usuario o contraseña incorrectos");
+                    throw new Exception(getString(R.string.login_invalid_credentials));
                 }
                 if (!usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
-                    throw new Exception("Solo los estudiantes tienen acceso a la aplicación");
+                    throw new Exception(getString(R.string.login_user_not_authorized));
                 }
 
                 ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());

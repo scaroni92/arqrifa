@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:hint="@string/ci_label"
+            android:hint="@string/login_ci_label"
             android:textColor="@color/md_white_1000" />
     </android.support.design.widget.TextInputLayout>
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:hint="@string/pass_label"/>
+            android:hint="@string/login_pass_label"/>
     </android.support.design.widget.TextInputLayout>
 
     <Space

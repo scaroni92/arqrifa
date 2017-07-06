@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:id="@+id/action_asistencia" android:title="@string/menu_action_asistencia"/>
-    <item android:id="@+id/action_cerrar_sesion" android:title="@string/menu_action_cerrar_sesion"/>
+    <item android:id="@+id/action_asistencia" android:title="@string/menu_action_assistance"/>
+    <item android:id="@+id/action_cerrar_sesion" android:title="@string/menu_action_logout"/>
 
 </menu>

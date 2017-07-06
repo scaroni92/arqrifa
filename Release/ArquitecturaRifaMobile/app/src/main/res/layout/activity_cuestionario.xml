@@ -48,7 +48,7 @@
             <Button
                 android:id="@+id/btnConfirmarVotacion"
                 style="@style/Button.Large"
-                android:text="Confirmar Votacion"
+                android:text="@string/qe_confirm_vote"
                 android:onClick="btnConfirmarVotacionClick"
                 android:visibility="gone"/>
         </LinearLayout>
