@@ -130,7 +130,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         new enviarVotacionTask(this).execute(voto);
     }
 
-    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Object> {
+    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, String> {
 
         private CuestionarioActivity cuestionarioActivity;
 
@@ -139,17 +139,19 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         }
 
         @Override
-        protected Void doInBackground(DTVotacion... params) {
+        protected String doInBackground(DTVotacion... params) {
             try {
                 new HttpUrlConnectionClient().postVotacion(params[0]);
             } catch (Exception ex) {
-                //TODO: esta linea da error
-                // Toast.makeText(cuestionarioActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                return ex.getMessage();
             }
-            return null;
+            return "";
         }
 
-        protected void onPostExecute(Object resp) {
+        protected void onPostExecute(String resp) {
+            if(!resp.isEmpty()){
+                Toast.makeText(cuestionarioActivity, resp, Toast.LENGTH_SHORT).show();
+            }
             Intent intent = new Intent(CuestionarioActivity.this, EncuestaActivity.class);
             intent.putExtra("reunion", voto.getReunion());
             startActivity(intent);

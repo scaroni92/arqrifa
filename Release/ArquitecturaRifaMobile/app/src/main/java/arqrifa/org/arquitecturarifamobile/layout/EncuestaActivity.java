@@ -52,7 +52,11 @@ public class EncuestaActivity extends AppCompatActivity {
 
         initialize();
         showEncuestaInfo();
-        new VerificarVotacionTask(this).execute();
+
+        if(reunion.isVotacion()){
+            new VerificarVotacionTask(this).execute();
+        }
+
 
     }
 
@@ -115,7 +119,7 @@ public class EncuestaActivity extends AppCompatActivity {
         finish();
     }
 
-    private class VerificarVotacionTask extends AsyncTask<String, Void, DTVotacion> {
+    class VerificarVotacionTask extends AsyncTask<String, Void, DTVotacion> {
 
         private EncuestaActivity encuestaActivity;
 

@@ -125,7 +125,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
             showActionMarcarAsistencia(isParticipante);
         } else {
             if(accionMarcar)
-                Toast.makeText(this,"Hubo un error al marcar la asistencia, por favor intentelo nuevamente.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Hubo un error al marcar la asistencia, por favor intentelo nuevamente",Toast.LENGTH_LONG).show();
             else
                 conectarBluetooth();
         }
