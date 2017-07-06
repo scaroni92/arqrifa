@@ -194,7 +194,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         mCommandService = DeviceListActivity.mCommandService;
         mCommandService.write(String.valueOf(usuario.getCi()));
         accionMarcar = true;
-        SystemClock.sleep(2000);
+
         Intent intent = new Intent(AsistenciaActivity.this, SplashAsistenciaActivity.class);
         startActivity(intent);
         new ReunionActualTask(this).execute(usuario.getGeneracion());
@@ -263,6 +263,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
 
     private class ReunionActualTask extends AsyncTask<Integer, Void, DTReunion> {
 
+        public static final int TIEMPO_ESPERA = 4000;
         private AsistenciaActivity asistenciaActivity;
 
         public ReunionActualTask(AsistenciaActivity activity) {
@@ -273,6 +274,10 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         protected DTReunion doInBackground(Integer... params) {
             DTReunion reunion = null;
             try {
+                // Si se está marcando asistencia se espera a que el servidor termine de procesar
+                if (accionMarcar){
+                    SystemClock.sleep(TIEMPO_ESPERA);
+                }
                 reunion = new HttpUrlConnectionClient().getReunionActual(params[0]);
             } catch (Exception ex) {
                 Toast.makeText(asistenciaActivity, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();

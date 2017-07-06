@@ -33,6 +33,7 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
+import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 
 public class CuestionarioActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -129,7 +130,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(this, "Enviando votación...", Toast.LENGTH_SHORT).show();
     }
 
-    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Object> {
+    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Void> {
 
         private CuestionarioActivity cuestionarioActivity;
 
@@ -138,46 +139,18 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         }
 
         @Override
-        protected Object doInBackground(DTVotacion... voto) {
-            Object response = null;
-            HttpURLConnection con = null;
-
+        protected Void doInBackground(DTVotacion... params) {
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address) + "encuestas/votacion");
-                con = (HttpURLConnection)url.openConnection();
-                con.setDoOutput(true);
-                con.setDoInput(true);
-                con.setRequestProperty("Content-Type", "application/json");
-                con.setRequestProperty("Accept", "application/json");
-                con.setRequestMethod("POST");
-                con.connect();
-
-                OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-                wr.write(new Gson().toJson(voto[0]));
-                wr.flush();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                    reader.close();
-                }
+                new HttpUrlConnectionClient().postVotacion(params[0]);
+                Toast.makeText(cuestionarioActivity, "Votación enviada exitosamente!", Toast.LENGTH_SHORT).show();
             } catch (Exception ex) {
                 Toast.makeText(cuestionarioActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            finally {
-                con.disconnect();
-            }
-            return response;
+            return null;
         }
 
-        protected void onPostExecute(Object response) {
-            if (response instanceof  DTMensajeError) {
-                Toast.makeText(cuestionarioActivity, ((DTMensajeError)response).getMensaje(), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(cuestionarioActivity, "Votación enviada exitosamente!!!", Toast.LENGTH_LONG).show();
-            }
-
+        protected void onPostExecute() {
+            finish();
         }
     }
 }
