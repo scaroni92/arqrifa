@@ -2,10 +2,12 @@
 <!DOCTYPE html>
 <html class="green darken-1">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <title>Arquitectura Rifa | Verificación</title>
+    <link rel="shortcut icon" href="favicon-16x16.ico" type="image/x-icon">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.css">
     <link rel="stylesheet" href="css/layouts/page-center.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
 </head>
 <body>
     <main class="row">

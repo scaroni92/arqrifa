@@ -10,6 +10,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
         <title>Arquitectura Rifa | ${titulo}</title>
+        <link rel="shortcut icon" href="favicon-16x16.ico" type="image/x-icon">
         <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" >
         <link type="text/css" rel="stylesheet" href="css/materialize.css">
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
