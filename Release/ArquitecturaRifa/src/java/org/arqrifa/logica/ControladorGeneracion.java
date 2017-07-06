@@ -43,9 +43,9 @@ class ControladorGeneracion implements IControladorGeneracion {
     @Override
     public List<DTGeneracion> listar() {
         try {
-            
+
             return FabricaPersistencia.getPersistenciaGeneracion().listar();
-            
+
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

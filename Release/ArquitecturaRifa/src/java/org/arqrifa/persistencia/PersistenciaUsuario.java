@@ -44,16 +44,16 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.execute();
 
             if (stmt.getInt(8) == -1) {
-                throw new Exception("El correo ingresado está en uso.");
+                throw new Exception("El correo ingresado está en uso");
             }
         } catch (SQLException e) {
             switch (e.getErrorCode()) {
                 case 1062:
-                    throw new Exception("La cédula ingresada está en uso.");
+                    throw new Exception("La cédula ingresada está en uso");
                 case 1452:
-                    throw new Exception("La generación ingresada no existe.");
+                    throw new Exception("La generación ingresada no existe");
                 default:
-                    throw new Exception("No se pudo dar de alta al usuario. Error de base de datos.");
+                    throw new Exception("No se pudo dar de alta al usuario, error de base de datos.");
             }
 
         } catch (Exception e) {
@@ -82,7 +82,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             }
 
         } catch (SQLException e) {
-            throw new Exception("No se pudo autenticar al usuario - Error de base de datos.");
+            throw new Exception("No se pudo autenticar al usuario, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -164,16 +164,6 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         return estudiantes;
     }
 
-    private DTUsuario cargarUsuario(ResultSet res) throws SQLException {
-        return new DTUsuario(res.getInt("ci"),
-                res.getString("nombre"),
-                res.getString("apellido"),
-                res.getString("contrasena"),
-                res.getString("email"),
-                res.getString("rol"),
-                res.getInt("id_gen"), 0);
-    }
-
     @Override
     public void modificar(DTUsuario usuario) throws Exception {
         Connection con = null;
@@ -185,7 +175,7 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
             stmt.setString(2, usuario.getNombre());
             stmt.setString(3, usuario.getApellido());
             stmt.setString(4, usuario.getContrasena());
-            
+
             if (stmt.executeUpdate() == 0) {
                 throw new Exception("No se pudo modificar al usuario.");
             }
@@ -197,6 +187,16 @@ class PersistenciaUsuario implements IPersistenciaUsuario {
         } finally {
             Persistencia.cerrarConexiones(null, stmt, con);
         }
+    }
+
+    private DTUsuario cargarUsuario(ResultSet res) throws SQLException {
+        return new DTUsuario(res.getInt("ci"),
+                res.getString("nombre"),
+                res.getString("apellido"),
+                res.getString("contrasena"),
+                res.getString("email"),
+                res.getString("rol"),
+                res.getInt("id_gen"), 0);
     }
 
 }

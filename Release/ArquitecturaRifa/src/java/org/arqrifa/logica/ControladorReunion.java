@@ -47,13 +47,12 @@ class ControladorReunion implements IControladorReunion {
         }
     }
 
-
     @Override
     public void agregar(DTReunion reunion) {
         try {
             verificarReunionNula(reunion);
 
-            if (Util.compararFechas(reunion.getFecha(), new Date()) <= 0) {
+            if (Utilities.compararFechas(reunion.getFecha(), new Date()) <= 0) {
                 throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación.");
             }
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
@@ -68,13 +67,13 @@ class ControladorReunion implements IControladorReunion {
         List<DTMensaje> mensajes = new ArrayList();
         String asunto = "Nueva reunión agendada";
         String mensaje = " te informamos que se ha agendado una nueva reunión para el día "
-                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm 'hrs.'").format(reunion.getFecha());
+                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm").format(reunion.getFecha());
 
         for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-            mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola " + usuario.getNombre() + mensaje));
+            mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola, " + usuario.getNombre() + mensaje));
         }
 
-        Util.notificarMail(mensajes);
+        Utilities.notificarMail(mensajes);
     }
 
     private static void verificarReunionNula(DTReunion reunion) throws Exception {
@@ -103,7 +102,7 @@ class ControladorReunion implements IControladorReunion {
 
             Date fechaActual = new Date();
 
-            if (Util.compararFechas(reunion.getFecha(), fechaActual) != 0) {
+            if (Utilities.compararFechas(reunion.getFecha(), fechaActual) != 0) {
                 throw new Exception("No se puede iniciar una reunión fuera de fecha");
             }
 

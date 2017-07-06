@@ -42,7 +42,6 @@ public class RecursoReunion {
         return FabricaLogica.getControladorReuniones().BuscarActual(generacion);
     }
 
-    //Última reunión finalizada
     @Path("ultima")
     @GET
     public DTReunion buscarUltimaFinalizada(@QueryParam("gen") int generacion) {

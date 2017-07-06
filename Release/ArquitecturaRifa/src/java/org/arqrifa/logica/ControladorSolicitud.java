@@ -42,15 +42,16 @@ class ControladorSolicitud implements IControladorSolicitud {
             String mensaje = "Hola " + solicitud.getUsuario().getNombre()
                     + " tu solicitud ha sido enviada exitosamente, ahora solo"
                     + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                    + "http://localhost:8080/ArquitecturaRifaWeb/index?accion=verificar&codigo=" + solicitud.getCodigo();
+                    + Utilities.URL_VERIFICAR_SOLICITUD + solicitud.getCodigo();
             
             
-            Util.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
+            Utilities.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
+    
 
     @Override
     public void verificar(int codigo) {
@@ -72,20 +73,22 @@ class ControladorSolicitud implements IControladorSolicitud {
             }
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(solicitud);
 
-            // Mail de notifiación
+            // Mail de notificación
             String destinatario = solicitud.getUsuario().getEmail();
             String asunto = "Arquitectura Rifa - Registro completado";
             String mensaje = "Hola " + solicitud.getUsuario().getNombre() + ",\n\n"
                     + "Tu solicitud ha sido confirmada, ya puedes iniciar sesión en "
-                    + "http://localhost:8080/ArquitecturaRifaWeb con tu cédula y contraseña. \n\n"
-                    + "Para descargar la apliación móvil haz click en el siguiente enlace:\n http://.........................";
+                    + Utilities.URL_ARQUITECTURA_RIFA_WEB+" con tu cédula y contraseña. \n\n"
+                    + "Para descargar la apliación móvil haz click en el siguiente enlace:\n " + Utilities.URL_PLAYSTORE_DOWNLOAD;
 
-            Util.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
+            Utilities.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
+    
+    
 
     @Override
     public void rechazar(DTSolicitud solicitud) {
@@ -102,7 +105,7 @@ class ControladorSolicitud implements IControladorSolicitud {
             mensaje.setMensaje("Hola " + solicitud.getUsuario().getNombre()
                     + ",\n\nTe informamos que tu solicitud ha sido rechazada, si tienes alguna duda ponte en contacto con el encargado de tu generación.");
 
-            Util.notificarMail(mensaje);
+            Utilities.notificarMail(mensaje);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }

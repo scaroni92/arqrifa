@@ -45,7 +45,6 @@ public class RecursoEncuesta {
         return Response.status(Response.Status.CREATED).build();
     }
     
-    //todo: reubicar
     @Path("votacion")
     @GET
     public DTVotacion buscarVotacion(@QueryParam("ci") int ci, @QueryParam("reunionId") int reunionId) {

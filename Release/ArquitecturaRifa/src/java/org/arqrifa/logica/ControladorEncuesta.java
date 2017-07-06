@@ -102,7 +102,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
             if (!votacion.getReunion().isVotacion()) {
                 throw new Exception("La encuesta no está habilitada para votaciones");
             }
-            //TODO: verificar funcionamiento
+
             for (DTUsuario participante : votacion.getReunion().getParticipantes()) {
                 if (participante.getCi() == votacion.getUsuario().getCi()) {
                     esParticipante = true;
@@ -122,19 +122,19 @@ public class ControladorEncuesta implements IControladorEncuesta {
         try {
             DTUsuario usuario = FabricaLogica.getLogicaUsuario().buscar(ci);
             DTReunion reunion = FabricaLogica.getControladorReuniones().buscar(reunionId);
-            
+
             if (!reunion.isVotacion()) {
                 throw new Exception("La votación no ha sido habilitada");
             }
-            
+
             if (usuario == null) {
-               throw new Exception("Estudiante no encontrado"); 
+                throw new Exception("Estudiante no encontrado");
             }
-            
+
             if (!usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
                 throw new Exception("Solo estudiantes pueden votar en la encuesta");
             }
-            
+
             return FabricaPersistencia.getPersistenciaEncuesta().buscarVotacion(usuario, reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

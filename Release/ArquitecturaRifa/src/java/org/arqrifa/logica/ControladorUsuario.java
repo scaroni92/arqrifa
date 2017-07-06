@@ -71,7 +71,6 @@ class ControladorUsuario implements IControladorUsuario {
 
         for (DTReunion reunion : reuniones) {
             esParticipante = false;
-
             if (reunion.isFinalizada()) {
                 for (DTUsuario participante : reunion.getParticipantes()) {
                     if (participante.getCi() == estudiante.getCi()) {
@@ -83,9 +82,7 @@ class ControladorUsuario implements IControladorUsuario {
                     inasistencias++;
                 }
             }
-
         }
-
         estudiante.setInasistencias(inasistencias);
     }
 

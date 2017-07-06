@@ -47,7 +47,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.registerOutParameter(8, Types.INTEGER);
             stmt.execute();
             if (stmt.getInt(8) == -1) {
-                throw new Exception("Ya hay agendada una reunión para el día ingresado.");
+                throw new Exception("Ya existe una reunión para el día ingresado");
             }
             if (stmt.getInt(8) > 0) {
                 for (String tema : reunion.getTemas()) {
@@ -114,7 +114,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             stmt.registerOutParameter(11, Types.INTEGER);
             stmt.execute();
             if (stmt.getInt(11) == -1) {
-                throw new Exception("Ya hay agendada una reunión para la fecha ingresada.");
+                throw new Exception("Ya existe una reunión para el día ingresado");
             }
             this.eliminarTemas(reunion.getId(), con);
 
@@ -157,7 +157,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
         } catch (SQLException e) {
             switch (e.getErrorCode()) {
                 case 1062:
-                    throw new Exception("Asistencia marcada previamente.");
+                    throw new Exception("Asistencia marcada previamente");
                 case 1452:
                     throw new Exception("El estudiante o la reunión ingresada no existe.");
                 default:
@@ -194,7 +194,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
             }
 
         } catch (SQLException e) {
-            throw new Exception("No se pudo encontrar la reunion - Error de base de datos.");
+            throw new Exception("No se pudo buscar la reunion, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -321,7 +321,6 @@ class PersistenciaReunion implements IPersistenciaReunion {
         return reuniones;
     }
 
-
     private List<String> listarTemas(int reunionId, Connection con) throws Exception {
         List<String> temas = new ArrayList();
         CallableStatement stmt = null;
@@ -333,8 +332,8 @@ class PersistenciaReunion implements IPersistenciaReunion {
             while (res.next()) {
                 temas.add(res.getString("tema"));
             }
-        } catch (Exception e) {
-            throw new Exception("Error al cargar los temas de la reunión ID: " + reunionId);
+        } catch (SQLException e) {
+            throw new Exception("Error al cargar los temas de la reunión");
         } finally {
             if (res != null) {
                 res.close();
@@ -358,7 +357,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 resoluciones.add(res.getString("resolucion"));
             }
         } catch (SQLException e) {
-            throw new Exception("Error al cargar las resoluciones de la reunión ID: " + reunionId);
+            throw new Exception("Error al cargar las resoluciones de la reunión");
         } finally {
             if (res != null) {
                 res.close();
@@ -382,7 +381,7 @@ class PersistenciaReunion implements IPersistenciaReunion {
                 participantes.add(PersistenciaUsuario.getInstancia().buscar(res.getInt("ci")));
             }
         } catch (Exception e) {
-            throw new Exception("Error al cargar las asistencias de la reunión ID: " + reunionId);
+            throw new Exception("Error al cargar las asistencias de la reunión");
         } finally {
             if (res != null) {
                 res.close();
@@ -429,6 +428,26 @@ class PersistenciaReunion implements IPersistenciaReunion {
         }
     }
 
+    @Override
+    public void cambiarEstado(DTReunion reunion) throws Exception {
+        Connection con = null;
+        CallableStatement stmt = null;
+
+        try {
+            con = Persistencia.getConexion();
+            stmt = con.prepareCall("CALL CambiarEstadoReunion(?, ?)");
+            stmt.setInt(1, reunion.getId());
+            stmt.setString(2, reunion.getEstado());
+            if (stmt.executeUpdate() == 0) {
+                throw new Exception("No se pudo cambiar el estado de la reunión, error de base de datos");
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            Persistencia.cerrarConexiones(null, stmt, con);
+        }
+    }
+
     private DTReunion cargarDatosReunion(ResultSet res, Connection con) throws Exception {
         DTReunion reunion = new DTReunion();
         reunion.setId(res.getInt("id"));
@@ -445,29 +464,8 @@ class PersistenciaReunion implements IPersistenciaReunion {
         reunion.setTemas(listarTemas(res.getInt("id"), con));
         reunion.setResoluciones(listarResoluciones(res.getInt("id"), con));
         reunion.setParticipantes(listarParticipantes(res.getInt("id"), con));
-        
-        return reunion;
-    }
 
-    @Override
-    public void cambiarEstado(DTReunion reunion) throws Exception {
-       Connection con = null;
-       CallableStatement stmt = null;
-       
-        try {
-            con = Persistencia.getConexion();
-            stmt = con.prepareCall("CALL CambiarEstadoReunion(?, ?)");
-            stmt.setInt(1, reunion.getId());
-            stmt.setString(2, reunion.getEstado());
-            if (stmt.executeUpdate() == 0) {
-                throw new Exception("No se pudo cambiar el estado de la reunión, error de base de datos");
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-        finally {
-            Persistencia.cerrarConexiones(null, stmt, con);
-        }
+        return reunion;
     }
 
 }

@@ -45,12 +45,12 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt.execute();
             int retorno = stmt.getInt(9);
             if (retorno == -1 || retorno == -3) {
-                throw new Exception("La cédula ingresada está en uso.");
+                throw new Exception("La cédula ingresada está en uso");
             } else if (retorno == -2 || retorno == -4) {
-                throw new Exception("El correo ingresado está en uso.");
+                throw new Exception("El correo ingresado está en uso");
             }
         } catch (SQLException e) {
-            throw new Exception("No se pudo dar de alta la solicitud - Error de base de datos.");
+            throw new Exception("No se pudo dar de alta la solicitud, error de base de datos.");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -70,7 +70,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
                 throw new Exception("Solicitud no encontrada.");
             }
         } catch (SQLException e) {
-            throw new Exception("No se pudo verificar la solicitud, intente más tarde.");
+            throw new Exception("No se pudo verificar la solicitud, intente más tarde");
         } catch (Exception e) {
             throw e;
         } finally {
@@ -110,7 +110,7 @@ class PersistenciaSolicitud implements IPersistenciaSolicitud {
             stmt = con.prepareCall("CALL EliminarSolicitud (?)");
             stmt.setInt(1, solicitud.getUsuario().getCi());
             if (stmt.executeUpdate() == 0) {
-                throw new Exception("La solicitud que desea rechazar no existe.");
+                throw new Exception("La solicitud que desea rechazar no existe");
             }
         } catch (SQLException e) {
             throw new Exception("No se pudo rechazar la solicitud, error en base de datos.");

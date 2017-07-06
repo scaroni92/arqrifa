@@ -87,7 +87,7 @@
                             <h5 class="white-text">Enlaces</h5>
                             <ul>
                                 <c:if test="${usuario.encargado}">
-                                    <li><a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">laptop</i> Aplicación PuenteBluetooth</a> </li>
+                                    <li><a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">devices</i> Descargar Puente Bluetooth</a> </li>
                                 </c:if>
                                 <c:if test="${usuario.estudiante}">
                                     <li> <a class="grey-text text-lighten-3" href="#!"> <i class="material-icons tiny">phone_android</i> Aplicación móvil</a></li>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="footer-copyright">
-                    <div class="container">Gestión de Reuniones <a class="orange-text text-lighten-3" href="#">Arquitectura Rifa</a></div>
+                    <div class="container">Gestor de Reuniones <a class="orange-text text-lighten-3" href="#">Arquitectura Rifa</a></div>
                 </div>
             </footer>
         </c:if>
