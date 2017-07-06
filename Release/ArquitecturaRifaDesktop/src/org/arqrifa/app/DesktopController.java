@@ -11,6 +11,9 @@ public class DesktopController {
     private static Thread thread;
     private static WaitThread waitThread;
     private static DTUsuario usuario;
+    private static Main main;
+    
+    public static int asistenciasMarcadas = 0;
 
     public static void initiateController() {
         waitThread = new WaitThread();
@@ -29,8 +32,8 @@ public class DesktopController {
                 throw new Exception("Solo los encargados tienen acceso a la aplicación.");
             }
 
-            Main ventanaPrincipal = new Main();
-            ventanaPrincipal.setVisible(true);
+            main = new Main();
+            main.setVisible(true);
         } catch (Exception ex) {
             throw ex;
         }
@@ -56,5 +59,14 @@ public class DesktopController {
 
     public static void cerrarPuenteBluetooth() throws IOException, InterruptedException {
         System.exit(0);
+    }
+    
+    public static void log(String message) {
+        main.getLblMessage().setText(message);
+    }
+
+    static void increment() {
+        asistenciasMarcadas++;
+        main.getLblAsistenciasRegistradas().setText("Asistencias registradas: " + asistenciasMarcadas);
     }
 }

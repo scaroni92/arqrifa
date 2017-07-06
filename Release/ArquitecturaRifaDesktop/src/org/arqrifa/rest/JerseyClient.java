@@ -12,7 +12,7 @@ import org.arqrifa.datatypes.DTUsuario;
 public class JerseyClient {
 
     private final WebTarget webTarget;
-    private static final String BASE_URI = "http://localhost:8080/ArquitecturaRifa/api";
+    private static final String BASE_URI = "http://192.168.0.104:8080/ArquitecturaRifa/api";
     private static final String JSON_TYPE = "application/json;charset=utf-8";
 
     public JerseyClient() {

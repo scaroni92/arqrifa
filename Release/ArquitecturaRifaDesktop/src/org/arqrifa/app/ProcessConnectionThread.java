@@ -31,7 +31,7 @@ public class ProcessConnectionThread implements Runnable {
             InputStream inputStream = mConnection.openInputStream();
             message = "";
             baos = new ByteArrayOutputStream();
-            System.out.println("esperando datos...");
+            DesktopController.log("esperando datos...");
 
             OUTER:
             while (true) {
@@ -59,11 +59,14 @@ public class ProcessConnectionThread implements Runnable {
         try {
             String strCommand = new String(command);
             System.out.println("Marcar asistencia para el estudiante: " + strCommand);
-
+            DesktopController.log("Marcando asistencia para el estudiante: " + strCommand);
+            
             DTUsuario estudiante = new JerseyClient().buscarUsuario(strCommand);
-
+            
             new JerseyClient().agregarAsistencia(estudiante, DesktopController.getReunion());
             System.out.println("Asistencia marcada");
+            DesktopController.increment();
+            DesktopController.log("Asistencia marcada");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

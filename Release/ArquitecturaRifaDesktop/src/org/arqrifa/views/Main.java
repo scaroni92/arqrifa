@@ -2,6 +2,7 @@ package org.arqrifa.views;
 
 import java.awt.Frame;
 import java.text.SimpleDateFormat;
+import javax.swing.JLabel;
 import org.arqrifa.app.DesktopController;
 import org.arqrifa.app.MessagePane;
 import org.arqrifa.datatypes.DTReunion;
@@ -17,6 +18,18 @@ public class Main extends javax.swing.JFrame {
         cargarDatos();
         DesktopController.initiateController();
     }
+
+    public JLabel getLblMessage() {
+        return lblMessage;
+    }
+
+    public JLabel getLblAsistenciasRegistradas() {
+        return lblAsistenciasRegistradas;
+    }
+ 
+    
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -274,8 +287,7 @@ public class Main extends javax.swing.JFrame {
 
         lblMessage.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         lblMessage.setForeground(new java.awt.Color(255, 255, 255));
-        lblMessage.setText("No se encontro ninguna reunión para la fecha actual");
-        pnlBottom.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+        pnlBottom.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 640, -1));
 
         lblLog.setBackground(new java.awt.Color(255, 255, 255));
         lblLog.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
@@ -380,9 +392,8 @@ public class Main extends javax.swing.JFrame {
             lblReunionTitulo.setText(reunion.getTitulo());
             lblDescripcion.setText(reunion.getDescripcion());
             lblReunionEstado.setText("Estado: " + reunion.getEstado().toUpperCase());
-            lblMessage.setVisible(false);
+            lblMessage.setText("No se encontró ninguna reunión para la fecha actual");
         } else {
-            lblMessage.setVisible(true);
             pnlReunionDetalles.setVisible(false);
             pnlActivar.setVisible(false);
         }
