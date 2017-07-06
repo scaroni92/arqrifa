@@ -45,11 +45,13 @@ import java.net.URL;
 import java.util.Set;
 
 import arqrifa.org.arquitecturarifamobile.R;
+import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.BluetoothCommandService;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTAsistencia;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
+import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 
 public class AsistenciaActivity extends AppCompatActivity  implements ReunionFragment.OnFragmentInteractionListener{
 
@@ -78,6 +80,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
 
     public static BluetoothCommandService mCommandService;
 
+    private DTUsuario usuario;
     private DTReunion reunion;
     private boolean accionMarcar;
 
@@ -95,6 +98,9 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asistencia);
 
+        ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
+        usuario = application.getUsuario();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -106,8 +112,8 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
 
         accionMarcar = false;
 
-        String params = "gen="+ MainActivity.usuario.getGeneracion();
-        new GetReunionTask(this).execute(params);
+        String params = "gen="+ usuario.getGeneracion();
+        new ReunionActualTask(this).execute(usuario.getGeneracion());
         progressBar.setVisibility(View.VISIBLE);
 
     }
@@ -116,7 +122,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
         progressBar.setVisibility(View.GONE);
         boolean found =false;
         for (DTUsuario part :reunion.getParticipantes()){
-            if(part.getCi() == MainActivity.usuario.getCi()){
+            if(part.getCi() == usuario.getCi()){
                 found=true;
                 break;
             }
@@ -186,13 +192,12 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
     public void marcarAsistencia(View v){
         progressBar.setVisibility(View.VISIBLE);
         mCommandService = DeviceListActivity.mCommandService;
-        mCommandService.write(String.valueOf(MainActivity.usuario.getCi()));
+        mCommandService.write(String.valueOf(usuario.getCi()));
         accionMarcar = true;
         SystemClock.sleep(2000);
         Intent intent = new Intent(AsistenciaActivity.this, SplashAsistenciaActivity.class);
         startActivity(intent);
-        String params = "gen="+ MainActivity.usuario.getGeneracion();
-        new GetReunionTask(this).execute(params);
+        new ReunionActualTask(this).execute(usuario.getGeneracion());
     }
 
     // The Handler that gets information back from the BluetoothChatService
@@ -256,55 +261,34 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
     }
 
 
-    private class GetReunionTask extends AsyncTask<String, Void, Object> {
+    private class ReunionActualTask extends AsyncTask<Integer, Void, DTReunion> {
 
         private AsistenciaActivity asistenciaActivity;
 
-        public GetReunionTask(AsistenciaActivity activity) {
+        public ReunionActualTask(AsistenciaActivity activity) {
             asistenciaActivity = activity;
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected DTReunion doInBackground(Integer... params) {
+            DTReunion reunion = null;
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/actual?" + params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTReunion.class);
-                }
-                reader.close();
-
-                con.disconnect();
+                reunion = new HttpUrlConnectionClient().getReunionActual(params[0]);
             } catch (Exception ex) {
-                response = new DTMensajeError("Error de conexión con el servidor");
+                Toast.makeText(asistenciaActivity, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
-            return response;
+            return reunion;
         }
 
-        protected void onPostExecute(Object response) {
+        protected void onPostExecute(DTReunion reunion) {
             asistenciaActivity.progressBar.setVisibility(View.GONE);
-            DTReunion reunion;
             try {
-                if (response == null){
-                    throw new Exception("No se encontró una reunión en progreso.");
+                if (reunion == null){
+                    throw new Exception("No se encontró una reunión en progreso");
                 }
-
-                if (response instanceof DTMensajeError) {
-                    throw new Exception(((DTMensajeError)response).getMensaje());
-                }
-
-                reunion = (DTReunion) response;
 
                 if (!reunion.getEstado().equals(DTReunion.LISTADO)) {
-                    throw new Exception("El pasaje de lista todavia no está habilitado.");
+                    throw new Exception("El pasaje de lista todavia no está habilitado");
                 }
 
                 asistenciaActivity.setReunionActiva(reunion);

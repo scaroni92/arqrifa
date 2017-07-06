@@ -28,20 +28,25 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTPropuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTRespuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTVoto;
+import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
+import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 
 public class EncuestaActivity extends AppCompatActivity {
-    DTReunion reunion;
 
-    TextView textViewTitulo, textViewDuracion;
-    LinearLayout linearLayoutPropuestas;
-    Button buttonCompletarCuestionario;
+    private DTUsuario usuario;
+    private DTReunion reunion;
+
+    private TextView textViewTitulo, textViewDuracion;
+    private LinearLayout linearLayoutPropuestas;
+    private Button buttonCompletarCuestionario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encuesta);
 
+        ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
+        usuario = application.getUsuario();
         reunion = (DTReunion) getIntent().getExtras().get("reunion");
 
         initialize();
@@ -106,10 +111,10 @@ public class EncuestaActivity extends AppCompatActivity {
 
 
     public void btnCompletarCuestionarioClick(View v) {
-       new VerificarVotacionTask(this).execute();
+       new VerificarVotacionTask(this).execute("");
     }
 
-    private class VerificarVotacionTask extends AsyncTask<String, Void, Object> {
+    private class VerificarVotacionTask extends AsyncTask<String, Void, DTVotacion> {
 
         private EncuestaActivity encuestaActivity;
 
@@ -118,45 +123,24 @@ public class EncuestaActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected DTVotacion doInBackground(String... params) {
+            DTVotacion votacion = null;
             try {
-                ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
-                DTUsuario usuario = application.getUsuario();
-
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"encuestas/voto?ci="+usuario.getCi()+"&reunionId=" + reunion.getId());
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTVoto.class);
-                }
-                reader.close();
-
-                con.disconnect();
+                votacion = new HttpUrlConnectionClient().getVotacion(usuario.getCi(), reunion.getId());
             } catch (Exception ex) {
-                response = new DTMensajeError(ex.getMessage());
+                Toast.makeText(encuestaActivity, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
-            return response;
+            return votacion;
         }
 
-        protected void onPostExecute(Object response) {
+        protected void onPostExecute(DTVotacion votacion) {
             try {
-                if (response instanceof DTMensajeError) {
-                    throw new Exception(((DTMensajeError)response).getMensaje());
-                }
-                if (response != null) {
+                if (votacion != null) {
                     throw new Exception("Tu votación ya ha sido enviada");
                 }
                 Intent intent = new Intent(EncuestaActivity.this, CuestionarioActivity.class);
                 intent.putExtra("reunion", reunion);
                 startActivity(intent);
-               // finish();
             } catch (Exception ex) {
                 Toast.makeText(encuestaActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }

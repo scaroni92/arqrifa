@@ -22,12 +22,13 @@ import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
+import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText txtCi;
-    EditText txtPass;
-    ProgressBar progressBar;
+    private EditText txtCi;
+    private EditText txtPass;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-        String params = "ci="+ txtCi.getText()+"&pass=" + txtPass.getText();
-        new GetDataTask(this).execute(params);
+        String ci = String.valueOf(txtCi.getText());
+        String pass = String.valueOf(txtPass.getText());
+        new GetDataTask(this).execute(ci, pass);
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private class GetDataTask extends AsyncTask<String, Void, Object> {
+    private class GetDataTask extends AsyncTask<String, Void, DTUsuario> {
 
         private LoginActivity mainActivity;
 
@@ -54,44 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected DTUsuario doInBackground(String... params) {
+            DTUsuario usuario = null;
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"usuarios/login?" + params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTUsuario.class);
-                }
-                reader.close();
-
-                con.disconnect();
+                usuario = new HttpUrlConnectionClient().login(params[0], params[1]);
             } catch (Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-            return response;
+            return usuario;
         }
 
-        protected void onPostExecute(Object response) {
+        protected void onPostExecute(DTUsuario usuario) {
             mainActivity.progressBar.setVisibility(View.GONE);
-            DTUsuario usuario;
             try {
-                if (response == null){
+                if (usuario == null){
                     throw new Exception("Usuario o contraseña incorrectos");
                 }
-
-                if (response instanceof DTMensajeError) {
-                    throw new Exception(((DTMensajeError)response).getMensaje());
-                }
-
-                usuario = (DTUsuario)response;
-
                 if (!usuario.getRol().equals(DTUsuario.ESTUDIANTE)) {
                     throw new Exception("Solo los estudiantes tienen acceso a la aplicación");
                 }
@@ -100,13 +80,11 @@ public class LoginActivity extends AppCompatActivity {
                 application.setUsuario(usuario);
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 }

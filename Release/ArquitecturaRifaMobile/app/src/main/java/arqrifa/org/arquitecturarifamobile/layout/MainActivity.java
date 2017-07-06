@@ -17,22 +17,17 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
+import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 
 public class MainActivity extends AppCompatActivity implements ReunionFragment.OnFragmentInteractionListener {
-    public static DTUsuario usuario;
+    private DTUsuario usuario;
     private RecyclerView rvCalendario;
 
     @Override
@@ -40,51 +35,63 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();
-
         ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
         usuario = application.getUsuario();
 
-        new GetProximaReunionTask(this).execute("gen=" + usuario.getGeneracion());
-        new GetUltimaReunionTask(this).execute("gen=" + usuario.getGeneracion());
-        new GetReunionesTask(this).execute("gen=" + usuario.getGeneracion());
+        initiateTabs();
+
+        new ProximaReunionTask(this).execute(usuario.getGeneracion());
+        new UltimaReunionTask(this).execute(usuario.getGeneracion());
+        new CalendarioAdapeterTask(this).execute(usuario.getGeneracion());
     }
 
-    private void init() {
+    private void initiateTabs() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TabHost tabs = (TabHost)findViewById(R.id.tabhost);
+        final TabHost tabs = (TabHost)findViewById(R.id.tabhost);
         tabs.setup();
 
-        TabHost.TabSpec spec = tabs.newTabSpec("tab1");
-        spec.setContent(R.id.tab1);
+        TabHost.TabSpec spec = tabs.newTabSpec("tab_proxima");
+        spec.setContent(R.id.tab_proxima);
         spec.setIndicator("Próxima");
         tabs.addTab(spec);
 
-        spec = tabs.newTabSpec("tab2");
-        spec.setContent(R.id.tab2);
+        spec = tabs.newTabSpec("tab_reciente");
+        spec.setContent(R.id.tab_reciente);
         spec.setIndicator("Reciente");
         tabs.addTab(spec);
 
-        spec = tabs.newTabSpec("tab3");
-        spec.setContent(R.id.tab3);
+        spec = tabs.newTabSpec("tab_calendario");
+        spec.setContent(R.id.tab_calendario);
         spec.setIndicator("Calendario");
         tabs.addTab(spec);
 
         tabs.setCurrentTab(0);
 
-        //Se cambia el color de texto de las tabs
-        for(int i=0;i<tabs.getTabWidget().getChildCount();i++)
-        {
-            TextView tv = (TextView) tabs.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-            tv.setTextColor(Color.WHITE);
-        }
+        tabs.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                setTabTextColor(tabs);
+            }
+        });
+
+        setTabTextColor(tabs);
 
         rvCalendario = (RecyclerView)findViewById(R.id.rvCalendario);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvCalendario.setLayoutManager(llm);
+    }
+
+    public void setTabTextColor(TabHost tabHost){
+        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+        {
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextColor(Color.parseColor("#b3ffffff"));
+        }
+        TextView tv = (TextView) tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).findViewById(android.R.id.title);
+        tv.setTextColor(Color.parseColor("#ffffff"));
     }
 
     @Override
@@ -110,152 +117,92 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
     public void onFragmentInteraction(Uri uri) {
     }
 
-    class GetReunionesTask extends AsyncTask<String, Void, Object> {
+    class ProximaReunionTask extends AsyncTask<Integer, Void, DTReunion> {
 
         private MainActivity mainActivity;
 
-        public GetReunionesTask(MainActivity activity) {
+        public ProximaReunionTask(MainActivity activity) {
             mainActivity = activity;
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected DTReunion doInBackground(Integer... params) {
+            DTReunion reunion = null;
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones?"+ params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    String res = reader.readLine();
-                    response = new Gson().fromJson(res,DTReunion[].class);
-                }
-                reader.close();
-
-                con.disconnect();
+                reunion = new HttpUrlConnectionClient().getProximaReunion(params[0]);
             } catch (Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-            return response;
+            return reunion;
         }
 
-        protected void onPostExecute(Object response) {
+        protected void onPostExecute(DTReunion response) {
             try {
-                if(response instanceof DTReunion[]){
-                    rvCalendario.setAdapter(new CalendarioAdapter(Arrays.asList((DTReunion[])response), mainActivity));
-                }
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);
+                fragmentTransaction.add(R.id.tab_proxima, fragment);
+                fragmentTransaction.commit();
             }catch(Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-
         }
     }
 
-    class GetProximaReunionTask extends AsyncTask<String, Void, Object> {
+    class UltimaReunionTask extends AsyncTask<Integer, Void, DTReunion> {
 
         private MainActivity mainActivity;
 
-        public GetProximaReunionTask(MainActivity activity) {
+        public UltimaReunionTask(MainActivity activity) {
             mainActivity = activity;
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected DTReunion doInBackground(Integer... params) {
+            DTReunion reunion = null;
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/siguiente?"+ params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    String res = reader.readLine();
-                    response = new Gson().fromJson(res,DTReunion.class);
-                }
-                reader.close();
-
-                con.disconnect();
+                reunion = new HttpUrlConnectionClient().getUltimaReunion(params[0]);
             } catch (Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-            return response;
+            return reunion;
         }
 
-        protected void onPostExecute(Object response) {
+        protected void onPostExecute(DTReunion response) {
             try {
-                if(response instanceof DTReunion){
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);
-                    fragmentTransaction.add(R.id.tab1, fragment);
-                    fragmentTransaction.commit();
-                }
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);
+                fragmentTransaction.add(R.id.tab_reciente, fragment);
+                fragmentTransaction.commit();
             }catch(Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-
         }
     }
 
-    class GetUltimaReunionTask extends AsyncTask<String, Void, Object> {
+    class CalendarioAdapeterTask extends AsyncTask<Integer, Void, List<DTReunion>> {
 
         private MainActivity mainActivity;
 
-        public GetUltimaReunionTask(MainActivity activity) {
+        public CalendarioAdapeterTask(MainActivity activity) {
             mainActivity = activity;
         }
 
         @Override
-        protected Object doInBackground(String... params) {
-            Object response = null;
+        protected List<DTReunion> doInBackground(Integer... params) {
+            List<DTReunion> reuniones = new ArrayList<>();
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address)+"reuniones/ultima?"+ params[0]);
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.connect();
-
-                BufferedReader reader;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_CONFLICT){
-                    reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
-                    response = new Gson().fromJson(reader.readLine(),DTMensajeError.class);
-                } else {
-                    reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    String res = reader.readLine();
-                    response = new Gson().fromJson(res,DTReunion.class);
-                }
-                reader.close();
-
-                con.disconnect();
+                reuniones = new HttpUrlConnectionClient().getReuniones(params[0]);
             } catch (Exception ex) {
                 Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-            return response;
+            return reuniones;
         }
 
-        protected void onPostExecute(Object response) {
-            try {
-                if(response instanceof DTReunion){
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);
-                    fragmentTransaction.add(R.id.tab2, fragment);
-                    fragmentTransaction.commit();
-                }
-            }catch(Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-
+        protected void onPostExecute(List<DTReunion> reuniones) {
+            rvCalendario.setAdapter(new CalendarioAdapter(reuniones, mainActivity));
         }
     }
+
 }

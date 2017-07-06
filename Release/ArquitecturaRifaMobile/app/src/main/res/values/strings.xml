@@ -25,7 +25,5 @@
     <string name="bt_select_device">Seleccione el dispositivo</string>
     <string name="bt_connect_error">Hubo un error al conectarse al dispositivo</string>
 
-
-    <string name="net_services_address">http://192.168.0.103:8080/ArquitecturaRifa/api/</string>
     <string name="completar_cuestionario_button">Completar el cuestionario</string>
 </resources>

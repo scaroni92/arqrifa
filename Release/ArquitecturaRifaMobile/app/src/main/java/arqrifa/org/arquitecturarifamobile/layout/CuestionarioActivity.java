@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +31,12 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTPropuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTRespuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTVoto;
+import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
+import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
 
 public class CuestionarioActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DTVoto voto;
+    private DTVotacion voto;
 
     LinearLayout llRespuestas;
     TextView tvTituloCuestionario;
@@ -60,7 +60,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         DTReunion reunion =  ((DTReunion) getIntent().getExtras().getSerializable("reunion"));
         ArquitecturaRifaApplication application = ((ArquitecturaRifaApplication)getApplicationContext());
         DTUsuario usuario = application.getUsuario();
-        voto = new DTVoto(usuario, reunion, new ArrayList<DTRespuesta>());
+        voto = new DTVotacion(usuario, reunion, new ArrayList<DTRespuesta>());
 
         iterator = reunion.getEncuesta().getPropuestas().listIterator();
 
@@ -129,7 +129,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(this, "Enviando votación...", Toast.LENGTH_SHORT).show();
     }
 
-    class enviarVotacionTask extends AsyncTask<DTVoto, Void, Object> {
+    class enviarVotacionTask extends AsyncTask<DTVotacion, Void, Object> {
 
         private CuestionarioActivity cuestionarioActivity;
 
@@ -138,12 +138,12 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         }
 
         @Override
-        protected Object doInBackground(DTVoto... voto) {
+        protected Object doInBackground(DTVotacion... voto) {
             Object response = null;
             HttpURLConnection con = null;
 
             try {
-                URL url = new URL(getResources().getString(R.string.net_services_address) + "encuestas/voto");
+                URL url = new URL(getResources().getString(R.string.net_services_address) + "encuestas/votacion");
                 con = (HttpURLConnection)url.openConnection();
                 con.setDoOutput(true);
                 con.setDoInput(true);
