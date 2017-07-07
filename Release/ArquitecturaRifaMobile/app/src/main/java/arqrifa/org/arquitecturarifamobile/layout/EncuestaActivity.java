@@ -15,16 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTPropuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTRespuesta;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;

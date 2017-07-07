@@ -1,6 +1,5 @@
 package arqrifa.org.arquitecturarifamobile.layout;
 
-import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,33 +9,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import java.util.Set;
 
 import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.datatypes.BluetoothCommandService;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTAsistencia;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 
 public class DeviceListActivity extends AppCompatActivity {
 

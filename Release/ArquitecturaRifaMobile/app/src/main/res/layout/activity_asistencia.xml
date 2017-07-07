@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="arqrifa.org.arquitecturarifamobile.layout.AsistenciaActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/colorPrimaryLight">
 
 
     <android.support.v7.widget.Toolbar

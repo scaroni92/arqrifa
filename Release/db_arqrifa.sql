@@ -130,7 +130,7 @@ INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, 
 
 INSERT INTO reuniones(id_gen, titulo, descripcion, fecha, duracion, obligatoria, lugar, observaciones, estado) VALUES
 (2015,'ASAMBLEA GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', '2016-05-22 15:00:00', 120, 1, 'Salón de Actos', 'Se informan los medios oficiales de comunicación de la comisión: proyecto.arquiectura.rifa@gmail.com', 'Finalizada'),
-(2015,'REUNIÓN GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', NOW(), 60, 1, 'Salón 2', '', 'Listado'),
+(2015,'REUNIÓN GENERAL OBLIGATORIA', 'Se dará comienzo a la reunión presentando a los integrantes de las diferentes comisiones.', NOW(), 60, 1, 'Salón 2', '', 'Pendiente'),
 (2015,'ASAMBLEA OBLIGATORIA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-10-20 15:00:00', 30, 1, 'Salón 3', '', 'Pendiente'),
 (2015,'ASAMBLEA OBLIGATORIA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-11-20 15:00:00',60,1, 'Salón 4', '', 'Pendiente'),
 (2015,'ASAMBLEA', 'Se dará comienzo a la reunión mencionando la situación actual de las rifas.', '2017-12-20 15:00:00', 60, 0, 'Salón 2', '', 'Pendiente'),

@@ -33,7 +33,7 @@
         <activity
             android:name=".layout.CuestionarioActivity"
             android:label="@string/title_cuestionario_activity" />
-        <activity android:name=".layout.AsistenciaActivity"/>
+        <activity android:name=".layout.AsistenciaActivity" android:label=""/>
         <activity
             android:name=".layout.DeviceListActivity"
             android:label="Dispositivos Bluetooth" />

@@ -15,40 +15,19 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Set;
 
 import arqrifa.org.arquitecturarifamobile.R;
 import arqrifa.org.arquitecturarifamobile.app.ArquitecturaRifaApplication;
 import arqrifa.org.arquitecturarifamobile.datatypes.BluetoothCommandService;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTAsistencia;
-import arqrifa.org.arquitecturarifamobile.datatypes.DTMensajeError;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTReunion;
 import arqrifa.org.arquitecturarifamobile.datatypes.DTUsuario;
 import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
@@ -288,19 +267,18 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
 
         protected void onPostExecute(DTReunion reunion) {
             try {
-                if (reunion == null){
-                    throw new Exception("No hay reunión para el día actual");
+                if(reunion != null){
+                    asistenciaActivity.setReunionActiva(reunion);
+                    asistenciaActivity.showReunion();
+                    if(!(reunion.getEstado().equals("Pendiente") || reunion.getEstado().equals("Finalizada"))){
+                        asistenciaActivity.controlarAsistencia();
+                        getSupportActionBar().setTitle("Reunión en progreso");
+                    } else {
+                        getSupportActionBar().setTitle("Reunión actual");
+                    }
                 }
-
-                asistenciaActivity.setReunionActiva(reunion);
-                asistenciaActivity.showReunion();
-
-
-                if(!(reunion.getEstado().equals("Pendiente") || reunion.getEstado().equals("Finalizada"))){
-                    asistenciaActivity.controlarAsistencia();
-                    getSupportActionBar().setTitle("Reunión en progreso");
-                } else {
-                    getSupportActionBar().setTitle("Reunión actual");
+                else {
+                    getSupportActionBar().setTitle("Hoy no hay reunión");
                 }
 
             }catch (Exception ex) {
