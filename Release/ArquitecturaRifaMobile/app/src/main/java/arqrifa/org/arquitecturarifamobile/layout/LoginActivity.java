@@ -33,8 +33,14 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v) {
         String ci = String.valueOf(txtCi.getText());
         String pass = String.valueOf(txtPass.getText());
-        new GetDataTask(this).execute(ci, pass);
-        progressBar.setVisibility(View.VISIBLE);
+        if(ci.isEmpty() || pass.isEmpty()){
+            Toast.makeText(this, "Ingrese su cédula y contraseña", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            new GetDataTask(this).execute(ci, pass);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private class GetDataTask extends AsyncTask<String, Void, DTUsuario> {

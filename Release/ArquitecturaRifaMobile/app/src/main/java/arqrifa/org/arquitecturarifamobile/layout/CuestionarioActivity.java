@@ -83,6 +83,7 @@ public class CuestionarioActivity extends AppCompatActivity implements View.OnCl
         } else if (item.getItemId() == R.id.action_cerrar_sesion){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
