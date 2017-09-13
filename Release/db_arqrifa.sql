@@ -152,7 +152,7 @@ INSERT INTO temas(id_reunion, tema) VALUES
 
 INSERT INTO encuestas(id_reunion, titulo, duracion) VALUES
 (1, 'Encuesta de reglamento', 15),
-(2, 'Encuesta de rifas', 15),
+(3, 'Encuesta de rifas', 15),
 (4, 'Encuesta de rifas', 15);
 
 INSERT INTO propuestas (id_encuesta, pregunta) VALUES

@@ -27,7 +27,9 @@ input[type=time]::-webkit-clear-button {
 
 
 /* TEMA */
-
+.brand-logo{
+    padding-left: 40px !important;
+}
 .collapsible table th + th {
     width: 80px;
     text-align: center;
@@ -80,6 +82,9 @@ input[type=time]::-webkit-clear-button {
     main,
     footer {
         padding-left: 0;
+    }
+    .brand-logo{
+        padding-left: 0px !important;
     }
 }
 

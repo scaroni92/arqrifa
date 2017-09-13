@@ -12,7 +12,7 @@
                     <div class="section-general"> <span class="strong"><b>General</b></span>
                         <br>Hora de inicio: <fmt:formatDate pattern="HH:mm'h'" value="${reunionActiva.fecha}" />
                         <br> Duración estimada: ${reunionActiva.duracion}m
-                        <br><a href="reuniones?accion=detalles&id=${reunionActiva.id}" class="orange-text text-accent-2">DETALLES</a> </div>
+                        <br><a href="reuniones?accion=detalles&id=${reunionActiva.id}" class="btn waves-effect">DETALLES</a> </div>
                 </div>
                 <div class="col s12 m6">
                     <div class="section-temas"> 

@@ -27,7 +27,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12"> <i class="material-icons prefix">person</i>
-                            <input id="ci" type="number" name="ci" required>
+                            <input id="ci" type="text" name="ci" maxlength="7" pattern="\d*" required>
                             <label for="ci">Cédula</label>
                         </div>
                     </div>
