@@ -97,7 +97,12 @@ public class EncuestaActivity extends AppCompatActivity {
 
             for(DTRespuesta respuesta : propuesta.getRespuestas() ){
                 tvRespuesta = new TextView(this);
-                tvRespuesta.setText("  " + respuesta.getRespuesta());
+                if(reunion.getEstado().equals(DTReunion.FINALIZADA)){
+                    tvRespuesta.setText("  " + respuesta.getRespuesta() + " - Votos: " + respuesta.getCantidadVotos());
+                }else{
+                    tvRespuesta.setText("  " + respuesta.getRespuesta());
+                }
+
                 linearLayoutPropuestas.addView(tvRespuesta);
             }
         }
