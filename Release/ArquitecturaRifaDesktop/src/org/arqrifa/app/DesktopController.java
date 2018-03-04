@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.rest.JerseyClient;
 import org.arqrifa.views.Main;
+import javax.bluetooth.LocalDevice;
 
 public class DesktopController {
 
@@ -53,6 +54,12 @@ public class DesktopController {
 
         if (!getReunion().isListado()) {
             throw new Exception("El estado de la reunión debe ser 'Listado'");
+        }
+        LocalDevice local = null;
+        try {
+            local = LocalDevice.getLocalDevice();
+        }catch(Exception ex){
+            throw new Exception("El adaptador bluetooth se encuentra desactivado");
         }
         thread.start();
     }
