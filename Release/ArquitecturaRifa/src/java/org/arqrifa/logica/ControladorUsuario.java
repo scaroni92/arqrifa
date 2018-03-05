@@ -28,7 +28,7 @@ class ControladorUsuario implements IControladorUsuario {
             if (usuario == null) {
                 throw new Exception("No se puede agregar un usuario nulo");
             }
-            if (usuario.getCi() < 5000000) {
+            if (usuario.getCi() < 1000000 || usuario.getCi() > 9999999) {
                 throw new Exception("Ingrese una cédula válida.");
             }
 
