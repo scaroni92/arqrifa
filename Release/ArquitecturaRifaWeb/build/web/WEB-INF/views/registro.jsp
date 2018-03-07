@@ -23,7 +23,7 @@
                     <h5 class="text-darken-3 ">Registro</h5>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="ci" name="ci" value="${modelo.ci}" type="number" required>
+                            <input id="ci" type="text" name="ci" maxlength="7" pattern="\d*" title="Numérico" required>
                             <label for="ci">Cédula</label>
                         </div>
                     </div>
