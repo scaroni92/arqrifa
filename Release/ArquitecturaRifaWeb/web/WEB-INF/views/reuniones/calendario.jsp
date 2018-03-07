@@ -28,7 +28,7 @@
                         <div class="card-content  ${color} lighten-1 white-text center">
                             <h6><fmt:formatDate pattern="EEEE" value="${reunion.fecha}" /></h6>
                             <div class="calendario-numero"><fmt:formatDate pattern="dd" value="${reunion.fecha}" /> </div>
-                            <div class="calendario-hora"><fmt:formatDate pattern="hh:mm" value="${reunion.fecha}" /> </div>
+                            <div class="calendario-hora"><fmt:formatDate pattern="HH:mm" value="${reunion.fecha}" /> </div>
                         </div>
                         <div class="card-content white grey-text text-darken-2">
                             ${reunion.titulo}
