@@ -18,13 +18,13 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="titulo" name="titulo" type="text" value="${modelo.titulo}" style="font-size: 2em;" required>
+                            <input id="titulo" name="titulo" type="text" value="${modelo.titulo}" data-length="100" style="font-size: 2em;" required>
                             <label for="titulo">Título</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col m6 s12">
-                            <input id="lugar" name="lugar" type="text" value="${modelo.lugar}" required>
+                            <input id="lugar" name="lugar" type="text" value="${modelo.lugar}" data-length="100" required>
                             <label for="lugar">Lugar</label>
                         </div>
                         <div class="input-field col m2 s12">

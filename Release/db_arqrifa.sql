@@ -17,7 +17,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(20) NOT NULL,
     apellido VARCHAR(20) NOT NULL,
     contrasena VARCHAR(20) NOT NULL,
-    email VARCHAR(30) NOT NULL UNIQUE,
+    email VARCHAR(50) NOT NULL UNIQUE,
     rol VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_gen) REFERENCES generaciones(id)
 );
@@ -25,12 +25,12 @@ CREATE TABLE usuarios (
 CREATE TABLE reuniones (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_gen INT NOT NULL,
-    titulo VARCHAR(30) NOT NULL,
-    descripcion VARCHAR(200) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
     fecha DATETIME NOT NULL,
     duracion INT NOT NULL,
     obligatoria BIT NOT NULL,
-    lugar VARCHAR(50) NOT NULL,
+    lugar VARCHAR(100) NOT NULL,
     observaciones TEXT,
     estado VARCHAR(15) DEFAULT 'Pendiente',
     eliminada BIT DEFAULT 0,
@@ -66,7 +66,7 @@ CREATE TABLE solicitudes (
     nombre VARCHAR(20) NOT NULL,
     apellido VARCHAR(20) NOT NULL,
     contrasena VARCHAR(20) NOT NULL,
-    email VARCHAR(30) UNIQUE NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
     codigo INT UNIQUE NOT NULL,
     verificada BIT NOT NULL DEFAULT 0,
     FOREIGN KEY (id_gen) REFERENCES generaciones(id)
@@ -207,7 +207,7 @@ $$
 -- USUARIOS
 --
 
-CREATE PROCEDURE AltaUsuario(pCi int, pGeneracion int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), pRol varchar(15), out retorno int)
+CREATE PROCEDURE AltaUsuario(pCi int, pGeneracion int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(50), pRol varchar(15), out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM usuarios WHERE email = pEmail) THEN
 		SET retorno = -1;
@@ -236,7 +236,7 @@ $$
 --
 
 -- retorno: -1 si ya existe una reunión para el mismo día
-CREATE PROCEDURE AltaReunion(pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50),out retorno int)
+CREATE PROCEDURE AltaReunion(pGeneracion int, pTitulo varchar(100), pDescripcion text, pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(100),out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha AS DATE) = CAST(pFecha AS DATE) AND id_gen = pGeneracion) THEN
 		SET retorno = -1;
@@ -248,7 +248,7 @@ END
 $$
 
 -- retorno: -1 si ya existe una reunión para el mismo día
-CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(30), pDescripcion varchar(100), pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(50), pEstado varchar(15), pObservaciones text, out retorno int)
+CREATE PROCEDURE ModificarReunion(pId int, pGeneracion int, pTitulo varchar(100), pDescripcion text, pFecha datetime, pDuracion int, pObligatoria bit, pLugar varchar(100), pEstado varchar(15), pObservaciones text, out retorno int)
 BEGIN
 	IF EXISTS (SELECT * FROM reuniones WHERE CAST(Fecha AS DATE) = CAST(pFecha AS DATE) AND id_gen = pGeneracion AND id != pId) THEN
 		SET retorno = -1;
@@ -333,7 +333,7 @@ $$
 -- SOLICITUDES
 --
 -- retorno: -1 solicitudes.ci duplicado, -2 solicitudes.email duplicado, -3 usuarios.ci duplicado, -4 usuarios.email duplicado
-CREATE PROCEDURE AltaSolicitud(pCi int, pGeneracion int, pFecha datetime, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30), pCodigo int, out retorno int)
+CREATE PROCEDURE AltaSolicitud(pCi int, pGeneracion int, pFecha datetime, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(50), pCodigo int, out retorno int)
 BEGIN
 	IF EXISTS(SELECT * FROM solicitudes WHERE ci = pCi) THEN
 		SET retorno = -1;
@@ -356,7 +356,7 @@ BEGIN
 END
 $$
 
-CREATE PROCEDURE ConfirmarSolicitud(pCi int, pGeneracion int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(30))
+CREATE PROCEDURE ConfirmarSolicitud(pCi int, pGeneracion int, pNombre varchar(20), pApellido varchar(20), pContrasena varchar(20), pEmail varchar(50))
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
 	START TRANSACTION;

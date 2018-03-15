@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ArquitecturaRifaMobile.iml" filepath="$PROJECT_DIR$/ArquitecturaRifaMobile.iml" />
-      <module fileurl="file://C:\Users\Ale\Documents\GitHub\arqrifa\Release\ArquitecturaRifaMobile\ArquitecturaRifaMobile.iml" filepath="C:\Users\Ale\Documents\GitHub\arqrifa\Release\ArquitecturaRifaMobile\ArquitecturaRifaMobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Ale\Documents\GitHub\arqrifa\Release\ArquitecturaRifaMobile\app\app.iml" filepath="C:\Users\Ale\Documents\GitHub\arqrifa\Release\ArquitecturaRifaMobile\app\app.iml" />
     </modules>
   </component>
 </project>

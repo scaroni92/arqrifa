@@ -11,6 +11,8 @@ import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
+import org.arqrifa.logica.validation.ReunionValidator;
+import org.arqrifa.logica.validation.ReunionValidatorType;
 
 class ControladorReunion implements IControladorReunion {
 
@@ -50,11 +52,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void agregar(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-
-            if (Utilities.compararFechas(reunion.getFecha(), new Date()) <= 0) {
-                throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación.");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.ALTA);
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
 
             notificarMailEstudiantes(reunion);
@@ -76,12 +74,6 @@ class ControladorReunion implements IControladorReunion {
         Utilities.notificarMail(mensajes);
     }
 
-    private static void verificarReunionNula(DTReunion reunion) throws Exception {
-        if (reunion == null) {
-            throw new Exception("No se puede modificar una reunión nula");
-        }
-    }
-
     @Override
     public DTReunion buscar(int id) {
         try {
@@ -94,21 +86,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void iniciar(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-
-            if (!reunion.isPendiente()) {
-                throw new Exception("No se puede volver a iniciar la reunión");
-            }
-
-            Date fechaActual = new Date();
-
-            if (Utilities.compararFechas(reunion.getFecha(), fechaActual) != 0) {
-                throw new Exception("No se puede iniciar una reunión fuera de fecha");
-            }
-
-            if (reunion.getFecha().after(fechaActual)) {
-                throw new Exception("No se puede iniciar una reunión antes de la hora prevista");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.INICIO);
 
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
             FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
@@ -120,15 +98,8 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void finalizar(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-            if (!reunion.isIniciada()) {
-                throw new Exception("El estado de la reunión debe ser iniciada");
-            }
-            if (reunion.getResoluciones().isEmpty()) {
-                throw new Exception("Ingrese alguna resolución de la reunión");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.FIN);
             reunion.setEstado(DTReunion.ESTADO_FINALIZADA);
-            // Se utiliza el método modificar ya que se deben agregar las observaciones y resoluciones
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -196,9 +167,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void eliminar(DTReunion reunion) {
         try {
-            if (!reunion.isPendiente()) {
-                throw new Exception("No se puede eliminar la reunión porque ya fue iniciada");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.BAJA);
             FabricaPersistencia.getPersistenciaReunion().eliminar(reunion);
 
         } catch (Exception e) {
@@ -209,11 +178,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void modificar(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-            if (!reunion.isPendiente()) {
-                throw new Exception("No se puede modificar la reunión porque ya fue iniciada");
-            }
-
+            ReunionValidator.validate(reunion, ReunionValidatorType.MODIFICAR);
             FabricaPersistencia.getPersistenciaReunion().modificar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -232,10 +197,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void habilitarLista(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-            if (!reunion.isIniciada()) {
-                throw new Exception("El estado de la reunión deber ser iniciada");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.HABILITAR_LISTA);
             reunion.setEstado(DTReunion.ESTADO_LISTADO);
             FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
@@ -246,10 +208,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void deshabilitarLista(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-            if (!reunion.isListado()) {
-                throw new Exception("No se puede deshabilitar la lista porque ya está deshabilitada");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.DESHABILITAR_LISTA);
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
             FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
@@ -260,9 +219,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void habilitarVotacion(DTReunion reunion) {
         try {
-            if (!reunion.isIniciada()) {
-                throw new Exception("El estado de la reunión debe ser iniciada");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.HABILITAR_VOTACION);
             reunion.setEstado(DTReunion.ESTADO_VOTACION);
             FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
 
@@ -274,9 +231,7 @@ class ControladorReunion implements IControladorReunion {
     @Override
     public void deshabilitarVotacion(DTReunion reunion) {
         try {
-            if (!reunion.isVotacion()) {
-                throw new Exception("La encuesta no ha sido habilitada aún");
-            }
+            ReunionValidator.validate(reunion, ReunionValidatorType.DESHABILITAR_VOTACION);
             reunion.setEstado(DTReunion.ESTADO_INICIADA);
             FabricaPersistencia.getPersistenciaReunion().cambiarEstado(reunion);
         } catch (Exception e) {
