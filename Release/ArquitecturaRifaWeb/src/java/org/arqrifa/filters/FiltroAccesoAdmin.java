@@ -28,7 +28,7 @@ public class FiltroAccesoAdmin implements Filter {
             if (usuario == null) {
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             } else if (!usuario.getRol().equals(DTUsuario.ROL_ADMIN)) {
-                request.getRequestDispatcher("/WEB-INF/views/" + usuario.getRol().toLowerCase() + "/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/error/403.jsp").forward(request, response);
             } else {
                 chain.doFilter(request, response);
             }

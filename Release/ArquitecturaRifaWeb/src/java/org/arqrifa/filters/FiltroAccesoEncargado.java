@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.arqrifa.datatypes.DTUsuario;
 
-@WebFilter(filterName = "filtroAccesoEncargado", urlPatterns = {"/solicitudes", "/reunion", "/encuesta", "/panel", "/cuestionario", "/asistencias"})
+@WebFilter(filterName = "filtroAccesoEncargado", urlPatterns = {"/solicitudes", "/reunion", "/encuesta", "/panel", "/cuestionario", "/asistencias", "/usuarios"})
 public class FiltroAccesoEncargado implements Filter {
 
     @Override
@@ -28,7 +28,7 @@ public class FiltroAccesoEncargado implements Filter {
             if (usuario == null) {
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             } else if (!usuario.getRol().equals(DTUsuario.ROL_ENCARGADO) && !usuario.getRol().equals(DTUsuario.ROL_ADMIN)) {
-                request.getRequestDispatcher("/WEB-INF/views/" + usuario.getRol().toLowerCase() + "/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/error/403.jsp").forward(request, response);
             } else {
                 chain.doFilter(request, response);
             }
