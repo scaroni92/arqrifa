@@ -138,9 +138,12 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         protected void onPostExecute(DTReunion response) {
             try {
+                if (response == null) {
+                    throw new Exception("No hay reuniones pendientes");
+                }
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);
+                ReunionFragment fragment = ReunionFragment.newInstance(response);
                 fragmentTransaction.add(R.id.tab_proxima, fragment);
                 fragmentTransaction.commit();
             }catch(Exception ex) {
@@ -170,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
 
         protected void onPostExecute(DTReunion response) {
             try {
+                if (response == null) {
+                    throw new Exception("No se han realizado reuniones");
+                }
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 ReunionFragment fragment = ReunionFragment.newInstance((DTReunion) response);

@@ -18,7 +18,7 @@ import arqrifa.org.arquitecturarifamobile.datatypes.DTVotacion;
 
 public class HttpUrlConnectionClient {
 
-    private static final String BASE_URI = "http://192.168.1.33:8080/ArquitecturaRifa/api/";
+    private static final String BASE_URI = "http://192.168.0.104:8080/ArquitecturaRifa/api/";
     private URL url;
 
     public DTUsuario login(String ci, String pass) throws Exception {

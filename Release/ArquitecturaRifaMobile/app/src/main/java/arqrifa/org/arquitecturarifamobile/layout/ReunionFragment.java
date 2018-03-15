@@ -24,7 +24,7 @@ public class ReunionFragment extends Fragment {
     LinearLayout llTemas, llResoluciones;
     CardView cvResoluciones, cvEncuesta;
 
-    private DTReunion reunion;
+    private DTReunion reunion = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,7 +35,6 @@ public class ReunionFragment extends Fragment {
     public static ReunionFragment newInstance(DTReunion reunion) {
         ReunionFragment fragment = new ReunionFragment();
         Bundle args = new Bundle();
-        args.putSerializable("reunion", reunion);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +68,7 @@ public class ReunionFragment extends Fragment {
     }
 
     public void setReunion(){
+        if(reunion == null){return;}
         tvFecha.setText(new SimpleDateFormat("dd MMMM, yyyy HH:mm ", new Locale("es_ES")).format(reunion.getFecha()));
         tvTitulo.setText(reunion.getTitulo());
         tvDescripcion.setText(reunion.getDescripcion());
