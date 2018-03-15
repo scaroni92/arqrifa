@@ -22,7 +22,7 @@ public class UsuarioValidator {
         }
 
         switch (type) {
-            case ALTA:
+            case AGREGAR:
                 validarAlta();
                 break;
             case MODIFICAR:

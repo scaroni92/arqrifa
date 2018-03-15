@@ -5,8 +5,8 @@ import java.util.Random;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
-import org.arqrifa.logica.validation.EncuestaValidatorType;
-import org.arqrifa.logica.validation.UsuarioValidator;
+import org.arqrifa.logica.validation.SolicitudValidator;
+import org.arqrifa.logica.validation.SolicitudValidatorType;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorSolicitud implements IControladorSolicitud {
@@ -28,13 +28,9 @@ class ControladorSolicitud implements IControladorSolicitud {
     @Override
     public void agregar(DTSolicitud solicitud) {
         try {
-            if (solicitud == null) {
-                throw new Exception("No se puede dar de alta una solicitud nula.");
-            }
+            SolicitudValidator.validate(solicitud, SolicitudValidatorType.AGREGAR);
             
-            UsuarioValidator.validate(solicitud.getUsuario(), EncuestaValidatorType.ALTA);
-
-            solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
+            generarCodigo(solicitud);
 
             FabricaPersistencia.getPersistenciaSolicitud().agregar(solicitud);
 
@@ -52,6 +48,10 @@ class ControladorSolicitud implements IControladorSolicitud {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
+
+    private void generarCodigo(DTSolicitud solicitud) {
+        solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
+    }
     
 
     @Override
@@ -66,12 +66,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     @Override
     public void confirmar(DTSolicitud solicitud) {
         try {
-            if (solicitud == null) {
-                throw new Exception("No se puede confirmar una solicitud nula.");
-            }
-            if (!solicitud.isVerificada()) {
-                throw new Exception("No se puede confirmar una solicitud sin verificar");
-            }
+            SolicitudValidator.validate(solicitud, SolicitudValidatorType.CONFIRMAR);
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(solicitud);
 
             // Mail de notificación
@@ -94,9 +89,7 @@ class ControladorSolicitud implements IControladorSolicitud {
     @Override
     public void rechazar(DTSolicitud solicitud) {
         try {
-            if (solicitud == null) {
-                throw new Exception("No se puede rechazar una solicitud nula.");
-            }
+            SolicitudValidator.validate(solicitud, SolicitudValidatorType.RECHAZAR);
             FabricaPersistencia.getPersistenciaSolicitud().rechazar(solicitud);
 
             // Mail de notifiación

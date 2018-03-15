@@ -9,8 +9,9 @@ package org.arqrifa.logica.validation;
  *
  * @author Ale
  */
-public enum EncuestaValidatorType {
+public enum SolicitudValidatorType {
     AGREGAR,
-    BAJA,
-    MODIFICAR
+    CONFIRMAR,
+    RECHAZAR
+       
 }

@@ -27,7 +27,7 @@ public class EncuestaValidator {
         }
 
         switch (type) {
-            case ALTA:
+            case AGREGAR:
                 validarAlta();
                 break;
             case BAJA:

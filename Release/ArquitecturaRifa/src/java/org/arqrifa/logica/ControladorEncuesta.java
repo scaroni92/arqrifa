@@ -27,7 +27,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void agregar(DTReunion reunion) {
         try {
-            EncuestaValidator.validate(reunion, EncuestaValidatorType.ALTA);
+            EncuestaValidator.validate(reunion, EncuestaValidatorType.AGREGAR);
             FabricaPersistencia.getPersistenciaEncuesta().agregar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());

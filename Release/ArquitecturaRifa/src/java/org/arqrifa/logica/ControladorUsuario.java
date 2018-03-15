@@ -27,7 +27,7 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void agregar(DTUsuario usuario) {
         try {
-            UsuarioValidator.validate(usuario, EncuestaValidatorType.ALTA);
+            UsuarioValidator.validate(usuario, EncuestaValidatorType.AGREGAR);
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
