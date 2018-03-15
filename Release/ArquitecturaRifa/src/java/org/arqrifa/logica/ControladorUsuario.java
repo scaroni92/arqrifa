@@ -5,19 +5,21 @@ import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
+import org.arqrifa.logica.validation.EncuestaValidatorType;
+import org.arqrifa.logica.validation.UsuarioValidator;
 
 class ControladorUsuario implements IControladorUsuario {
 
     //<editor-fold defaultstate="collapsed" desc="Singleton">
     private static ControladorUsuario instancia = null;
-
+    
     public static IControladorUsuario getInstancia() {
         if (instancia == null) {
             instancia = new ControladorUsuario();
         }
         return instancia;
     }
-
+    
     private ControladorUsuario() {
     }
     //</editor-fold>
@@ -25,19 +27,13 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void agregar(DTUsuario usuario) {
         try {
-            if (usuario == null) {
-                throw new Exception("No se puede agregar un usuario nulo");
-            }
-            if (usuario.getCi() < 1000000 || usuario.getCi() > 9999999) {
-                throw new Exception("Ingrese una cédula válida.");
-            }
-
+            UsuarioValidator.validate(usuario, EncuestaValidatorType.ALTA);
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-
+    
     @Override
     public DTUsuario autenticar(int ci, String contrasena) {
         try {
@@ -46,29 +42,29 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-
+    
     @Override
     public DTUsuario buscar(int ci) {
         DTUsuario usuario = null;
         try {
             usuario = FabricaPersistencia.getPersistenciaUsuario().buscar(ci);
-
+            
             if (DTUsuario.ESTUDIANTE.equals(usuario.getRol())) {
                 cargarInasistencias(usuario);
             }
-
+            
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
         return usuario;
     }
-
+    
     private void cargarInasistencias(DTUsuario estudiante) {
         int inasistencias = 0;
         boolean esParticipante;
-
+        
         List<DTReunion> reuniones = ControladorReunion.getInstancia().listarPorGeneracion(estudiante.getGeneracion());
-
+        
         for (DTReunion reunion : reuniones) {
             esParticipante = false;
             if (reunion.isFinalizada()) {
@@ -85,7 +81,7 @@ class ControladorUsuario implements IControladorUsuario {
         }
         estudiante.setInasistencias(inasistencias);
     }
-
+    
     @Override
     public List<DTUsuario> listarTodos() {
         try {
@@ -94,7 +90,7 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-
+    
     @Override
     public List<DTUsuario> listarEstudiantes(int id_gen) {
         try {
@@ -103,14 +99,15 @@ class ControladorUsuario implements IControladorUsuario {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-
+    
     @Override
     public void modificar(DTUsuario usuario) {
         try {
+            UsuarioValidator.validate(usuario, EncuestaValidatorType.MODIFICAR);
             FabricaPersistencia.getPersistenciaUsuario().modificar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-
+    
 }

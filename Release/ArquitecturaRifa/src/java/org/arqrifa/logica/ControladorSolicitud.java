@@ -5,6 +5,8 @@ import java.util.Random;
 import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
+import org.arqrifa.logica.validation.EncuestaValidatorType;
+import org.arqrifa.logica.validation.UsuarioValidator;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorSolicitud implements IControladorSolicitud {
@@ -29,9 +31,8 @@ class ControladorSolicitud implements IControladorSolicitud {
             if (solicitud == null) {
                 throw new Exception("No se puede dar de alta una solicitud nula.");
             }
-            if (solicitud.isVerificada()) {
-                throw new Exception("No se puede aceptar una solicitud sin verificar.");
-            }
+            
+            UsuarioValidator.validate(solicitud.getUsuario(), EncuestaValidatorType.ALTA);
 
             solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
 
