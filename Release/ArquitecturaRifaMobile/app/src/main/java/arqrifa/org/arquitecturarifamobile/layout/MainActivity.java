@@ -29,6 +29,7 @@ import arqrifa.org.arquitecturarifamobile.rest.HttpUrlConnectionClient;
 public class MainActivity extends AppCompatActivity implements ReunionFragment.OnFragmentInteractionListener {
     private DTUsuario usuario;
     private RecyclerView rvCalendario;
+    private String mensajeProximaReunion = "", mensajeUltimaReunion = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
             try {
                 reunion = new HttpUrlConnectionClient().getProximaReunion(params[0]);
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
+                mainActivity.mensajeProximaReunion = ex.getMessage();
             }
             return reunion;
         }
@@ -166,13 +167,16 @@ public class MainActivity extends AppCompatActivity implements ReunionFragment.O
             try {
                 reunion = new HttpUrlConnectionClient().getUltimaReunion(params[0]);
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
+                mainActivity.mensajeUltimaReunion = ex.getMessage();
             }
             return reunion;
         }
 
         protected void onPostExecute(DTReunion response) {
             try {
+                if (!mensajeUltimaReunion.isEmpty()) {
+                    throw new Exception(mensajeUltimaReunion);
+                }
                 if (response == null) {
                     throw new Exception("No se han realizado reuniones");
                 }

@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtCi;
     private EditText txtPass;
     private ProgressBar progressBar;
+    private String mensaje = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 usuario = new HttpUrlConnectionClient().login(params[0], params[1]);
             } catch (Exception ex) {
-                Toast.makeText(mainActivity, ex.getMessage(), Toast.LENGTH_LONG).show();
+                mainActivity.mensaje = ex.getMessage();
             }
             return usuario;
         }
@@ -65,6 +66,10 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(DTUsuario usuario) {
             mainActivity.progressBar.setVisibility(View.GONE);
             try {
+                if (!mensaje.isEmpty())
+                {
+                    throw new Exception(mensaje);
+                }
                 if (usuario == null){
                     throw new Exception(getString(R.string.login_invalid_credentials));
                 }

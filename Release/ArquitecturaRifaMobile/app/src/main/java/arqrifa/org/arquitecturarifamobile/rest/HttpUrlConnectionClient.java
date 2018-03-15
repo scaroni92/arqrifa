@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +67,14 @@ public class HttpUrlConnectionClient {
 
     private <T> T getRequest(Class<T> responseType) throws Exception{
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
-        con.connect();
+
+
+        try {
+            con.setConnectTimeout(10000);
+            con.getResponseCode();
+        }catch(SocketTimeoutException e){
+            throw new Exception("Tiempo de espera de conexión agotado");
+        }
 
         return readEntity(con, responseType);
     }
@@ -104,14 +112,18 @@ public class HttpUrlConnectionClient {
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         con.setRequestMethod("POST");
-        con.connect();
+        try {
+            con.setConnectTimeout(10000);
+            con.getResponseCode();
+            OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+            wr.write(entity);
+            wr.flush();
 
-        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-        wr.write(entity);
-        wr.flush();
-
-        // Se comprueba si hubo errores
-        readEntity(con, Object.class);
+            // Se comprueba si hubo errores
+            readEntity(con, Object.class);
+        }catch(SocketTimeoutException e){
+            throw new Exception("Tiempo de espera de conexión agotado");
+        }
     }
 
 }

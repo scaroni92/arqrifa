@@ -24,7 +24,7 @@ public class ReunionFragment extends Fragment {
     LinearLayout llTemas, llResoluciones;
     CardView cvResoluciones, cvEncuesta;
 
-    private DTReunion reunion = null;
+    private DTReunion reunion;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,6 +35,7 @@ public class ReunionFragment extends Fragment {
     public static ReunionFragment newInstance(DTReunion reunion) {
         ReunionFragment fragment = new ReunionFragment();
         Bundle args = new Bundle();
+        args.putSerializable("reunion", reunion);
         fragment.setArguments(args);
         return fragment;
     }

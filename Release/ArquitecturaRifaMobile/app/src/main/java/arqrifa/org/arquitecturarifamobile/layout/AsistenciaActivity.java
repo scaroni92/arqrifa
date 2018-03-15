@@ -62,6 +62,7 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
     private DTUsuario usuario;
     private DTReunion reunion;
     private boolean accionMarcar;
+    private String mensaje = "";
 
     //Layout
     private Button btnTieneAsistencia;
@@ -260,13 +261,17 @@ public class AsistenciaActivity extends AppCompatActivity  implements ReunionFra
                 }
                 reunion = new HttpUrlConnectionClient().getReunionActual(params[0]);
             } catch (Exception ex) {
-                Toast.makeText(asistenciaActivity, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
+                asistenciaActivity.mensaje = ex.getMessage();
             }
             return reunion;
         }
 
         protected void onPostExecute(DTReunion reunion) {
             try {
+                if (!mensaje.isEmpty())
+                {
+                    throw new Exception(mensaje);
+                }
                 if(reunion != null){
                     asistenciaActivity.setReunionActiva(reunion);
                     asistenciaActivity.showReunion();

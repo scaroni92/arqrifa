@@ -28,6 +28,7 @@ public class EncuestaActivity extends AppCompatActivity {
 
     private DTUsuario usuario;
     private DTReunion reunion;
+    private String mensaje = "";
 
     private TextView textViewTitulo, textViewDuracion;
     private LinearLayout linearLayoutPropuestas;
@@ -131,13 +132,17 @@ public class EncuestaActivity extends AppCompatActivity {
             try {
                 votacion = new HttpUrlConnectionClient().getVotacion(usuario.getCi(), reunion.getId());
             } catch (Exception ex) {
-                Toast.makeText(encuestaActivity, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
+                mensaje = ex.getMessage();
             }
             return votacion;
         }
 
         protected void onPostExecute(DTVotacion votacion) {
             try {
+                if (!mensaje.isEmpty())
+                {
+                    throw new Exception(mensaje);
+                }
                 if (votacion == null){
                     if (reunion.isVotacion()){
                         buttonCompletarCuestionario.setVisibility(View.VISIBLE);
