@@ -13,7 +13,7 @@
                     </div>
                     <div class="row general-container">
                         <div class="input-field col m10 s12">
-                            <input id="titulo" name="titulo" type="text" value="${encuesta.titulo}"  style="font-size: 2em;" required>
+                            <input id="titulo" name="titulo" type="text" value="${encuesta.titulo}" data-length="30"  style="font-size: 2em;" required>
                             <label for="titulo">Título</label>
                         </div>
                         <div class="input-field col m2 s12">

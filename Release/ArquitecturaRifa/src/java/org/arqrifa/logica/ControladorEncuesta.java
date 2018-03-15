@@ -1,10 +1,11 @@
 package org.arqrifa.logica;
 
-import org.arqrifa.datatypes.DTPropuesta;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTVotacion;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
+import org.arqrifa.logica.validation.EncuestaValidator;
+import org.arqrifa.logica.validation.EncuestaValidatorType;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 public class ControladorEncuesta implements IControladorEncuesta {
@@ -26,47 +27,17 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void agregar(DTReunion reunion) {
         try {
-            verificarReunionNula(reunion);
-            verificarEncuestaNula(reunion);
-
-            if (reunion.isFinalizada()) {
-                throw new Exception("No se puede crear encuestas para reuniones finalizadas");
-            }
-
-            if (reunion.getEncuesta().getPropuestas().isEmpty()) {
-                throw new Exception("No se puede crear una encuesta sin propuestas.");
-            }
-            for (DTPropuesta propuesta : reunion.getEncuesta().getPropuestas()) {
-                if (propuesta.getRespuestas().size() < 2) {
-                    throw new Exception("Todas las propuestas deben tener almenos dos respuestas.");
-                }
-            }
-
+            EncuestaValidator.validate(reunion, EncuestaValidatorType.ALTA);
             FabricaPersistencia.getPersistenciaEncuesta().agregar(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
 
-    private void verificarEncuestaNula(DTReunion reunion) throws Exception {
-        if (reunion.getEncuesta() == null) {
-            throw new Exception("La encuesta no puede ser nula");
-        }
-    }
-
-    private void verificarReunionNula(DTReunion reunion) throws Exception {
-        if (reunion == null) {
-            throw new Exception("La reunión no puede ser nula");
-        }
-    }
-
     @Override
     public void eliminar(DTReunion reunion) {
         try {
-            if (!reunion.isPendiente()) {
-                throw new Exception("No se puede eliminar la encuesta de una reunión con estado \"" + reunion.getEstado() + "\"");
-            }
-            verificarEncuestaNula(reunion);
+            EncuestaValidator.validate(reunion, EncuestaValidatorType.BAJA);
             FabricaPersistencia.getPersistenciaEncuesta().eliminar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -76,19 +47,7 @@ public class ControladorEncuesta implements IControladorEncuesta {
     @Override
     public void modificar(DTReunion reunion) {
         try {
-            if (!reunion.isPendiente()) {
-                throw new Exception("No se puede modificar la encuesta de una reunión con estado \"" + reunion.getEstado() + "\"");
-            }
-            verificarEncuestaNula(reunion);
-            if (reunion.getEncuesta().getPropuestas().isEmpty()) {
-                throw new Exception("Agregue almenos una propuesta a la encuesta.");
-            }
-
-            for (DTPropuesta propuesta : reunion.getEncuesta().getPropuestas()) {
-                if (propuesta.getRespuestas().size() < 2) {
-                    throw new Exception("Todas las propuestas deben tener almenos dos respuestas");
-                }
-            }
+            EncuestaValidator.validate(reunion, EncuestaValidatorType.MODIFICAR);
             FabricaPersistencia.getPersistenciaEncuesta().modificar(reunion.getEncuesta());
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
