@@ -2,11 +2,11 @@ package org.arqrifa.logica;
 
 import java.util.List;
 import java.util.Random;
-import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.logica.validation.SolicitudValidator;
 import org.arqrifa.logica.validation.SolicitudValidatorType;
+import org.arqrifa.notificaciones.Notificaciones;
 import org.arqrifa.persistencia.FabricaPersistencia;
 
 class ControladorSolicitud implements IControladorSolicitud {
@@ -29,20 +29,9 @@ class ControladorSolicitud implements IControladorSolicitud {
     public void agregar(DTSolicitud solicitud) {
         try {
             SolicitudValidator.validate(solicitud, SolicitudValidatorType.AGREGAR);
-            
             generarCodigo(solicitud);
-
             FabricaPersistencia.getPersistenciaSolicitud().agregar(solicitud);
-
-            String destinatario = solicitud.getUsuario().getEmail();
-            String asunto = "Arquitectura Rifa - Confirmar registro";
-            String mensaje = "Hola " + solicitud.getUsuario().getNombre()
-                    + " tu solicitud ha sido enviada exitosamente, ahora solo"
-                    + " falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-                    + Utilities.URL_VERIFICAR_SOLICITUD + solicitud.getCodigo();
-            
-            
-            Utilities.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
+            Notificaciones.notificarSolicitudAgregada(solicitud);
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -52,7 +41,6 @@ class ControladorSolicitud implements IControladorSolicitud {
     private void generarCodigo(DTSolicitud solicitud) {
         solicitud.setCodigo((int) (new Random().nextDouble() * 99999999));
     }
-    
 
     @Override
     public void verificar(int codigo) {
@@ -68,38 +56,19 @@ class ControladorSolicitud implements IControladorSolicitud {
         try {
             SolicitudValidator.validate(solicitud, SolicitudValidatorType.CONFIRMAR);
             FabricaPersistencia.getPersistenciaSolicitud().confirmar(solicitud);
-
-            // Mail de notificación
-            String destinatario = solicitud.getUsuario().getEmail();
-            String asunto = "Arquitectura Rifa - Registro completado";
-            String mensaje = "Hola " + solicitud.getUsuario().getNombre() + ",\n\n"
-                    + "Tu solicitud ha sido confirmada, ya puedes iniciar sesión en "
-                    + Utilities.URL_ARQUITECTURA_RIFA_WEB+" con tu cédula y contraseña. \n\n"
-                    + "Para descargar la apliación móvil haz click en el siguiente enlace:\n " + Utilities.URL_PLAYSTORE_DOWNLOAD;
-
-            Utilities.notificarMail(new DTMensaje(destinatario, asunto, mensaje));
+            Notificaciones.notificarSolicitudAceptada(solicitud);
 
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
     }
-    
-    
 
     @Override
     public void rechazar(DTSolicitud solicitud) {
         try {
             SolicitudValidator.validate(solicitud, SolicitudValidatorType.RECHAZAR);
             FabricaPersistencia.getPersistenciaSolicitud().rechazar(solicitud);
-
-            // Mail de notifiación
-            DTMensaje mensaje = new DTMensaje();
-            mensaje.setDestinatario(solicitud.getUsuario().getEmail());
-            mensaje.setAsunto("Arquitectura Rifa - Registro rechazado");
-            mensaje.setMensaje("Hola " + solicitud.getUsuario().getNombre()
-                    + ",\n\nTe informamos que tu solicitud ha sido rechazada, si tienes alguna duda ponte en contacto con el encargado de tu generación.");
-
-            Utilities.notificarMail(mensaje);
+            Notificaciones.notificarSolicitudRechazada(solicitud);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
