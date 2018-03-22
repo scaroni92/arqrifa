@@ -111,17 +111,17 @@ INSERT INTO generaciones VALUES (0),(2015);
 
 INSERT INTO usuarios(ci, id_gen, nombre, apellido, contrasena, email, rol) VALUES 
 (4444444, 0, 'Luis', 'Pérez', '1234', 'luis.perez.adminx@gmail.com', 'Admin'),
-(7777777, 2015, 'Ana', 'Pérez', '1234', 'anaperezxxxxxxx@gmail.com', 'Encargado'),
-(5555551, 2015, 'Facundo', 'García', '1234', 'facundoxxx@gmail.com', 'Estudiante'),
-(5555552, 2015, 'Melanie', 'García', '1234', 'melaniexxx@gmail.com', 'Estudiante'),
-(5555553, 2015, 'Alejandro', 'Correa', '1234', 'alejaxxx@gmail.com', 'Estudiante'),
-(5555554, 2015, 'Nicolas', 'García', '1234', 'nicolasxxx@gmail.com', 'Estudiante'),
-(5555555, 2015, 'Luis', 'Gonzales', '1234', 'lugonzalexx@gmail.com', 'Estudiante'),
-(5555556, 2015, 'Juan', 'García', '1234', 'juanxxxxxxxxx@gmail.com', 'Estudiante'),
-(5555557, 2015, 'Ezquiel', 'Pérez', '1234', 'ezquielxxxx@gmail.com', 'Estudiante'),
-(5555558, 2015, 'Raúl', 'Gomez', '1234', 'raulgomezxxxxx@gmail.com', 'Estudiante'),
-(5555559, 2015, 'Mathías', 'Gonzales', '1234', 'mathxxsx@gmail.com', 'Estudiante'),
-(5555550, 2015, 'Miguel', 'Cabrera', '1234', 'miguelxxxx@gmail.com', 'Estudiante');
+(7777777, 2015, 'Ana', 'Pérez', '1234', 'anaperezxxxxxxxxxxxx@gmail.com', 'Encargado'),
+(5555551, 2015, 'Facundo', 'García', '1234', 'facundoxxxxxxxx@gmail.com', 'Estudiante'),
+(5555552, 2015, 'Melanie', 'García', '1234', 'melaniexxxxxxxx@gmail.com', 'Estudiante'),
+(5555553, 2015, 'Alejandro', 'Correa', '1234', 'alejaxxxxxxxx@gmail.com', 'Estudiante'),
+(5555554, 2015, 'Nicolas', 'García', '1234', 'nicolasxxxxxxxx@gmail.com', 'Estudiante'),
+(5555555, 2015, 'Luis', 'Gonzales', '1234', 'lugonzalxxxxxexx@gmail.com', 'Estudiante'),
+(5555556, 2015, 'Juan', 'García', '1234', 'juanxxxxxxxxxxxxxx@gmail.com', 'Estudiante'),
+(5555557, 2015, 'Ezquiel', 'Pérez', '1234', 'ezquielxxxxxxxxx@gmail.com', 'Estudiante'),
+(5555558, 2015, 'Raúl', 'Gomez', '1234', 'raulgomezxxxxxxxxxx@gmail.com', 'Estudiante'),
+(5555559, 2015, 'Mathías', 'Gonzales', '1234', 'mathxxsxxxxxx@gmail.com', 'Estudiante'),
+(5555550, 2015, 'Miguel', 'Cabrera', '1234', 'miguelxxxxxxxxx@gmail.com', 'Estudiante');
 
 
 INSERT INTO solicitudes(ci, id_gen, fecha, nombre, apellido, contrasena, email, codigo, verificada) VALUES

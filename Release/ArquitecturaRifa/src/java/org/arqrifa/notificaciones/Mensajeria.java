@@ -43,7 +43,7 @@ public class Mensajeria {
         }
     }
 
-    public void send(DTMensaje mensaje) throws MessagingException {
+    public void enviar(DTMensaje mensaje) throws MessagingException {
         Message msg = new MimeMessage(sesion);
         msg.setFrom(new InternetAddress(EMISOR));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mensaje.getDestinatario()));
