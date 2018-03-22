@@ -1,18 +1,15 @@
 package org.arqrifa.logica;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import javax.mail.MessagingException;
 import org.arqrifa.datatypes.DTAsistencia;
-import org.arqrifa.datatypes.DTMensaje;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
 import org.arqrifa.logica.validation.ReunionValidator;
 import org.arqrifa.logica.validation.ReunionValidatorType;
+import org.arqrifa.notificaciones.Notificaciones;
 
 class ControladorReunion implements IControladorReunion {
 
@@ -54,24 +51,10 @@ class ControladorReunion implements IControladorReunion {
         try {
             ReunionValidator.validate(reunion, ReunionValidatorType.ALTA);
             FabricaPersistencia.getPersistenciaReunion().agregar(reunion);
-
-            notificarMailEstudiantes(reunion);
+            Notificaciones.notificarNuevaReunion(reunion);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
-    }
-
-    private void notificarMailEstudiantes(DTReunion reunion) throws MessagingException, Exception {
-        List<DTMensaje> mensajes = new ArrayList();
-        String asunto = "Nueva reunión agendada";
-        String mensaje = " te informamos que se ha agendado una nueva reunión para el día "
-                + new SimpleDateFormat("dd 'de' MMMMM 'a las' HH:mm").format(reunion.getFecha());
-
-        for (DTUsuario usuario : FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion())) {
-            mensajes.add(new DTMensaje(usuario.getEmail(), asunto, "Hola, " + usuario.getNombre() + mensaje));
-        }
-
-        Utilities.notificarMail(mensajes);
     }
 
     @Override
@@ -137,22 +120,23 @@ class ControladorReunion implements IControladorReunion {
     public List<DTAsistencia> listarAsistencias(DTReunion reunion) {
         List<DTAsistencia> asistencias = new ArrayList();
         try {
-            List<DTUsuario> estudiantes = FabricaPersistencia.getPersistenciaUsuario().listarEstudiantes(reunion.getGeneracion());
-
+            List<DTUsuario> estudiantes = ControladorUsuario.getInstancia().listarEstudiantes(reunion.getGeneracion());
             for (DTUsuario estudiante : estudiantes) {
-                boolean encontrado = false;
-                for (DTUsuario participante : reunion.getParticipantes()) {
-                    if (estudiante.getCi() == participante.getCi()) {
-                        encontrado = true;
-                        break;
-                    }
-                }
-                asistencias.add(new DTAsistencia(estudiante, encontrado ? DTAsistencia.PRESENTE : DTAsistencia.AUSENTE));
+                asistencias.add(new DTAsistencia(estudiante, obtenerEstadoAsistencia(reunion, estudiante)));
             }
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
         }
         return asistencias;
+    }
+
+    private String obtenerEstadoAsistencia(DTReunion reunion, DTUsuario estudiante) {
+        for (DTUsuario participante : reunion.getParticipantes()) {
+            if (participante.getCi() == estudiante.getCi()) {
+                return DTAsistencia.PRESENTE;
+            }
+        }
+        return DTAsistencia.AUSENTE;
     }
 
     @Override

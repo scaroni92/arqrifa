@@ -32,7 +32,7 @@ public class ControladorAsistencias extends Controlador {
             DTUsuario estudiante = new RecursoUsuarios().buscar(Integer.parseInt(request.getParameter("ci")));
             DTReunion reunionActiva = (DTReunion) sesion.getAttribute("reunionActiva");
             new RecursoReuniones().agregarAsistencia(estudiante, reunionActiva);
-            sesion.setAttribute("mensaje", "Asistenia marcada exitosamente.");
+            sesion.setAttribute("mensaje", "Asistencia marcada exitosamente.");
         }
          catch (NumberFormatException e) {
             sesion.setAttribute("mensaje", "La cédula debe ser numérica");
