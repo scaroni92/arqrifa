@@ -1,8 +1,9 @@
 package org.arqrifa.logica.validation;
 
+import java.text.ParseException;
 import java.util.Date;
 import org.arqrifa.datatypes.DTReunion;
-import org.arqrifa.logica.Utilities;
+import org.arqrifa.logica.util.Utilidades;
 
 public class ReunionValidator {
 
@@ -47,10 +48,14 @@ public class ReunionValidator {
     }
 
     private static void validarAlta() throws Exception {
-        if (Utilities.compararFechas(reunion.getFecha(), new Date()) <= 0) {
-            throw new Exception("Las reuniones deben agendarse con almenos un día de anticipación");
+        if (!isFechaReunionMayorActual()) {
+            throw new Exception("Las reuniones deben agendar con almenos un día de anticipaciónnn");
         }
         validarCampos();
+    }
+
+    private static boolean isFechaReunionMayorActual() throws Exception {
+        return Utilidades.compararFechas(reunion.getFecha(), new Date()) > 0;
     }
 
     private static void validarCampos() throws Exception {
@@ -91,15 +96,21 @@ public class ReunionValidator {
             throw new Exception("La reunión que desea iniciar ya fue efectuada");
         }
 
-        Date fechaActual = new Date();
-
-        if (Utilities.compararFechas(reunion.getFecha(), fechaActual) != 0) {
+        if (!isReunionEnFecha()) {
             throw new Exception("No se puede iniciar una reunión fuera de fecha");
         }
 
-        if (reunion.getFecha().after(fechaActual)) {
+        if (!isReunionEnHora()) {
             throw new Exception("No se puede iniciar una reunión antes de la hora prevista");
         }
+    }
+
+    private static boolean isReunionEnFecha() throws ParseException {
+        return Utilidades.compararFechas(reunion.getFecha(), new Date()) == 0;
+    }
+
+    private static boolean isReunionEnHora() {
+        return reunion.getFecha().before(new Date());
     }
 
     private static void validarHabilitarLista() throws Exception {
