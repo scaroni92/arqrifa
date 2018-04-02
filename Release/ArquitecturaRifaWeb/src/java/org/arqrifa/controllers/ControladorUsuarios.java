@@ -32,7 +32,7 @@ public class ControladorUsuarios extends Controlador {
                 vm.setUsuarios(recurso.listar(usuario.getGeneracion()));
             } else {
                 dtu = recurso.buscar(Integer.parseInt(ci));
-                if (usuario.getGeneracion() == dtu.getGeneracion()) {
+                if (usuario.getGeneracion() == dtu.getGeneracion() || usuario.isAdmin()) {
                     vm.getUsuarios().add(dtu);
                 }
             }
