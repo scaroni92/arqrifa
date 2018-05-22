@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.arqrifa.notificaciones;
 
 import javax.mail.MessagingException;
@@ -15,10 +10,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Ale
- */
 public class Notificaciones {
 
     public static void notificarNuevaReunion(DTReunion reunion) throws MessagingException, Exception {

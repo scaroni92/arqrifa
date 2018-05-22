@@ -4,6 +4,7 @@ import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -28,7 +29,10 @@ public class Mensajeria {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.port", "587");
 
-        // Autenticación
+        autenticar(properties);
+    }
+
+    private void autenticar(Properties properties) throws MessagingException, NoSuchProviderException {
         sesion = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {

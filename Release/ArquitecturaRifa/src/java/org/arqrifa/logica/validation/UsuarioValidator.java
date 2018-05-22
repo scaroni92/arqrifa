@@ -6,14 +6,14 @@ public class UsuarioValidator {
 
     private static DTUsuario usuario;
 
-    public static void validate(DTUsuario dtu, EncuestaValidatorType type) throws Exception {
+    public static void validate(DTUsuario dtu, UsuarioValidatorType type) throws Exception {
         usuario = dtu;
         if (usuario == null) {
             throw new Exception("No se puede agregar un usuario nulo");
         }
 
         switch (type) {
-            case AGREGAR:
+            case ALTA:
                 validarAlta();
                 break;
             case MODIFICAR:

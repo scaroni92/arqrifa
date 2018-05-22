@@ -26,7 +26,7 @@ public class SolicitudValidator {
     }
 
     private static void validarAgregar() throws Exception {
-        UsuarioValidator.validate(solicitud.getUsuario(), EncuestaValidatorType.AGREGAR);
+        UsuarioValidator.validate(solicitud.getUsuario(),UsuarioValidatorType.ALTA);
     }
 
     private static void validarConfirmar() throws Exception {

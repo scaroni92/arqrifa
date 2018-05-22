@@ -5,8 +5,8 @@ import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.persistencia.FabricaPersistencia;
 import org.arqrifa.exceptions.ArquitecturaRifaException;
-import org.arqrifa.logica.validation.EncuestaValidatorType;
 import org.arqrifa.logica.validation.UsuarioValidator;
+import org.arqrifa.logica.validation.UsuarioValidatorType;
 
 class ControladorUsuario implements IControladorUsuario {
 
@@ -27,7 +27,7 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void agregar(DTUsuario usuario) {
         try {
-            UsuarioValidator.validate(usuario, EncuestaValidatorType.AGREGAR);
+            UsuarioValidator.validate(usuario, UsuarioValidatorType.ALTA);
             FabricaPersistencia.getPersistenciaUsuario().agregar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
@@ -103,7 +103,7 @@ class ControladorUsuario implements IControladorUsuario {
     @Override
     public void modificar(DTUsuario usuario) {
         try {
-            UsuarioValidator.validate(usuario, EncuestaValidatorType.MODIFICAR);
+            UsuarioValidator.validate(usuario, UsuarioValidatorType.MODIFICAR);
             FabricaPersistencia.getPersistenciaUsuario().modificar(usuario);
         } catch (Exception e) {
             throw new ArquitecturaRifaException(e.getMessage());
