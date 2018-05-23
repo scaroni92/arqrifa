@@ -7,6 +7,7 @@ package org.arqrifa.notificaciones;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.arqrifa.logica.util.Utilidades;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 class NotificacionUtil {
 
-    static final String URL_ARQUITECTURA_RIFA_WEB = "http://%1$s:8080/ArquitecturaRifaWeb/";
+    static final String URL_ARQUITECTURA_RIFA_WEB = "http://"+Utilidades.IP_SITIO_WEB+":8080/ArquitecturaRifaWeb/";
     static final String URL_VERIFICAR_SOLICITUD = URL_ARQUITECTURA_RIFA_WEB + "index?accion=verificar&codigo=";
     static final String URL_PLAYSTORE_DESCARGA = "http://www.playstore.com";
 
