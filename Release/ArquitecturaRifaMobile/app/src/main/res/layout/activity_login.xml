@@ -24,13 +24,15 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/txtCi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:ems="10"
             android:hint="@string/login_ci_label"
+            android:inputType="number"
+            android:maxLength="7"
             android:textColor="@color/md_white_1000" />
     </android.support.design.widget.TextInputLayout>
 
@@ -41,13 +43,15 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/txtPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:ems="10"
-            android:hint="@string/login_pass_label"/>
+            android:hint="@string/login_pass_label"
+            android:inputType="textPassword"
+            android:maxLength="20" />
     </android.support.design.widget.TextInputLayout>
 
     <Space
