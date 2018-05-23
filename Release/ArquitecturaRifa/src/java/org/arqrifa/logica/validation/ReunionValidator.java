@@ -49,7 +49,7 @@ public class ReunionValidator {
 
     private static void validarAlta() throws Exception {
         if (!isFechaReunionMayorActual()) {
-            throw new Exception("Las reuniones deben agendar con almenos un día de anticipaciónnn");
+            throw new Exception("Las reuniones deben agendar con al menos un día de anticipación");
         }
         validarCampos();
     }
