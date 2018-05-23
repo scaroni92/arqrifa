@@ -20,10 +20,10 @@ class NotificacionUtil {
     static final String URL_PLAYSTORE_DESCARGA = "http://www.playstore.com";
 
     static final String SOLICITUD_AGREGADA_ASUNTO = "Confirma tu correo electrónico.";
-    static final String SOLICITUD_AGREGADA_MENSAJE = "Hola %2$s, tu solicitud ha sido recibida exitosamente, ahora solo falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
-            + URL_VERIFICAR_SOLICITUD + "%3$s";
+    static final String SOLICITUD_AGREGADA_MENSAJE = "Hola %1$s, tu solicitud ha sido recibida exitosamente, ahora solo falta que verifiques tu dirección de correo electrónico haciendo clic en este enlace:\n "
+            + URL_VERIFICAR_SOLICITUD + "%2$s";
     static final String SOLICITUD_ACEPTADA_ASUNTO = "Solicitud aceptada";
-    static final String SOLICITUD_ACEPTADA_MENSAJE = "Hola %2$s,\n\nTu solicitud ha sido confirmada, ya puedes iniciar sesión con tu cédula y contraseña en" + URL_ARQUITECTURA_RIFA_WEB
+    static final String SOLICITUD_ACEPTADA_MENSAJE = "Hola %1$s,\n\nTu solicitud ha sido confirmada, ya puedes iniciar sesión con tu cédula y contraseña en" + URL_ARQUITECTURA_RIFA_WEB
             + "\n\nPara descargar la aplicación móvil haz click en el siguiente enlace:\n" + URL_PLAYSTORE_DESCARGA;
     static final String SOLICITUD_RECHAZADA_ASUNTO = "Solicitud rechazada";
     static final String SOLICITUD_RECHAZADA_MENSAJE = "Hola %1$s,\n\nTe informamos que tu solicitud ha sido rechazada"
