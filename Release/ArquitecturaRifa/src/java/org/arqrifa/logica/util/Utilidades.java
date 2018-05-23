@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Utilidades {
 
-    publis static final String IP_SITIO_WEB = "192.168.10.104";
+    public static final String IP_SITIO_WEB = "192.168.10.104";
     
     public static Date formatearFecha(Date fecha) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
