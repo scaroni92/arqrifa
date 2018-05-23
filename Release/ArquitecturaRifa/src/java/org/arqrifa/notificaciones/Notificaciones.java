@@ -6,7 +6,6 @@ import org.arqrifa.datatypes.DTReunion;
 import org.arqrifa.datatypes.DTSolicitud;
 import org.arqrifa.datatypes.DTUsuario;
 import org.arqrifa.logica.FabricaLogica;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +25,14 @@ public class Notificaciones {
     public static void notificarSolicitudAgregada(DTSolicitud solicitud) throws MessagingException, Exception {
         String destinatario = solicitud.getUsuario().getEmail();
         String asunto = NotificacionUtil.SOLICITUD_AGREGADA_ASUNTO;
-        String mensaje = String.format(NotificacionUtil.SOLICITUD_AGREGADA_MENSAJE, InetAddress.getLocalHost().getHostAddress(), solicitud.getUsuario().getNombre(), solicitud.getCodigo());
+        String mensaje = String.format(NotificacionUtil.SOLICITUD_AGREGADA_MENSAJE, solicitud.getUsuario().getNombre(), solicitud.getCodigo());
         NotificadorMail.getInstancia().notificar(new DTMensaje(destinatario, asunto, mensaje));
     }
 
     public static void notificarSolicitudAceptada(DTSolicitud solicitud) throws MessagingException, Exception {
         String destinatario = solicitud.getUsuario().getEmail();
         String asunto = NotificacionUtil.SOLICITUD_ACEPTADA_ASUNTO;
-        String mensaje = String.format(NotificacionUtil.SOLICITUD_ACEPTADA_MENSAJE, InetAddress.getLocalHost().getHostAddress(), solicitud.getUsuario().getNombre());
+        String mensaje = String.format(NotificacionUtil.SOLICITUD_ACEPTADA_MENSAJE, solicitud.getUsuario().getNombre());
         NotificadorMail.getInstancia().notificar(new DTMensaje(destinatario, asunto, mensaje));
     }
 
