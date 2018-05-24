@@ -30,7 +30,7 @@
                             <div class="calendario-numero"><fmt:formatDate pattern="dd" value="${reunion.fecha}" /> </div>
                             <div class="calendario-hora"><fmt:formatDate pattern="HH:mm" value="${reunion.fecha}" /> </div>
                         </div>
-                        <div class="card-content white grey-text text-darken-2">
+                        <div class="card-content white grey-text text-darken-2 truncate">
                             ${reunion.titulo}
                         </div>
                         <div class="card-action white center"> <a href="reuniones?accion=detalles&id=${reunion.id}">detalles</a> </div>
