@@ -14,8 +14,8 @@ import org.arqrifa.datatypes.DTMensaje;
 
 public class Mensajeria {
 
-    private final String EMISOR = "arquitectura_rifa@hotmail.com";
-    private final String CONTRASENA = "arqrifa123";
+    private final String EMISOR = "sgdr.arquitecturarifa@outlook.com";
+    private final String CONTRASENA = "arqrifa1234";
     private Session sesion = null;
 
     public Mensajeria() throws MessagingException {
