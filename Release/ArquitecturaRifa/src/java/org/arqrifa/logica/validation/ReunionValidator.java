@@ -132,7 +132,7 @@ public class ReunionValidator {
     }
 
     private static void validarDeshabilitarVotacion() throws Exception {
-        if (!reunion.isIniciada()) {
+        if (!reunion.isVotacion()) {
             throw new Exception("El estado de la reunión debe ser iniciada");
         }
     }
